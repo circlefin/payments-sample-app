@@ -1,0 +1,4 @@
+**/.git
+**/.github
+**/payments-sandbox-private
+!payments-sandbox-private/docker/Dockerfile
