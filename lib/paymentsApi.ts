@@ -121,21 +121,21 @@ function createPayment(
 
 /**
  * Get payments
- * @param {String} before
- * @param {String} after
- * @param {String} limit
- * @param {String} customerRefId
+ * @param {String} pageBefore
+ * @param {String} pageAfter
+ * @param {String} pageSize
+ * @param {String} customerId
  */
 function getPayments(
-  before: string,
-  after: string,
-  limit: string,
+  pageBefore: string,
+  pageAfter: string,
+  pageSize: string,
   customerId: string
 ) {
   const queryParams = {
-    before,
-    after,
-    limit,
+    pageBefore,
+    pageAfter,
+    pageSize,
     customerId
   }
 

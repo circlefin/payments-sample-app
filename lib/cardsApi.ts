@@ -97,22 +97,23 @@ function getCardById(cardId: string) {
 
 /**
  * Get Cards
- * @param {String} before
- * @param {String} after
- * @param {Integer} limit
+ * @param {String} pageBefore
+ * @param {String} pageAfter
+ * @param {String} pageSize
  * @param {String} customerId
+ * @param {String} customerRefId
  */
 function getCards(
-  before: string,
-  after: string,
-  limit: string,
+  pageBefore: string,
+  pageAfter: string,
+  pageSize: string,
   customerId: string,
   customerRefId: string
 ) {
   const queryParams = {
-    before,
-    after,
-    limit,
+    pageBefore,
+    pageAfter,
+    pageSize,
     customerId,
     customerRefId
   }
