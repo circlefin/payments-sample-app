@@ -1,10 +1,10 @@
 # A Sample Payments Application
 
-Here you will find a sample web application that demonstrates some of the features of the Circle Payments API.
+Here you will find a sample web application that demonstrates some of the features of the [Circle Payments API](https://staging.circle.com/en/payments-api).
 
 ## Circle API Documentation Portal
 
-For full details on what you can do with Circle's APIs and how to use them, please check the documentation portal [here](https://developers.circle.com).
+For full details on what you can do with Circle's APIs and how to use them, please check the [API documentation portal](https://developers.circle.com).
 
 ## Clone and configure the sample app
 
@@ -40,7 +40,7 @@ The sample app is now running at: `http://localhost:3011/`
 
 ## Test Card Numbers
 
-To automatically trigger certain responses from the Circle Payments API, you can use different [test card numbers](https://developers.circle.com/docs/test-card-numbers).
+To automatically trigger certain responses from the Circle Payments API, you can use some pre-defined [test card numbers](https://developers.circle.com/docs/test-card-numbers) that exercise specific behaviors.
 
 ## Nuxt
 
