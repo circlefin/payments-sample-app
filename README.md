@@ -11,7 +11,7 @@ For full details on what you can do with [Circle's APIs](https://www.circle.com/
 You can manually clone the sample app by running:
 
 ```bash
-$ git clone https://github.com/circlefin/payments-sample-app
+$ git clone https://github.com/circlefin/payments-sample-app.git
 ```
 
 Create a `.env` file in the project's root folder in order to configure the base url for api calls. To run the sample app against the sandbox environment API endpoints, configure it as follows:
