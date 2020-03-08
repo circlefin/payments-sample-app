@@ -90,22 +90,19 @@
           Settings
         </p>
         <v-form class="mt-8">
-          <v-text-field v-model="apiKey" label="Secret API key" outlined />
+          <v-text-field v-model="apiKey" label="Your API key" outlined />
           <p class="subtitle-2 font-weight-light mb-8">
-            Do not make your secret API keys publicly available through GitHub,
-            client-side code, or similar.
+            Do not share or record your API keys in publicly accessible mediums such as GitHub,
+            client-side code, etc.
           </p>
           <v-switch
             v-model="isMarketplace"
-            label="I am using a Marketplace API key"
+            label="I am using a Circle Marketplaces API key"
           ></v-switch>
         </v-form>
       </v-content>
     </v-navigation-drawer>
 
-    <v-footer :fixed="false" app>
-      <span>&copy; Circle {{ new Date().getFullYear() }}</span>
-    </v-footer>
   </v-app>
 </template>
 
