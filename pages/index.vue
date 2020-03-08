@@ -2,10 +2,10 @@
   <v-layout>
     <v-flex>
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h1 class="headline">Welcome to Circle payments sample app</h1>
+        <h1 class="headline">Welcome to the sample payments application</h1>
 
         <p class="mt-6">
-          Learn how to integrate Circle payments in your website.
+          This sample web application demonstrates some of the features of the <a href="https://www.circle.com/payments-api" target="_blank">Circle Payments API</a>.
         </p>
 
         <p class="font-weight-bold mt-8">
@@ -73,7 +73,7 @@
         </p>
 
         <v-btn href="/debug/" color="primary">
-          Api endpoints
+          API endpoints
         </v-btn>
       </v-card>
 
@@ -90,7 +90,7 @@
             color="primary"
             outlined
           >
-            Api reference
+            Circle API documentation portal
           </v-btn>
         </p>
       </v-card>
@@ -102,12 +102,12 @@
         <p>
           <span class="font-weight-bold">Customer:</span> the entity that enters
           an agreement with Circle to gain access to the Payments API (i.e. a
-          business)
+          business).
         </p>
         <p>
           <span class="font-weight-bold">End user:</span> the entity that owns a
           payment method used throughout the API (in other words, a Customer's
-          customer)
+          customer).
         </p>
         <p>
           <span class="font-weight-bold">Payment Method:</span> an external
@@ -115,7 +115,7 @@
           payouts), i.e. a debit or credit card, a bank account, etc. Payment: a
           complex transaction involving fiat funds being transferred from an end
           user's payment method, and depositing an associated amount of
-          stablecoin on a wallet
+          stablecoin on a wallet.
         </p>
         <p>
           <span class="font-weight-bold">Payout:</span> a complex transaction a
