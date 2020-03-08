@@ -36,7 +36,11 @@ Run the following to run the sample app locally:
 $ yarn dev
 ```
 
-The sample app is now running at: `http://localhost:3011/`
+The sample app is now running at: `http://localhost:3011/`.
+
+After you [generate an API key for the sandbox environment](https://developers.circle.com/docs/getting-started-with-the-circle-apis#section-api-keys), enter it on the top right corner of the sample app.
+
+You are now ready to use the sample app and test some payments flows that in a production environment would settle in the [USDC stablecoin](https://www.circle.com/en/usdc)!
 
 ## Test Card Numbers
 
