@@ -1,52 +1,63 @@
-# Payments Sample App
+# A Sample Payments Application
 
-> Sample App for Circle Payments API
+> Here you will find a sample web application that demonstrates some of the features of the Circle Payments API.
 
-## Official Documentation
+## Circle API Documentation Portal
 
-The full documentation reference can be seen [here](https://developers.circle.com/docs)
+For full details on what you can do with Circle's APIs and how to use them, please check the documentation portal [here](https://developers.circle.com).
 
-## Config
+## Clone and configure the sample app
 
-Create a `.env` file in the root folder to configure the base url for api calls.  To run against the sandbox environment (which uses fake money), set it as follows:
+You can manually clone the sample app by running:
+
+```bash
+$ git clone https://github.com/circlefin/payments-sample-app
+```
+
+Create a `.env` file in the project's root folder in order to configure the base url for api calls. To run the sample app against the sandbox environment API endpoints, configure it as follows:
+
 ```bash
 $ echo BASE_URL=https://api-sandbox.circle.com > .env
 ```
 
-## Install dependencies
+## Install the dependencies
+
+Run the following to install the dependencies:
 
 ``` bash
-# Install dependencies
 $ yarn install
 ```
 
-## Development
+## Run the sample app locally
+
+Run the following to run the sample app locally:
 
 ``` bash
-# serve with hot reload at localhost:3002
 $ yarn dev
 ```
 
-Server is running at: `http://localhost:3011/`
+The sample app is now running at: `http://localhost:3011/`
 
 ## Test Card Numbers
 
-To automatically trigger certain responses from the API, you can input different [test card numbers](https://developers.circle.com/docs/test-card-numbers)
+To automatically trigger certain responses from the Circle Payments API, you can use different [test card numbers](https://developers.circle.com/docs/test-card-numbers).
 
 ## Nuxt
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+This sample app was written with Nuxtt. For a more detailed explanation of Nuxt works, check the [Nuxt.js docs](https://nuxtjs.org).
 
 ## Tests
 
-We use jest to write tests. You can find the tests in the `test` dir.
+The sample app uses jest for testing. You can find the tests in the `test` folder.
 
-Run tests:
+To run the tests:
+
 ``` bash
 $ yarn test
 ```
 
-Watch tests:
+To watch the tests:
+
 ``` bash
 $ yarn test:watch
 ```
