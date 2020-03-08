@@ -76,7 +76,7 @@
         <p>
           For implementation details please see our
           <a
-            href="https://developers.circle.com/docs/accept-a-card-payment-online"
+            href="https://developers.circle.com/docs/accept-card-payments-online"
             rel="noopener"
             target="_blank"
           >
