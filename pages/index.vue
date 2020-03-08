@@ -78,9 +78,9 @@
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">API reference</h2>
+        <h2 class="title">Circle API documentation portal</h2>
         <p class="mt-2">
-          View available endpoints and parameters (external link).
+          View API guides and reference documentation, including available endpoints and parameters (external link).
         </p>
 
         <p>
