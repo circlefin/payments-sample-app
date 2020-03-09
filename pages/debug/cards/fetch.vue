@@ -10,9 +10,9 @@
             v-model="formData.customerRefId"
             label="Customer Reference Id"
           />
-          <v-text-field v-model="formData.limit" label="Limit" />
-          <v-text-field v-model="formData.before" label="Before" />
-          <v-text-field v-model="formData.after" label="After" />
+          <v-text-field v-model="formData.pageSize" label="PageSize" />
+          <v-text-field v-model="formData.pageBefore" label="PageBefore" />
+          <v-text-field v-model="formData.pageAfter" label="PageAfter" />
           <v-btn
             depressed
             class="mb-7"
@@ -62,9 +62,9 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 export default class FetchCardsClass extends Vue {
   // data
   formData = {
-    before: '',
-    after: '',
-    limit: '',
+    pageBefore: '',
+    pageAfter: '',
+    pageSize: '',
     customerId: '',
     customerRefId: ''
   }
@@ -77,15 +77,6 @@ export default class FetchCardsClass extends Vue {
   loading = false
   showError = false
 
-  // computed
-  get disabledAfter() {
-    return this.formData.before !== ''
-  }
-
-  get disabledBefore() {
-    return this.formData.after !== ''
-  }
-
   // methods
   onErrorSheetClosed() {
     this.error = {}
@@ -97,9 +88,9 @@ export default class FetchCardsClass extends Vue {
 
     try {
       await this.$cardsApi.getCards(
-        this.formData.before,
-        this.formData.after,
-        this.formData.limit,
+        this.formData.pageBefore,
+        this.formData.pageAfter,
+        this.formData.pageSize,
         this.formData.customerId,
         this.formData.customerRefId
       )
