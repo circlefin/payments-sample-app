@@ -40,7 +40,7 @@ The sample app is now running at: `http://localhost:3011/`.
 
 After you [generate an API key for the sandbox environment](https://developers.circle.com/docs/getting-started-with-the-circle-apis#section-api-keys), enter it on the settings tab on the **top right corner of the sample app**.
 
-You are now ready to use the sample app and test some payments flows that in a production environment would settle in the [USDC stablecoin](https://www.circle.com/en/usdc).
+You are now ready to use the sample app and test some payments flows. In a production environment these payments would settle in the [USDC stablecoin](https://www.circle.com/en/usdc).
 
 ## Test Card Numbers
 
@@ -48,7 +48,7 @@ To automatically trigger certain responses from the Circle Payments API, you can
 
 ## Nuxt
 
-This sample app was written with Nuxtt. For a more detailed explanation of Nuxt works, check the [Nuxt.js docs](https://nuxtjs.org).
+This sample app was written with Nuxt. For a more detailed explanation of how Nuxt works, check the [Nuxt.js docs](https://nuxtjs.org).
 
 ## Tests
 
