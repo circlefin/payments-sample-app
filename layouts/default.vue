@@ -92,8 +92,8 @@
         <v-form class="mt-8">
           <v-text-field v-model="apiKey" label="Your API key" outlined />
           <p class="subtitle-2 font-weight-light mb-8">
-            Do not share or record your API keys in publicly accessible mediums such as GitHub,
-            client-side code, etc.
+            Do not share or record your API keys in publicly accessible mediums
+            such as GitHub, client-side code, etc.
           </p>
           <v-switch
             v-model="isMarketplace"
@@ -102,7 +102,6 @@
         </v-form>
       </v-content>
     </v-navigation-drawer>
-
   </v-app>
 </template>
 
