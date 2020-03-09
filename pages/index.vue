@@ -5,7 +5,9 @@
         <h1 class="headline">Welcome to the sample payments application</h1>
 
         <p class="mt-6">
-          This sample web application demonstrates some of the features of the <a href="https://www.circle.com/payments-api" target="_blank">Circle Payments API</a>.
+          This sample web application demonstrates some of the features of the
+          <a href="https://www.circle.com/payments-api" target="_blank">
+          Circle Payments API</a>.
         </p>
 
         <p class="font-weight-bold mt-8">
@@ -80,7 +82,8 @@
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
         <h2 class="title">Circle API documentation portal</h2>
         <p class="mt-2">
-          View API guides and reference documentation, including available endpoints and parameters.
+          View API guides and reference documentation, including available
+          endpoints and parameters.
         </p>
 
         <p>
