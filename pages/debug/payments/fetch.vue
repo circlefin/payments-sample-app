@@ -5,9 +5,9 @@
         <v-form>
           <header>Optional filter params:</header>
           <v-text-field v-model="formData.customerId" label="Customer Id" />
-          <v-text-field v-model="formData.limit" label="Limit" />
-          <v-text-field v-model="formData.before" label="Before" />
-          <v-text-field v-model="formData.after" label="After" />
+          <v-text-field v-model="formData.pageSize" label="PageSize" />
+          <v-text-field v-model="formData.pageBefore" label="PageBefore" />
+          <v-text-field v-model="formData.pageAfter" label="PageAfter" />
           <v-btn
             depressed
             class="mb-7"
@@ -57,9 +57,9 @@ export default class FetchPaymentsClass extends Vue {
   // data
   formData = {
     customerId: '',
-    limit: '',
-    before: '',
-    after: ''
+    pageSize: '',
+    pageBefore: '',
+    pageAfter: ''
   }
   rules = {
     isNumber: (v: string) =>
@@ -69,15 +69,6 @@ export default class FetchPaymentsClass extends Vue {
   error = {}
   loading = false
   showError = false
-
-  // computed
-  get disabledAfter() {
-    return this.formData.before !== ''
-  }
-
-  get disabledBefore() {
-    return this.formData.after !== ''
-  }
 
   // methods
   onErrorSheetClosed() {
@@ -89,9 +80,9 @@ export default class FetchPaymentsClass extends Vue {
     this.loading = true
     try {
       await this.$paymentsApi.getPayments(
-        this.formData.before,
-        this.formData.after,
-        this.formData.limit,
+        this.formData.pageBefore,
+        this.formData.pageAfter,
+        this.formData.pageSize,
         this.formData.customerId
       )
     } catch (error) {
