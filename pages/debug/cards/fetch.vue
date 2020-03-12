@@ -7,8 +7,8 @@
           <v-text-field v-model="formData.customerId" label="Customer Id" />
           <div>OR</div>
           <v-text-field
-            v-model="formData.customerRefId"
-            label="Customer Reference Id"
+            v-model="formData.customerRef"
+            label="Customer Reference"
           />
           <v-text-field v-model="formData.pageSize" label="PageSize" />
           <v-text-field v-model="formData.pageBefore" label="PageBefore" />
@@ -66,7 +66,7 @@ export default class FetchCardsClass extends Vue {
     pageAfter: '',
     pageSize: '',
     customerId: '',
-    customerRefId: ''
+    customerRef: ''
   }
   rules = {
     isNumber: (v: string) =>
@@ -92,7 +92,7 @@ export default class FetchCardsClass extends Vue {
         this.formData.pageAfter,
         this.formData.pageSize,
         this.formData.customerId,
-        this.formData.customerRefId
+        this.formData.customerRef
       )
     } catch (error) {
       this.error = error
