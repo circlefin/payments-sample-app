@@ -36,7 +36,11 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~/plugins/paymentsApi', '~/plugins/cardsApi'],
+  plugins: [
+    '~/plugins/paymentsApi',
+    '~/plugins/cardsApi',
+    '~/plugins/marketplaceApi'
+  ],
   /*
    ** Nuxt.js dev-modules
    */

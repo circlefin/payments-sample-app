@@ -10,7 +10,13 @@ interface MetaData {
   }
 }
 
-export interface CreatePaymentPayload {
+export interface MarketplaceInfo {
+  merchantId: string
+  merchantAccountNumber: string
+  walletAccountNumber: string
+}
+
+export interface CreateMarketplacePaymentPayload {
   refId: string
   amount: {
     amount: string
@@ -24,6 +30,7 @@ export interface CreatePaymentPayload {
   keyId: string
   encryptedData: string
   metadata: MetaData
+  marketplaceInfo: MarketplaceInfo
 }
 
 export interface RefundPaymentPayload {
@@ -65,32 +72,11 @@ function getInstance() {
 }
 
 /**
- * Returns a public key used to encryption
- *
- * @returns Promise<PublicKey> {"keyId": "key1", "publicKey": "LS0tLS1CRUdJTiBQR1A..." }
- */
-function getPCIPublicKey() {
-  const url = '/v1/encryption/public'
-
-  return instance.get(url)
-}
-
-/**
- * Cancel a payment
- * @param {String} id
- */
-function cancelPayment(id: string, payload: any) {
-  const url = `/v1/payments/${id}/cancel`
-
-  return instance.post(url, payload)
-}
-
-/**
  * Create payment
  * @param {*} payload (contains form data and encrypted payment details)
  */
-function createPayment(payload: CreatePaymentPayload) {
-  const url = `/v1/payments`
+function createPayment(payload: CreateMarketplacePaymentPayload) {
+  const url = `/v1/marketplace/payments`
   return instance.post(url, payload)
 }
 
@@ -99,13 +85,13 @@ function createPayment(payload: CreatePaymentPayload) {
  * @param {String} pageBefore
  * @param {String} pageAfter
  * @param {String} pageSize
- * @param {String} customerId
+ * @param {String} merchantId
  */
 function getPayments(
   pageBefore: string,
   pageAfter: string,
   pageSize: string,
-  customerId: string
+  merchantId: string
 ) {
   const nullIfEmpty = (prop: string) => {
     if (prop === '') {
@@ -117,10 +103,10 @@ function getPayments(
     pageBefore: nullIfEmpty(pageBefore),
     pageAfter: nullIfEmpty(pageAfter),
     pageSize: nullIfEmpty(pageSize),
-    customerId: nullIfEmpty(customerId)
+    merchantId: nullIfEmpty(merchantId)
   }
 
-  const url = `/v1/payments`
+  const url = `/v1/marketplace/payments`
 
   return instance.get(url, { params: queryParams })
 }
@@ -130,7 +116,7 @@ function getPayments(
  * @param {String} id
  */
 function getPaymentById(id: string) {
-  const url = `/v1/payments/${id}`
+  const url = `/v1/marketplace/payments/${id}`
 
   return instance.get(url)
 }
@@ -144,12 +130,39 @@ function refundPayment(id: string, payload: RefundPaymentPayload) {
   return instance.post(url, payload)
 }
 
+/**
+ * Cancel a payment
+ * @param {String} id
+ */
+function cancelPayment(id: string, payload: any) {
+  const url = `/v1/payments/${id}/cancel`
+
+  return instance.post(url, payload)
+}
+
+/**
+ * Get merchants
+ */
+function getMerchants() {
+  const url = `/v1/marketplace/merchants`
+  return instance.get(url)
+}
+
+/**
+ * Get wallet
+ */
+function getWallet() {
+  const url = `/v1/wallets/account`
+  return instance.post(url)
+}
+
 export default {
   getInstance,
-  cancelPayment,
-  createPayment,
   getPayments,
   getPaymentById,
-  getPCIPublicKey,
-  refundPayment
+  refundPayment,
+  cancelPayment,
+  createPayment,
+  getMerchants,
+  getWallet
 }

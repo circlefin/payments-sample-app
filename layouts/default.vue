@@ -3,7 +3,7 @@
     <v-navigation-drawer
       v-model="showDrawer"
       :mini-variant="miniVariant"
-      :clipped="clipped"
+      clipped
       fixed
       app
     >
@@ -15,18 +15,15 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item>
-          <v-list-item-title
-            class="pointer"
-            @click.stop="showFlowSubnav = !showFlowSubnav"
-          >
-            Sample flows
-          </v-list-item-title>
-        </v-list-item>
-        <div v-if="showFlowSubnav">
+
+        <v-list-group>
+          <template v-slot:activator>
+            <v-list-item-title>Sample flows</v-list-item-title>
+          </template>
+
           <v-list-item
-            v-for="(item, i) in flowSubitems"
-            :key="i"
+            v-for="(item, i) in flowLinks"
+            :key="`flowlink-${i}`"
             :to="item.to"
             router
             exact
@@ -35,26 +32,24 @@
               <v-list-item-title class="body-2 pl-2" v-text="item.title" />
             </v-list-item-content>
           </v-list-item>
-        </div>
-        <v-list-item>
-          <v-list-item-title
-            class="pointer"
-            @click.stop="showApiSubnav = !showApiSubnav"
-          >
-            API viewer
-          </v-list-item-title>
-        </v-list-item>
-        <v-list-item v-if="showApiSubnav" to="/debug" router exact>
-          <v-list-item-content>
-            <v-list-item-title class="body-2 pl-2">
-              Overview
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <div v-if="showApiSubnav">
+        </v-list-group>
+
+        <v-list-group v-if="!isMarketplace">
+          <template v-slot:activator>
+            <v-list-item-title>Payments APIs</v-list-item-title>
+          </template>
+
+          <v-list-item to="/debug" router exact>
+            <v-list-item-content>
+              <v-list-item-title class="body-2 pl-2">
+                Overview
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
           <v-list-item
-            v-for="(item, i) in apiSubitems"
-            :key="i + flowSubitems.length"
+            v-for="(item, i) in paymentsLinks"
+            :key="`paymentlink-${i}`"
             :to="item.to"
             router
             exact
@@ -63,10 +58,36 @@
               <v-list-item-title class="body-2 pl-2" v-text="item.title" />
             </v-list-item-content>
           </v-list-item>
-        </div>
+        </v-list-group>
+
+        <v-list-group v-if="isMarketplace">
+          <template v-slot:activator>
+            <v-list-item-title>Marketplace APIs</v-list-item-title>
+          </template>
+
+          <v-list-item to="/debug" router exact>
+            <v-list-item-content>
+              <v-list-item-title class="body-2 pl-2">
+                Overview
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            v-for="(item, i) in marketplaceLinks"
+            :key="`marketplacelink-${i}`"
+            :to="item.to"
+            router
+            exact
+          >
+            <v-list-item-content>
+              <v-list-item-title class="body-2 pl-2" v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app dark color="primary" dense>
+    <v-app-bar clipped-left fixed app dark color="primary" dense>
       <v-app-bar-nav-icon @click.stop="showDrawer = !showDrawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
@@ -110,11 +131,7 @@ import { Vue, Component } from 'nuxt-property-decorator'
 
 @Component
 export default class DefaultLayoutsClass extends Vue {
-  // data
-  clipped = true
-  showFlowSubnav = true
-  showApiSubnav = false
-  flowSubitems = [
+  flowLinks = [
     {
       title: 'Charge a card',
       to: '/flow/charge'
@@ -128,7 +145,49 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/flow/card/create'
     }
   ]
-  apiSubitems = [
+  marketplaceLinks = [
+    {
+      title: 'GET /cards',
+      to: '/debug/cards/fetch'
+    },
+    {
+      title: 'GET /cards/{id}',
+      to: '/debug/cards/details'
+    },
+    {
+      title: 'POST /cards',
+      to: '/debug/cards/create'
+    },
+    {
+      title: 'PUT /cards/{id}',
+      to: '/debug/cards/update'
+    },
+    {
+      title: 'GET /marketplace/payments',
+      to: '/debug/marketplace/payments/fetch'
+    },
+    {
+      title: 'GET /marketplace/payments/{id}',
+      to: '/debug/marketplace/payments/details'
+    },
+    {
+      title: 'POST /marketplace/payments',
+      to: '/debug/marketplace/payments/create'
+    },
+    {
+      title: 'POST /marketplace/payments/{id}/cancel',
+      to: '/debug/marketplace/payments/cancel'
+    },
+    {
+      title: 'POST /marketplace/payments/{id}/refund',
+      to: '/debug/marketplace/payments/refund'
+    },
+    {
+      title: 'GET /merchants',
+      to: '/debug/marketplace/merchants/fetch'
+    }
+  ]
+  paymentsLinks = [
     {
       title: 'GET /cards',
       to: '/debug/cards/fetch'
@@ -172,7 +231,7 @@ export default class DefaultLayoutsClass extends Vue {
   showDrawer = false
 
   get title() {
-    const navItems = this.flowSubitems.concat(this.apiSubitems)
+    const navItems = this.flowLinks.concat(this.paymentsLinks)
     const currentPage = navItems.find((item) => {
       return item.to === this.$route.path
     })
@@ -193,18 +252,7 @@ export default class DefaultLayoutsClass extends Vue {
 
   set isMarketplace(bool: boolean) {
     this.$store.commit('SET_IS_MARKETPLACE', bool)
-  }
-
-  updateWalletRefId(value: string) {
-    this.$store.commit('UPDATE_WALLET_REFID', value)
-  }
-
-  updateMerchantId(value: string) {
-    this.$store.commit('UPDATE_MERCHANT_ID', value)
-  }
-
-  updateMerchantAccountNumber(value: string) {
-    this.$store.commit('UPDATE_MERCHANT_ACCOUNT', value)
+    this.$router.push('/')
   }
 }
 </script>

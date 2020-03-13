@@ -39,6 +39,8 @@
               <MarketplaceInfoFields
                 v-if="isMarketplace"
                 v-model="marketplaceInfo"
+                :loading="marketplaceInfoLoading"
+                @fetch-wallet="makeWalletApiCall"
               />
 
               <AmountInput
@@ -197,11 +199,11 @@ import openPGP from '@/lib/openpgp'
 import { getLive } from '@/lib/apiTarget'
 import { exampleCards } from '@/lib/cardTestData'
 import { CreateCardPayload } from '@/lib/cardsApi'
+import { CreatePaymentPayload } from '@/lib/paymentsApi'
 import {
-  CreatePaymentPayload,
   CreateMarketplacePaymentPayload,
   MarketplaceInfo
-} from '@/lib/paymentsApi'
+} from '@/lib/marketplaceApi'
 import CardInput from '@/components/CardInput.vue'
 import CVVInput from '@/components/CVVInput.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
@@ -296,6 +298,7 @@ export default class ChargeFlowClass extends Vue {
   }
   error: object = {}
   loading: boolean = false
+  marketplaceInfoLoading: boolean = false
   showError: boolean = false
   showPaymentStatus: boolean = false
   expiryLabels = {
@@ -307,7 +310,7 @@ export default class ChargeFlowClass extends Vue {
   isSandbox: Boolean = !getLive()
   isMarketplace!: boolean
   marketplaceInfo: MarketplaceInfo = {
-    walletRefId: '',
+    walletAccountNumber: '',
     merchantId: '',
     merchantAccountNumber: ''
   }
@@ -347,6 +350,22 @@ export default class ChargeFlowClass extends Vue {
       this.showError = true
     } finally {
       this.loading = false
+    }
+  }
+
+  async makeWalletApiCall() {
+    this.marketplaceInfoLoading = true
+
+    try {
+      const res = await this.$marketplaceApi.getWallet()
+      if (res.number) {
+        this.marketplaceInfo.walletAccountNumber = res.number
+      }
+    } catch (error) {
+      this.error = error
+      this.showError = true
+    } finally {
+      this.marketplaceInfoLoading = false
     }
   }
 
