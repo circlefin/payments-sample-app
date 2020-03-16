@@ -84,7 +84,7 @@ export default class RefundPaymentClass extends Vue {
 
     const payload: RefundPaymentPayload = {
       refId: this.formData.refId,
-      refundAmount: amountDetail
+      amount: amountDetail
     }
 
     try {
