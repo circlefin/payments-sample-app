@@ -159,7 +159,7 @@ function getPaymentById(id: string) {
  * @param {String} id
  */
 function refundPayment(id: string, payload: RefundPaymentPayload) {
-  const url = `/v1/payments/${id}/refund/`
+  const url = `/v1/payments/${id}/refund`
   return instance.post(url, payload)
 }
 
