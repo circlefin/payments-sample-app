@@ -98,7 +98,7 @@
         block
         color="primary"
         :disabled="!validForm || loading"
-        @click.prevent="makeApiCall()"
+        @click.prevent="makeApiCall"
       >
         Add card
       </v-btn>

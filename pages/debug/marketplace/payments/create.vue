@@ -3,6 +3,12 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
+          <MarketplaceInfoFields
+            v-model="marketplaceInfo"
+            :loading="marketplaceInfoLoading"
+            @fetch-wallet="makeWalletApiCall"
+          />
+
           <v-text-field
             v-model="formData.sourceId"
             label="Source Id (Card Id)"
@@ -22,7 +28,7 @@
             class="mb-7"
             color="primary"
             :loading="loading"
-            @click.prevent="makeApiCall()"
+            @click.prevent="makeApiCall"
           >
             Make api call
           </v-btn>
@@ -49,14 +55,19 @@ import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import uuidv4 from 'uuid/v4'
 import openPGP from '@/lib/openpgp'
-import { CreatePaymentPayload } from '@/lib/paymentsApi'
+import {
+  CreateMarketplacePaymentPayload,
+  MarketplaceInfo
+} from '@/lib/marketplaceApi'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
+import MarketplaceInfoFields from '@/components/MarketplaceInfoFields.vue'
 
 @Component({
   components: {
     RequestInfo,
-    ErrorSheet
+    ErrorSheet,
+    MarketplaceInfoFields
   },
   computed: {
     ...mapGetters({
@@ -69,6 +80,11 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 })
 export default class CreatePaymentClass extends Vue {
   isMarketplace!: boolean
+  marketplaceInfo: MarketplaceInfo = {
+    walletAccountNumber: '',
+    merchantId: '',
+    merchantAccountNumber: ''
+  }
   cvvRequired = true
   formData = {
     sourceId: '',
@@ -80,13 +96,14 @@ export default class CreatePaymentClass extends Vue {
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
+  marketplaceInfoLoading = false
   showError = false
 
   mounted() {
-    if (this.isMarketplace) {
+    if (!this.isMarketplace) {
       return this.$nuxt.error({
         statusCode: 404,
-        message: 'This endpoint is not available for marketplaces'
+        message: 'This endpoint is only vailable for marketplaces'
       })
     }
   }
@@ -106,6 +123,22 @@ export default class CreatePaymentClass extends Vue {
     this.showError = false
   }
 
+  async makeWalletApiCall() {
+    this.marketplaceInfoLoading = true
+
+    try {
+      const res = await this.$marketplaceApi.getWallet()
+      if (res.number) {
+        this.marketplaceInfo.walletAccountNumber = res.number
+      }
+    } catch (error) {
+      this.error = error
+      this.showError = true
+    } finally {
+      this.marketplaceInfoLoading = false
+    }
+  }
+
   async makeApiCall() {
     this.loading = true
 
@@ -118,7 +151,7 @@ export default class CreatePaymentClass extends Vue {
       type: 'card'
     }
 
-    const payload: CreatePaymentPayload = {
+    const payload: CreateMarketplacePaymentPayload = {
       refId: uuidv4(),
       amount: amountDetail,
       verificationMethod: this.formData.verificationMethod,
@@ -127,7 +160,8 @@ export default class CreatePaymentClass extends Vue {
       encryptedData: '',
       metadata: {
         session: { sessionId: 'xxx', ipAddress: '172.33.222.1' }
-      }
+      },
+      marketplaceInfo: this.marketplaceInfo
     }
 
     try {

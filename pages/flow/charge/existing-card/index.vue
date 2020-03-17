@@ -27,6 +27,8 @@
               <MarketplaceInfoFields
                 v-if="isMarketplace"
                 v-model="marketplaceInfo"
+                :loading="marketplaceInfoLoading"
+                @fetch-wallet="makeWalletApiCall"
               />
 
               <AmountInput
@@ -177,11 +179,11 @@ import { mapGetters } from 'vuex'
 import uuidv4 from 'uuid/v4'
 import { exampleCards } from '@/lib/cardTestData'
 import openPGP from '@/lib/openpgp'
+import { CreatePaymentPayload } from '@/lib/paymentsApi'
 import {
-  CreatePaymentPayload,
   CreateMarketplacePaymentPayload,
   MarketplaceInfo
-} from '@/lib/paymentsApi'
+} from '@/lib/marketplaceApi'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import Environment from '@/components/Environment.vue'
 import CreateCardForm from '@/components/CreateCardForm.vue'
@@ -217,7 +219,7 @@ interface Card {
 export default class CardFlowClass extends Vue {
   isMarketplace!: boolean
   marketplaceInfo: MarketplaceInfo = {
-    walletRefId: '',
+    walletAccountNumber: '',
     merchantId: '',
     merchantAccountNumber: ''
   }
@@ -237,7 +239,8 @@ export default class CardFlowClass extends Vue {
     required: (v: string) => !!v || 'Field is required'
   }
   required = [(v: string) => !!v || 'Field is required']
-  loading = false
+  loading: boolean = false
+  marketplaceInfoLoading: boolean = false
   error = {}
   showError: boolean = false
   showPaymentStatus: boolean = false
@@ -287,6 +290,22 @@ export default class CardFlowClass extends Vue {
 
   prefillForm(index: number) {
     this.prefillFormData = exampleCards[index].formData
+  }
+
+  async makeWalletApiCall() {
+    this.marketplaceInfoLoading = true
+
+    try {
+      const res = await this.$marketplaceApi.getWallet()
+      if (res.number) {
+        this.marketplaceInfo.walletAccountNumber = res.number
+      }
+    } catch (error) {
+      this.error = error
+      this.showError = true
+    } finally {
+      this.marketplaceInfoLoading = false
+    }
   }
 
   async makeChargeCall() {
