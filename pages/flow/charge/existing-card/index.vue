@@ -27,8 +27,7 @@
               <MarketplaceInfoFields
                 v-if="isMarketplace"
                 v-model="marketplaceInfo"
-                :loading="marketplaceInfoLoading"
-                @fetch-wallet="makeWalletApiCall"
+                @show-error="showMarketplaceInfoError"
               />
 
               <AmountInput
@@ -240,8 +239,7 @@ export default class CardFlowClass extends Vue {
   }
   required = [(v: string) => !!v || 'Field is required']
   loading: boolean = false
-  marketplaceInfoLoading: boolean = false
-  error = {}
+  error: object = {}
   showError: boolean = false
   showPaymentStatus: boolean = false
   createCardOverlay = false
@@ -292,20 +290,9 @@ export default class CardFlowClass extends Vue {
     this.prefillFormData = exampleCards[index].formData
   }
 
-  async makeWalletApiCall() {
-    this.marketplaceInfoLoading = true
-
-    try {
-      const res = await this.$marketplaceApi.getWallet()
-      if (res.number) {
-        this.marketplaceInfo.walletAccountNumber = res.number
-      }
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.marketplaceInfoLoading = false
-    }
+  showMarketplaceInfoError(error: object) {
+    this.error = error
+    this.showError = true
   }
 
   async makeChargeCall() {
