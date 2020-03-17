@@ -39,8 +39,7 @@
               <MarketplaceInfoFields
                 v-if="isMarketplace"
                 v-model="marketplaceInfo"
-                :loading="marketplaceInfoLoading"
-                @fetch-wallet="makeWalletApiCall"
+                @show-error="showMarketplaceInfoError"
               />
 
               <AmountInput
@@ -298,7 +297,6 @@ export default class ChargeFlowClass extends Vue {
   }
   error: object = {}
   loading: boolean = false
-  marketplaceInfoLoading: boolean = false
   showError: boolean = false
   showPaymentStatus: boolean = false
   expiryLabels = {
@@ -339,6 +337,11 @@ export default class ChargeFlowClass extends Vue {
     this.showPaymentStatus = false
   }
 
+  showMarketplaceInfoError(error: object) {
+    this.error = error
+    this.showError = true
+  }
+
   async chargeCard() {
     try {
       const card = await this.makeCreateCardCall()
@@ -350,22 +353,6 @@ export default class ChargeFlowClass extends Vue {
       this.showError = true
     } finally {
       this.loading = false
-    }
-  }
-
-  async makeWalletApiCall() {
-    this.marketplaceInfoLoading = true
-
-    try {
-      const res = await this.$marketplaceApi.getWallet()
-      if (res.number) {
-        this.marketplaceInfo.walletAccountNumber = res.number
-      }
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.marketplaceInfoLoading = false
     }
   }
 

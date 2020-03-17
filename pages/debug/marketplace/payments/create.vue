@@ -5,8 +5,7 @@
         <v-form>
           <MarketplaceInfoFields
             v-model="marketplaceInfo"
-            :loading="marketplaceInfoLoading"
-            @fetch-wallet="makeWalletApiCall"
+            @show-error="showMarketplaceInfoError"
           />
 
           <v-text-field
@@ -96,7 +95,6 @@ export default class CreatePaymentClass extends Vue {
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
-  marketplaceInfoLoading = false
   showError = false
 
   mounted() {
@@ -123,20 +121,9 @@ export default class CreatePaymentClass extends Vue {
     this.showError = false
   }
 
-  async makeWalletApiCall() {
-    this.marketplaceInfoLoading = true
-
-    try {
-      const res = await this.$marketplaceApi.getWallet()
-      if (res.number) {
-        this.marketplaceInfo.walletAccountNumber = res.number
-      }
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.marketplaceInfoLoading = false
-    }
+  showMarketplaceInfoError(error: object) {
+    this.error = error
+    this.showError = true
   }
 
   async makeApiCall() {
