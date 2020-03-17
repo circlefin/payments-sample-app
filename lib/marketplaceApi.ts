@@ -35,7 +35,7 @@ export interface CreateMarketplacePaymentPayload {
 
 export interface RefundPaymentPayload {
   refId: string
-  refundAmount: {
+  amount: {
     amount: string
     currency: string
   }
