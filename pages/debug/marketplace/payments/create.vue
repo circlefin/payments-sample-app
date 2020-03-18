@@ -163,7 +163,7 @@ export default class CreatePaymentClass extends Vue {
         payload.keyId = encryptedData.keyId
       }
 
-      await this.$paymentsApi.createPayment(payload)
+      await this.$marketplaceApi.createPayment(payload)
     } catch (error) {
       this.error = error
       this.showError = true

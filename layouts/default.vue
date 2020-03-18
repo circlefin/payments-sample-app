@@ -6,6 +6,7 @@
       clipped
       fixed
       app
+      width="330"
     >
       <v-list>
         <v-list-item to="/" router exact>
@@ -29,7 +30,7 @@
             exact
           >
             <v-list-item-content>
-              <v-list-item-title class="body-2 pl-2" v-text="item.title" />
+              <v-list-item-title class="list-items pl-2" v-text="item.title" />
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
@@ -41,7 +42,7 @@
 
           <v-list-item to="/debug" router exact>
             <v-list-item-content>
-              <v-list-item-title class="body-2 pl-2">
+              <v-list-item-title class="list-items pl-2">
                 Overview
               </v-list-item-title>
             </v-list-item-content>
@@ -55,7 +56,7 @@
             exact
           >
             <v-list-item-content>
-              <v-list-item-title class="body-2 pl-2" v-text="item.title" />
+              <v-list-item-title class="list-items pl-2" v-text="item.title" />
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
@@ -67,7 +68,7 @@
 
           <v-list-item to="/debug" router exact>
             <v-list-item-content>
-              <v-list-item-title class="body-2 pl-2">
+              <v-list-item-title class="list-items pl-2">
                 Overview
               </v-list-item-title>
             </v-list-item-content>
@@ -81,7 +82,7 @@
             exact
           >
             <v-list-item-content>
-              <v-list-item-title class="body-2 pl-2" v-text="item.title" />
+              <v-list-item-title class="list-items pl-2" v-text="item.title" />
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
@@ -183,8 +184,12 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/marketplace/payments/refund'
     },
     {
-      title: 'GET /merchants',
+      title: 'GET /marketplace/merchants',
       to: '/debug/marketplace/merchants/fetch'
+    },
+    {
+      title: 'GET /marketplace/wallets/account',
+      to: '/debug/marketplace/wallets/account'
     }
   ]
   paymentsLinks = [
@@ -258,6 +263,9 @@ export default class DefaultLayoutsClass extends Vue {
 </script>
 
 <style scoped>
+.list-items {
+  font-size: 14px;
+}
 .pointer {
   cursor: pointer;
 }

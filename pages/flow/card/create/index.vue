@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col cols="12" md="4">
+    <v-col cols="12" md="5">
       <v-card :loading="loading" outlined>
         <v-list-item v-if="!showSuccessMessage" three-line>
           <v-list-item-content>

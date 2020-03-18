@@ -24,8 +24,15 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { mapGetters } from 'vuex'
 
-@Component
+@Component({
+  computed: {
+    ...mapGetters({
+      isMarketplace: 'isMarketplace'
+    })
+  }
+})
 export default class PaymentStatus extends Vue {
   @Prop({ type: String, default: '' })
   paymentId!: string
@@ -35,6 +42,7 @@ export default class PaymentStatus extends Vue {
   }
   polling: boolean = false
   pollingId: number = 0
+  isMarketplace!: boolean
 
   stopPolling() {
     clearInterval(this.pollingId)
@@ -55,7 +63,13 @@ export default class PaymentStatus extends Vue {
 
   async getPayment(paymentId: string) {
     try {
-      const payment = await this.$paymentsApi.getPaymentById(paymentId)
+      let payment
+      if (this.isMarketplace) {
+        payment = await this.$marketplaceApi.getPaymentById(paymentId)
+      } else {
+        payment = await this.$paymentsApi.getPaymentById(paymentId)
+      }
+
       if (payment.status === 'confirmed' || payment.status === 'failed') {
         this.stopPolling()
       }

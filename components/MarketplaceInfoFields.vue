@@ -1,6 +1,14 @@
 <template>
   <div class="mb-6">
-    <v-row align="center">
+    <v-select
+      v-if="hasMerchants"
+      class="select-input"
+      :items="merchantItems"
+      label="Select merchant"
+      :loading="merchantsLoading"
+      @change="selectMerchant"
+    ></v-select>
+    <v-row class="mt-n4">
       <v-col>
         <v-text-field
           v-model="marketplaceInfo.merchantId"
@@ -8,7 +16,8 @@
           label="Merchant Id"
           @input="updateInfo"
         />
-
+      </v-col>
+      <v-col>
         <v-text-field
           v-model="marketplaceInfo.merchantAccountNumber"
           :value="value.merchantAccountNumber"
@@ -16,17 +25,7 @@
           @input="updateInfo"
         />
       </v-col>
-      <v-col v-if="hasMerchants">
-        <v-select
-          :items="merchantItems"
-          label="Select merchant"
-          dense
-          outlined
-          @change="selectMerchant"
-        ></v-select>
-      </v-col>
     </v-row>
-
     <v-row align="center">
       <v-col>
         <v-text-field
@@ -37,7 +36,12 @@
         />
       </v-col>
       <v-col>
-        <v-btn :loading="loading" outlined @click.prevent="makeWalletApiCall">
+        <v-btn
+          :loading="loading"
+          outlined
+          small
+          @click.prevent="makeWalletApiCall"
+        >
           Get wallet
         </v-btn>
       </v-col>
@@ -62,7 +66,7 @@ export default class MarketplaceInfoFieldsClass extends Vue {
   @Prop({ type: Object, default: () => {} }) value!: MarketplaceInfo
   loading: boolean = false
   merchants: Merchant[] = []
-
+  merchantsLoading: boolean = true
   marketplaceInfo: MarketplaceInfo = {
     walletAccountNumber: '',
     merchantId: '',
@@ -75,9 +79,13 @@ export default class MarketplaceInfoFieldsClass extends Vue {
     } catch (error) {
       // silently fail
     }
+    this.merchantsLoading = false
   }
 
   get hasMerchants() {
+    if (this.merchantsLoading) {
+      return true
+    }
     return this.merchants.length > 0
   }
 
@@ -96,6 +104,7 @@ export default class MarketplaceInfoFieldsClass extends Vue {
       this.marketplaceInfo.merchantId = merchant.merchantId
       this.marketplaceInfo.merchantAccountNumber =
         merchant.merchantAccountNumber
+      this.updateInfo()
     }
   }
 
@@ -121,6 +130,7 @@ export default class MarketplaceInfoFieldsClass extends Vue {
       const res = await this.$marketplaceApi.getWallet()
       if (res.number) {
         this.marketplaceInfo.walletAccountNumber = res.number
+        this.updateInfo()
       }
     } catch (error) {
       this.$emit('showError', error)
@@ -130,3 +140,5 @@ export default class MarketplaceInfoFieldsClass extends Vue {
   }
 }
 </script>
+
+<style scoped></style>
