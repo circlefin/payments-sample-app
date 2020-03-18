@@ -1,7 +1,7 @@
 <template>
   <v-layout>
     <v-row>
-      <v-col cols="12" md="4">
+      <v-col cols="12" md="5">
         <v-card :loading="loading" outlined>
           <v-btn
             v-if="!showPaymentStatus"
@@ -334,7 +334,9 @@ export default class CardFlowClass extends Vue {
           marketplaceInfo: this.marketplaceInfo,
           ...payload
         }
-        this.payment = await this.$paymentsApi.createPayment(marketPlacePayload)
+        this.payment = await this.$marketplaceApi.createPayment(
+          marketPlacePayload
+        )
       } else {
         this.payment = await this.$paymentsApi.createPayment(payload)
       }

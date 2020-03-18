@@ -1,7 +1,7 @@
 <template>
   <v-layout>
     <v-row>
-      <v-col cols="12" md="4">
+      <v-col cols="12" md="5">
         <v-card :loading="loading" class="mx-auto" outlined>
           <v-list-item three-line>
             <v-list-item-content>
@@ -442,7 +442,9 @@ export default class ChargeFlowClass extends Vue {
           marketplaceInfo: this.marketplaceInfo,
           ...payload
         }
-        this.payment = await this.$paymentsApi.createPayment(marketPlacePayload)
+        this.payment = await this.$marketplaceApi.createPayment(
+          marketPlacePayload
+        )
       } else {
         this.payment = await this.$paymentsApi.createPayment(payload)
       }
