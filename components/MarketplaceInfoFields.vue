@@ -1,6 +1,7 @@
 <template>
   <div class="mb-6">
     <v-select
+      v-if="hasMerchants"
       class="select-input"
       :items="merchantItems"
       label="Select merchant"
