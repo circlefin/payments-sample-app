@@ -147,7 +147,6 @@ export default class CreateCardFormClass extends Vue {
   // data
   validForm = false
   formData = {
-    customerRefId: '',
     cardNumber: '',
     cvv: '',
     expiry: {
@@ -217,11 +216,10 @@ export default class CreateCardFormClass extends Vue {
       number: cardNumber.trim().replace(/\D/g, ''),
       cvv
     }
-    const { expiry, customerRefId, ...billingDetails } = data
+    const { expiry, ...billingDetails } = data
 
     const payload: CreateCardPayload = {
       refId: uuidv4(),
-      customerRefId,
       expMonth: parseInt(expiry.month),
       expYear: parseInt(expiry.year),
       verificationMethod: 'cvv',

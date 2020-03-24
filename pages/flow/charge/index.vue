@@ -361,7 +361,6 @@ export default class ChargeFlowClass extends Vue {
 
     const payload: CreateCardPayload = {
       refId: uuidv4(),
-      customerRefId: '',
       expMonth: parseInt(this.formData.cardData.expiry.month),
       expYear: parseInt(this.formData.cardData.expiry.year),
       verificationMethod: 'none',

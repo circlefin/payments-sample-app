@@ -25,7 +25,6 @@ export interface UpdateCardPayload {
 
 export interface CreateCardPayload {
   refId: string
-  customerRefId: string
   keyId: string
   encryptedData: string
   billingDetails: {
@@ -101,21 +100,18 @@ function getCardById(cardId: string) {
  * @param {String} pageAfter
  * @param {String} pageSize
  * @param {String} customerId
- * @param {String} customerRefId
  */
 function getCards(
   pageBefore: string,
   pageAfter: string,
   pageSize: string,
-  customerId: string,
-  customerRefId: string
+  customerId: string
 ) {
   const queryParams = {
     pageBefore,
     pageAfter,
     pageSize,
-    customerId,
-    customerRefId
+    customerId
   }
 
   const url = `/v1/cards`
