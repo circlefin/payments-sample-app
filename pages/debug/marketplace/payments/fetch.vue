@@ -5,6 +5,8 @@
         <v-form>
           <header>Optional filter params:</header>
           <v-text-field v-model="formData.merchantId" label="Merchant Id" />
+          <v-text-field v-model="formData.from" label="From" />
+          <v-text-field v-model="formData.to" label="To" />
           <v-text-field v-model="formData.pageSize" label="PageSize" />
           <v-text-field v-model="formData.pageBefore" label="PageBefore" />
           <v-text-field v-model="formData.pageAfter" label="PageAfter" />
@@ -57,6 +59,8 @@ export default class FetchPaymentsClass extends Vue {
   // data
   formData = {
     merchantId: '',
+    from: '',
+    to: '',
     pageSize: '',
     pageBefore: '',
     pageAfter: ''
@@ -80,6 +84,8 @@ export default class FetchPaymentsClass extends Vue {
     this.loading = true
     try {
       await this.$marketplaceApi.getPayments(
+        this.formData.from,
+        this.formData.to,
         this.formData.pageBefore,
         this.formData.pageAfter,
         this.formData.pageSize,
