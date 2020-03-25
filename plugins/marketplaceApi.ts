@@ -11,7 +11,7 @@ declare module 'vue/types/vue' {
       cancelPayment: any
       refundPayment: any
       getMerchants: () => any
-      getWallet: () => any
+      createWallet: () => any
       getInstance: any
     }
   }

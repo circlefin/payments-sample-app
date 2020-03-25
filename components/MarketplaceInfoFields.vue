@@ -19,9 +19,9 @@
       </v-col>
       <v-col>
         <v-text-field
-          v-model="marketplaceInfo.merchantAccountNumber"
-          :value="value.merchantAccountNumber"
-          label="Merchant Account"
+          v-model="marketplaceInfo.merchantWallet"
+          :value="value.merchantWallet"
+          label="Merchant Wallet"
           @input="updateInfo"
         />
       </v-col>
@@ -29,9 +29,9 @@
     <v-row align="center">
       <v-col>
         <v-text-field
-          v-model="marketplaceInfo.walletAccountNumber"
-          :value="value.walletAccountNumber"
-          label="Enduser wallet"
+          v-model="marketplaceInfo.endUserWallet"
+          :value="value.endUserWallet"
+          label="End User wallet"
           @input="updateInfo"
         />
       </v-col>
@@ -57,7 +57,7 @@ interface Merchant {
   id: string
   marketplaceId: string
   merchantId: string
-  merchantAccountNumber: string
+  merchantWallet: string
   createDate: number
 }
 
@@ -68,9 +68,9 @@ export default class MarketplaceInfoFieldsClass extends Vue {
   merchants: Merchant[] = []
   merchantsLoading: boolean = true
   marketplaceInfo: MarketplaceInfo = {
-    walletAccountNumber: '',
+    endUserWallet: '',
     merchantId: '',
-    merchantAccountNumber: ''
+    merchantWallet: ''
   }
 
   async mounted() {
@@ -91,35 +91,34 @@ export default class MarketplaceInfoFieldsClass extends Vue {
 
   get merchantItems() {
     return this.merchants.map((merchant: Merchant) => {
-      return merchant.merchantAccountNumber
+      return merchant.merchantWallet
     })
   }
 
   selectMerchant(value: string) {
     const merchant: Merchant | undefined = this.merchants.find((merchant) => {
-      return merchant.merchantAccountNumber === value
+      return merchant.merchantWallet === value
     })
 
     if (merchant) {
       this.marketplaceInfo.merchantId = merchant.merchantId
-      this.marketplaceInfo.merchantAccountNumber =
-        merchant.merchantAccountNumber
+      this.marketplaceInfo.merchantWallet = merchant.merchantWallet
       this.updateInfo()
     }
   }
 
   @Watch('value', { immediate: true, deep: true })
   onValueChange(value: MarketplaceInfo) {
-    this.marketplaceInfo.walletAccountNumber = value.walletAccountNumber
+    this.marketplaceInfo.endUserWallet = value.endUserWallet
     this.marketplaceInfo.merchantId = value.merchantId
-    this.marketplaceInfo.merchantAccountNumber = value.merchantAccountNumber
+    this.marketplaceInfo.merchantWallet = value.merchantWallet
   }
 
   updateInfo() {
     this.$emit('input', {
       merchantId: this.marketplaceInfo.merchantId,
-      merchantAccountNumber: this.marketplaceInfo.merchantAccountNumber,
-      walletAccountNumber: this.marketplaceInfo.walletAccountNumber
+      merchantWallet: this.marketplaceInfo.merchantWallet,
+      endUserWallet: this.marketplaceInfo.endUserWallet
     })
   }
 
@@ -127,9 +126,9 @@ export default class MarketplaceInfoFieldsClass extends Vue {
     this.loading = true
 
     try {
-      const res = await this.$marketplaceApi.getWallet()
+      const res = await this.$marketplaceApi.createWallet()
       if (res.number) {
-        this.marketplaceInfo.walletAccountNumber = res.number
+        this.marketplaceInfo.endUserWallet = res.number
         this.updateInfo()
       }
     } catch (error) {
