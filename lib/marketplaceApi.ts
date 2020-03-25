@@ -12,8 +12,8 @@ interface MetaData {
 
 export interface MarketplaceInfo {
   merchantId: string
-  merchantAccountNumber: string
-  walletAccountNumber: string
+  merchantWallet: string
+  endUserWallet: string
 }
 
 export interface CreateMarketplacePaymentPayload {
@@ -149,10 +149,10 @@ function getMerchants() {
 }
 
 /**
- * Get wallet
+ * Create end user wallet
  */
-function getWallet() {
-  const url = `/v1/wallets/account`
+function createWallet() {
+  const url = `/v1/wallets`
   return instance.post(url)
 }
 
@@ -164,5 +164,5 @@ export default {
   cancelPayment,
   createPayment,
   getMerchants,
-  getWallet
+  createWallet
 }

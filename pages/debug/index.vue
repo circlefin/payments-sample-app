@@ -125,9 +125,9 @@
           Api endpoints to manage wallets.
         </p>
         <p>
-          <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/marketplace/wallets/account">
-            Get wallet account
+          <v-chip small color="primary">POST</v-chip>
+          <a href="/debug/marketplace/wallets/endUser">
+            Create end user wallet
           </a>
         </p>
       </v-card>
