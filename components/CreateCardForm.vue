@@ -10,7 +10,6 @@
         label="Card Number"
         required
       />
-
       <v-row>
         <v-col cols="12" md="6">
           <CVVInput v-model="formData.cvv" :rules="[rules.isNumber]" />
