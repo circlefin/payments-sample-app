@@ -99,19 +99,12 @@ function getCardById(cardId: string) {
  * @param {String} pageBefore
  * @param {String} pageAfter
  * @param {String} pageSize
- * @param {String} customerId
  */
-function getCards(
-  pageBefore: string,
-  pageAfter: string,
-  pageSize: string,
-  customerId: string
-) {
+function getCards(pageBefore: string, pageAfter: string, pageSize: string) {
   const queryParams = {
     pageBefore,
     pageAfter,
-    pageSize,
-    customerId
+    pageSize
   }
 
   const url = `/v1/cards`

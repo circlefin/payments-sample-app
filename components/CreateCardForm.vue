@@ -4,12 +4,6 @@
       {{ error.message }}
     </div>
     <v-form ref="form" v-model="validForm">
-      <v-text-field
-        v-if="showCustomerIdField"
-        v-model="formData.customerId"
-        label="Customer Id"
-      />
-
       <CardInput
         v-model="formData.cardNumber"
         :rules="[rules.required]"
@@ -172,7 +166,6 @@ export default class CreateCardFormClass extends Vue {
   error = {}
   loading = false
   showError = false
-  showCustomerIdField = false
   expiryLabels = {
     month: 'Expiry Month',
     year: 'Expiry Year'

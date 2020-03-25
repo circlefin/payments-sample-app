@@ -4,7 +4,6 @@
       <v-col cols="12" md="4">
         <v-form>
           <header>Optional filter params:</header>
-          <v-text-field v-model="formData.customerId" label="Customer Id" />
           <v-text-field v-model="formData.pageSize" label="PageSize" />
           <v-text-field v-model="formData.pageBefore" label="PageBefore" />
           <v-text-field v-model="formData.pageAfter" label="PageAfter" />
@@ -56,7 +55,6 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 export default class FetchPaymentsClass extends Vue {
   // data
   formData = {
-    customerId: '',
     pageSize: '',
     pageBefore: '',
     pageAfter: ''
@@ -82,8 +80,7 @@ export default class FetchPaymentsClass extends Vue {
       await this.$paymentsApi.getPayments(
         this.formData.pageBefore,
         this.formData.pageAfter,
-        this.formData.pageSize,
-        this.formData.customerId
+        this.formData.pageSize
       )
     } catch (error) {
       this.error = error
