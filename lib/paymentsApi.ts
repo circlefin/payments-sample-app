@@ -99,14 +99,8 @@ function createPayment(payload: CreatePaymentPayload) {
  * @param {String} pageBefore
  * @param {String} pageAfter
  * @param {String} pageSize
- * @param {String} customerId
  */
-function getPayments(
-  pageBefore: string,
-  pageAfter: string,
-  pageSize: string,
-  customerId: string
-) {
+function getPayments(pageBefore: string, pageAfter: string, pageSize: string) {
   const nullIfEmpty = (prop: string) => {
     if (prop === '') {
       return null
@@ -116,8 +110,7 @@ function getPayments(
   const queryParams = {
     pageBefore: nullIfEmpty(pageBefore),
     pageAfter: nullIfEmpty(pageAfter),
-    pageSize: nullIfEmpty(pageSize),
-    customerId: nullIfEmpty(customerId)
+    pageSize: nullIfEmpty(pageSize)
   }
 
   const url = `/v1/payments`

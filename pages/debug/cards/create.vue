@@ -28,11 +28,6 @@
         </v-menu>
 
         <v-form>
-          <v-text-field
-            v-model="formData.customerRefId"
-            label="Customer RefId"
-          />
-
           <v-text-field v-model="formData.cardNumber" label="Card Number" />
 
           <v-select
@@ -135,7 +130,6 @@ export default class CreateCardClass extends Vue {
   // data
   cvvRequired = true
   formData = {
-    customerRefId: '',
     cardNumber: '',
     cvv: '',
     expiry: {
@@ -185,16 +179,10 @@ export default class CreateCardClass extends Vue {
       number: cardNumber.trim().replace(/\D/g, ''),
       cvv
     }
-    const {
-      expiry,
-      verificationMethod,
-      customerRefId,
-      ...billingDetails
-    } = data
+    const { expiry, verificationMethod, ...billingDetails } = data
 
     const payload: CreateCardPayload = {
       refId: uuidv4(),
-      customerRefId,
       expMonth: parseInt(expiry.month),
       expYear: parseInt(expiry.year),
       verificationMethod,

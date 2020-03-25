@@ -2,7 +2,6 @@ export const exampleCards = [
   {
     title: '4007400000000007 (visa)',
     formData: {
-      customerRefId: 'customer-ref-0001',
       cardNumber: '4007400000000007',
       cvv: '123',
       expiry: {
@@ -24,7 +23,6 @@ export const exampleCards = [
   {
     title: '4007410000000006 (visa)',
     formData: {
-      customerRefId: 'customer-ref-0002',
       cardNumber: '4007410000000006',
       cvv: '123',
       expiry: {
@@ -46,7 +44,6 @@ export const exampleCards = [
   {
     title: '4200000000000000 (visa)',
     formData: {
-      customerRefId: 'customer-ref-0003',
       cardNumber: '4200000000000000',
       cvv: '123',
       expiry: {
@@ -68,7 +65,6 @@ export const exampleCards = [
   {
     title: '4757140000000001 (visa)',
     formData: {
-      customerRefId: 'customer-ref-0004',
       cardNumber: '4757140000000001',
       cvv: '123',
       expiry: {
@@ -90,7 +86,6 @@ export const exampleCards = [
   {
     title: '5102420000000006 (mastercard)',
     formData: {
-      customerRefId: 'customer-ref-0005',
       cardNumber: '5102420000000006',
       cvv: '123',
       expiry: {
@@ -112,7 +107,6 @@ export const exampleCards = [
   {
     title: '5173375000000006 (mastercard)',
     formData: {
-      customerRefId: 'customer-ref-0006',
       cardNumber: '5173375000000006',
       cvv: '123',
       expiry: {
@@ -134,7 +128,6 @@ export const exampleCards = [
   {
     title: '5555555555554444 (mastercard)',
     formData: {
-      customerRefId: 'customer-ref-0007',
       cardNumber: '5555555555554444',
       cvv: '123',
       expiry: {

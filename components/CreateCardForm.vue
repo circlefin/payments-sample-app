@@ -4,19 +4,12 @@
       {{ error.message }}
     </div>
     <v-form ref="form" v-model="validForm">
-      <v-text-field
-        v-if="showCustomerIdField"
-        v-model="formData.customerId"
-        label="Customer Id"
-      />
-
       <CardInput
         v-model="formData.cardNumber"
         :rules="[rules.required]"
         label="Card Number"
         required
       />
-
       <v-row>
         <v-col cols="12" md="6">
           <CVVInput v-model="formData.cvv" :rules="[rules.isNumber]" />
@@ -147,7 +140,6 @@ export default class CreateCardFormClass extends Vue {
   // data
   validForm = false
   formData = {
-    customerRefId: '',
     cardNumber: '',
     cvv: '',
     expiry: {
@@ -173,7 +165,6 @@ export default class CreateCardFormClass extends Vue {
   error = {}
   loading = false
   showError = false
-  showCustomerIdField = false
   expiryLabels = {
     month: 'Expiry Month',
     year: 'Expiry Year'
@@ -217,11 +208,10 @@ export default class CreateCardFormClass extends Vue {
       number: cardNumber.trim().replace(/\D/g, ''),
       cvv
     }
-    const { expiry, customerRefId, ...billingDetails } = data
+    const { expiry, ...billingDetails } = data
 
     const payload: CreateCardPayload = {
       refId: uuidv4(),
-      customerRefId,
       expMonth: parseInt(expiry.month),
       expYear: parseInt(expiry.year),
       verificationMethod: 'cvv',

@@ -4,12 +4,6 @@
       <v-col cols="12" md="4">
         <v-form>
           <header>Optional filter params:</header>
-          <v-text-field v-model="formData.customerId" label="Customer Id" />
-          <div>OR</div>
-          <v-text-field
-            v-model="formData.customerRefId"
-            label="Customer Reference Id"
-          />
           <v-text-field v-model="formData.pageSize" label="PageSize" />
           <v-text-field v-model="formData.pageBefore" label="PageBefore" />
           <v-text-field v-model="formData.pageAfter" label="PageAfter" />
@@ -64,9 +58,7 @@ export default class FetchCardsClass extends Vue {
   formData = {
     pageBefore: '',
     pageAfter: '',
-    pageSize: '',
-    customerId: '',
-    customerRefId: ''
+    pageSize: ''
   }
   rules = {
     isNumber: (v: string) =>
@@ -90,9 +82,7 @@ export default class FetchCardsClass extends Vue {
       await this.$cardsApi.getCards(
         this.formData.pageBefore,
         this.formData.pageAfter,
-        this.formData.pageSize,
-        this.formData.customerId,
-        this.formData.customerRefId
+        this.formData.pageSize
       )
     } catch (error) {
       this.error = error
