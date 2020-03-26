@@ -63,7 +63,7 @@ export default class FetchWalletAccountClass extends Vue {
   async makeApiCall() {
     this.loading = true
     try {
-      await this.$marketplaceApi.getWallet()
+      await this.$marketplaceApi.createWallet()
     } catch (error) {
       this.error = error
       this.showError = true

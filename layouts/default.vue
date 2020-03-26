@@ -188,8 +188,8 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/marketplace/merchants/fetch'
     },
     {
-      title: 'GET /marketplace/wallets/account',
-      to: '/debug/marketplace/wallets/account'
+      title: 'POST /wallets',
+      to: '/debug/marketplace/wallets/endUser'
     }
   ]
   paymentsLinks = [

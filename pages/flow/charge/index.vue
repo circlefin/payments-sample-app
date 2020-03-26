@@ -308,9 +308,9 @@ export default class ChargeFlowClass extends Vue {
   isSandbox: Boolean = !getLive()
   isMarketplace!: boolean
   marketplaceInfo: MarketplaceInfo = {
-    walletAccountNumber: '',
+    endUserWallet: '',
     merchantId: '',
-    merchantAccountNumber: ''
+    merchantWallet: ''
   }
 
   prefillForm(index: number) {
