@@ -80,9 +80,9 @@ import MarketplaceInfoFields from '@/components/MarketplaceInfoFields.vue'
 export default class CreatePaymentClass extends Vue {
   isMarketplace!: boolean
   marketplaceInfo: MarketplaceInfo = {
-    walletAccountNumber: '',
+    endUserWallet: '',
     merchantId: '',
-    merchantAccountNumber: ''
+    merchantWallet: ''
   }
   cvvRequired = true
   formData = {

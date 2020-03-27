@@ -218,9 +218,9 @@ interface Card {
 export default class CardFlowClass extends Vue {
   isMarketplace!: boolean
   marketplaceInfo: MarketplaceInfo = {
-    walletAccountNumber: '',
+    endUserWallet: '',
     merchantId: '',
-    merchantAccountNumber: ''
+    merchantWallet: ''
   }
   cards!: Card[]
   cardItems: string[] = []
