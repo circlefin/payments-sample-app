@@ -17,7 +17,7 @@ export interface MarketplaceInfo {
 }
 
 export interface CreateMarketplacePaymentPayload {
-  refId: string
+  idempotencyKey: string
   amount: {
     amount: string
     currency: string
@@ -34,7 +34,7 @@ export interface CreateMarketplacePaymentPayload {
 }
 
 export interface RefundPaymentPayload {
-  refId: string
+  idempotencyKey: string
   amount: {
     amount: string
     currency: string

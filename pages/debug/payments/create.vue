@@ -119,7 +119,7 @@ export default class CreatePaymentClass extends Vue {
     }
 
     const payload: CreatePaymentPayload = {
-      refId: uuidv4(),
+      idempotencyKey: uuidv4(),
       amount: amountDetail,
       verificationMethod: this.formData.verificationMethod,
       source: sourceDetails,

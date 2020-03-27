@@ -211,7 +211,7 @@ export default class CreateCardFormClass extends Vue {
     const { expiry, ...billingDetails } = data
 
     const payload: CreateCardPayload = {
-      refId: uuidv4(),
+      idempotencyKey: uuidv4(),
       expMonth: parseInt(expiry.month),
       expYear: parseInt(expiry.year),
       verificationMethod: 'cvv',

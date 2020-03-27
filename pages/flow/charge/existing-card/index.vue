@@ -308,7 +308,7 @@ export default class CardFlowClass extends Vue {
     }
 
     const payload: CreatePaymentPayload = {
-      refId: uuidv4(),
+      idempotencyKey: uuidv4(),
       amount: amountDetail,
       verificationMethod: 'cvv',
       source: sourceDetails,

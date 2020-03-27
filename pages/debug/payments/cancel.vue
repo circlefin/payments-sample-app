@@ -71,7 +71,7 @@ export default class CancelPaymentClass extends Vue {
     this.loading = true
 
     const payload = {
-      refId: uuidv4()
+      idempotencyKey: uuidv4()
     }
 
     try {

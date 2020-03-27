@@ -24,7 +24,7 @@ export interface UpdateCardPayload {
 }
 
 export interface CreateCardPayload {
-  refId: string
+  idempotencyKey: string
   keyId: string
   encryptedData: string
   billingDetails: {
