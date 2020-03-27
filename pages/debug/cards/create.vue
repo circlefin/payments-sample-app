@@ -143,7 +143,6 @@ export default class CreateCardClass extends Vue {
     line2: '',
     city: '',
     postalCode: '',
-    phone: '',
     verificationMethod: 'cvv',
     email: ''
   }

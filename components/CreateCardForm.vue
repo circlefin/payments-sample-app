@@ -153,7 +153,6 @@ export default class CreateCardFormClass extends Vue {
     line2: '',
     city: '',
     postalCode: '',
-    phone: '',
     email: ''
   }
   rules = {
