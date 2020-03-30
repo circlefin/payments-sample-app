@@ -156,10 +156,10 @@ function getMerchants() {
 }
 
 /**
- * Get wallet
+ * Create wallet
  */
-function getWallet() {
-  const url = `/v1/wallets/account`
+function createWallet() {
+  const url = `/v1/wallets`
   return instance.post(url)
 }
 
@@ -171,5 +171,5 @@ export default {
   cancelPayment,
   createPayment,
   getMerchants,
-  getWallet
+  createWallet
 }
