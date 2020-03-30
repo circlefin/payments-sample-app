@@ -11,7 +11,7 @@ interface MetaData {
 }
 
 export interface CreatePaymentPayload {
-  refId: string
+  idempotencyKey: string
   amount: {
     amount: string
     currency: string
@@ -27,7 +27,7 @@ export interface CreatePaymentPayload {
 }
 
 export interface RefundPaymentPayload {
-  refId: string
+  idempotencyKey: string
   amount: {
     amount: string
     currency: string

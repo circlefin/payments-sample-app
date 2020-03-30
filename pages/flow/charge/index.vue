@@ -360,7 +360,7 @@ export default class ChargeFlowClass extends Vue {
     this.loading = true
 
     const payload: CreateCardPayload = {
-      refId: uuidv4(),
+      idempotencyKey: uuidv4(),
       expMonth: parseInt(this.formData.cardData.expiry.month),
       expYear: parseInt(this.formData.cardData.expiry.year),
       verificationMethod: 'none',
@@ -416,7 +416,7 @@ export default class ChargeFlowClass extends Vue {
     }
 
     const payload: CreatePaymentPayload = {
-      refId: uuidv4(),
+      idempotencyKey: uuidv4(),
       amount: amountDetail,
       verificationMethod: 'cvv',
       source: sourceDetails,

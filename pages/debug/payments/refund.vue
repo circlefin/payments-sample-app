@@ -5,7 +5,10 @@
         <v-form>
           <v-text-field v-model="formData.paymentId" label="Payment Id" />
 
-          <v-text-field v-model="formData.refId" label="Reference Id" />
+          <v-text-field
+            v-model="formData.idempotencyKey"
+            label="Idempotency Key"
+          />
 
           <v-text-field v-model="formData.amount" label="Amount" />
 
@@ -60,7 +63,7 @@ export default class RefundPaymentClass extends Vue {
   // data
   formData = {
     paymentId: '',
-    refId: '',
+    idempotencyKey: '',
     amount: '0.00'
   }
   required = [(v: string) => !!v || 'Field is required']
@@ -83,7 +86,7 @@ export default class RefundPaymentClass extends Vue {
     }
 
     const payload: RefundPaymentPayload = {
-      refId: this.formData.refId,
+      idempotencyKey: this.formData.idempotencyKey,
       amount: amountDetail
     }
 
