@@ -127,8 +127,8 @@ export default class MarketplaceInfoFieldsClass extends Vue {
 
     try {
       const res = await this.$marketplaceApi.createWallet()
-      if (res.number) {
-        this.marketplaceInfo.endUserWallet = res.number
+      if (res.walletId) {
+        this.marketplaceInfo.endUserWallet = res.walletId
         this.updateInfo()
       }
     } catch (error) {
