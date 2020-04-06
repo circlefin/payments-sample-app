@@ -108,7 +108,7 @@ export default class UpdateCardsClass extends Vue {
     const payload = {
       billingDetails,
       expMonth: parseInt(expiry.month),
-      expYear: parseInt(expiry.year)
+      expYear: 2000 + parseInt(expiry.year)
     }
     try {
       await this.$cardsApi.updateCard(cardId, payload)
