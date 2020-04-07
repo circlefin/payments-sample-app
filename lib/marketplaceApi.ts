@@ -1,5 +1,6 @@
 import { get } from 'lodash'
 import axios from 'axios'
+import uuidv4 from 'uuid/v4'
 
 import { getAPIHostname } from './apiTarget'
 
@@ -39,6 +40,10 @@ export interface RefundPaymentPayload {
     amount: string
     currency: string
   }
+}
+
+export interface CreateWallet {
+  idempotencyKey: string
 }
 
 const instance = axios.create({
@@ -160,7 +165,10 @@ function getMerchants() {
  */
 function createWallet() {
   const url = `/v1/wallets`
-  return instance.post(url)
+  const payload = {
+    idempotencyKey: uuidv4()
+  }
+  return instance.post(url, payload)
 }
 
 export default {
