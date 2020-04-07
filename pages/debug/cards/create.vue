@@ -183,7 +183,7 @@ export default class CreateCardClass extends Vue {
     const payload: CreateCardPayload = {
       idempotencyKey: uuidv4(),
       expMonth: parseInt(expiry.month),
-      expYear: parseInt(expiry.year),
+      expYear: 2000 + parseInt(expiry.year),
       verificationMethod,
       keyId: '',
       encryptedData: '',

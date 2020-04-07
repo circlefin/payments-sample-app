@@ -362,7 +362,7 @@ export default class ChargeFlowClass extends Vue {
     const payload: CreateCardPayload = {
       idempotencyKey: uuidv4(),
       expMonth: parseInt(this.formData.cardData.expiry.month),
-      expYear: parseInt(this.formData.cardData.expiry.year),
+      expYear: 2000 + parseInt(this.formData.cardData.expiry.year),
       verificationMethod: 'none',
       keyId: '',
       encryptedData: '',
