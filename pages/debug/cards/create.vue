@@ -2,6 +2,17 @@
   <v-layout>
     <v-row>
       <v-col cols="12" md="4">
+        <small v-if="isSandbox">
+          Please see the
+          <a
+            href="https://developers.circle.com/docs/test-card-numbers"
+            ref="noopener"
+            target="_blank"
+          >
+            api docs
+          </a>
+          on how to trigger error responses.
+        </small>
         <v-menu>
           <template v-slot:activator="{ on }">
             <div class="d-flex flex-row-reverse">
