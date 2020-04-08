@@ -2,6 +2,17 @@
   <v-layout>
     <v-row>
       <v-col cols="12" md="4">
+        <small v-if="isSandbox">
+          Please see the
+          <a
+            href="https://developers.circle.com/docs/test-card-numbers"
+            ref="noopener"
+            target="_blank"
+          >
+            api docs
+          </a>
+          on how to trigger error responses.
+        </small>
         <v-menu>
           <template v-slot:activator="{ on }">
             <div class="d-flex flex-row-reverse">
@@ -36,7 +47,11 @@
             label="Verification Method"
           />
 
-          <v-text-field v-model="formData.cvv" label="CVV" />
+          <v-text-field
+            v-if="showCVVField"
+            v-model="formData.cvv"
+            label="CVV"
+          />
 
           <v-text-field v-model="formData.expiry.month" label="Expiry Month" />
 
@@ -87,7 +102,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import uuidv4 from 'uuid/v4'
 import openPGP from '@/lib/openpgp'
@@ -117,18 +132,7 @@ import ExpiryInput from '@/components/ExpiryInput.vue'
   }
 })
 export default class CreateCardClass extends Vue {
-  @Watch('formData.verificationMethod', { immediate: true })
-  onChildChanged(val: string) {
-    if (val === 'none') {
-      this.cvvRequired = false
-    }
-    if (val === 'cvv') {
-      this.cvvRequired = true
-    }
-  }
-
   // data
-  cvvRequired = true
   formData = {
     cardNumber: '',
     cvv: '',
@@ -170,15 +174,30 @@ export default class CreateCardClass extends Vue {
   prefillForm(index: number) {
     this.formData = exampleCards[index].formData
   }
+
+  get showCVVField() {
+    return this.formData.verificationMethod === 'cvv'
+  }
+
   async makeApiCall() {
     this.loading = true
 
     const { cardNumber, cvv, ...data } = this.formData
-    const cardDetails = {
-      number: cardNumber.trim().replace(/\D/g, ''),
-      cvv
-    }
     const { expiry, verificationMethod, ...billingDetails } = data
+
+    let cardDetails: {
+      number: string
+      cvv?: string
+    } = {
+      number: cardNumber.trim().replace(/\D/g, '')
+    }
+
+    if (verificationMethod === 'cvv') {
+      cardDetails = {
+        ...cardDetails,
+        cvv
+      }
+    }
 
     const payload: CreateCardPayload = {
       idempotencyKey: uuidv4(),
@@ -194,7 +213,7 @@ export default class CreateCardClass extends Vue {
     }
 
     try {
-      if (this.cvvRequired) {
+      if (verificationMethod === 'cvv' || verificationMethod === 'avs') {
         const publicKey = await this.$cardsApi.getPCIPublicKey()
         const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
         const { encryptedMessage, keyId } = encryptedData
