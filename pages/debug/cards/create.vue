@@ -148,6 +148,7 @@ export default class CreateCardClass extends Vue {
     city: '',
     postalCode: '',
     verificationMethod: 'cvv',
+    phone: '',
     email: ''
   }
   verificationMethods = ['none', 'cvv', 'avs']

@@ -123,6 +123,13 @@
               />
 
               <v-text-field
+                v-model="formData.cardData.phone"
+                :rules="[rules.required]"
+                label="Phone"
+                :disabled="loading"
+              />
+
+              <v-text-field
                 v-model="formData.cardData.email"
                 :rules="[rules.required]"
                 label="Email"
@@ -229,6 +236,7 @@ interface FormData {
     line2: string
     city: string
     postalCode: string
+    phone: string
     email: string
   }
 }
@@ -287,6 +295,7 @@ export default class ChargeFlowClass extends Vue {
       line2: '',
       city: '',
       postalCode: '',
+      phone: '',
       email: ''
     }
   }
@@ -374,6 +383,7 @@ export default class ChargeFlowClass extends Vue {
         postalCode: this.formData.cardData.postalCode,
         country: this.formData.cardData.country,
         name: this.formData.cardData.name,
+        phone: this.formData.cardData.phone,
         email: this.formData.cardData.email
       },
       metadata: {

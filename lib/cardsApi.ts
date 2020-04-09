@@ -35,6 +35,7 @@ export interface CreateCardPayload {
     line2: string
     district: string
     postalCode: string
+    phone: string
     email: string
   }
   expMonth: number
