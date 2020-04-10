@@ -37,6 +37,7 @@
     "nuxt-fontawesome": "^0.4.0",
     "nuxt-property-decorator": "2.5.0",
     "openpgp": "4.6.2",
+    "sns-validator": "^0.3.4",
     "vue-json-pretty": "1.6.2",
     "vue-the-mask": "0.11.1",
     "vuex-persist": "2.1.0"
