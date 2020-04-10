@@ -5,21 +5,31 @@
         <v-form>
           <v-text-field v-model="formData.cardId" label="Card Id" />
 
+          <v-text-field v-model="formData.cardNumber" label="Card Number" />
+
+          <v-text-field v-model="formData.cvv" label="CVV" />
+
           <v-text-field v-model="formData.expiry.month" label="Expiry Month" />
 
           <v-text-field v-model="formData.expiry.year" label="Expiry Year" />
 
-          <v-text-field v-model="formData.country" label="Country Code" />
-
-          <v-text-field v-model="formData.district" label="District" />
+          <v-text-field v-model="formData.name" label="Full Name" />
 
           <v-text-field v-model="formData.line1" label="Address Line 1" />
 
           <v-text-field v-model="formData.line2" label="Address Line 2" />
 
+          <v-text-field v-model="formData.postalCode" label="Postalcode" />
+
           <v-text-field v-model="formData.city" label="City" />
 
-          <v-text-field v-model="formData.postalCode" label="Postalcode" />
+          <v-text-field v-model="formData.district" label="District" />
+
+          <v-text-field v-model="formData.country" label="Country Code" />
+
+          <v-text-field v-model="formData.phone" label="Phone" />
+
+          <v-text-field v-model="formData.email" label="Email" />
           <v-btn
             depressed
             color="primary"
@@ -49,6 +59,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
+import openPGP from '@/lib/openpgp'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import ExpiryInput from '@/components/ExpiryInput.vue'
@@ -71,13 +82,18 @@ import { getLive } from '@/lib/apiTarget'
 export default class UpdateCardsClass extends Vue {
   // data
   formData = {
+    name: '',
+    email: '',
     cardId: '',
+    cardNumber: '',
+    cvv: '',
     city: '',
     country: '',
     line1: '',
     line2: '',
     district: '',
     postalCode: '',
+    phone: '',
     expiry: {
       month: '',
       year: ''
@@ -103,14 +119,33 @@ export default class UpdateCardsClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
-    const { cardId, ...data } = this.formData
+    const { cardId, cardNumber, cvv, ...data } = this.formData
     const { expiry, ...billingDetails } = data
+
+    const cardDetails: {
+      number: string
+      cvv?: string
+    } = {
+      number: cardNumber.trim().replace(/\D/g, ''),
+      cvv
+    }
+
     const payload = {
       billingDetails,
       expMonth: parseInt(expiry.month),
-      expYear: 2000 + parseInt(expiry.year)
+      expYear: 2000 + parseInt(expiry.year),
+      keyId: '',
+      encryptedData: '',
+      metadata: {
+        session: { sessionId: 'xxx', ipAddress: '172.33.222.1' }
+      }
     }
     try {
+      const publicKey = await this.$cardsApi.getPCIPublicKey()
+      const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
+      const { encryptedMessage, keyId } = encryptedData
+      payload.keyId = keyId
+      payload.encryptedData = encryptedMessage
       await this.$cardsApi.updateCard(cardId, payload)
     } catch (error) {
       this.error = error
