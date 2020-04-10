@@ -19,6 +19,9 @@
 
 const http = require('http')
 const r = require('request')
+const MessageValidator = require('sns-validator')
+
+const validator = new MessageValidator()
 
 const server = http.createServer((request, response) => {
   if (request.method === 'POST') {
@@ -44,25 +47,31 @@ const server = http.createServer((request, response) => {
 
   const handleBody = (body) => {
     const envelope = JSON.parse(body)
-    switch (envelope.Type) {
-      case 'SubscriptionConfirmation': {
-        r(envelope.SubscribeURL, (err) => {
-          if (err) {
-            console.err('Subscription NOT confirmed.')
-          } else {
-            console.log('Subscription confirmed.')
+    validator.validate(envelope, (err) => {
+      if (err) {
+        console.error(err)
+      } else {
+        switch (envelope.Type) {
+          case 'SubscriptionConfirmation': {
+            r(envelope.SubscribeURL, (err) => {
+              if (err) {
+                console.error('Subscription NOT confirmed.', err)
+              } else {
+                console.log('Subscription confirmed.')
+              }
+            })
+            break
           }
-        })
-        break
+          case 'Notification': {
+            console.log(`Received message ${envelope.Message}`)
+            break
+          }
+          default: {
+            console.error(`Message of type ${body.Type} not supported`)
+          }
+        }
       }
-      case 'Notification': {
-        console.log(`Received message ${envelope.Message}`)
-        break
-      }
-      default: {
-        console.error(`Message of type ${body.Type} not supported`)
-      }
-    }
+    })
   }
 })
 
