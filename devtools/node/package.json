@@ -17,6 +17,7 @@
     "eslint-plugin-standard": "^4.0.1"
   },
   "dependencies": {
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "sns-validator": "^0.3.4"
   }
 }
