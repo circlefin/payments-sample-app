@@ -5,11 +5,6 @@
         <v-form>
           <v-text-field v-model="formData.paymentId" label="Payment Id" />
 
-          <v-text-field
-            v-model="formData.idempotencyKey"
-            label="Idempotency Key"
-          />
-
           <v-text-field v-model="formData.amount" label="Amount" />
 
           <v-btn
@@ -42,6 +37,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
+import uuidv4 from 'uuid/v4'
 import { RefundPaymentPayload } from '@/lib/paymentsApi'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
@@ -63,7 +59,6 @@ export default class RefundPaymentClass extends Vue {
   // data
   formData = {
     paymentId: '',
-    idempotencyKey: '',
     amount: '0.00'
   }
   required = [(v: string) => !!v || 'Field is required']
@@ -86,7 +81,7 @@ export default class RefundPaymentClass extends Vue {
     }
 
     const payload: RefundPaymentPayload = {
-      idempotencyKey: this.formData.idempotencyKey,
+      idempotencyKey: uuidv4(),
       amount: amountDetail
     }
 
