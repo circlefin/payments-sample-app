@@ -27,7 +27,7 @@
 
           <v-text-field v-model="formData.country" label="Country Code" />
 
-          <v-text-field v-model="formData.phone" label="Phone" />
+          <v-text-field v-model="formData.phoneNumber" label="Phone" />
 
           <v-text-field v-model="formData.email" label="Email" />
           <v-btn
@@ -93,7 +93,7 @@ export default class UpdateCardsClass extends Vue {
     line2: '',
     district: '',
     postalCode: '',
-    phone: '',
+    phoneNumber: '',
     expiry: {
       month: '',
       year: ''
@@ -119,7 +119,14 @@ export default class UpdateCardsClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
-    const { cardId, cardNumber, cvv, ...data } = this.formData
+    const {
+      cardId,
+      cardNumber,
+      email,
+      phoneNumber,
+      cvv,
+      ...data
+    } = this.formData
     const { expiry, ...billingDetails } = data
 
     const cardDetails: {
@@ -137,7 +144,10 @@ export default class UpdateCardsClass extends Vue {
       keyId: '',
       encryptedData: '',
       metadata: {
-        session: { sessionId: 'xxx', ipAddress: '172.33.222.1' }
+        email,
+        phoneNumber,
+        sessionId: 'xxx',
+        ipAddress: '172.33.222.1'
       }
     }
     try {

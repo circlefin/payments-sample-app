@@ -47,6 +47,20 @@
 
               <CVVInput v-model="formData.cvv" :rules="[rules.required]" />
 
+              <v-text-field
+                v-model="formData.phoneNumber"
+                :rules="[rules.required]"
+                label="Phone"
+                :disabled="loading"
+              />
+
+              <v-text-field
+                v-model="formData.email"
+                :rules="[rules.required]"
+                label="Email"
+                :disabled="loading"
+              />
+
               <v-btn
                 depressed
                 block
@@ -231,7 +245,9 @@ export default class CardFlowClass extends Vue {
   formData = {
     fiatAccountId: '',
     amount: '0.00',
-    cvv: ''
+    cvv: '',
+    phoneNumber: '',
+    email: ''
   }
   cardIdInput = ''
   rules = {
@@ -310,12 +326,15 @@ export default class CardFlowClass extends Vue {
     const payload: CreatePaymentPayload = {
       idempotencyKey: uuidv4(),
       amount: amountDetail,
-      verificationMethod: 'cvv',
+      verification: 'cvv',
       source: sourceDetails,
       keyId: '',
       encryptedData: '',
       metadata: {
-        session: { sessionId: 'xxx', ipAddress: '172.33.222.1' }
+        phoneNumber: this.formData.phoneNumber,
+        email: this.formData.email,
+        sessionId: 'xxx',
+        ipAddress: '172.33.222.1'
       }
     }
 

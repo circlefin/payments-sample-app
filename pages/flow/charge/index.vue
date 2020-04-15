@@ -123,6 +123,13 @@
               />
 
               <v-text-field
+                v-model="formData.cardData.phoneNumber"
+                :rules="[rules.required]"
+                label="Phone"
+                :disabled="loading"
+              />
+
+              <v-text-field
                 v-model="formData.cardData.email"
                 :rules="[rules.required]"
                 label="Email"
@@ -229,6 +236,7 @@ interface FormData {
     line2: string
     city: string
     postalCode: string
+    phoneNumber: string
     email: string
   }
 }
@@ -239,7 +247,7 @@ interface CreateChargePayload {
     amount: number
     currency: string
   }
-  verificationMethod: string
+  verification: string
   source: {
     id: string
     type: string
@@ -287,6 +295,7 @@ export default class ChargeFlowClass extends Vue {
       line2: '',
       city: '',
       postalCode: '',
+      phoneNumber: '',
       email: ''
     }
   }
@@ -363,7 +372,7 @@ export default class ChargeFlowClass extends Vue {
       idempotencyKey: uuidv4(),
       expMonth: parseInt(this.formData.cardData.expiry.month),
       expYear: 2000 + parseInt(this.formData.cardData.expiry.year),
-      verificationMethod: 'none',
+      verification: 'none',
       keyId: '',
       encryptedData: '',
       billingDetails: {
@@ -373,11 +382,13 @@ export default class ChargeFlowClass extends Vue {
         district: this.formData.cardData.district,
         postalCode: this.formData.cardData.postalCode,
         country: this.formData.cardData.country,
-        name: this.formData.cardData.name,
-        email: this.formData.cardData.email
+        name: this.formData.cardData.name
       },
       metadata: {
-        session: { sessionId: 'xxx', ipAddress: '172.33.222.1' }
+        phoneNumber: this.formData.cardData.phoneNumber,
+        email: this.formData.cardData.email,
+        sessionId: 'xxx',
+        ipAddress: '172.33.222.1'
       }
     }
 
@@ -418,12 +429,15 @@ export default class ChargeFlowClass extends Vue {
     const payload: CreatePaymentPayload = {
       idempotencyKey: uuidv4(),
       amount: amountDetail,
-      verificationMethod: 'cvv',
+      verification: 'cvv',
       source: sourceDetails,
       keyId: '',
       encryptedData: '',
       metadata: {
-        session: { sessionId: 'xxx', ipAddress: '172.33.222.1' }
+        phoneNumber: this.formData.cardData.phoneNumber,
+        email: this.formData.cardData.email,
+        sessionId: 'xxx',
+        ipAddress: '172.33.222.1'
       }
     }
 
