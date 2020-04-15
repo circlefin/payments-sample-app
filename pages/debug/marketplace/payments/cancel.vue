@@ -4,6 +4,10 @@
       <v-col cols="12" md="4">
         <v-form>
           <v-text-field v-model="formData.paymentId" label="Payment Id" />
+          <v-text-field
+            v-model="formData.idempotencyKey"
+            label="Idempotency Key"
+          />
           <v-btn
             depressed
             class="mb-7"
@@ -34,7 +38,6 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import uuidv4 from 'uuid/v4'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 
@@ -54,7 +57,8 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 export default class CancelPaymentClass extends Vue {
   // data
   formData = {
-    paymentId: ''
+    paymentId: '',
+    idempotencyKey: ''
   }
   required = [(v: string) => !!v || 'Field is required']
   error = {}
@@ -71,7 +75,7 @@ export default class CancelPaymentClass extends Vue {
     this.loading = true
 
     const payload = {
-      idempotencyKey: uuidv4()
+      idempotencyKey: this.formData.idempotencyKey
     }
 
     try {
