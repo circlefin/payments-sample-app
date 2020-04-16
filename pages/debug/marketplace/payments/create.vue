@@ -16,7 +16,7 @@
           <v-text-field v-model="formData.amount" label="Amount" />
 
           <v-select
-            v-model="formData.verificationMethod"
+            v-model="formData.verification"
             :items="verificationMethods"
             label="Verification Method"
           />
@@ -87,9 +87,11 @@ export default class CreatePaymentClass extends Vue {
   cvvRequired = true
   formData = {
     sourceId: '',
-    verificationMethod: 'cvv',
+    verification: 'cvv',
     amount: '0.00',
-    cvv: ''
+    cvv: '',
+    phoneNumber: '',
+    email: ''
   }
   verificationMethods = ['none', 'cvv']
   required = [(v: string) => !!v || 'Field is required']
@@ -106,7 +108,7 @@ export default class CreatePaymentClass extends Vue {
     }
   }
 
-  @Watch('formData.verificationMethod', { immediate: true })
+  @Watch('formData.verification', { immediate: true })
   onChildChanged(val: string) {
     if (val === 'none') {
       this.cvvRequired = false
@@ -141,12 +143,15 @@ export default class CreatePaymentClass extends Vue {
     const payload: CreateMarketplacePaymentPayload = {
       idempotencyKey: uuidv4(),
       amount: amountDetail,
-      verificationMethod: this.formData.verificationMethod,
+      verification: this.formData.verification,
       source: sourceDetails,
       keyId: '',
       encryptedData: '',
       metadata: {
-        session: { sessionId: 'xxx', ipAddress: '172.33.222.1' }
+        email: this.formData.email,
+        phoneNumber: this.formData.phoneNumber,
+        sessionId: 'xxx',
+        ipAddress: '172.33.222.1'
       },
       marketplaceInfo: this.marketplaceInfo
     }

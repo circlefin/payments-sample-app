@@ -5,10 +5,10 @@ import uuidv4 from 'uuid/v4'
 import { getAPIHostname } from './apiTarget'
 
 interface MetaData {
-  session: {
-    sessionId: string
-    ipAddress: string
-  }
+  email: string
+  phoneNumber: string
+  sessionId: string
+  ipAddress: string
 }
 
 export interface MarketplaceInfo {
@@ -23,7 +23,7 @@ export interface CreateMarketplacePaymentPayload {
     amount: string
     currency: string
   }
-  verificationMethod: string
+  verification: string
   source: {
     id: string
     type: string

@@ -42,7 +42,7 @@
           <v-text-field v-model="formData.cardNumber" label="Card Number" />
 
           <v-select
-            v-model="formData.verificationMethod"
+            v-model="formData.verification"
             :items="verificationMethods"
             label="Verification Method"
           />
@@ -71,7 +71,7 @@
 
           <v-text-field v-model="formData.country" label="Country Code" />
 
-          <v-text-field v-model="formData.phone" label="Phone" />
+          <v-text-field v-model="formData.phoneNumber" label="Phone" />
 
           <v-text-field v-model="formData.email" label="Email" />
 
@@ -147,7 +147,8 @@ export default class CreateCardClass extends Vue {
     line2: '',
     city: '',
     postalCode: '',
-    verificationMethod: 'cvv',
+    verification: 'cvv',
+    phoneNumber: '',
     email: ''
   }
   verificationMethods = ['none', 'cvv', 'avs']
@@ -176,14 +177,14 @@ export default class CreateCardClass extends Vue {
   }
 
   get showCVVField() {
-    return this.formData.verificationMethod === 'cvv'
+    return this.formData.verification === 'cvv'
   }
 
   async makeApiCall() {
     this.loading = true
 
-    const { cardNumber, cvv, ...data } = this.formData
-    const { expiry, verificationMethod, ...billingDetails } = data
+    const { email, phoneNumber, cardNumber, cvv, ...data } = this.formData
+    const { expiry, verification, ...billingDetails } = data
 
     let cardDetails: {
       number: string
@@ -192,7 +193,7 @@ export default class CreateCardClass extends Vue {
       number: cardNumber.trim().replace(/\D/g, '')
     }
 
-    if (verificationMethod === 'cvv') {
+    if (verification === 'cvv') {
       cardDetails = {
         ...cardDetails,
         cvv
@@ -203,17 +204,20 @@ export default class CreateCardClass extends Vue {
       idempotencyKey: uuidv4(),
       expMonth: parseInt(expiry.month),
       expYear: 2000 + parseInt(expiry.year),
-      verificationMethod,
+      verification,
       keyId: '',
       encryptedData: '',
       billingDetails,
       metadata: {
-        session: { sessionId: 'xxx', ipAddress: '172.33.222.1' }
+        email,
+        phoneNumber,
+        sessionId: 'xxx',
+        ipAddress: '172.33.222.1'
       }
     }
 
     try {
-      if (verificationMethod === 'cvv' || verificationMethod === 'avs') {
+      if (verification === 'cvv' || verification === 'avs') {
         const publicKey = await this.$cardsApi.getPCIPublicKey()
         const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
         const { encryptedMessage, keyId } = encryptedData

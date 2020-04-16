@@ -4,14 +4,16 @@ import axios from 'axios'
 import { getAPIHostname } from './apiTarget'
 
 interface MetaData {
-  session: {
-    sessionId: string
-    ipAddress: string
-  }
+  email: string
+  phoneNumber: string
+  sessionId: string
+  ipAddress: string
 }
 
 export interface UpdateCardPayload {
+  keyId: string
   billingDetails: {
+    name: string
     city: string
     country: string
     line1: string
@@ -19,8 +21,10 @@ export interface UpdateCardPayload {
     district: string
     postalCode: string
   }
+  encryptedData: string
   expMonth: number
   expYear: number
+  metadata: MetaData
 }
 
 export interface CreateCardPayload {
@@ -35,11 +39,10 @@ export interface CreateCardPayload {
     line2: string
     district: string
     postalCode: string
-    email: string
   }
   expMonth: number
   expYear: number
-  verificationMethod: string
+  verification: string
   metadata: MetaData
 }
 
