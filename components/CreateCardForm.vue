@@ -75,12 +75,7 @@
 
             <v-text-field v-model="formData.phoneNumber" label="Phone" />
 
-            <v-text-field
-              v-model="formData.email"
-              :rules="[rules.required]"
-              label="Email"
-              required
-            />
+            <v-text-field v-model="formData.email" label="Email" />
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
