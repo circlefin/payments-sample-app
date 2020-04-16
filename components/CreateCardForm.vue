@@ -72,6 +72,10 @@
               label="Country Code"
               :disabled="loading"
             />
+
+            <v-text-field v-model="formData.phoneNumber" label="Phone" />
+
+            <v-text-field v-model="formData.email" label="Email" />
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -143,7 +147,9 @@ export default class CreateCardFormClass extends Vue {
     line1: '',
     line2: '',
     city: '',
-    postalCode: ''
+    postalCode: '',
+    phoneNumber: '',
+    email: ''
   }
   rules = {
     isNumber: (v: string) =>
@@ -192,7 +198,7 @@ export default class CreateCardFormClass extends Vue {
   async makeApiCall() {
     this.loading = true
 
-    const { cardNumber, cvv, ...data } = this.formData
+    const { email, phoneNumber, cardNumber, cvv, ...data } = this.formData
     const cardDetails = {
       number: cardNumber.trim().replace(/\D/g, ''),
       cvv
@@ -208,6 +214,8 @@ export default class CreateCardFormClass extends Vue {
       encryptedData: '',
       billingDetails,
       metadata: {
+        email,
+        phoneNumber,
         sessionId: 'xxx',
         ipAddress: '172.33.222.1'
       }
