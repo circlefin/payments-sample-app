@@ -124,7 +124,6 @@
 
               <v-text-field
                 v-model="formData.cardData.phoneNumber"
-                :rules="[rules.required]"
                 label="Phone"
                 :disabled="loading"
               />
@@ -385,7 +384,10 @@ export default class ChargeFlowClass extends Vue {
         name: this.formData.cardData.name
       },
       metadata: {
-        phoneNumber: this.formData.cardData.phoneNumber,
+        phoneNumber:
+          this.formData.cardData.phoneNumber !== ''
+            ? this.formData.cardData.phoneNumber
+            : undefined,
         email: this.formData.cardData.email,
         sessionId: 'xxx',
         ipAddress: '172.33.222.1'
@@ -434,7 +436,10 @@ export default class ChargeFlowClass extends Vue {
       keyId: '',
       encryptedData: '',
       metadata: {
-        phoneNumber: this.formData.cardData.phoneNumber,
+        phoneNumber:
+          this.formData.cardData.phoneNumber !== ''
+            ? this.formData.cardData.phoneNumber
+            : undefined,
         email: this.formData.cardData.email,
         sessionId: 'xxx',
         ipAddress: '172.33.222.1'

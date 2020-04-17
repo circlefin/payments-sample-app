@@ -49,7 +49,6 @@
 
               <v-text-field
                 v-model="formData.phoneNumber"
-                :rules="[rules.required]"
                 label="Phone"
                 :disabled="loading"
               />
@@ -331,7 +330,10 @@ export default class CardFlowClass extends Vue {
       keyId: '',
       encryptedData: '',
       metadata: {
-        phoneNumber: this.formData.phoneNumber,
+        phoneNumber:
+          this.formData.phoneNumber !== ''
+            ? this.formData.phoneNumber
+            : undefined,
         email: this.formData.email,
         sessionId: 'xxx',
         ipAddress: '172.33.222.1'

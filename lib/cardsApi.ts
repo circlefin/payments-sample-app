@@ -4,8 +4,8 @@ import axios from 'axios'
 import { getAPIHostname } from './apiTarget'
 
 interface MetaData {
-  email: string
-  phoneNumber: string
+  email?: string
+  phoneNumber?: string
   sessionId: string
   ipAddress: string
 }

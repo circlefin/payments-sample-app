@@ -214,8 +214,8 @@ export default class CreateCardFormClass extends Vue {
       encryptedData: '',
       billingDetails,
       metadata: {
-        email,
-        phoneNumber,
+        email: email !== '' ? email : undefined,
+        phoneNumber: phoneNumber !== '' ? phoneNumber : undefined,
         sessionId: 'xxx',
         ipAddress: '172.33.222.1'
       }

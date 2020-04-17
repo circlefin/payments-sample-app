@@ -145,7 +145,7 @@ export default class UpdateCardsClass extends Vue {
       encryptedData: '',
       metadata: {
         email,
-        phoneNumber,
+        phoneNumber: phoneNumber !== '' ? phoneNumber : undefined,
         sessionId: 'xxx',
         ipAddress: '172.33.222.1'
       }
