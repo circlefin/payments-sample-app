@@ -149,10 +149,7 @@ export default class CreatePaymentClass extends Vue {
       encryptedData: '',
       metadata: {
         email: this.formData.email,
-        phoneNumber:
-          this.formData.phoneNumber !== ''
-            ? this.formData.phoneNumber
-            : undefined,
+        phoneNumber: this.formData.phoneNumber || undefined,
         sessionId: 'xxx',
         ipAddress: '172.33.222.1'
       },

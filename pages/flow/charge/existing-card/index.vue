@@ -330,10 +330,7 @@ export default class CardFlowClass extends Vue {
       keyId: '',
       encryptedData: '',
       metadata: {
-        phoneNumber:
-          this.formData.phoneNumber !== ''
-            ? this.formData.phoneNumber
-            : undefined,
+        phoneNumber: this.formData.phoneNumber || undefined,
         email: this.formData.email,
         sessionId: 'xxx',
         ipAddress: '172.33.222.1'

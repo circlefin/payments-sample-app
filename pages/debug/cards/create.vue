@@ -210,7 +210,7 @@ export default class CreateCardClass extends Vue {
       billingDetails,
       metadata: {
         email,
-        phoneNumber: phoneNumber !== '' ? phoneNumber : undefined,
+        phoneNumber: phoneNumber || undefined,
         sessionId: 'xxx',
         ipAddress: '172.33.222.1'
       }
