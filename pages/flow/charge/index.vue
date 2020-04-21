@@ -384,7 +384,7 @@ export default class ChargeFlowClass extends Vue {
         name: this.formData.cardData.name
       },
       metadata: {
-        phoneNumber: this.formData.cardData.phoneNumber || undefined,
+        phoneNumber: this.formData.cardData.phoneNumber,
         email: this.formData.cardData.email,
         sessionId: 'xxx',
         ipAddress: '172.33.222.1'
@@ -433,7 +433,7 @@ export default class ChargeFlowClass extends Vue {
       keyId: '',
       encryptedData: '',
       metadata: {
-        phoneNumber: this.formData.cardData.phoneNumber || undefined,
+        phoneNumber: this.formData.cardData.phoneNumber,
         email: this.formData.cardData.email,
         sessionId: 'xxx',
         ipAddress: '172.33.222.1'

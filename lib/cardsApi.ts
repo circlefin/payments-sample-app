@@ -71,6 +71,22 @@ instance.interceptors.response.use(
   }
 )
 
+function checkNullInMetaData(metaData: MetaData) {
+  const nullIfEmpty = (prop: string | undefined) => {
+    if (prop === '') {
+      return undefined
+    }
+    return prop
+  }
+  const updateMetaObj = {
+    email: nullIfEmpty(metaData.email),
+    phoneNumber: nullIfEmpty(metaData.phoneNumber),
+    sessionId: metaData.sessionId,
+    ipAddress: metaData.ipAddress
+  }
+  return updateMetaObj
+}
+
 /** Returns the axios instance */
 function getInstance() {
   return instance
@@ -121,6 +137,7 @@ function getCards(pageBefore: string, pageAfter: string, pageSize: string) {
  */
 function createCard(payload: CreateCardPayload) {
   const url = `/v1/cards`
+  payload.metadata = checkNullInMetaData(payload.metadata)
 
   return instance.post(url, payload)
 }
@@ -133,6 +150,7 @@ function createCard(payload: CreateCardPayload) {
  */
 function updateCard(cardId: string, payload: UpdateCardPayload) {
   const url = `/v1/cards/${cardId}`
+  payload.metadata = checkNullInMetaData(payload.metadata)
 
   return instance.put(url, payload)
 }
