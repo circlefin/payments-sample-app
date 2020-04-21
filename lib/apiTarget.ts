@@ -12,7 +12,8 @@ function getAPIHostname() {
 }
 
 function getLive() {
-  return !getAPIHostname().includes('sandbox')
+  const hostname = getAPIHostname()
+  return !(hostname.includes('sandbox') || hostname.includes('smokebox'))
 }
 
 export { getAPIHostname, getLive }
