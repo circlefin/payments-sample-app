@@ -143,7 +143,7 @@ function updateCard(cardId: string, payload: UpdateCardPayload) {
   const url = `/v1/cards/${cardId}`
   payload.metadata.email = nullIfEmpty(payload.metadata.email)
   payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
-  return instance.post(url, payload)
+  return instance.put(url, payload)
 }
 
 export default {
