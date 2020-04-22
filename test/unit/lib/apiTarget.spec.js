@@ -31,5 +31,9 @@ describe('apiTarget', () => {
     window.location.origin = 'sample-sandbox.circle.com'
     expect(getAPIHostname()).toStrictEqual('api-sandbox.circle.com')
     expect(getLive()).toBeFalsy()
+
+    window.location.origin = 'sample-smokebox.circle.com'
+    expect(getAPIHostname()).toStrictEqual('api-smokebox.circle.com')
+    expect(getLive()).toBeFalsy()
   })
 })
