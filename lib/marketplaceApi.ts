@@ -98,8 +98,9 @@ function getInstance() {
  */
 function createPayment(payload: CreateMarketplacePaymentPayload) {
   const url = `/v1/marketplace/payments`
-  payload.metadata = checkNullInMetaData(payload.metadata)
-  return instance.post(url, payload)
+  const modifiedPayload = Object.assign({}, payload)
+  modifiedPayload.metadata = checkNullInMetaData(modifiedPayload.metadata)
+  return instance.post(url, modifiedPayload)
 }
 
 /**

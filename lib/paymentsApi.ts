@@ -59,13 +59,14 @@ instance.interceptors.response.use(
   }
 )
 
-function checkNullInMetaData(metaData: MetaData) {
-  const nullIfEmpty = (prop: string | undefined) => {
-    if (prop === '') {
-      return undefined
-    }
-    return prop
+const nullIfEmpty = (prop: string | undefined) => {
+  if (prop === '') {
+    return undefined
   }
+  return prop
+}
+
+function checkNullInMetaData(metaData: MetaData) {
   const updateMetaObj = {
     email: metaData.email,
     phoneNumber: nullIfEmpty(metaData.phoneNumber),
@@ -107,8 +108,9 @@ function cancelPayment(id: string, payload: any) {
  */
 function createPayment(payload: CreatePaymentPayload) {
   const url = `/v1/payments`
-  payload.metadata = checkNullInMetaData(payload.metadata)
-  return instance.post(url, payload)
+  const modifiedPayload = Object.assign({}, payload)
+  modifiedPayload.metadata = checkNullInMetaData(modifiedPayload.metadata)
+  return instance.post(url, modifiedPayload)
 }
 
 /**
@@ -126,13 +128,6 @@ function getPayments(
   pageAfter: string,
   pageSize: string
 ) {
-  const nullIfEmpty = (prop: string) => {
-    if (prop === '') {
-      return null
-    }
-    return prop
-  }
-
   const queryParams = {
     from: nullIfEmpty(from),
     to: nullIfEmpty(to),

@@ -71,13 +71,14 @@ instance.interceptors.response.use(
   }
 )
 
-function checkNullInMetaData(metaData: MetaData) {
-  const nullIfEmpty = (prop: string | undefined) => {
-    if (prop === '') {
-      return undefined
-    }
-    return prop
+const nullIfEmpty = (prop: string | undefined) => {
+  if (prop !== undefined && prop.trim() === '') {
+    return undefined
   }
+  return prop
+}
+
+function checkNullInMetaData(metaData: MetaData) {
   const updateMetaObj = {
     email: nullIfEmpty(metaData.email),
     phoneNumber: nullIfEmpty(metaData.phoneNumber),
@@ -137,9 +138,9 @@ function getCards(pageBefore: string, pageAfter: string, pageSize: string) {
  */
 function createCard(payload: CreateCardPayload) {
   const url = `/v1/cards`
-  payload.metadata = checkNullInMetaData(payload.metadata)
-
-  return instance.post(url, payload)
+  const modifiedPayload = Object.assign({}, payload)
+  modifiedPayload.metadata = checkNullInMetaData(modifiedPayload.metadata)
+  return instance.post(url, modifiedPayload)
 }
 
 /**
@@ -150,9 +151,9 @@ function createCard(payload: CreateCardPayload) {
  */
 function updateCard(cardId: string, payload: UpdateCardPayload) {
   const url = `/v1/cards/${cardId}`
-  payload.metadata = checkNullInMetaData(payload.metadata)
-
-  return instance.put(url, payload)
+  const modifiedPayload = Object.assign({}, payload)
+  modifiedPayload.metadata = checkNullInMetaData(modifiedPayload.metadata)
+  return instance.post(url, modifiedPayload)
 }
 
 export default {
