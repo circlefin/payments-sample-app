@@ -89,7 +89,9 @@ function getInstance() {
  */
 function createPayment(payload: CreateMarketplacePaymentPayload) {
   const url = `/v1/marketplace/payments`
-  payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
+  if (payload.metadata) {
+    payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
+  }
   return instance.post(url, payload)
 }
 
