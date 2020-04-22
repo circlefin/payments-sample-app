@@ -4,8 +4,8 @@ import axios from 'axios'
 import { getAPIHostname } from './apiTarget'
 
 interface MetaData {
-  email: string
-  phoneNumber: string
+  email?: string
+  phoneNumber?: string
   sessionId: string
   ipAddress: string
 }
@@ -71,6 +71,13 @@ instance.interceptors.response.use(
   }
 )
 
+const nullIfEmpty = (prop: string | undefined) => {
+  if (prop !== undefined && prop.trim() === '') {
+    return undefined
+  }
+  return prop
+}
+
 /** Returns the axios instance */
 function getInstance() {
   return instance
@@ -121,7 +128,10 @@ function getCards(pageBefore: string, pageAfter: string, pageSize: string) {
  */
 function createCard(payload: CreateCardPayload) {
   const url = `/v1/cards`
-
+  if (payload.metadata) {
+    payload.metadata.email = nullIfEmpty(payload.metadata.email)
+    payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
+  }
   return instance.post(url, payload)
 }
 
@@ -133,7 +143,10 @@ function createCard(payload: CreateCardPayload) {
  */
 function updateCard(cardId: string, payload: UpdateCardPayload) {
   const url = `/v1/cards/${cardId}`
-
+  if (payload.metadata) {
+    payload.metadata.email = nullIfEmpty(payload.metadata.email)
+    payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
+  }
   return instance.put(url, payload)
 }
 

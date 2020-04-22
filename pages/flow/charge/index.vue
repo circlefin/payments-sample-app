@@ -124,7 +124,6 @@
 
               <v-text-field
                 v-model="formData.cardData.phoneNumber"
-                :rules="[rules.required]"
                 label="Phone"
                 :disabled="loading"
               />

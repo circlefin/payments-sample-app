@@ -49,7 +49,6 @@
 
               <v-text-field
                 v-model="formData.phoneNumber"
-                :rules="[rules.required]"
                 label="Phone"
                 :disabled="loading"
               />

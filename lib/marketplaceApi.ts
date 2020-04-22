@@ -6,7 +6,7 @@ import { getAPIHostname } from './apiTarget'
 
 interface MetaData {
   email: string
-  phoneNumber: string
+  phoneNumber?: string
   sessionId: string
   ipAddress: string
 }
@@ -71,6 +71,13 @@ instance.interceptors.response.use(
   }
 )
 
+const nullIfEmpty = (prop: string | undefined) => {
+  if (prop === '') {
+    return undefined
+  }
+  return prop
+}
+
 /** Returns the axios instance */
 function getInstance() {
   return instance
@@ -82,6 +89,9 @@ function getInstance() {
  */
 function createPayment(payload: CreateMarketplacePaymentPayload) {
   const url = `/v1/marketplace/payments`
+  if (payload.metadata) {
+    payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
+  }
   return instance.post(url, payload)
 }
 

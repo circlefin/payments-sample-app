@@ -5,7 +5,7 @@ import { getAPIHostname } from './apiTarget'
 
 interface MetaData {
   email: string
-  phoneNumber: string
+  phoneNumber?: string
   sessionId: string
   ipAddress: string
 }
@@ -59,6 +59,13 @@ instance.interceptors.response.use(
   }
 )
 
+const nullIfEmpty = (prop: string | undefined) => {
+  if (prop === '') {
+    return undefined
+  }
+  return prop
+}
+
 /** Returns the axios instance */
 function getInstance() {
   return instance
@@ -91,6 +98,9 @@ function cancelPayment(id: string, payload: any) {
  */
 function createPayment(payload: CreatePaymentPayload) {
   const url = `/v1/payments`
+  if (payload.metadata) {
+    payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
+  }
   return instance.post(url, payload)
 }
 
@@ -109,13 +119,6 @@ function getPayments(
   pageAfter: string,
   pageSize: string
 ) {
-  const nullIfEmpty = (prop: string) => {
-    if (prop === '') {
-      return null
-    }
-    return prop
-  }
-
   const queryParams = {
     from: nullIfEmpty(from),
     to: nullIfEmpty(to),
