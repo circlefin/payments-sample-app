@@ -71,20 +71,11 @@ instance.interceptors.response.use(
   }
 )
 
-function checkNullInMetaData(metaData: MetaData) {
-  const nullIfEmpty = (prop: string | undefined) => {
-    if (prop === '') {
-      return undefined
-    }
-    return prop
+const nullIfEmpty = (prop: string | undefined) => {
+  if (prop === '') {
+    return undefined
   }
-  const updateMetaObj = {
-    email: metaData.email,
-    phoneNumber: nullIfEmpty(metaData.phoneNumber),
-    sessionId: metaData.sessionId,
-    ipAddress: metaData.ipAddress
-  }
-  return updateMetaObj
+  return prop
 }
 
 /** Returns the axios instance */
@@ -98,9 +89,8 @@ function getInstance() {
  */
 function createPayment(payload: CreateMarketplacePaymentPayload) {
   const url = `/v1/marketplace/payments`
-  const modifiedPayload = Object.assign({}, payload)
-  modifiedPayload.metadata = checkNullInMetaData(modifiedPayload.metadata)
-  return instance.post(url, modifiedPayload)
+  payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
+  return instance.post(url, payload)
 }
 
 /**

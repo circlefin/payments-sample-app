@@ -78,16 +78,6 @@ const nullIfEmpty = (prop: string | undefined) => {
   return prop
 }
 
-function checkNullInMetaData(metaData: MetaData) {
-  const updateMetaObj = {
-    email: nullIfEmpty(metaData.email),
-    phoneNumber: nullIfEmpty(metaData.phoneNumber),
-    sessionId: metaData.sessionId,
-    ipAddress: metaData.ipAddress
-  }
-  return updateMetaObj
-}
-
 /** Returns the axios instance */
 function getInstance() {
   return instance
@@ -138,9 +128,9 @@ function getCards(pageBefore: string, pageAfter: string, pageSize: string) {
  */
 function createCard(payload: CreateCardPayload) {
   const url = `/v1/cards`
-  const modifiedPayload = Object.assign({}, payload)
-  modifiedPayload.metadata = checkNullInMetaData(modifiedPayload.metadata)
-  return instance.post(url, modifiedPayload)
+  payload.metadata.email = nullIfEmpty(payload.metadata.email)
+  payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
+  return instance.post(url, payload)
 }
 
 /**
@@ -151,9 +141,9 @@ function createCard(payload: CreateCardPayload) {
  */
 function updateCard(cardId: string, payload: UpdateCardPayload) {
   const url = `/v1/cards/${cardId}`
-  const modifiedPayload = Object.assign({}, payload)
-  modifiedPayload.metadata = checkNullInMetaData(modifiedPayload.metadata)
-  return instance.post(url, modifiedPayload)
+  payload.metadata.email = nullIfEmpty(payload.metadata.email)
+  payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
+  return instance.post(url, payload)
 }
 
 export default {

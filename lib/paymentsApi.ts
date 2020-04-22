@@ -66,16 +66,6 @@ const nullIfEmpty = (prop: string | undefined) => {
   return prop
 }
 
-function checkNullInMetaData(metaData: MetaData) {
-  const updateMetaObj = {
-    email: metaData.email,
-    phoneNumber: nullIfEmpty(metaData.phoneNumber),
-    sessionId: metaData.sessionId,
-    ipAddress: metaData.ipAddress
-  }
-  return updateMetaObj
-}
-
 /** Returns the axios instance */
 function getInstance() {
   return instance
@@ -108,9 +98,8 @@ function cancelPayment(id: string, payload: any) {
  */
 function createPayment(payload: CreatePaymentPayload) {
   const url = `/v1/payments`
-  const modifiedPayload = Object.assign({}, payload)
-  modifiedPayload.metadata = checkNullInMetaData(modifiedPayload.metadata)
-  return instance.post(url, modifiedPayload)
+  payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
+  return instance.post(url, payload)
 }
 
 /**
