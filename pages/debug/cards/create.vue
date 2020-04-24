@@ -41,17 +41,13 @@
         <v-form>
           <v-text-field v-model="formData.cardNumber" label="Card Number" />
 
-          <v-select
+          <v-text-field
             v-model="formData.verification"
-            :items="verificationMethods"
             label="Verification Method"
+            disabled="true"
           />
 
-          <v-text-field
-            v-if="showCVVField"
-            v-model="formData.cvv"
-            label="CVV"
-          />
+          <v-text-field v-model="formData.cvv" label="CVV" />
 
           <v-text-field v-model="formData.expiry.month" label="Expiry Month" />
 
@@ -151,7 +147,7 @@ export default class CreateCardClass extends Vue {
     phoneNumber: '',
     email: ''
   }
-  verificationMethods = ['none', 'cvv', 'avs']
+  verificationMethods = ['cvv']
   rules = {
     isNumber: (v: string) =>
       v === '' || !isNaN(parseInt(v)) || 'Please enter valid number',
@@ -174,10 +170,6 @@ export default class CreateCardClass extends Vue {
 
   prefillForm(index: number) {
     this.formData = exampleCards[index].formData
-  }
-
-  get showCVVField() {
-    return this.formData.verification === 'cvv'
   }
 
   async makeApiCall() {
@@ -236,3 +228,4 @@ export default class CreateCardClass extends Vue {
   }
 }
 </script>
+
