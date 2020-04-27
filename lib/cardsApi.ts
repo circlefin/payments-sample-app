@@ -42,7 +42,6 @@ export interface CreateCardPayload {
   }
   expMonth: number
   expYear: number
-  verification: string
   metadata: MetaData
 }
 
