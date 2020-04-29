@@ -45,7 +45,7 @@
                 required
               />
 
-              <CVVInput v-model="formData.cvv" :rules="[rules.required]" />
+              <CVVInput v-model="formData.cvv" />
 
               <v-text-field
                 v-model="formData.phoneNumber"
@@ -325,7 +325,6 @@ export default class CardFlowClass extends Vue {
     const payload: CreatePaymentPayload = {
       idempotencyKey: uuidv4(),
       amount: amountDetail,
-      verification: 'cvv',
       source: sourceDetails,
       keyId: '',
       encryptedData: '',

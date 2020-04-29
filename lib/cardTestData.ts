@@ -16,8 +16,7 @@ export const exampleCards = [
       city: 'Test City',
       postalCode: '11111',
       phoneNumber: '+12025550180',
-      email: 'customer-0001@circle.com',
-      verification: 'cvv'
+      email: 'customer-0001@circle.com'
     }
   },
   {
@@ -37,8 +36,7 @@ export const exampleCards = [
       city: 'Test City',
       postalCode: '11111',
       phoneNumber: '+12025550180',
-      email: 'customer-0002@circle.com',
-      verification: 'cvv'
+      email: 'customer-0002@circle.com'
     }
   },
   {
@@ -58,8 +56,7 @@ export const exampleCards = [
       city: 'Test City',
       postalCode: '11111',
       phoneNumber: '+12025550180',
-      email: 'customer-0003@circle.com',
-      verification: 'cvv'
+      email: 'customer-0003@circle.com'
     }
   },
   {
@@ -79,8 +76,7 @@ export const exampleCards = [
       city: 'Test City',
       postalCode: '11111',
       phoneNumber: '+12025550180',
-      email: 'customer-0004@circle.com',
-      verification: 'cvv'
+      email: 'customer-0004@circle.com'
     }
   },
   {
@@ -100,8 +96,7 @@ export const exampleCards = [
       city: 'Test City',
       postalCode: '11111',
       phoneNumber: '+12025550180',
-      email: 'customer-0005@circle.com',
-      verification: 'cvv'
+      email: 'customer-0005@circle.com'
     }
   },
   {
@@ -121,8 +116,7 @@ export const exampleCards = [
       city: 'Test City',
       postalCode: '11111',
       phoneNumber: '+12025550180',
-      email: 'customer-0006@circle.com',
-      verification: 'cvv'
+      email: 'customer-0006@circle.com'
     }
   },
   {
@@ -142,8 +136,7 @@ export const exampleCards = [
       city: 'Test City',
       postalCode: '11111',
       phoneNumber: '+12025550180',
-      email: 'customer-0007@circle.com',
-      verification: 'cvv'
+      email: 'customer-0007@circle.com'
     }
   }
 ]

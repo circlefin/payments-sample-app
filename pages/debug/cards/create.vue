@@ -41,17 +41,7 @@
         <v-form>
           <v-text-field v-model="formData.cardNumber" label="Card Number" />
 
-          <v-select
-            v-model="formData.verification"
-            :items="verificationMethods"
-            label="Verification Method"
-          />
-
-          <v-text-field
-            v-if="showCVVField"
-            v-model="formData.cvv"
-            label="CVV"
-          />
+          <v-text-field v-model="formData.cvv" label="CVV" />
 
           <v-text-field v-model="formData.expiry.month" label="Expiry Month" />
 
@@ -147,11 +137,9 @@ export default class CreateCardClass extends Vue {
     line2: '',
     city: '',
     postalCode: '',
-    verification: 'cvv',
     phoneNumber: '',
     email: ''
   }
-  verificationMethods = ['none', 'cvv', 'avs']
   rules = {
     isNumber: (v: string) =>
       v === '' || !isNaN(parseInt(v)) || 'Please enter valid number',
@@ -176,35 +164,24 @@ export default class CreateCardClass extends Vue {
     this.formData = exampleCards[index].formData
   }
 
-  get showCVVField() {
-    return this.formData.verification === 'cvv'
-  }
-
   async makeApiCall() {
     this.loading = true
 
     const { email, phoneNumber, cardNumber, cvv, ...data } = this.formData
-    const { expiry, verification, ...billingDetails } = data
+    const { expiry, ...billingDetails } = data
 
-    let cardDetails: {
+    const cardDetails: {
       number: string
       cvv?: string
     } = {
-      number: cardNumber.trim().replace(/\D/g, '')
-    }
-
-    if (verification === 'cvv') {
-      cardDetails = {
-        ...cardDetails,
-        cvv
-      }
+      number: cardNumber.trim().replace(/\D/g, ''),
+      cvv
     }
 
     const payload: CreateCardPayload = {
       idempotencyKey: uuidv4(),
       expMonth: parseInt(expiry.month),
       expYear: 2000 + parseInt(expiry.year),
-      verification,
       keyId: '',
       encryptedData: '',
       billingDetails,
@@ -217,14 +194,12 @@ export default class CreateCardClass extends Vue {
     }
 
     try {
-      if (verification === 'cvv' || verification === 'avs') {
-        const publicKey = await this.$cardsApi.getPCIPublicKey()
-        const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
-        const { encryptedMessage, keyId } = encryptedData
+      const publicKey = await this.$cardsApi.getPCIPublicKey()
+      const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
+      const { encryptedMessage, keyId } = encryptedData
 
-        payload.keyId = keyId
-        payload.encryptedData = encryptedMessage
-      }
+      payload.keyId = keyId
+      payload.encryptedData = encryptedMessage
 
       await this.$cardsApi.createCard(payload)
     } catch (error) {
