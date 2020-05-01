@@ -151,7 +151,7 @@ export default class CreateCardClass extends Vue {
     phoneNumber: '',
     email: ''
   }
-  verificationMethods = ['none', 'cvv', 'avs']
+  verificationMethods = ['none', 'cvv']
   rules = {
     isNumber: (v: string) =>
       v === '' || !isNaN(parseInt(v)) || 'Please enter valid number',
