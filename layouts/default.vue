@@ -190,6 +190,14 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'POST /wallets',
       to: '/debug/marketplace/wallets/endUser'
+    },
+    {
+      title: 'GET /settlements',
+      to: '/debug/settlements/fetch'
+    },
+    {
+      title: 'GET /settlements/{id}',
+      to: '/debug/settlements/details'
     }
   ]
   paymentsLinks = [
@@ -228,6 +236,18 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'POST /payments/{id}/refund',
       to: '/debug/payments/refund'
+    },
+    {
+      title: 'GET /balances',
+      to: '/debug/payments/balances/fetch'
+    },
+    {
+      title: 'GET /settlements',
+      to: '/debug/settlements/fetch'
+    },
+    {
+      title: 'GET /settlements/{id}',
+      to: '/debug/settlements/details'
     }
   ]
   miniVariant = false

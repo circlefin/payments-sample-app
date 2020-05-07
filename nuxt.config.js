@@ -39,7 +39,8 @@ export default {
   plugins: [
     '~/plugins/paymentsApi',
     '~/plugins/cardsApi',
-    '~/plugins/marketplaceApi'
+    '~/plugins/marketplaceApi',
+    '~/plugins/settlementsApi'
   ],
   /*
    ** Nuxt.js dev-modules
