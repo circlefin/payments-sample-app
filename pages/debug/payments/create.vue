@@ -10,7 +10,13 @@
 
           <v-text-field v-model="formData.amount" label="Amount" />
 
-          <v-text-field v-model="formData.cvv" label="CVV" />
+          <v-select
+            v-model="formData.verification"
+            :items="verificationMethods"
+            label="Verification Method"
+          />
+
+          <v-text-field v-if="cvvRequired" v-model="formData.cvv" label="CVV" />
 
           <v-text-field v-model="formData.phoneNumber" label="Phone" />
 
@@ -44,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import uuidv4 from 'uuid/v4'
 import openPGP from '@/lib/openpgp'
@@ -68,13 +74,16 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 })
 export default class CreatePaymentClass extends Vue {
   isMarketplace!: boolean
+  cvvRequired = true
   formData = {
     sourceId: '',
+    verification: 'cvv',
     amount: '0.00',
     cvv: '',
     phoneNumber: '',
     email: ''
   }
+  verificationMethods = ['none', 'cvv']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
@@ -86,6 +95,16 @@ export default class CreatePaymentClass extends Vue {
         statusCode: 404,
         message: 'This endpoint is not available for marketplaces'
       })
+    }
+  }
+
+  @Watch('formData.verification', { immediate: true })
+  onChildChanged(val: string) {
+    if (val === 'none') {
+      this.cvvRequired = false
+    }
+    if (val === 'cvv') {
+      this.cvvRequired = true
     }
   }
 
@@ -109,6 +128,7 @@ export default class CreatePaymentClass extends Vue {
     const payload: CreatePaymentPayload = {
       idempotencyKey: uuidv4(),
       amount: amountDetail,
+      verification: this.formData.verification,
       source: sourceDetails,
       keyId: '',
       encryptedData: '',
@@ -121,14 +141,16 @@ export default class CreatePaymentClass extends Vue {
     }
 
     try {
-      const { cvv } = this.formData
-      const cardDetails = { cvv }
+      if (this.cvvRequired) {
+        const { cvv } = this.formData
+        const cardDetails = { cvv }
 
-      const publicKey = await this.$paymentsApi.getPCIPublicKey()
-      const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
+        const publicKey = await this.$paymentsApi.getPCIPublicKey()
+        const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
 
-      payload.encryptedData = encryptedData.encryptedMessage
-      payload.keyId = encryptedData.keyId
+        payload.encryptedData = encryptedData.encryptedMessage
+        payload.keyId = encryptedData.keyId
+      }
 
       await this.$paymentsApi.createPayment(payload)
     } catch (error) {

@@ -16,12 +16,13 @@ export interface CreatePaymentPayload {
     amount: string
     currency: string
   }
+  verification: string
   source: {
     id: string
     type: string
   }
-  keyId?: string
-  encryptedData?: string
+  keyId: string
+  encryptedData: string
   metadata: MetaData
 }
 
@@ -99,12 +100,6 @@ function createPayment(payload: CreatePaymentPayload) {
   const url = `/v1/payments`
   if (payload.metadata) {
     payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
-  }
-  if (payload.keyId) {
-    payload.keyId = nullIfEmpty(payload.keyId)
-  }
-  if (payload.encryptedData) {
-    payload.encryptedData = nullIfEmpty(payload.encryptedData)
   }
   return instance.post(url, payload)
 }

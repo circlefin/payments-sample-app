@@ -427,6 +427,7 @@ export default class ChargeFlowClass extends Vue {
     const payload: CreatePaymentPayload = {
       idempotencyKey: uuidv4(),
       amount: amountDetail,
+      verification: 'cvv',
       source: sourceDetails,
       keyId: '',
       encryptedData: '',
