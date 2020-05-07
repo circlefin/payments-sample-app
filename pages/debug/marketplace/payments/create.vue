@@ -22,6 +22,11 @@
           />
 
           <v-text-field v-if="cvvRequired" v-model="formData.cvv" label="CVV" />
+
+          <v-text-field v-model="formData.phoneNumber" label="Phone" />
+
+          <v-text-field v-model="formData.email" label="Email" />
+
           <v-btn
             depressed
             class="mb-7"
