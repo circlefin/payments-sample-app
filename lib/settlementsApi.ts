@@ -72,10 +72,19 @@ function getSettlements(
  * Get a settlement
  * @param {String} id
  */
-function getSettlementById(id: string) {
+function getSettlementById(
+  id: string,
+  merchantWalletId: string,
+  endUserWalletId: string
+) {
   const url = `/v1/settlement/${id}`
 
-  return instance.get(url)
+  return instance.get(url, {
+    params: {
+      merchantWalletId: nullIfEmpty(merchantWalletId),
+      endUserWalletId: nullIfEmpty(endUserWalletId)
+    }
+  })
 }
 
 export default {

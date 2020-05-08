@@ -9,7 +9,7 @@
       @change="selectMerchant"
     ></v-select>
     <v-row class="mt-n4">
-      <v-col>
+      <v-col v-if="showMerchantId">
         <v-text-field
           v-model="marketplaceInfo.merchantId"
           :value="value.merchantId"
@@ -64,6 +64,7 @@ interface Merchant {
 @Component
 export default class MarketplaceInfoFieldsClass extends Vue {
   @Prop({ type: Object, default: () => {} }) value!: MarketplaceInfo
+  @Prop({ type: Boolean, default: true }) showMerchantId!: boolean
   loading: boolean = false
   merchants: Merchant[] = []
   merchantsLoading: boolean = true

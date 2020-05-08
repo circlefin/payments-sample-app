@@ -3,6 +3,12 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
+          <MarketplaceInfoFields
+            v-if="isMarketplace"
+            v-model="marketplaceInfo"
+            :show-merchant-id="false"
+            @show-error="showMarketplaceInfoError"
+          />
           <v-text-field v-model="formData.settlementId" label="Settlement Id" />
           <v-btn
             depressed
@@ -34,13 +40,16 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
+import { MarketplaceInfo } from '@/lib/marketplaceApi'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
+import MarketplaceInfoFields from '@/components/MarketplaceInfoFields.vue'
 
 @Component({
   components: {
     RequestInfo,
-    ErrorSheet
+    ErrorSheet,
+    MarketplaceInfoFields
   },
   computed: {
     ...mapGetters({
@@ -55,6 +64,11 @@ export default class FetchSettlementDetailsClass extends Vue {
   formData = {
     settlementId: ''
   }
+  marketplaceInfo: MarketplaceInfo = {
+    endUserWalletId: '',
+    merchantId: '',
+    merchantWalletId: ''
+  }
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
@@ -66,10 +80,18 @@ export default class FetchSettlementDetailsClass extends Vue {
     this.showError = false
   }
 
+  get isMarketplace() {
+    return this.$store.getters.isMarketplace
+  }
+
   async makeApiCall() {
     this.loading = true
     try {
-      await this.$settlementsApi.getSettlementById(this.formData.settlementId)
+      await this.$settlementsApi.getSettlementById(
+        this.formData.settlementId,
+        this.marketplaceInfo.merchantWalletId,
+        this.marketplaceInfo.endUserWalletId
+      )
     } catch (error) {
       this.error = error
       this.showError = true
