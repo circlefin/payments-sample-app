@@ -77,7 +77,7 @@ function getSettlementById(
   merchantWalletId: string,
   endUserWalletId: string
 ) {
-  const url = `/v1/settlement/${id}`
+  const url = `/v1/settlements/${id}`
 
   return instance.get(url, {
     params: {
