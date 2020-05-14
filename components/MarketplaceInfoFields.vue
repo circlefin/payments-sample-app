@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
-import { MarketplaceInfo } from '@/lib/marketplaceApi'
+import { MarketplaceParams } from '@/lib/marketplaceApi'
 
 interface Merchant {
   id: string
@@ -63,12 +63,12 @@ interface Merchant {
 
 @Component
 export default class MarketplaceInfoFieldsClass extends Vue {
-  @Prop({ type: Object, default: () => {} }) value!: MarketplaceInfo
+  @Prop({ type: Object, default: () => {} }) value!: MarketplaceParams
   @Prop({ type: Boolean, default: true }) showMerchantId!: boolean
   loading: boolean = false
   merchants: Merchant[] = []
   merchantsLoading: boolean = true
-  marketplaceInfo: MarketplaceInfo = {
+  marketplaceInfo: MarketplaceParams = {
     walletId: '',
     merchantId: '',
     merchantWalletId: ''
@@ -109,7 +109,7 @@ export default class MarketplaceInfoFieldsClass extends Vue {
   }
 
   @Watch('value', { immediate: true, deep: true })
-  onValueChange(value: MarketplaceInfo) {
+  onValueChange(value: MarketplaceParams) {
     this.marketplaceInfo.walletId = value.walletId
     this.marketplaceInfo.merchantId = value.merchantId
     this.marketplaceInfo.merchantWalletId = value.merchantWalletId

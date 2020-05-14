@@ -40,7 +40,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import { MarketplaceInfo } from '@/lib/marketplaceApi'
+import { MarketplaceParams } from '@/lib/marketplaceApi'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import MarketplaceInfoFields from '@/components/MarketplaceInfoFields.vue'
@@ -64,7 +64,7 @@ export default class FetchSettlementDetailsClass extends Vue {
   formData = {
     settlementId: ''
   }
-  marketplaceInfo: MarketplaceInfo = {
+  marketplaceInfo: MarketplaceParams = {
     walletId: '',
     merchantWalletId: ''
   }
