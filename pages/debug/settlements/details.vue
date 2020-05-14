@@ -65,8 +65,7 @@ export default class FetchSettlementDetailsClass extends Vue {
     settlementId: ''
   }
   marketplaceInfo: MarketplaceInfo = {
-    endUserWalletId: '',
-    merchantId: '',
+    walletId: '',
     merchantWalletId: ''
   }
   required = [(v: string) => !!v || 'Field is required']
@@ -90,7 +89,7 @@ export default class FetchSettlementDetailsClass extends Vue {
       await this.$settlementsApi.getSettlementById(
         this.formData.settlementId,
         this.marketplaceInfo.merchantWalletId,
-        this.marketplaceInfo.endUserWalletId
+        this.marketplaceInfo.walletId
       )
     } catch (error) {
       this.error = error

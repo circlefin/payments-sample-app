@@ -49,6 +49,8 @@ function getInstance() {
  * @param {String} pageSize
  */
 function getSettlements(
+  merchantWalletId: string,
+  walletId: string,
   from: string,
   to: string,
   pageBefore: string,
@@ -56,6 +58,8 @@ function getSettlements(
   pageSize: string
 ) {
   const queryParams = {
+    merchantWalletId: nullIfEmpty(merchantWalletId),
+    walletId: nullIfEmpty(walletId),
     from: nullIfEmpty(from),
     to: nullIfEmpty(to),
     pageBefore: nullIfEmpty(pageBefore),
@@ -71,18 +75,20 @@ function getSettlements(
 /**
  * Get a settlement
  * @param {String} id
+ * @param {String} merchantWalletId
+ * @param {String} walletId
  */
 function getSettlementById(
   id: string,
   merchantWalletId: string,
-  endUserWalletId: string
+  walletId: string
 ) {
   const url = `/v1/settlements/${id}`
 
   return instance.get(url, {
     params: {
       merchantWalletId: nullIfEmpty(merchantWalletId),
-      endUserWalletId: nullIfEmpty(endUserWalletId)
+      walletId: nullIfEmpty(walletId)
     }
   })
 }

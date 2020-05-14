@@ -4,6 +4,16 @@
       <v-col cols="12" md="4">
         <v-form>
           <header>Optional filter params:</header>
+          <v-text-field
+            v-if="isMarketplace"
+            v-model="formData.merchantWalletId"
+            label="Merchant Wallet Id"
+          />
+          <v-text-field
+            v-if="isMarketplace"
+            v-model="formData.walletId"
+            label="Wallet Id"
+          />
           <v-text-field v-model="formData.from" label="From" />
           <v-text-field v-model="formData.to" label="To" />
           <v-text-field v-model="formData.pageSize" label="PageSize" />
@@ -57,6 +67,8 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 export default class FetchSettlementsClass extends Vue {
   // data
   formData = {
+    merchantWalletId: '',
+    walletId: '',
     from: '',
     to: '',
     pageSize: '',
@@ -78,10 +90,16 @@ export default class FetchSettlementsClass extends Vue {
     this.showError = false
   }
 
+  get isMarketplace() {
+    return this.$store.getters.isMarketplace
+  }
+
   async makeApiCall() {
     this.loading = true
     try {
       await this.$settlementsApi.getSettlements(
+        this.formData.merchantWalletId,
+        this.formData.walletId,
         this.formData.from,
         this.formData.to,
         this.formData.pageBefore,
