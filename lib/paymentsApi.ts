@@ -151,6 +151,14 @@ function refundPayment(id: string, payload: RefundPaymentPayload) {
   return instance.post(url, payload)
 }
 
+/**
+ * Get balance
+ */
+function getBalance() {
+  const url = `/v1/balances`
+  return instance.get(url)
+}
+
 export default {
   getInstance,
   cancelPayment,
@@ -158,5 +166,6 @@ export default {
   getPayments,
   getPaymentById,
   getPCIPublicKey,
-  refundPayment
+  refundPayment,
+  getBalance
 }

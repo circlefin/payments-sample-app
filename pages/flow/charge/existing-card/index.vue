@@ -231,7 +231,7 @@ interface Card {
 export default class CardFlowClass extends Vue {
   isMarketplace!: boolean
   marketplaceInfo: MarketplaceInfo = {
-    endUserWalletId: '',
+    walletId: '',
     merchantId: '',
     merchantWalletId: ''
   }

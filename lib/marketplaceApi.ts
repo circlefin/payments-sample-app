@@ -14,7 +14,7 @@ interface MetaData {
 export interface MarketplaceInfo {
   merchantId: string
   merchantWalletId: string
-  endUserWalletId: string
+  walletId: string
 }
 
 export interface CreateMarketplacePaymentPayload {

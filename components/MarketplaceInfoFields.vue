@@ -29,8 +29,8 @@
     <v-row align="center">
       <v-col>
         <v-text-field
-          v-model="marketplaceInfo.endUserWalletId"
-          :value="value.endUserWalletId"
+          v-model="marketplaceInfo.walletId"
+          :value="value.walletId"
           label="End User wallet"
           @input="updateInfo"
         />
@@ -68,7 +68,7 @@ export default class MarketplaceInfoFieldsClass extends Vue {
   merchants: Merchant[] = []
   merchantsLoading: boolean = true
   marketplaceInfo: MarketplaceInfo = {
-    endUserWalletId: '',
+    walletId: '',
     merchantId: '',
     merchantWalletId: ''
   }
@@ -109,7 +109,7 @@ export default class MarketplaceInfoFieldsClass extends Vue {
 
   @Watch('value', { immediate: true, deep: true })
   onValueChange(value: MarketplaceInfo) {
-    this.marketplaceInfo.endUserWalletId = value.endUserWalletId
+    this.marketplaceInfo.walletId = value.walletId
     this.marketplaceInfo.merchantId = value.merchantId
     this.marketplaceInfo.merchantWalletId = value.merchantWalletId
   }
@@ -118,7 +118,7 @@ export default class MarketplaceInfoFieldsClass extends Vue {
     this.$emit('input', {
       merchantId: this.marketplaceInfo.merchantId,
       merchantWalletId: this.marketplaceInfo.merchantWalletId,
-      endUserWalletId: this.marketplaceInfo.endUserWalletId
+      walletId: this.marketplaceInfo.walletId
     })
   }
 
@@ -128,7 +128,7 @@ export default class MarketplaceInfoFieldsClass extends Vue {
     try {
       const res = await this.$marketplaceApi.createWallet()
       if (res.walletId) {
-        this.marketplaceInfo.endUserWalletId = res.walletId
+        this.marketplaceInfo.walletId = res.walletId
         this.updateInfo()
       }
     } catch (error) {
