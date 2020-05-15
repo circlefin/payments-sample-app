@@ -3,34 +3,16 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <div v-if="isMarketplace">
-            <v-row class="mt-n4">
-              <v-col>
-                <v-text-field
-                  v-model="marketplaceInfo.merchantWalletId"
-                  label="Merchant Wallet"
-                />
-              </v-col>
-            </v-row>
-            <v-row align="center">
-              <v-col>
-                <v-text-field
-                  v-model="marketplaceInfo.walletId"
-                  label="End User wallet"
-                />
-              </v-col>
-              <v-col>
-                <v-btn
-                  :loading="loading"
-                  outlined
-                  small
-                  @click.prevent="makeWalletApiCall"
-                >
-                  Get wallet
-                </v-btn>
-              </v-col>
-            </v-row>
-          </div>
+          <v-text-field
+            v-if="isMarketplace"
+            v-model="formData.merchantWalletId"
+            label="Merchant Wallet Id"
+          />
+          <v-text-field
+            v-if="isMarketplace"
+            v-model="formData.walletId"
+            label="Wallet Id"
+          />
           <v-text-field v-model="formData.settlementId" label="Settlement Id" />
           <v-btn
             depressed
@@ -115,21 +97,6 @@ export default class FetchSettlementDetailsClass extends Vue {
     } catch (error) {
       this.error = error
       this.showError = true
-    } finally {
-      this.loading = false
-    }
-  }
-
-  async makeWalletApiCall() {
-    this.loading = true
-
-    try {
-      const res = await this.$marketplaceApi.createWallet()
-      if (res.walletId) {
-        this.marketplaceInfo.walletId = res.walletId
-      }
-    } catch (error) {
-      this.$emit('showError', error)
     } finally {
       this.loading = false
     }

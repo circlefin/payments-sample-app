@@ -3,7 +3,6 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <header>Optional filter params:</header>
           <v-text-field
             v-if="isMarketplace"
             v-model="formData.merchantWalletId"
@@ -14,6 +13,7 @@
             v-model="formData.walletId"
             label="Wallet Id"
           />
+          <header>Optional filter params:</header>
           <v-text-field v-model="formData.from" label="From" />
           <v-text-field v-model="formData.to" label="To" />
           <v-text-field v-model="formData.pageSize" label="PageSize" />
