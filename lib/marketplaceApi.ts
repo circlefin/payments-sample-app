@@ -46,12 +46,6 @@ export interface CreateWallet {
   idempotencyKey: string
 }
 
-export interface MarketplaceParams {
-  walletId: string
-  merchantId?: string
-  merchantWalletId: string
-}
-
 const instance = axios.create({
   baseURL: getAPIHostname()
 })

@@ -9,7 +9,7 @@
       @change="selectMerchant"
     ></v-select>
     <v-row class="mt-n4">
-      <v-col v-if="showMerchantId">
+      <v-col>
         <v-text-field
           v-model="marketplaceInfo.merchantId"
           :value="value.merchantId"
@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
-import { MarketplaceParams } from '@/lib/marketplaceApi'
+import { MarketplaceInfo } from '@/lib/marketplaceApi'
 
 interface Merchant {
   id: string
@@ -63,12 +63,11 @@ interface Merchant {
 
 @Component
 export default class MarketplaceInfoFieldsClass extends Vue {
-  @Prop({ type: Object, default: () => {} }) value!: MarketplaceParams
-  @Prop({ type: Boolean, default: true }) showMerchantId!: boolean
+  @Prop({ type: Object, default: () => {} }) value!: MarketplaceInfo
   loading: boolean = false
   merchants: Merchant[] = []
   merchantsLoading: boolean = true
-  marketplaceInfo: MarketplaceParams = {
+  marketplaceInfo: MarketplaceInfo = {
     walletId: '',
     merchantId: '',
     merchantWalletId: ''
@@ -109,7 +108,7 @@ export default class MarketplaceInfoFieldsClass extends Vue {
   }
 
   @Watch('value', { immediate: true, deep: true })
-  onValueChange(value: MarketplaceParams) {
+  onValueChange(value: MarketplaceInfo) {
     this.marketplaceInfo.walletId = value.walletId
     this.marketplaceInfo.merchantId = value.merchantId
     this.marketplaceInfo.merchantWalletId = value.merchantWalletId

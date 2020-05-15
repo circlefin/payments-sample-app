@@ -3,12 +3,34 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <MarketplaceInfoFields
-            v-if="isMarketplace"
-            v-model="marketplaceInfo"
-            :show-merchant-id="false"
-            @show-error="showMarketplaceInfoError"
-          />
+          <div v-if="isMarketplace">
+            <v-row class="mt-n4">
+              <v-col>
+                <v-text-field
+                  v-model="marketplaceInfo.merchantWalletId"
+                  label="Merchant Wallet"
+                />
+              </v-col>
+            </v-row>
+            <v-row align="center">
+              <v-col>
+                <v-text-field
+                  v-model="marketplaceInfo.walletId"
+                  label="End User wallet"
+                />
+              </v-col>
+              <v-col>
+                <v-btn
+                  :loading="loading"
+                  outlined
+                  small
+                  @click.prevent="makeWalletApiCall"
+                >
+                  Get wallet
+                </v-btn>
+              </v-col>
+            </v-row>
+          </div>
           <v-text-field v-model="formData.settlementId" label="Settlement Id" />
           <v-btn
             depressed
@@ -40,7 +62,6 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import { MarketplaceParams } from '@/lib/marketplaceApi'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import MarketplaceInfoFields from '@/components/MarketplaceInfoFields.vue'
@@ -64,7 +85,7 @@ export default class FetchSettlementDetailsClass extends Vue {
   formData = {
     settlementId: ''
   }
-  marketplaceInfo: MarketplaceParams = {
+  marketplaceInfo = {
     walletId: '',
     merchantWalletId: ''
   }
@@ -94,6 +115,21 @@ export default class FetchSettlementDetailsClass extends Vue {
     } catch (error) {
       this.error = error
       this.showError = true
+    } finally {
+      this.loading = false
+    }
+  }
+
+  async makeWalletApiCall() {
+    this.loading = true
+
+    try {
+      const res = await this.$marketplaceApi.createWallet()
+      if (res.walletId) {
+        this.marketplaceInfo.walletId = res.walletId
+      }
+    } catch (error) {
+      this.$emit('showError', error)
     } finally {
       this.loading = false
     }
