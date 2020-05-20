@@ -13,7 +13,11 @@
 
           <v-text-field v-model="formData.expiry.year" label="Expiry Year" />
 
-          <v-text-field v-model="formData.name" label="Full Name" />
+          <v-text-field
+            v-model="formData.name"
+            hint="Name must have first and last name"
+            label="Full Name"
+          />
 
           <v-text-field v-model="formData.line1" label="Address Line 1" />
 
@@ -27,7 +31,11 @@
 
           <v-text-field v-model="formData.country" label="Country Code" />
 
-          <v-text-field v-model="formData.phoneNumber" label="Phone" />
+          <v-text-field
+            v-model="formData.phoneNumber"
+            hint="Phone Number should be a valid number with the country code"
+            label="Phone"
+          />
 
           <v-text-field v-model="formData.email" label="Email" />
           <v-btn

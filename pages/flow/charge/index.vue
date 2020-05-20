@@ -78,6 +78,7 @@
               <v-text-field
                 v-model="formData.cardData.name"
                 :rules="[rules.required]"
+                hint="Name must have first and last name"
                 label="Cardholder name"
                 :disabled="loading"
               />
@@ -124,6 +125,7 @@
 
               <v-text-field
                 v-model="formData.cardData.phoneNumber"
+                hint="Phone Number should be a valid number with the country code"
                 label="Phone"
                 :disabled="loading"
               />

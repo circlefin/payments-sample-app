@@ -49,6 +49,7 @@
 
               <v-text-field
                 v-model="formData.phoneNumber"
+                hint="Phone Number should be a valid number with the country code"
                 label="Phone"
                 :disabled="loading"
               />

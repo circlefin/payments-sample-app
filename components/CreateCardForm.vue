@@ -33,6 +33,7 @@
               v-model="formData.name"
               :rules="[rules.required]"
               label="Cardholder name"
+              hint="Name must have first and last name"
               required
             />
 
@@ -73,7 +74,11 @@
               :disabled="loading"
             />
 
-            <v-text-field v-model="formData.phoneNumber" label="Phone" />
+            <v-text-field
+              v-model="formData.phoneNumber"
+              hint="Phone Number should be a valid number with the country code"
+              label="Phone"
+            />
 
             <v-text-field v-model="formData.email" label="Email" />
           </v-expansion-panel-content>

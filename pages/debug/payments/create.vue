@@ -18,7 +18,11 @@
 
           <v-text-field v-if="cvvRequired" v-model="formData.cvv" label="CVV" />
 
-          <v-text-field v-model="formData.phoneNumber" label="Phone" />
+          <v-text-field
+            v-model="formData.phoneNumber"
+            hint="Phone Number should be a valid number with the country code"
+            label="Phone"
+          />
 
           <v-text-field v-model="formData.email" label="Email" />
 
