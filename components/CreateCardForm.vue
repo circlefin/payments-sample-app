@@ -64,6 +64,7 @@
               v-model="formData.district"
               :rules="[rules.required]"
               label="District"
+              hint="District must be a 2 letter code for US states"
               required
             />
 

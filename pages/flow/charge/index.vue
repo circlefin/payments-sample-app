@@ -114,6 +114,7 @@
                 :rules="[rules.required]"
                 label="District"
                 :disabled="loading"
+                hint="District must be a 2 letter code for US states"
               />
 
               <CountrySelect

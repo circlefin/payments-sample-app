@@ -27,7 +27,11 @@
 
           <v-text-field v-model="formData.city" label="City" />
 
-          <v-text-field v-model="formData.district" label="District" />
+          <v-text-field
+            v-model="formData.district"
+            label="District"
+            hint="District must be a 2 letter code for US states"
+          />
 
           <v-text-field v-model="formData.country" label="Country Code" />
 
