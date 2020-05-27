@@ -49,6 +49,7 @@
 
               <v-text-field
                 v-model="formData.phoneNumber"
+                hint="Phone number of the user in E.164 format"
                 label="Phone"
                 :disabled="loading"
               />

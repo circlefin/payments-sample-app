@@ -78,6 +78,7 @@
               <v-text-field
                 v-model="formData.cardData.name"
                 :rules="[rules.required]"
+                hint="Full name of the card holder"
                 label="Cardholder name"
                 :disabled="loading"
               />
@@ -113,6 +114,7 @@
                 :rules="[rules.required]"
                 label="District"
                 :disabled="loading"
+                hint="State / County / Province / Region portion of the address. US and Canada use the two-letter code for the subdivision"
               />
 
               <CountrySelect
@@ -124,6 +126,7 @@
 
               <v-text-field
                 v-model="formData.cardData.phoneNumber"
+                hint="Phone number of the user in E.164 format"
                 label="Phone"
                 :disabled="loading"
               />

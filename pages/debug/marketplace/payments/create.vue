@@ -23,7 +23,11 @@
 
           <v-text-field v-if="cvvRequired" v-model="formData.cvv" label="CVV" />
 
-          <v-text-field v-model="formData.phoneNumber" label="Phone" />
+          <v-text-field
+            v-model="formData.phoneNumber"
+            hint="Phone number of the user in E.164 format"
+            label="Phone"
+          />
 
           <v-text-field v-model="formData.email" label="Email" />
 
