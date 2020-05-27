@@ -106,6 +106,7 @@ function createPayment(payload: CreatePaymentPayload) {
 
 /**
  * Get payments
+ * @param {String} settlementId
  * @param {String} from
  * @param {String} to
  * @param {String} pageBefore
@@ -113,6 +114,7 @@ function createPayment(payload: CreatePaymentPayload) {
  * @param {String} pageSize
  */
 function getPayments(
+  settlementId: string,
   from: string,
   to: string,
   pageBefore: string,
@@ -120,6 +122,7 @@ function getPayments(
   pageSize: string
 ) {
   const queryParams = {
+    settlementId: nullIfEmpty(settlementId),
     from: nullIfEmpty(from),
     to: nullIfEmpty(to),
     pageBefore: nullIfEmpty(pageBefore),
