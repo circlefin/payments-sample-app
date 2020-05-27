@@ -33,7 +33,7 @@
               v-model="formData.name"
               :rules="[rules.required]"
               label="Cardholder name"
-              hint="Name must have first and last name"
+              hint="Full name of the card holder"
               required
             />
 
@@ -64,7 +64,7 @@
               v-model="formData.district"
               :rules="[rules.required]"
               label="District"
-              hint="District must be a 2 letter code for US states"
+              hint="State / County / Province / Region portion of the address. US and Canada use the two-letter code for the subdivision"
               required
             />
 
@@ -77,7 +77,7 @@
 
             <v-text-field
               v-model="formData.phoneNumber"
-              hint="Phone Number should be a valid number with the country code"
+              hint="Phone number of the user in E.164 format"
               label="Phone"
             />
 

@@ -15,7 +15,7 @@
 
           <v-text-field
             v-model="formData.name"
-            hint="Name must have first and last name"
+            hint="Full name of the card holder"
             label="Full Name"
           />
 
@@ -30,14 +30,14 @@
           <v-text-field
             v-model="formData.district"
             label="District"
-            hint="District must be a 2 letter code for US states"
+            hint="State / County / Province / Region portion of the address. US and Canada use the two-letter code for the subdivision"
           />
 
           <v-text-field v-model="formData.country" label="Country Code" />
 
           <v-text-field
             v-model="formData.phoneNumber"
-            hint="Phone Number should be a valid number with the country code"
+            hint="Phone number of the user in E.164 format"
             label="Phone"
           />
 
