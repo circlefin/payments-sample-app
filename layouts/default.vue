@@ -188,16 +188,36 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/marketplace/merchants/fetch'
     },
     {
-      title: 'POST /wallets',
-      to: '/debug/marketplace/wallets/endUser'
-    },
-    {
       title: 'GET /settlements',
       to: '/debug/settlements/fetch'
     },
     {
       title: 'GET /settlements/{id}',
       to: '/debug/settlements/details'
+    },
+    {
+      title: 'GET /wallets',
+      to: '/debug/wallets/fetch'
+    },
+    {
+      title: 'GET /wallets/{id}',
+      to: '/debug/wallets/details'
+    },
+    {
+      title: 'POST /wallets',
+      to: '/debug/wallets/create'
+    },
+    {
+      title: 'GET /transfers',
+      to: '/debug/transfers/fetch'
+    },
+    {
+      title: 'GET /transfers/{id}',
+      to: '/debug/transfers/details'
+    },
+    {
+      title: 'POST /transfers',
+      to: '/debug/transfers/create'
     }
   ]
   paymentsLinks = [
@@ -248,6 +268,30 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /settlements/{id}',
       to: '/debug/settlements/details'
+    },
+    {
+      title: 'GET /wallets',
+      to: '/debug/wallets/fetch'
+    },
+    {
+      title: 'GET /wallets/{id}',
+      to: '/debug/wallets/details'
+    },
+    {
+      title: 'POST /wallets',
+      to: '/debug/wallets/create'
+    },
+    {
+      title: 'GET /transfers',
+      to: '/debug/transfers/fetch'
+    },
+    {
+      title: 'GET /transfers/{id}',
+      to: '/debug/transfers/details'
+    },
+    {
+      title: 'POST /transfers',
+      to: '/debug/transfers/create'
     }
   ]
   miniVariant = false
