@@ -106,7 +106,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 import openPGP from '@/lib/openpgp'
 import { getLive } from '@/lib/apiTarget'
 import { exampleCards } from '@/lib/cardTestData'
@@ -123,15 +123,15 @@ import ExpiryInput from '@/components/ExpiryInput.vue'
     ErrorSheet,
     CardInput,
     ExpiryInput,
-    CVVInput
+    CVVInput,
   },
   computed: {
     ...mapGetters({
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl'
-    })
-  }
+      requestUrl: 'getRequestUrl',
+    }),
+  },
 })
 export default class CreateCardClass extends Vue {
   // data
@@ -140,7 +140,7 @@ export default class CreateCardClass extends Vue {
     cvv: '',
     expiry: {
       month: '',
-      year: ''
+      year: '',
     },
     name: '',
     country: '',
@@ -150,12 +150,12 @@ export default class CreateCardClass extends Vue {
     city: '',
     postalCode: '',
     phoneNumber: '',
-    email: ''
+    email: '',
   }
   rules = {
     isNumber: (v: string) =>
       v === '' || !isNaN(parseInt(v)) || 'Please enter valid number',
-    required: (v: string) => !!v || 'Field is required'
+    required: (v: string) => !!v || 'Field is required',
   }
   prefillItems = exampleCards
   error = {}
@@ -163,7 +163,7 @@ export default class CreateCardClass extends Vue {
   showError = false
   expiryLabels = {
     month: 'Expiry Month',
-    year: 'Expiry Year'
+    year: 'Expiry Year',
   }
   isSandbox: Boolean = !getLive()
 
@@ -187,7 +187,7 @@ export default class CreateCardClass extends Vue {
       cvv?: string
     } = {
       number: cardNumber.trim().replace(/\D/g, ''),
-      cvv
+      cvv,
     }
 
     const payload: CreateCardPayload = {
@@ -201,8 +201,8 @@ export default class CreateCardClass extends Vue {
         email,
         phoneNumber,
         sessionId: 'xxx',
-        ipAddress: '172.33.222.1'
-      }
+        ipAddress: '172.33.222.1',
+      },
     }
 
     try {

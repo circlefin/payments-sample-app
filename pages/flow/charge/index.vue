@@ -202,7 +202,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 import openPGP from '@/lib/openpgp'
 import { getLive } from '@/lib/apiTarget'
 import { exampleCards } from '@/lib/cardTestData'
@@ -210,7 +210,7 @@ import { CreateCardPayload } from '@/lib/cardsApi'
 import { CreatePaymentPayload } from '@/lib/paymentsApi'
 import {
   CreateMarketplacePaymentPayload,
-  MarketplaceInfo
+  MarketplaceInfo,
 } from '@/lib/marketplaceApi'
 import CardInput from '@/components/CardInput.vue'
 import CVVInput from '@/components/CVVInput.vue'
@@ -268,16 +268,16 @@ interface CreateChargePayload {
     CountrySelect,
     CVVInput,
     PaymentStatus,
-    MarketplaceInfoFields
+    MarketplaceInfoFields,
   },
   computed: {
     ...mapGetters({
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
       requestUrl: 'getRequestUrl',
-      isMarketplace: 'isMarketplace'
-    })
-  }
+      isMarketplace: 'isMarketplace',
+    }),
+  },
 })
 export default class ChargeFlowClass extends Vue {
   validForm: boolean = false
@@ -288,7 +288,7 @@ export default class ChargeFlowClass extends Vue {
       cvv: '',
       expiry: {
         month: '',
-        year: ''
+        year: '',
       },
       name: '',
       country: '',
@@ -298,13 +298,13 @@ export default class ChargeFlowClass extends Vue {
       city: '',
       postalCode: '',
       phoneNumber: '',
-      email: ''
-    }
+      email: '',
+    },
   }
   rules = {
     isNumber: (v: string) =>
       v === '' || !isNaN(parseInt(v)) || 'Please enter valid number',
-    required: (v: string) => !!v || 'Field is required'
+    required: (v: string) => !!v || 'Field is required',
   }
   error: object = {}
   loading: boolean = false
@@ -312,7 +312,7 @@ export default class ChargeFlowClass extends Vue {
   showPaymentStatus: boolean = false
   expiryLabels = {
     month: 'Expiry Month',
-    year: 'Expiry Year'
+    year: 'Expiry Year',
   }
   payment = null
   prefillItems = exampleCards
@@ -321,7 +321,7 @@ export default class ChargeFlowClass extends Vue {
   marketplaceInfo: MarketplaceInfo = {
     walletId: '',
     merchantId: '',
-    merchantWalletId: ''
+    merchantWalletId: '',
   }
 
   prefillForm(index: number) {
@@ -383,21 +383,21 @@ export default class ChargeFlowClass extends Vue {
         district: this.formData.cardData.district,
         postalCode: this.formData.cardData.postalCode,
         country: this.formData.cardData.country,
-        name: this.formData.cardData.name
+        name: this.formData.cardData.name,
       },
       metadata: {
         phoneNumber: this.formData.cardData.phoneNumber,
         email: this.formData.cardData.email,
         sessionId: 'xxx',
-        ipAddress: '172.33.222.1'
-      }
+        ipAddress: '172.33.222.1',
+      },
     }
 
     try {
       const publicKey = await this.$cardsApi.getPCIPublicKey()
       const cardDetails = {
         number: this.formData.cardData.cardNumber.replace(/\s/g, ''),
-        cvv: this.formData.cardData.cvv
+        cvv: this.formData.cardData.cvv,
       }
 
       const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
@@ -420,11 +420,11 @@ export default class ChargeFlowClass extends Vue {
 
     const amountDetail = {
       amount: this.formData.amount,
-      currency: 'USD'
+      currency: 'USD',
     }
     const sourceDetails = {
       id: cardId,
-      type: 'card'
+      type: 'card',
     }
 
     const payload: CreatePaymentPayload = {
@@ -436,8 +436,8 @@ export default class ChargeFlowClass extends Vue {
         phoneNumber: this.formData.cardData.phoneNumber,
         email: this.formData.cardData.email,
         sessionId: 'xxx',
-        ipAddress: '172.33.222.1'
-      }
+        ipAddress: '172.33.222.1',
+      },
     }
 
     try {
@@ -452,7 +452,7 @@ export default class ChargeFlowClass extends Vue {
       if (this.isMarketplace) {
         const marketPlacePayload: CreateMarketplacePaymentPayload = {
           marketplaceInfo: this.marketplaceInfo,
-          ...payload
+          ...payload,
         }
         this.payment = await this.$marketplaceApi.createPayment(
           marketPlacePayload
