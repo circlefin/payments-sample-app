@@ -28,8 +28,8 @@ export interface CreateMarketplacePaymentPayload {
     id: string
     type: string
   }
-  keyId: string
-  encryptedData: string
+  keyId?: string
+  encryptedData?: string
   metadata: MetaData
   marketplaceInfo: MarketplaceInfo
 }

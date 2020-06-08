@@ -134,8 +134,6 @@ export default class CreatePaymentClass extends Vue {
       amount: amountDetail,
       verification: this.formData.verification,
       source: sourceDetails,
-      keyId: '',
-      encryptedData: '',
       metadata: {
         email: this.formData.email,
         phoneNumber: this.formData.phoneNumber,

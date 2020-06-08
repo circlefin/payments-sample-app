@@ -432,8 +432,6 @@ export default class ChargeFlowClass extends Vue {
       amount: amountDetail,
       verification: 'cvv',
       source: sourceDetails,
-      keyId: '',
-      encryptedData: '',
       metadata: {
         phoneNumber: this.formData.cardData.phoneNumber,
         email: this.formData.cardData.email,

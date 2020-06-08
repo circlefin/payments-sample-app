@@ -21,8 +21,8 @@ export interface CreatePaymentPayload {
     id: string
     type: string
   }
-  keyId: string
-  encryptedData: string
+  keyId?: string
+  encryptedData?: string
   metadata: MetaData
 }
 
