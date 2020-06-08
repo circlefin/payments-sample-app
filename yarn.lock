@@ -9319,6 +9319,11 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
+sns-validator@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/sns-validator/-/sns-validator-0.3.4.tgz#a858be7c0bcdf0d68d6d992a521026e2c9bcf947"
+  integrity sha512-v2pDbfPW4qeUKssV9GbgbDf7XC3b9CG+0JTSATGYWKAo/2F7d0PBQJnSY5fpdryJyoquBkER647+7f/d+HR46A==
+
 sort-keys@^1.0.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/sort-keys/-/sort-keys-1.1.2.tgz#441b6d4d346798f1b4e49e8920adfba0e543f9ad"
