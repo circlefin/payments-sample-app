@@ -45,6 +45,7 @@
           <v-text-field
             v-if="!isWalletTransfer"
             v-model="formData.destination.chain"
+            hint="For example ETH"
             label="Blockchain Id"
           />
 
@@ -83,7 +84,7 @@ import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import {
   CreateTransferPayload,
-  BlockChainDestination,
+  BlockchainDestination,
   WalletDestination
 } from '@/lib/transfersApi'
 
@@ -160,7 +161,7 @@ export default class CreateTransferClass extends Vue {
       amount: this.formData.amount,
       currency: 'USD'
     }
-    let destination: BlockChainDestination | WalletDestination
+    let destination: BlockchainDestination | WalletDestination
     if (this.isWalletTransfer) {
       destination = {
         type: 'wallet',

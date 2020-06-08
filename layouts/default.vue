@@ -86,6 +86,32 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
+
+        <v-list-group>
+          <template v-slot:activator>
+            <v-list-item-title>Wallets APIs</v-list-item-title>
+          </template>
+
+          <v-list-item to="/debug/wallets" router exact>
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2">
+                Overview
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            v-for="(item, i) in walletsLinks"
+            :key="`walletsLinks-${i}`"
+            :to="item.to"
+            router
+            exact
+          >
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2" v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar clipped-left fixed app dark color="primary" dense>
@@ -194,30 +220,6 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /settlements/{id}',
       to: '/debug/settlements/details'
-    },
-    {
-      title: 'GET /wallets',
-      to: '/debug/wallets/fetch'
-    },
-    {
-      title: 'GET /wallets/{id}',
-      to: '/debug/wallets/details'
-    },
-    {
-      title: 'POST /wallets',
-      to: '/debug/wallets/create'
-    },
-    {
-      title: 'GET /transfers',
-      to: '/debug/transfers/fetch'
-    },
-    {
-      title: 'GET /transfers/{id}',
-      to: '/debug/transfers/details'
-    },
-    {
-      title: 'POST /transfers',
-      to: '/debug/transfers/create'
     }
   ]
   paymentsLinks = [
@@ -268,30 +270,32 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /settlements/{id}',
       to: '/debug/settlements/details'
-    },
+    }
+  ]
+  walletsLinks = [
     {
       title: 'GET /wallets',
-      to: '/debug/wallets/fetch'
+      to: '/debug/wallets/wallets/fetch'
     },
     {
       title: 'GET /wallets/{id}',
-      to: '/debug/wallets/details'
+      to: '/debug/wallets/wallets/details'
     },
     {
       title: 'POST /wallets',
-      to: '/debug/wallets/create'
+      to: '/debug/wallets/wallets/create'
     },
     {
       title: 'GET /transfers',
-      to: '/debug/transfers/fetch'
+      to: '/debug/wallets/transfers/fetch'
     },
     {
       title: 'GET /transfers/{id}',
-      to: '/debug/transfers/details'
+      to: '/debug/wallets/transfers/details'
     },
     {
       title: 'POST /transfers',
-      to: '/debug/transfers/create'
+      to: '/debug/wallets/transfers/create'
     }
   ]
   miniVariant = false

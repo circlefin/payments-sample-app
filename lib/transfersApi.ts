@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import { getAPIHostname } from './apiTarget'
 
-export interface BlockChainDestination {
+export interface BlockchainDestination {
   type: string
   address: string
   chain: string
@@ -20,7 +20,7 @@ export interface CreateTransferPayload {
     type: string
     id: string
   }
-  destination: BlockChainDestination | WalletDestination
+  destination: BlockchainDestination | WalletDestination
   amount: {
     amount: string
     currency: string
