@@ -3,7 +3,7 @@ import { MutationTree, GetterTree, ActionTree } from 'vuex'
 
 const vuexPersist = new VuexPersist({
   key: 'payments-sandbox',
-  storage: window.localStorage
+  storage: window.localStorage,
 })
 
 export const plugins = [vuexPersist.plugin]
@@ -29,10 +29,10 @@ export const state: () => StoreState = () => ({
   apiRequest: {
     url: '',
     payload: {},
-    response: {}
+    response: {},
   },
   cards: [],
-  isMarketplace: false
+  isMarketplace: false,
 })
 
 export type RootState = ReturnType<typeof state>
@@ -61,13 +61,13 @@ export const mutations: MutationTree<RootState> = {
   },
   SET_IS_MARKETPLACE(state, bool) {
     state.isMarketplace = bool
-  }
+  },
 }
 
 export const actions: ActionTree<RootState, RootState> = {
   setCard({ commit }, card) {
     commit('SET_CARD', card)
-  }
+  },
 }
 
 export const getters: GetterTree<RootState, RootState> = {
@@ -88,5 +88,5 @@ export const getters: GetterTree<RootState, RootState> = {
   },
   isMarketplace: (state) => {
     return state.isMarketplace
-  }
+  },
 }

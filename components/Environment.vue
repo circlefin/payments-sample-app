@@ -13,7 +13,7 @@ export default class Environment extends Vue {
 
     return {
       colorClass: isLive ? 'red--text' : 'green--text',
-      env: isLive ? 'LIVE' : 'SANDBOX'
+      env: isLive ? 'LIVE' : 'SANDBOX',
     }
   }
 }

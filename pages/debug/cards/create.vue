@@ -5,8 +5,8 @@
         <small v-if="isSandbox">
           Please see the
           <a
-            href="https://developers.circle.com/docs/test-card-numbers"
             ref="noopener"
+            href="https://developers.circle.com/docs/test-card-numbers"
             target="_blank"
           >
             api docs
@@ -152,11 +152,13 @@ export default class CreateCardClass extends Vue {
     phoneNumber: '',
     email: '',
   }
+
   rules = {
     isNumber: (v: string) =>
       v === '' || !isNaN(parseInt(v)) || 'Please enter valid number',
     required: (v: string) => !!v || 'Field is required',
   }
+
   prefillItems = exampleCards
   error = {}
   loading = false
@@ -165,6 +167,7 @@ export default class CreateCardClass extends Vue {
     month: 'Expiry Month',
     year: 'Expiry Year',
   }
+
   isSandbox: Boolean = !getLive()
 
   onErrorSheetClosed() {

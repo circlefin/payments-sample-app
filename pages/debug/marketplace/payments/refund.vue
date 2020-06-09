@@ -55,15 +55,15 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 @Component({
   components: {
     RequestInfo,
-    ErrorSheet
+    ErrorSheet,
   },
   computed: {
     ...mapGetters({
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl'
-    })
-  }
+      requestUrl: 'getRequestUrl',
+    }),
+  },
 })
 export default class RefundPaymentClass extends Vue {
   // data
@@ -71,8 +71,9 @@ export default class RefundPaymentClass extends Vue {
     paymentId: '',
     idempotencyKey: '',
     amount: '0.00',
-    reason: ''
+    reason: '',
   }
+
   reasonsList = ['', 'duplicate', 'fraudulent', 'requested_by_customer']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
@@ -90,13 +91,13 @@ export default class RefundPaymentClass extends Vue {
 
     const amountDetail = {
       amount: this.formData.amount,
-      currency: 'USD'
+      currency: 'USD',
     }
 
     const payload: RefundPaymentPayload = {
       idempotencyKey: this.formData.idempotencyKey,
       amount: amountDetail,
-      reason: this.formData.reason
+      reason: this.formData.reason,
     }
 
     try {

@@ -236,6 +236,7 @@ export default class CardFlowClass extends Vue {
     merchantId: '',
     merchantWalletId: '',
   }
+
   cards!: Card[]
   cardItems: string[] = []
   validForm: boolean = false
@@ -249,10 +250,12 @@ export default class CardFlowClass extends Vue {
     phoneNumber: '',
     email: '',
   }
+
   cardIdInput = ''
   rules = {
     required: (v: string) => !!v || 'Field is required',
   }
+
   required = [(v: string) => !!v || 'Field is required']
   loading: boolean = false
   error: object = {}

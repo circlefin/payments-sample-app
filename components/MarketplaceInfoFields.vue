@@ -70,7 +70,7 @@ export default class MarketplaceInfoFieldsClass extends Vue {
   marketplaceInfo: MarketplaceInfo = {
     walletId: '',
     merchantId: '',
-    merchantWalletId: ''
+    merchantWalletId: '',
   }
 
   async mounted() {
@@ -118,7 +118,7 @@ export default class MarketplaceInfoFieldsClass extends Vue {
     this.$emit('input', {
       merchantId: this.marketplaceInfo.merchantId,
       merchantWalletId: this.marketplaceInfo.merchantWalletId,
-      walletId: this.marketplaceInfo.walletId
+      walletId: this.marketplaceInfo.walletId,
     })
   }
 

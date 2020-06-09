@@ -49,23 +49,24 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 @Component({
   components: {
     RequestInfo,
-    ErrorSheet
+    ErrorSheet,
   },
   computed: {
     ...mapGetters({
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl'
-    })
-  }
+      requestUrl: 'getRequestUrl',
+    }),
+  },
 })
 export default class CancelPaymentClass extends Vue {
   // data
   formData = {
     paymentId: '',
     idempotencyKey: '',
-    reason: ''
+    reason: '',
   }
+
   reasonsList = ['', 'duplicate', 'fraudulent', 'requested_by_customer']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
@@ -83,7 +84,7 @@ export default class CancelPaymentClass extends Vue {
 
     const payload = {
       idempotencyKey: this.formData.idempotencyKey,
-      reason: this.formData.reason
+      reason: this.formData.reason,
     }
 
     try {

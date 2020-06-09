@@ -33,8 +33,8 @@ import VueJsonPretty from 'vue-json-pretty'
 
 @Component({
   components: {
-    VueJsonPretty
-  }
+    VueJsonPretty,
+  },
 })
 export default class RequestInfo extends Vue {
   @Prop({ type: String, default: '' })

@@ -89,7 +89,7 @@ function getInstance() {
  * @param {*} payload (contains form data and encrypted payment details)
  */
 function createPayment(payload: CreateMarketplacePaymentPayload) {
-  const url = `/v1/marketplace/payments`
+  const url = '/v1/marketplace/payments'
   if (payload.metadata) {
     payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
   }
@@ -129,7 +129,7 @@ function getPayments(
     merchantId: nullIfEmpty(merchantId),
   }
 
-  const url = `/v1/marketplace/payments`
+  const url = '/v1/marketplace/payments'
 
   return instance.get(url, { params: queryParams })
 }
@@ -168,7 +168,7 @@ function cancelPayment(id: string, payload: any) {
  * Get merchants
  */
 function getMerchants() {
-  const url = `/v1/marketplace/merchants`
+  const url = '/v1/marketplace/merchants'
   return instance.get(url)
 }
 
@@ -176,7 +176,7 @@ function getMerchants() {
  * Create wallet
  */
 function createWallet() {
-  const url = `/v1/wallets`
+  const url = '/v1/wallets'
   const payload = {
     idempotencyKey: uuidv4(),
   }

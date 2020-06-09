@@ -6,7 +6,7 @@ export const exampleCards = [
       cvv: '123',
       expiry: {
         month: '01',
-        year: '25'
+        year: '25',
       },
       name: 'Customer 0001',
       country: 'US',
@@ -16,8 +16,8 @@ export const exampleCards = [
       city: 'Test City',
       postalCode: '11111',
       phoneNumber: '+12025550180',
-      email: 'customer-0001@circle.com'
-    }
+      email: 'customer-0001@circle.com',
+    },
   },
   {
     title: '4007410000000006 (visa)',
@@ -26,7 +26,7 @@ export const exampleCards = [
       cvv: '123',
       expiry: {
         month: '01',
-        year: '25'
+        year: '25',
       },
       name: 'Customer 0002',
       country: 'US',
@@ -36,8 +36,8 @@ export const exampleCards = [
       city: 'Test City',
       postalCode: '11111',
       phoneNumber: '+12025550180',
-      email: 'customer-0002@circle.com'
-    }
+      email: 'customer-0002@circle.com',
+    },
   },
   {
     title: '4200000000000000 (visa)',
@@ -46,7 +46,7 @@ export const exampleCards = [
       cvv: '123',
       expiry: {
         month: '01',
-        year: '25'
+        year: '25',
       },
       name: 'Customer 0003',
       country: 'US',
@@ -56,8 +56,8 @@ export const exampleCards = [
       city: 'Test City',
       postalCode: '11111',
       phoneNumber: '+12025550180',
-      email: 'customer-0003@circle.com'
-    }
+      email: 'customer-0003@circle.com',
+    },
   },
   {
     title: '4757140000000001 (visa)',
@@ -66,7 +66,7 @@ export const exampleCards = [
       cvv: '123',
       expiry: {
         month: '01',
-        year: '25'
+        year: '25',
       },
       name: 'Customer 0004',
       country: 'US',
@@ -76,8 +76,8 @@ export const exampleCards = [
       city: 'Test City',
       postalCode: '11111',
       phoneNumber: '+12025550180',
-      email: 'customer-0004@circle.com'
-    }
+      email: 'customer-0004@circle.com',
+    },
   },
   {
     title: '5102420000000006 (mastercard)',
@@ -86,7 +86,7 @@ export const exampleCards = [
       cvv: '123',
       expiry: {
         month: '01',
-        year: '25'
+        year: '25',
       },
       name: 'Customer 0005',
       country: 'US',
@@ -96,8 +96,8 @@ export const exampleCards = [
       city: 'Test City',
       postalCode: '11111',
       phoneNumber: '+12025550180',
-      email: 'customer-0005@circle.com'
-    }
+      email: 'customer-0005@circle.com',
+    },
   },
   {
     title: '5173375000000006 (mastercard)',
@@ -106,7 +106,7 @@ export const exampleCards = [
       cvv: '123',
       expiry: {
         month: '01',
-        year: '25'
+        year: '25',
       },
       name: 'Customer 0006',
       country: 'US',
@@ -116,8 +116,8 @@ export const exampleCards = [
       city: 'Test City',
       postalCode: '11111',
       phoneNumber: '+12025550180',
-      email: 'customer-0006@circle.com'
-    }
+      email: 'customer-0006@circle.com',
+    },
   },
   {
     title: '5555555555554444 (mastercard)',
@@ -126,7 +126,7 @@ export const exampleCards = [
       cvv: '123',
       expiry: {
         month: '01',
-        year: '25'
+        year: '25',
       },
       name: 'Customer 0007',
       country: 'US',
@@ -136,7 +136,7 @@ export const exampleCards = [
       city: 'Test City',
       postalCode: '11111',
       phoneNumber: '+12025550180',
-      email: 'customer-0007@circle.com'
-    }
-  }
+      email: 'customer-0007@circle.com',
+    },
+  },
 ]

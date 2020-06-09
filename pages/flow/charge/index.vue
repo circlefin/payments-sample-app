@@ -301,11 +301,13 @@ export default class ChargeFlowClass extends Vue {
       email: '',
     },
   }
+
   rules = {
     isNumber: (v: string) =>
       v === '' || !isNaN(parseInt(v)) || 'Please enter valid number',
     required: (v: string) => !!v || 'Field is required',
   }
+
   error: object = {}
   loading: boolean = false
   showError: boolean = false
@@ -314,6 +316,7 @@ export default class ChargeFlowClass extends Vue {
     month: 'Expiry Month',
     year: 'Expiry Year',
   }
+
   payment = null
   prefillItems = exampleCards
   isSandbox: Boolean = !getLive()

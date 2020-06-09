@@ -29,17 +29,19 @@ import { mapGetters } from 'vuex'
 @Component({
   computed: {
     ...mapGetters({
-      isMarketplace: 'isMarketplace'
-    })
-  }
+      isMarketplace: 'isMarketplace',
+    }),
+  },
 })
 export default class PaymentStatus extends Vue {
   @Prop({ type: String, default: '' })
   paymentId!: string
+
   paymentResponse = {
     id: '',
-    status: ''
+    status: '',
   }
+
   polling: boolean = false
   pollingId: number = 0
   isMarketplace!: boolean

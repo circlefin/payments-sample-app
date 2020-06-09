@@ -157,11 +157,13 @@ export default class CreateCardFormClass extends Vue {
     phoneNumber: '',
     email: '',
   }
+
   rules = {
     isNumber: (v: string) =>
       v === '' || !isNaN(parseInt(v)) || 'Please enter valid number',
     required: (v: string) => !!v || 'Field is required',
   }
+
   prefillItems = exampleCards
   error = {}
   loading = false
@@ -170,6 +172,7 @@ export default class CreateCardFormClass extends Vue {
     month: 'Expiry Month',
     year: 'Expiry Year',
   }
+
   isSandbox: Boolean = !getLive()
 
   prefillForm(index: number) {

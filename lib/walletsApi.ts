@@ -4,7 +4,7 @@ import axios from 'axios'
 import { getAPIHostname } from './apiTarget'
 
 const instance = axios.create({
-  baseURL: getAPIHostname()
+  baseURL: getAPIHostname(),
 })
 
 /**
@@ -13,13 +13,13 @@ const instance = axios.create({
  * to errorHandler object
  */
 instance.interceptors.response.use(
-  function(response) {
+  function (response) {
     if (get(response, 'data.data')) {
       return response.data.data
     }
     return response
   },
-  function(error) {
+  function (error) {
     let response = get(error, 'response')
     if (!response) {
       response = error.toJSON()
@@ -70,10 +70,10 @@ function getWallets(
     to: nullIfEmpty(to),
     pageBefore: nullIfEmpty(pageBefore),
     pageAfter: nullIfEmpty(pageAfter),
-    pageSize: nullIfEmpty(pageSize)
+    pageSize: nullIfEmpty(pageSize),
   }
 
-  const url = `/v1/wallets`
+  const url = '/v1/wallets'
 
   return instance.get(url, { params: queryParams })
 }
@@ -84,10 +84,10 @@ function getWallets(
  * @param {String} description
  */
 function createWallet(idempotencyKey: string, description?: string) {
-  const url = `/v1/wallets`
+  const url = '/v1/wallets'
   const payload = {
     idempotencyKey,
-    description: nullIfEmpty(description)
+    description: nullIfEmpty(description),
   }
   return instance.post(url, payload)
 }
@@ -98,7 +98,7 @@ function createWallet(idempotencyKey: string, description?: string) {
  * @param {String} description
  */
 function getMasterWallet() {
-  const url = `/v1/configuration`
+  const url = '/v1/configuration'
   return instance.get(url)
 }
 
@@ -107,5 +107,5 @@ export default {
   getWallets,
   getWalletById,
   createWallet,
-  getMasterWallet
+  getMasterWallet,
 }
