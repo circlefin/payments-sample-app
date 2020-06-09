@@ -86,6 +86,32 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
+
+        <v-list-group>
+          <template v-slot:activator>
+            <v-list-item-title>Wallets APIs</v-list-item-title>
+          </template>
+
+          <v-list-item to="/debug/wallets" router exact>
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2">
+                Overview
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            v-for="(item, i) in walletsLinks"
+            :key="`walletsLinks-${i}`"
+            :to="item.to"
+            router
+            exact
+          >
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2" v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar clipped-left fixed app dark color="primary" dense>
@@ -188,10 +214,6 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/marketplace/merchants/fetch'
     },
     {
-      title: 'POST /wallets',
-      to: '/debug/marketplace/wallets/endUser'
-    },
-    {
       title: 'GET /settlements',
       to: '/debug/settlements/fetch'
     },
@@ -248,6 +270,32 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /settlements/{id}',
       to: '/debug/settlements/details'
+    }
+  ]
+  walletsLinks = [
+    {
+      title: 'GET /wallets',
+      to: '/debug/wallets/wallets/fetch'
+    },
+    {
+      title: 'GET /wallets/{id}',
+      to: '/debug/wallets/wallets/details'
+    },
+    {
+      title: 'POST /wallets',
+      to: '/debug/wallets/wallets/create'
+    },
+    {
+      title: 'GET /transfers',
+      to: '/debug/wallets/transfers/fetch'
+    },
+    {
+      title: 'GET /transfers/{id}',
+      to: '/debug/wallets/transfers/details'
+    },
+    {
+      title: 'POST /transfers',
+      to: '/debug/wallets/transfers/create'
     }
   ]
   miniVariant = false

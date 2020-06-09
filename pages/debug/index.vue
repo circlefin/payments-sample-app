@@ -113,26 +113,6 @@
       </v-card>
 
       <v-card
-        v-if="isMarketplace"
-        class="body-1 px-6 py-8 mb-4"
-        max-width="800"
-        outlined
-      >
-        <h2 class="title">Wallet endpoints</h2>
-        <span class="caption">Requires: api key</span>
-        <br /><br />
-        <p>
-          Api endpoints to manage wallets.
-        </p>
-        <p>
-          <v-chip small color="primary">POST</v-chip>
-          <a href="/debug/marketplace/wallets/endUser">
-            Create wallet account
-          </a>
-        </p>
-      </v-card>
-
-      <v-card
         v-if="!isMarketplace"
         class="body-1 px-6 py-8 mb-4"
         max-width="800"
@@ -169,6 +149,58 @@
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/settlements/details">
             Get settlement details by id
+          </a>
+        </p>
+      </v-card>
+
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
+        <h2 class="title">Wallets endpoints</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>
+          Api endpoints to manage wallets.
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/wallets/fetch">Get all wallets</a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+
+          <a href="/debug/wallets/details">
+            Get wallet details by id
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/wallets/create">
+            Add wallet
+          </a>
+        </p>
+      </v-card>
+
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
+        <h2 class="title">Transfers endpoints</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>
+          Api endpoints to manage transfers.
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/transfers/fetch">Get all transfers</a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+
+          <a href="/debug/transfers/details">
+            Get transfer details by id
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/transfers/create">
+            Add transfer
           </a>
         </p>
       </v-card>

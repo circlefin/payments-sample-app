@@ -3,6 +3,7 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
+          <v-text-field v-model="formData.transferId" label="Transfer Id" />
           <v-btn
             depressed
             class="mb-7"
@@ -49,7 +50,12 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
     })
   }
 })
-export default class FetchWalletAccountClass extends Vue {
+export default class FetchTransferDetailsClass extends Vue {
+  // data
+  formData = {
+    transferId: ''
+  }
+  required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
   showError = false
@@ -62,8 +68,9 @@ export default class FetchWalletAccountClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
+
     try {
-      await this.$marketplaceApi.createWallet()
+      await this.$transfersApi.getTransferById(this.formData.transferId)
     } catch (error) {
       this.error = error
       this.showError = true
