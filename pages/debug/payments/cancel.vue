@@ -8,6 +8,11 @@
             v-model="formData.idempotencyKey"
             label="Idempotency Key"
           />
+          <v-select
+            v-model="formData.reason"
+            :items="reasonsList"
+            label="Reason"
+          />
           <v-btn
             depressed
             class="mb-7"
@@ -58,8 +63,10 @@ export default class CancelPaymentClass extends Vue {
   // data
   formData = {
     paymentId: '',
-    idempotencyKey: ''
+    idempotencyKey: '',
+    reason: ''
   }
+  reasonsList = ['duplicate', 'fraudulent', 'requested_by_customer']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
@@ -75,7 +82,8 @@ export default class CancelPaymentClass extends Vue {
     this.loading = true
 
     const payload = {
-      idempotencyKey: this.formData.idempotencyKey
+      idempotencyKey: this.formData.idempotencyKey,
+      reason: this.formData.reason
     }
 
     try {

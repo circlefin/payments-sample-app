@@ -32,6 +32,7 @@ export interface RefundPaymentPayload {
     amount: string
     currency: string
   }
+  reason: string
 }
 
 const instance = axios.create({
