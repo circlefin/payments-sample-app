@@ -98,8 +98,9 @@ function cancelPayment(id: string, payload: any) {
  */
 function createPayment(payload: CreatePaymentPayload) {
   const url = `/v1/payments`
-  if (payload.metadata) {
-    payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
+  // phoneNumber is optional, don't include in the payload when empty
+  if (payload.metadata && !nullIfEmpty(payload.metadata.phoneNumber)) {
+    delete payload.metadata.phoneNumber
   }
   return instance.post(url, payload)
 }
