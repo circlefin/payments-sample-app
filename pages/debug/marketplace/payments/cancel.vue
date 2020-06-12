@@ -66,7 +66,7 @@ export default class CancelPaymentClass extends Vue {
     idempotencyKey: '',
     reason: ''
   }
-  reasonsList = ['duplicate', 'fraudulent', 'requested_by_customer']
+  reasonsList = ['', 'duplicate', 'fraudulent', 'requested_by_customer']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
