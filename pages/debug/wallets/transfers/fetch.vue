@@ -4,6 +4,7 @@
       <v-col cols="12" md="4">
         <v-form>
           <header>Optional filter params:</header>
+          <v-text-field v-model="formData.walletId" label="Wallet ID" />
           <v-text-field
             v-model="formData.sourceWalletId"
             label="Source Wallet ID"
@@ -65,6 +66,7 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 export default class FetchTransfersClass extends Vue {
   // data
   formData = {
+    walletId: '',
     sourceWalletId: '',
     destinationWalletId: '',
     from: '',
@@ -92,6 +94,7 @@ export default class FetchTransfersClass extends Vue {
     this.loading = true
     try {
       await this.$transfersApi.getTransfers(
+        this.formData.walletId,
         this.formData.sourceWalletId,
         this.formData.destinationWalletId,
         this.formData.from,

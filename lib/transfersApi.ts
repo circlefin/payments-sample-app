@@ -85,6 +85,7 @@ function getTransferById(transferId: string) {
  * @param {String} pageSize
  */
 function getTransfers(
+  walletId: string,
   sourceWalletId: string,
   destinationWalletId: string,
   from: string,
@@ -94,6 +95,7 @@ function getTransfers(
   pageSize: string
 ) {
   const queryParams = {
+    walletId: nullIfEmpty(walletId),
     sourceWalletId: nullIfEmpty(sourceWalletId),
     destinationWalletId: nullIfEmpty(destinationWalletId),
     from: nullIfEmpty(from),
