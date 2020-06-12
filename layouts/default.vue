@@ -286,11 +286,11 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/wallets/wallets/create'
     },
     {
-      title: 'GET /addresses',
+      title: 'GET /{walletId}/addresses',
       to: '/debug/wallets/addresses/fetch'
     },
     {
-      title: 'POST /addresses',
+      title: 'POST /{walletId}/addresses',
       to: '/debug/wallets/addresses/create'
     },
     {

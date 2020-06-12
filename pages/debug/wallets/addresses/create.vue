@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <v-text-field v-model="formData.walletId" label="Wallet ID" />
+          <v-text-field v-model="formData.walletId" label="Wallet Id" />
           <v-text-field
             v-model="formData.idempotencyKey"
             label="Idempotency Key"
