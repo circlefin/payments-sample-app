@@ -83,7 +83,7 @@ function getWallets(
  * @param {String} idempotencyKey
  * @param {String} description
  */
-function createWallet(idempotencyKey: string, description: string) {
+function createWallet(idempotencyKey: string, description?: string) {
   const url = `/v1/wallets`
   const payload = {
     idempotencyKey,

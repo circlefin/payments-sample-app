@@ -128,7 +128,6 @@ function getCards(pageBefore: string, pageAfter: string, pageSize: string) {
 function createCard(payload: CreateCardPayload) {
   const url = `/v1/cards`
   if (payload.metadata) {
-    payload.metadata.email = nullIfEmpty(payload.metadata.email)
     payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
   }
   return instance.post(url, payload)
@@ -143,7 +142,6 @@ function createCard(payload: CreateCardPayload) {
 function updateCard(cardId: string, payload: UpdateCardPayload) {
   const url = `/v1/cards/${cardId}`
   if (payload.metadata) {
-    payload.metadata.email = nullIfEmpty(payload.metadata.email)
     payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
   }
   return instance.put(url, payload)
