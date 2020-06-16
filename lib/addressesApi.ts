@@ -4,7 +4,7 @@ import axios from 'axios'
 import { getAPIHostname } from './apiTarget'
 
 const instance = axios.create({
-  baseURL: getAPIHostname()
+  baseURL: getAPIHostname(),
 })
 
 /**
@@ -13,13 +13,13 @@ const instance = axios.create({
  * to errorHandler object
  */
 instance.interceptors.response.use(
-  function(response) {
+  function (response) {
     if (get(response, 'data.data')) {
       return response.data.data
     }
     return response
   },
-  function(error) {
+  function (error) {
     let response = get(error, 'response')
     if (!response) {
       response = error.toJSON()
@@ -62,7 +62,7 @@ function getAddresses(
     to: nullIfEmpty(to),
     pageBefore: nullIfEmpty(pageBefore),
     pageAfter: nullIfEmpty(pageAfter),
-    pageSize: nullIfEmpty(pageSize)
+    pageSize: nullIfEmpty(pageSize),
   }
 
   const url = `/v1/wallets/${walletId}/addresses`
@@ -84,7 +84,7 @@ function createAddress(
   const payload = {
     idempotencyKey,
     currency,
-    chain
+    chain,
   }
   return instance.post(url, payload)
 }
@@ -92,5 +92,5 @@ function createAddress(
 export default {
   getInstance,
   getAddresses,
-  createAddress
+  createAddress,
 }
