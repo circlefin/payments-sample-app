@@ -12,6 +12,12 @@
 
           <v-text-field v-model="formData.amount" label="Amount" />
 
+          <v-select
+            v-model="formData.reason"
+            :items="reasonsList"
+            label="Reason"
+          />
+
           <v-btn
             depressed
             class="mb-7"
@@ -64,8 +70,10 @@ export default class RefundPaymentClass extends Vue {
   formData = {
     paymentId: '',
     idempotencyKey: '',
-    amount: '0.00'
+    amount: '0.00',
+    reason: ''
   }
+  reasonsList = ['', 'duplicate', 'fraudulent', 'requested_by_customer']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
@@ -87,7 +95,8 @@ export default class RefundPaymentClass extends Vue {
 
     const payload: RefundPaymentPayload = {
       idempotencyKey: this.formData.idempotencyKey,
-      amount: amountDetail
+      amount: amountDetail,
+      reason: this.formData.reason
     }
 
     try {

@@ -40,6 +40,7 @@ export interface RefundPaymentPayload {
     amount: string
     currency: string
   }
+  reason: string | undefined
 }
 
 export interface CreateWallet {
@@ -149,6 +150,7 @@ function getPaymentById(id: string) {
  */
 function refundPayment(id: string, payload: RefundPaymentPayload) {
   const url = `/v1/payments/${id}/refund/`
+  payload.reason = nullIfEmpty(payload.reason)
   return instance.post(url, payload)
 }
 
