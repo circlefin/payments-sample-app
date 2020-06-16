@@ -44,6 +44,25 @@
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
+        <h2 class="title">Addresses endpoints</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>
+          Api endpoints to manage blockchain addresses.
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/wallets/addresses/fetch">Get all addresses</a>
+        </p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/wallets/addresses/create">
+            Create blockchain address
+          </a>
+        </p>
+      </v-card>
+
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
         <h2 class="title">Transfers endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
