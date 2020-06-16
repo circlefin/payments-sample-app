@@ -32,7 +32,7 @@ export interface RefundPaymentPayload {
     amount: string
     currency: string
   }
-  reason: string
+  reason: string | undefined
 }
 
 const instance = axios.create({
@@ -152,6 +152,7 @@ function getPaymentById(id: string) {
  */
 function refundPayment(id: string, payload: RefundPaymentPayload) {
   const url = `/v1/payments/${id}/refund`
+  payload.reason = nullIfEmpty(payload.reason)
   return instance.post(url, payload)
 }
 
