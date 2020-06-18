@@ -43,7 +43,8 @@ export default {
     '~/plugins/settlementsApi',
     '~/plugins/walletsApi',
     '~/plugins/transfersApi',
-    '~/plugins/addressesApi'
+    '~/plugins/addressesApi',
+    '~/plugins/accountsApi'
   ],
   /*
    ** Nuxt.js dev-modules
