@@ -4,7 +4,7 @@ import axios from 'axios'
 import { getAPIHostname } from './apiTarget'
 
 const instance = axios.create({
-  baseURL: getAPIHostname()
+  baseURL: getAPIHostname(),
 })
 
 /**
@@ -13,13 +13,13 @@ const instance = axios.create({
  * to errorHandler object
  */
 instance.interceptors.response.use(
-  function(response) {
+  function (response) {
     if (get(response, 'data.data')) {
       return response.data.data
     }
     return response
   },
-  function(error) {
+  function (error) {
     let response = get(error, 'response')
     if (!response) {
       response = error.toJSON()
@@ -64,10 +64,10 @@ function getSettlements(
     to: nullIfEmpty(to),
     pageBefore: nullIfEmpty(pageBefore),
     pageAfter: nullIfEmpty(pageAfter),
-    pageSize: nullIfEmpty(pageSize)
+    pageSize: nullIfEmpty(pageSize),
   }
 
-  const url = `/v1/settlements`
+  const url = '/v1/settlements'
 
   return instance.get(url, { params: queryParams })
 }
@@ -88,13 +88,13 @@ function getSettlementById(
   return instance.get(url, {
     params: {
       merchantWalletId: nullIfEmpty(merchantWalletId),
-      walletId: nullIfEmpty(walletId)
-    }
+      walletId: nullIfEmpty(walletId),
+    },
   })
 }
 
 export default {
   getInstance,
   getSettlements,
-  getSettlementById
+  getSettlementById,
 }

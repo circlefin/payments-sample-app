@@ -81,15 +81,15 @@ import { getLive } from '@/lib/apiTarget'
   components: {
     RequestInfo,
     ErrorSheet,
-    ExpiryInput
+    ExpiryInput,
   },
   computed: {
     ...mapGetters({
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl'
-    })
-  }
+      requestUrl: 'getRequestUrl',
+    }),
+  },
 })
 export default class UpdateCardsClass extends Vue {
   // data
@@ -108,20 +108,23 @@ export default class UpdateCardsClass extends Vue {
     phoneNumber: '',
     expiry: {
       month: '',
-      year: ''
-    }
+      year: '',
+    },
   }
+
   rules = {
     required: (v: string) => !!v || 'Field is required',
-    isNumber: (v: string) => !isNaN(parseInt(v)) || 'Please enter valid number'
+    isNumber: (v: string) => !isNaN(parseInt(v)) || 'Please enter valid number',
   }
+
   error = {}
   loading = false
   showError = false
   expiryLabels = {
     month: 'Expiry Month',
-    year: 'Expiry Year'
+    year: 'Expiry Year',
   }
+
   isSandbox: Boolean = !getLive()
 
   onErrorSheetClosed() {
@@ -146,7 +149,7 @@ export default class UpdateCardsClass extends Vue {
       cvv?: string
     } = {
       number: cardNumber.trim().replace(/\D/g, ''),
-      cvv
+      cvv,
     }
 
     const payload = {
@@ -159,8 +162,8 @@ export default class UpdateCardsClass extends Vue {
         email,
         phoneNumber,
         sessionId: 'xxx',
-        ipAddress: '172.33.222.1'
-      }
+        ipAddress: '172.33.222.1',
+      },
     }
     try {
       const publicKey = await this.$cardsApi.getPCIPublicKey()

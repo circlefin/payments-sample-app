@@ -19,8 +19,8 @@ import { EventBus } from '@/lib/eventBus.js'
 
 @Component({
   directives: {
-    mask
-  }
+    mask,
+  },
 })
 export default class CVVInput extends Vue {
   @Prop({ type: String }) value!: string

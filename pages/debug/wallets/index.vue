@@ -98,9 +98,9 @@ import { mapGetters } from 'vuex'
 @Component({
   computed: {
     ...mapGetters({
-      isMarketplace: 'isMarketplace'
-    })
-  }
+      isMarketplace: 'isMarketplace',
+    }),
+  },
 })
 export default class WalletsIndexClass extends Vue {}
 </script>
