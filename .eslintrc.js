@@ -2,16 +2,16 @@ module.exports = {
   root: true,
   env: {
     browser: true,
-    node: true
+    node: true,
   },
   extends: [
     'prettier/vue',
     'plugin:vue/recommended',
     'plugin:prettier/recommended',
-    '@nuxtjs/eslint-config-typescript'
+    '@nuxtjs/eslint-config-typescript',
   ],
   parserOptions: {
-    parser: '@typescript-eslint/parser'
+    parser: '@typescript-eslint/parser',
   },
   plugins: ['vue'],
   // add your custom rules here
@@ -22,6 +22,7 @@ module.exports = {
     'vue/html-self-closing': 'off',
     'vue/singleline-html-element-content-newline': 'off',
     'vue/max-attributes-per-line': 'off',
-    'space-before-function-paren': ['error', 'never']
-  }
+    'space-before-function-paren': 'off',
+    'comma-dangle': 'off',
+  },
 }

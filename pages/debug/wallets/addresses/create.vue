@@ -3,10 +3,28 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
+          <v-text-field v-model="formData.walletId" label="Wallet Id" />
+          <v-text-field
+            v-model="formData.idempotencyKey"
+            label="Idempotency Key"
+          />
+          <v-select
+            v-model="formData.currency"
+            :items="currencyTypes"
+            label="Currency"
+            hint="Currently, only USD is supported."
+          />
+          <v-select
+            v-model="formData.chain"
+            :items="blockChains"
+            label="Blockchain"
+            hint="Currently, only ETH is supported."
+          />
           <v-btn
             depressed
             class="mb-7"
             color="primary"
+            :loading="loading"
             @click.prevent="makeApiCall()"
           >
             Make api call
@@ -48,16 +66,19 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
     }),
   },
 })
-export default class FetchPaymentsClass extends Vue {
-  rules = {
-    isNumber: (v: string) =>
-      v === '' || !isNaN(parseInt(v)) || 'Please enter valid number',
-    required: (v: string) => !!v || 'Field is required',
-  }
-
+export default class CreateAddressClass extends Vue {
   error = {}
   loading = false
   showError = false
+  formData = {
+    walletId: '',
+    idempotencyKey: '',
+    currency: '',
+    chain: '',
+  }
+
+  currencyTypes = ['USD']
+  blockChains = ['ETH']
 
   // methods
   onErrorSheetClosed() {
@@ -68,7 +89,12 @@ export default class FetchPaymentsClass extends Vue {
   async makeApiCall() {
     this.loading = true
     try {
-      await this.$marketplaceApi.getMerchants()
+      await this.$addressesApi.createAddress(
+        this.formData.walletId,
+        this.formData.idempotencyKey,
+        this.formData.currency,
+        this.formData.chain
+      )
     } catch (error) {
       this.error = error
       this.showError = true

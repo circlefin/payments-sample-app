@@ -22,24 +22,26 @@ import { mask } from 'vue-the-mask'
 
 @Component({
   directives: {
-    mask
-  }
+    mask,
+  },
 })
 export default class ExpiryInput extends Vue {
   @Prop({ type: Object, default: { month: '', year: '' } }) labels!: {
     month: string
     year: string
   }
+
   @Prop({ type: Object, default: { month: '', year: '' } }) value!: {
     month: string
     year: string
   }
+
   @Prop({ type: Boolean, default: false }) disabled!: boolean
   @Prop({ type: Boolean, default: false }) required!: boolean
 
   expiry = {
     month: '',
-    year: ''
+    year: '',
   }
 
   vModel = ''
@@ -81,7 +83,7 @@ export default class ExpiryInput extends Vue {
           return 'Date has expired'
         }
         return true
-      }
+      },
     }
   }
 }

@@ -1,19 +1,17 @@
-import walletsApi from '@/lib/walletsApi'
+import addressesApi from '@/lib/addressesApi'
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $walletsApi: {
-      getWallets: any
-      getWalletById: any
-      createWallet: any
+    $addressesApi: {
+      getAddresses: any
+      createAddress: any
       getInstance: any
-      getMasterWallet: any
     }
   }
 }
 
 export default ({ store }: any, inject: any) => {
-  const instance = walletsApi.getInstance()
+  const instance = addressesApi.getInstance()
 
   instance.interceptors.request.use(
     function (config) {
@@ -41,5 +39,5 @@ export default ({ store }: any, inject: any) => {
     }
   )
 
-  inject('walletsApi', walletsApi)
+  inject('addressesApi', addressesApi)
 }

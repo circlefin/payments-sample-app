@@ -79,44 +79,45 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import {
   CreateTransferPayload,
   BlockchainDestination,
-  WalletDestination
+  WalletDestination,
 } from '@/lib/transfersApi'
 
 @Component({
   components: {
     RequestInfo,
-    ErrorSheet
+    ErrorSheet,
   },
   computed: {
     ...mapGetters({
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
       requestUrl: 'getRequestUrl',
-      isMarketplace: 'isMarketplace'
-    })
-  }
+      isMarketplace: 'isMarketplace',
+    }),
+  },
 })
 export default class CreateTransferClass extends Vue {
   isWalletTransfer = true
   formData = {
     idempotencyKey: '',
     source: {
-      id: ''
+      id: '',
     },
     amount: '0.00',
     destination: {
       type: 'wallet',
       address: '',
       chain: '',
-      id: ''
-    }
+      id: '',
+    },
   }
+
   destinationTypes = ['wallet', 'blockchain']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
@@ -158,19 +159,19 @@ export default class CreateTransferClass extends Vue {
 
     const amountDetail = {
       amount: this.formData.amount,
-      currency: 'USD'
+      currency: 'USD',
     }
     let destination: BlockchainDestination | WalletDestination
     if (this.isWalletTransfer) {
       destination = {
         type: 'wallet',
-        id: this.formData.destination.id
+        id: this.formData.destination.id,
       }
     } else {
       destination = {
         type: 'blockchain',
         address: this.formData.destination.address,
-        chain: this.formData.destination.chain
+        chain: this.formData.destination.chain,
       }
     }
 
@@ -178,10 +179,10 @@ export default class CreateTransferClass extends Vue {
       idempotencyKey: uuidv4(),
       source: {
         type: 'wallet',
-        id: this.formData.source.id
+        id: this.formData.source.id,
       },
       amount: amountDetail,
-      destination
+      destination,
     }
 
     try {

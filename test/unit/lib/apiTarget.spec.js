@@ -6,7 +6,7 @@ describe('apiTarget', () => {
     delete global.window.location
     global.window = Object.create(window)
     global.window.location = {
-      origin: 'testorigin'
+      origin: 'testorigin',
     }
   })
 

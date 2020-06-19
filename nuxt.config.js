@@ -6,7 +6,7 @@ export default {
   mode: 'spa',
   server: {
     host: '0.0.0.0',
-    port: 3011
+    port: 3011,
   },
   /*
    ** Headers of the page
@@ -20,10 +20,10 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: process.env.npm_package_description || ''
-      }
+        content: process.env.npm_package_description || '',
+      },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
   /*
    ** Customize the progress-bar color
@@ -43,7 +43,8 @@ export default {
     '~/plugins/settlementsApi',
     '~/plugins/walletsApi',
     '~/plugins/transfersApi',
-    '~/plugins/payoutsApi'
+    '~/plugins/payoutsApi',
+    '~/plugins/addressesApi'
   ],
   /*
    ** Nuxt.js dev-modules
@@ -68,10 +69,10 @@ export default {
           info: colors.teal.lighten3,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
-          success: colors.green.accent3
-        }
-      }
-    }
+          success: colors.green.accent3,
+        },
+      },
+    },
   },
   /*
    ** Build configuration
@@ -87,13 +88,13 @@ export default {
           vendor: {
             test: /[\\/]node_modules\/openpgp[\\/]/,
             name: 'openpgp',
-            chunks: 'all'
-          }
+            chunks: 'all',
+          },
         }
       }
-    }
+    },
   },
   env: {
-    baseUrl: process.env.BASE_URL
-  }
+    baseUrl: process.env.BASE_URL,
+  },
 }

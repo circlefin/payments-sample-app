@@ -52,25 +52,27 @@ import MarketplaceInfoFields from '@/components/MarketplaceInfoFields.vue'
   components: {
     RequestInfo,
     ErrorSheet,
-    MarketplaceInfoFields
+    MarketplaceInfoFields,
   },
   computed: {
     ...mapGetters({
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl'
-    })
-  }
+      requestUrl: 'getRequestUrl',
+    }),
+  },
 })
 export default class FetchSettlementDetailsClass extends Vue {
   // data
   formData = {
-    settlementId: ''
+    settlementId: '',
   }
+
   marketplaceInfo = {
     walletId: '',
-    merchantWalletId: ''
+    merchantWalletId: '',
   }
+
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false

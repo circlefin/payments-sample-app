@@ -46,7 +46,7 @@ export interface CreateCardPayload {
 }
 
 const instance = axios.create({
-  baseURL: getAPIHostname()
+  baseURL: getAPIHostname(),
 })
 
 /**
@@ -55,13 +55,13 @@ const instance = axios.create({
  * to errorHandler object
  */
 instance.interceptors.response.use(
-  function(response) {
+  function (response) {
     if (get(response, 'data.data')) {
       return response.data.data
     }
     return response
   },
-  function(error) {
+  function (error) {
     let response = get(error, 'response')
     if (!response) {
       response = error.toJSON()
@@ -113,10 +113,10 @@ function getCards(pageBefore: string, pageAfter: string, pageSize: string) {
   const queryParams = {
     pageBefore,
     pageAfter,
-    pageSize
+    pageSize,
   }
 
-  const url = `/v1/cards`
+  const url = '/v1/cards'
 
   return instance.get(url, { params: queryParams })
 }
@@ -126,9 +126,8 @@ function getCards(pageBefore: string, pageAfter: string, pageSize: string) {
  * @param {*} payload (contains form data and encrypted card details)
  */
 function createCard(payload: CreateCardPayload) {
-  const url = `/v1/cards`
+  const url = '/v1/cards'
   if (payload.metadata) {
-    payload.metadata.email = nullIfEmpty(payload.metadata.email)
     payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
   }
   return instance.post(url, payload)
@@ -143,7 +142,6 @@ function createCard(payload: CreateCardPayload) {
 function updateCard(cardId: string, payload: UpdateCardPayload) {
   const url = `/v1/cards/${cardId}`
   if (payload.metadata) {
-    payload.metadata.email = nullIfEmpty(payload.metadata.email)
     payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
   }
   return instance.put(url, payload)
@@ -155,5 +153,5 @@ export default {
   getCards,
   getCardById,
   createCard,
-  updateCard
+  updateCard,
 }

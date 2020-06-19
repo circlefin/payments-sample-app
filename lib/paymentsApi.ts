@@ -36,7 +36,7 @@ export interface RefundPaymentPayload {
 }
 
 const instance = axios.create({
-  baseURL: getAPIHostname()
+  baseURL: getAPIHostname(),
 })
 
 /**
@@ -45,13 +45,13 @@ const instance = axios.create({
  * to errorHandler object
  */
 instance.interceptors.response.use(
-  function(response) {
+  function (response) {
     if (get(response, 'data.data')) {
       return response.data.data
     }
     return response
   },
-  function(error) {
+  function (error) {
     let response = get(error, 'response')
     if (!response) {
       response = error.toJSON()
@@ -98,7 +98,7 @@ function cancelPayment(id: string, payload: any) {
  * @param {*} payload (contains form data and encrypted payment details)
  */
 function createPayment(payload: CreatePaymentPayload) {
-  const url = `/v1/payments`
+  const url = '/v1/payments'
   if (payload.metadata) {
     payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
   }
@@ -128,10 +128,10 @@ function getPayments(
     to: nullIfEmpty(to),
     pageBefore: nullIfEmpty(pageBefore),
     pageAfter: nullIfEmpty(pageAfter),
-    pageSize: nullIfEmpty(pageSize)
+    pageSize: nullIfEmpty(pageSize),
   }
 
-  const url = `/v1/payments`
+  const url = '/v1/payments'
 
   return instance.get(url, { params: queryParams })
 }
@@ -160,7 +160,7 @@ function refundPayment(id: string, payload: RefundPaymentPayload) {
  * Get balance
  */
 function getBalance() {
-  const url = `/v1/balances`
+  const url = '/v1/balances'
   return instance.get(url)
 }
 
@@ -172,5 +172,5 @@ export default {
   getPaymentById,
   getPCIPublicKey,
   refundPayment,
-  getBalance
+  getBalance,
 }

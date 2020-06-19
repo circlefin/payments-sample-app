@@ -56,7 +56,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 import openPGP from '@/lib/openpgp'
 import { CreatePaymentPayload } from '@/lib/paymentsApi'
 import RequestInfo from '@/components/RequestInfo.vue'
@@ -65,16 +65,16 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 @Component({
   components: {
     RequestInfo,
-    ErrorSheet
+    ErrorSheet,
   },
   computed: {
     ...mapGetters({
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
       requestUrl: 'getRequestUrl',
-      isMarketplace: 'isMarketplace'
-    })
-  }
+      isMarketplace: 'isMarketplace',
+    }),
+  },
 })
 export default class CreatePaymentClass extends Vue {
   isMarketplace!: boolean
@@ -85,8 +85,9 @@ export default class CreatePaymentClass extends Vue {
     amount: '0.00',
     cvv: '',
     phoneNumber: '',
-    email: ''
+    email: '',
   }
+
   verificationMethods = ['none', 'cvv']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
@@ -97,7 +98,7 @@ export default class CreatePaymentClass extends Vue {
     if (this.isMarketplace) {
       return this.$nuxt.error({
         statusCode: 404,
-        message: 'This endpoint is not available for marketplaces'
+        message: 'This endpoint is not available for marketplaces',
       })
     }
   }
@@ -122,11 +123,11 @@ export default class CreatePaymentClass extends Vue {
 
     const amountDetail = {
       amount: this.formData.amount,
-      currency: 'USD'
+      currency: 'USD',
     }
     const sourceDetails = {
       id: this.formData.sourceId,
-      type: 'card'
+      type: 'card',
     }
 
     const payload: CreatePaymentPayload = {
@@ -138,8 +139,8 @@ export default class CreatePaymentClass extends Vue {
         email: this.formData.email,
         phoneNumber: this.formData.phoneNumber,
         sessionId: 'xxx',
-        ipAddress: '172.33.222.1'
-      }
+        ipAddress: '172.33.222.1',
+      },
     }
 
     try {

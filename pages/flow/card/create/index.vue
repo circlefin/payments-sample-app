@@ -104,8 +104,8 @@ import { getLive } from '@/lib/apiTarget'
 @Component({
   components: {
     CreateCardForm,
-    Environment
-  }
+    Environment,
+  },
 })
 export default class CreateCardClass extends Vue {
   loading: boolean = false
