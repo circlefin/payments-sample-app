@@ -308,6 +308,18 @@ export default class DefaultLayoutsClass extends Vue {
       title: 'POST /transfers',
       to: '/debug/wallets/transfers/create',
     },
+    {
+      title: 'GET /payouts',
+      to: '/debug/wallets/payouts/fetch',
+    },
+    {
+      title: 'GET /payouts/{id}',
+      to: '/debug/wallets/payouts/details',
+    },
+    {
+      title: 'POST /payouts',
+      to: '/debug/wallets/payouts/create',
+    },
   ]
 
   miniVariant = false
