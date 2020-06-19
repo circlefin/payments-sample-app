@@ -44,15 +44,15 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 @Component({
   components: {
     RequestInfo,
-    ErrorSheet
+    ErrorSheet,
   },
   computed: {
     ...mapGetters({
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl'
-    })
-  }
+      requestUrl: 'getRequestUrl',
+    }),
+  },
 })
 export default class CreateWalletClass extends Vue {
   error = {}
@@ -60,7 +60,7 @@ export default class CreateWalletClass extends Vue {
   showError = false
   formData = {
     idempotencyKey: '',
-    description: ''
+    description: '',
   }
 
   // methods

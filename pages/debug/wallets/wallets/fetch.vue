@@ -44,15 +44,15 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 @Component({
   components: {
     RequestInfo,
-    ErrorSheet
+    ErrorSheet,
   },
   computed: {
     ...mapGetters({
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl'
-    })
-  }
+      requestUrl: 'getRequestUrl',
+    }),
+  },
 })
 export default class FetchWalletssClass extends Vue {
   // data
@@ -61,13 +61,15 @@ export default class FetchWalletssClass extends Vue {
     to: '',
     pageSize: '',
     pageBefore: '',
-    pageAfter: ''
+    pageAfter: '',
   }
+
   rules = {
     isNumber: (v: string) =>
       v === '' || !isNaN(parseInt(v)) || 'Please enter valid number',
-    required: (v: string) => !!v || 'Field is required'
+    required: (v: string) => !!v || 'Field is required',
   }
+
   error = {}
   loading = false
   showError = false

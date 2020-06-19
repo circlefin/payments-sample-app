@@ -47,8 +47,8 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 @Component({
   directives: {
-    mask
-  }
+    mask,
+  },
 })
 export default class CardInput extends Vue {
   @Prop({ type: String }) value!: string
@@ -75,7 +75,7 @@ export default class CardInput extends Vue {
     },
     isRequired: (v: string) => {
       return v.trim() !== '' || 'Please enter a credit card number'
-    }
+    },
   }
 
   updateIcon(value: string) {

@@ -189,13 +189,13 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 import { exampleCards } from '@/lib/cardTestData'
 import openPGP from '@/lib/openpgp'
 import { CreatePaymentPayload } from '@/lib/paymentsApi'
 import {
   CreateMarketplacePaymentPayload,
-  MarketplaceInfo
+  MarketplaceInfo,
 } from '@/lib/marketplaceApi'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import Environment from '@/components/Environment.vue'
@@ -220,22 +220,23 @@ interface Card {
     AmountInput,
     CVVInput,
     PaymentStatus,
-    MarketplaceInfoFields
+    MarketplaceInfoFields,
   },
   computed: {
     ...mapGetters({
       cards: 'getCards',
-      isMarketplace: 'isMarketplace'
-    })
-  }
+      isMarketplace: 'isMarketplace',
+    }),
+  },
 })
 export default class CardFlowClass extends Vue {
   isMarketplace!: boolean
   marketplaceInfo: MarketplaceInfo = {
     walletId: '',
     merchantId: '',
-    merchantWalletId: ''
+    merchantWalletId: '',
   }
+
   cards!: Card[]
   cardItems: string[] = []
   validForm: boolean = false
@@ -247,12 +248,14 @@ export default class CardFlowClass extends Vue {
     amount: '0.00',
     cvv: '',
     phoneNumber: '',
-    email: ''
+    email: '',
   }
+
   cardIdInput = ''
   rules = {
-    required: (v: string) => !!v || 'Field is required'
+    required: (v: string) => !!v || 'Field is required',
   }
+
   required = [(v: string) => !!v || 'Field is required']
   loading: boolean = false
   error: object = {}
@@ -297,7 +300,7 @@ export default class CardFlowClass extends Vue {
 
   addCardById() {
     this.$store.dispatch('setCard', {
-      id: this.cardIdInput
+      id: this.cardIdInput,
     })
     this.createCardOverlay = false
   }
@@ -316,11 +319,11 @@ export default class CardFlowClass extends Vue {
 
     const amountDetail = {
       amount: this.formData.amount,
-      currency: 'USD'
+      currency: 'USD',
     }
     const sourceDetails = {
       id: this.formData.fiatAccountId,
-      type: 'card'
+      type: 'card',
     }
 
     const payload: CreatePaymentPayload = {
@@ -334,8 +337,8 @@ export default class CardFlowClass extends Vue {
         phoneNumber: this.formData.phoneNumber,
         email: this.formData.email,
         sessionId: 'xxx',
-        ipAddress: '172.33.222.1'
-      }
+        ipAddress: '172.33.222.1',
+      },
     }
 
     try {
@@ -351,7 +354,7 @@ export default class CardFlowClass extends Vue {
       if (this.isMarketplace) {
         const marketPlacePayload: CreateMarketplacePaymentPayload = {
           marketplaceInfo: this.marketplaceInfo,
-          ...payload
+          ...payload,
         }
         this.payment = await this.$marketplaceApi.createPayment(
           marketPlacePayload

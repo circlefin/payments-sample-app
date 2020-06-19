@@ -28,7 +28,7 @@ export interface CreateTransferPayload {
 }
 
 const instance = axios.create({
-  baseURL: getAPIHostname()
+  baseURL: getAPIHostname(),
 })
 
 /**
@@ -37,13 +37,13 @@ const instance = axios.create({
  * to errorHandler object
  */
 instance.interceptors.response.use(
-  function(response) {
+  function (response) {
     if (get(response, 'data.data')) {
       return response.data.data
     }
     return response
   },
-  function(error) {
+  function (error) {
     let response = get(error, 'response')
     if (!response) {
       response = error.toJSON()
@@ -102,10 +102,10 @@ function getTransfers(
     to: nullIfEmpty(to),
     pageBefore: nullIfEmpty(pageBefore),
     pageAfter: nullIfEmpty(pageAfter),
-    pageSize: nullIfEmpty(pageSize)
+    pageSize: nullIfEmpty(pageSize),
   }
 
-  const url = `/v1/transfers`
+  const url = '/v1/transfers'
 
   return instance.get(url, { params: queryParams })
 }
@@ -115,7 +115,7 @@ function getTransfers(
  * @param {*} payload (contains form data and encrypted transfer details)
  */
 function createTransfer(payload: CreateTransferPayload) {
-  const url = `/v1/transfers`
+  const url = '/v1/transfers'
   return instance.post(url, payload)
 }
 
@@ -123,5 +123,5 @@ export default {
   getInstance,
   getTransfers,
   getTransferById,
-  createTransfer
+  createTransfer,
 }

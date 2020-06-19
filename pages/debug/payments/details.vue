@@ -40,21 +40,22 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 @Component({
   components: {
     RequestInfo,
-    ErrorSheet
+    ErrorSheet,
   },
   computed: {
     ...mapGetters({
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl'
-    })
-  }
+      requestUrl: 'getRequestUrl',
+    }),
+  },
 })
 export default class FetchPaymentDetailsClass extends Vue {
   // data
   formData = {
-    paymentId: ''
+    paymentId: '',
   }
+
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false

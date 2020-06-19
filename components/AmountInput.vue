@@ -35,7 +35,7 @@ export default class AmountInput extends Vue {
     },
     isRequired: (v: string) => {
       return v.trim() !== '' || 'Please enter an amount'
-    }
+    },
   }
 
   get rules() {
@@ -43,7 +43,7 @@ export default class AmountInput extends Vue {
       this.ruleFunctions.isRequired,
       this.ruleFunctions.isNumber,
       this.ruleFunctions.isCurrency,
-      this.ruleFunctions.positive
+      this.ruleFunctions.positive,
     ]
   }
 

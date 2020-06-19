@@ -215,9 +215,9 @@ import { mapGetters } from 'vuex'
 @Component({
   computed: {
     ...mapGetters({
-      isMarketplace: 'isMarketplace'
-    })
-  }
+      isMarketplace: 'isMarketplace',
+    }),
+  },
 })
 export default class DebugIndexClass extends Vue {}
 </script>

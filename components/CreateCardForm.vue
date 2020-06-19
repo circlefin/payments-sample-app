@@ -103,7 +103,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 import openPGP from '@/lib/openpgp'
 import { exampleCards } from '@/lib/cardTestData'
 import { CreateCardPayload } from '@/lib/cardsApi'
@@ -122,15 +122,15 @@ import { getLive } from '@/lib/apiTarget'
     CardInput,
     CVVInput,
     ExpiryInput,
-    CountrySelect
+    CountrySelect,
   },
   computed: {
     ...mapGetters({
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl'
-    })
-  }
+      requestUrl: 'getRequestUrl',
+    }),
+  },
 })
 export default class CreateCardFormClass extends Vue {
   @Prop({ type: Boolean, default: false })
@@ -145,7 +145,7 @@ export default class CreateCardFormClass extends Vue {
     cvv: '',
     expiry: {
       month: '',
-      year: ''
+      year: '',
     },
     name: '',
     country: '',
@@ -155,21 +155,24 @@ export default class CreateCardFormClass extends Vue {
     city: '',
     postalCode: '',
     phoneNumber: '',
-    email: ''
+    email: '',
   }
+
   rules = {
     isNumber: (v: string) =>
       v === '' || !isNaN(parseInt(v)) || 'Please enter valid number',
-    required: (v: string) => !!v || 'Field is required'
+    required: (v: string) => !!v || 'Field is required',
   }
+
   prefillItems = exampleCards
   error = {}
   loading = false
   showError = false
   expiryLabels = {
     month: 'Expiry Month',
-    year: 'Expiry Year'
+    year: 'Expiry Year',
   }
+
   isSandbox: Boolean = !getLive()
 
   prefillForm(index: number) {
@@ -207,7 +210,7 @@ export default class CreateCardFormClass extends Vue {
     const { email, phoneNumber, cardNumber, cvv, ...data } = this.formData
     const cardDetails = {
       number: cardNumber.trim().replace(/\D/g, ''),
-      cvv
+      cvv,
     }
     const { expiry, ...billingDetails } = data
 
@@ -222,8 +225,8 @@ export default class CreateCardFormClass extends Vue {
         email,
         phoneNumber,
         sessionId: 'xxx',
-        ipAddress: '172.33.222.1'
-      }
+        ipAddress: '172.33.222.1',
+      },
     }
 
     try {
@@ -237,7 +240,7 @@ export default class CreateCardFormClass extends Vue {
       const card = await this.$cardsApi.createCard(payload)
       if (card) {
         this.$store.dispatch('setCard', {
-          id: card.id
+          id: card.id,
         })
       }
       this.$emit('success', card)

@@ -36,7 +36,7 @@ const server = http.createServer((request, response) => {
       console.log(`Body: ${body}`)
 
       response.writeHead(200, {
-        'Content-Type': 'text/html'
+        'Content-Type': 'text/html',
       })
       response.end(`POST request for ${request.url}`)
       handleBody(body)
