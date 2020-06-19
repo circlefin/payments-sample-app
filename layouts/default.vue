@@ -222,6 +222,10 @@ export default class DefaultLayoutsClass extends Vue {
       title: 'GET /settlements/{id}',
       to: '/debug/settlements/details',
     },
+    {
+      title: 'POST /accounts',
+      to: '/debug/accounts/create',
+    },
   ]
 
   paymentsLinks = [
@@ -272,6 +276,10 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /settlements/{id}',
       to: '/debug/settlements/details',
+    },
+    {
+      title: 'POST /accounts',
+      to: '/debug/accounts/create',
     },
   ]
 

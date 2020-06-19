@@ -44,6 +44,7 @@ export default {
     '~/plugins/walletsApi',
     '~/plugins/transfersApi',
     '~/plugins/addressesApi',
+    '~/plugins/accountsApi',
   ],
   /*
    ** Nuxt.js dev-modules
