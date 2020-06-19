@@ -40,4 +40,3 @@ export default ({ store }: any, inject: any) => {
 
   inject('accountsApi', accountsApi)
 }
-

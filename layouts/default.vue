@@ -161,62 +161,62 @@ export default class DefaultLayoutsClass extends Vue {
   flowLinks = [
     {
       title: 'Charge a card',
-      to: '/flow/charge',
+      to: '/flow/charge'
     },
     {
       title: 'Use an existing card',
-      to: '/flow/charge/existing-card',
+      to: '/flow/charge/existing-card'
     },
     {
       title: 'Add a new card',
-      to: '/flow/card/create',
-    },
+      to: '/flow/card/create'
+    }
   ]
 
   marketplaceLinks = [
     {
       title: 'GET /cards',
-      to: '/debug/cards/fetch',
+      to: '/debug/cards/fetch'
     },
     {
       title: 'GET /cards/{id}',
-      to: '/debug/cards/details',
+      to: '/debug/cards/details'
     },
     {
       title: 'POST /cards',
-      to: '/debug/cards/create',
+      to: '/debug/cards/create'
     },
     {
       title: 'PUT /cards/{id}',
-      to: '/debug/cards/update',
+      to: '/debug/cards/update'
     },
     {
       title: 'GET /marketplace/payments',
-      to: '/debug/marketplace/payments/fetch',
+      to: '/debug/marketplace/payments/fetch'
     },
     {
       title: 'GET /marketplace/payments/{id}',
-      to: '/debug/marketplace/payments/details',
+      to: '/debug/marketplace/payments/details'
     },
     {
       title: 'POST /marketplace/payments',
-      to: '/debug/marketplace/payments/create',
+      to: '/debug/marketplace/payments/create'
     },
     {
       title: 'POST /marketplace/payments/{id}/cancel',
-      to: '/debug/marketplace/payments/cancel',
+      to: '/debug/marketplace/payments/cancel'
     },
     {
       title: 'POST /marketplace/payments/{id}/refund',
-      to: '/debug/marketplace/payments/refund',
+      to: '/debug/marketplace/payments/refund'
     },
     {
       title: 'GET /marketplace/merchants',
-      to: '/debug/marketplace/merchants/fetch',
+      to: '/debug/marketplace/merchants/fetch'
     },
     {
       title: 'GET /settlements',
-      to: '/debug/settlements/fetch',
+      to: '/debug/settlements/fetch'
     },
     {
       title: 'GET /settlements/{id}',
@@ -231,47 +231,47 @@ export default class DefaultLayoutsClass extends Vue {
   paymentsLinks = [
     {
       title: 'GET /cards',
-      to: '/debug/cards/fetch',
+      to: '/debug/cards/fetch'
     },
     {
       title: 'GET /cards/{id}',
-      to: '/debug/cards/details',
+      to: '/debug/cards/details'
     },
     {
       title: 'POST /cards',
-      to: '/debug/cards/create',
+      to: '/debug/cards/create'
     },
     {
       title: 'PUT /cards/{id}',
-      to: '/debug/cards/update',
+      to: '/debug/cards/update'
     },
     {
       title: 'GET /payments',
-      to: '/debug/payments/fetch',
+      to: '/debug/payments/fetch'
     },
     {
       title: 'GET /payments/{id}',
-      to: '/debug/payments/details',
+      to: '/debug/payments/details'
     },
     {
       title: 'POST /payments',
-      to: '/debug/payments/create',
+      to: '/debug/payments/create'
     },
     {
       title: 'POST /payments/{id}/cancel',
-      to: '/debug/payments/cancel',
+      to: '/debug/payments/cancel'
     },
     {
       title: 'POST /payments/{id}/refund',
-      to: '/debug/payments/refund',
+      to: '/debug/payments/refund'
     },
     {
       title: 'GET /balances',
-      to: '/debug/payments/balances/fetch',
+      to: '/debug/payments/balances/fetch'
     },
     {
       title: 'GET /settlements',
-      to: '/debug/settlements/fetch',
+      to: '/debug/settlements/fetch'
     },
     {
       title: 'GET /settlements/{id}',
@@ -286,36 +286,36 @@ export default class DefaultLayoutsClass extends Vue {
   walletsLinks = [
     {
       title: 'GET /wallets',
-      to: '/debug/wallets/wallets/fetch',
+      to: '/debug/wallets/wallets/fetch'
     },
     {
       title: 'GET /wallets/{id}',
-      to: '/debug/wallets/wallets/details',
+      to: '/debug/wallets/wallets/details'
     },
     {
       title: 'POST /wallets',
-      to: '/debug/wallets/wallets/create',
+      to: '/debug/wallets/wallets/create'
     },
     {
       title: 'GET /{walletId}/addresses',
-      to: '/debug/wallets/addresses/fetch',
+      to: '/debug/wallets/addresses/fetch'
     },
     {
       title: 'POST /{walletId}/addresses',
-      to: '/debug/wallets/addresses/create',
+      to: '/debug/wallets/addresses/create'
     },
     {
       title: 'GET /transfers',
-      to: '/debug/wallets/transfers/fetch',
+      to: '/debug/wallets/transfers/fetch'
     },
     {
       title: 'GET /transfers/{id}',
-      to: '/debug/wallets/transfers/details',
+      to: '/debug/wallets/transfers/details'
     },
     {
       title: 'POST /transfers',
-      to: '/debug/wallets/transfers/create',
-    },
+      to: '/debug/wallets/transfers/create'
+    }
   ]
 
   miniVariant = false
