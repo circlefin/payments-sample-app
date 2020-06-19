@@ -141,7 +141,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 import { getLive } from '@/lib/apiTarget'
 import { exampleAccounts } from '@/lib/accountsTestData'
 import { CreateAccountPayload } from '@/lib/accountsApi'
