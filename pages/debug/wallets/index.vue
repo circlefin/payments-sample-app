@@ -87,32 +87,6 @@
           </a>
         </p>
       </v-card>
-
-      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Payouts endpoints</h2>
-        <span class="caption">Requires: api key</span>
-        <br /><br />
-        <p>
-          Api endpoints to manage payouts.
-        </p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/wallets/payouts/fetch">Get all payouts</a>
-        </p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-
-          <a href="/debug/wallets/payouts/details">
-            Get payout details by id
-          </a>
-        </p>
-        <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/wallets/payouts/create">
-            Add payout
-          </a>
-        </p>
-      </v-card>
     </v-flex>
   </v-layout>
 </template>

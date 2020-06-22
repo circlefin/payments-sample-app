@@ -6,8 +6,19 @@
           <v-text-field v-model="formData.amount" label="Amount" />
 
           <v-text-field
-            v-model="formData.destination"
-            label="Destination Wallet Id"
+            v-model="formData.destinationAccount"
+            label="Fiat Account Id"
+          />
+
+          <v-text-field
+            v-model="formData.beneficiaryEmail"
+            label="Beneficiary Email"
+          />
+
+          <v-text-field
+            v-model="formData.beneficiaryPhoneNumber"
+            hint="Phone number of the user in E.164 format"
+            label="Beneficiary Phone Number"
           />
 
           <v-btn
@@ -63,6 +74,8 @@ export default class CreatePayoutClass extends Vue {
     idempotencyKey: '',
     amount: '0.00',
     destination: '',
+    beneficiaryEmail: '',
+    beneficiaryPhoneNumber: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']
@@ -83,7 +96,11 @@ export default class CreatePayoutClass extends Vue {
     const payload: CreatePayoutPayload = {
       idempotencyKey: uuidv4(),
       amount: amountDetail,
-      destination: this.formData.destination,
+      destinationAccount: this.formData.destination,
+      metadata: {
+        beneficaryEmail: this.formData.beneficiaryEmail,
+        beneficaryPhoneNumber: this.formData.beneficiaryPhoneNumber,
+      },
     }
     try {
       await this.$payoutsApi.createPayout(payload)
