@@ -112,6 +112,32 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
+
+        <v-list-group>
+          <template v-slot:activator>
+            <v-list-item-title>Wires APIs</v-list-item-title>
+          </template>
+
+          <v-list-item to="/debug/wires" router exact>
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2">
+                Overview
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            v-for="(item, i) in wiresLink"
+            :key="`wiresLink-${i}`"
+            :to="item.to"
+            router
+            exact
+          >
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2" v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar clipped-left fixed app dark color="primary" dense>
@@ -222,10 +248,6 @@ export default class DefaultLayoutsClass extends Vue {
       title: 'GET /settlements/{id}',
       to: '/debug/settlements/details',
     },
-    {
-      title: 'POST /accounts',
-      to: '/debug/accounts/create',
-    },
   ]
 
   paymentsLinks = [
@@ -277,10 +299,6 @@ export default class DefaultLayoutsClass extends Vue {
       title: 'GET /settlements/{id}',
       to: '/debug/settlements/details',
     },
-    {
-      title: 'POST /accounts',
-      to: '/debug/accounts/create',
-    },
   ]
 
   walletsLinks = [
@@ -315,6 +333,17 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'POST /transfers',
       to: '/debug/wallets/transfers/create',
+    },
+  ]
+
+  wiresLink = [
+    {
+      title: 'GET /wires/{id}',
+      to: '/debug/wires/details',
+    },
+    {
+      title: 'POST /wires',
+      to: '/debug/wires/create',
     },
   ]
 

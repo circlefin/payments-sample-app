@@ -4,6 +4,7 @@ declare module 'vue/types/vue' {
   interface Vue {
     $accountsApi: {
       createAccount: (payload: CreateAccountPayload) => any
+      getAccountById: any
       getInstance: any
     }
   }

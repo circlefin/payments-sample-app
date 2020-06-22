@@ -67,7 +67,18 @@ function createAccount(payload: CreateAccountPayload) {
   return instance.post(url, payload)
 }
 
+/**
+ * Get Account By Id
+ * @param {String} accountId
+ */
+function getAccountById(accountId: string) {
+  const url = `/v1/wires/${accountId}`
+
+  return instance.get(url)
+}
+
 export default {
   getInstance,
   createAccount,
+  getAccountById,
 }
