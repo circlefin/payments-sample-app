@@ -3,6 +3,7 @@ import payoutsApi, { CreatePayoutPayload } from '@/lib/payoutsApi'
 declare module 'vue/types/vue' {
   interface Vue {
     $payoutsApi: {
+      getPayouts: any
       getPayoutById: any
       createPayout: (payload: CreatePayoutPayload) => any
       getInstance: any

@@ -219,13 +219,17 @@
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/wallets/payouts/details">
+          <a href="/debug/payments/payouts/fetch">Get all payouts</a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/payments/payouts/details">
             Get payout details by id
           </a>
         </p>
         <p>
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/wallets/payouts/create">
+          <a href="/debug/payments/payouts/create">
             Add payout
           </a>
         </p>

@@ -54,6 +54,34 @@ function getInstance() {
 }
 
 /**
+ * Get payouts
+ * @param {String} from
+ * @param {String} to
+ * @param {String} pageBefore
+ * @param {String} pageAfter
+ * @param {String} pageSize
+ */
+function getPayouts(
+  from: string,
+  to: string,
+  pageBefore: string,
+  pageAfter: string,
+  pageSize: string
+) {
+  const queryParams = {
+    from: nullIfEmpty(from),
+    to: nullIfEmpty(to),
+    pageBefore: nullIfEmpty(pageBefore),
+    pageAfter: nullIfEmpty(pageAfter),
+    pageSize: nullIfEmpty(pageSize),
+  }
+
+  const url = '/v1/payouts'
+
+  return instance.get(url, { params: queryParams })
+}
+
+/**
  * Get Payout
  * @param {String} payoutId
  */
@@ -77,6 +105,7 @@ function createPayout(payload: CreatePayoutPayload) {
 
 export default {
   getInstance,
+  getPayouts,
   getPayoutById,
   createPayout,
 }
