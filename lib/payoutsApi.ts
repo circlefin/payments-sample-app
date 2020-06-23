@@ -11,8 +11,8 @@ export interface CreatePayoutPayload {
     currency: string
   }
   metadata: {
-    beneficaryEmail: string
-    beneficaryPhoneNumber: string | undefined
+    beneficiaryEmail: string
+    beneficiaryPhoneNumber: string | undefined
   }
 }
 
@@ -97,8 +97,8 @@ function getPayoutById(payoutId: string) {
  */
 function createPayout(payload: CreatePayoutPayload) {
   const url = '/v1/payouts'
-  payload.metadata.beneficaryPhoneNumber = nullIfEmpty(
-    payload.metadata.beneficaryPhoneNumber
+  payload.metadata.beneficiaryPhoneNumber = nullIfEmpty(
+    payload.metadata.beneficiaryPhoneNumber
   )
   return instance.post(url, payload)
 }

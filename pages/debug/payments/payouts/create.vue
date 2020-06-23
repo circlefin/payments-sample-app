@@ -6,7 +6,7 @@
           <v-text-field v-model="formData.amount" label="Amount" />
 
           <v-text-field
-            v-model="formData.destinationAccount"
+            v-model="formData.destination"
             label="Fiat Account Id"
           />
 
@@ -98,8 +98,8 @@ export default class CreatePayoutClass extends Vue {
       amount: amountDetail,
       destinationAccount: this.formData.destination,
       metadata: {
-        beneficaryEmail: this.formData.beneficiaryEmail,
-        beneficaryPhoneNumber: this.formData.beneficiaryPhoneNumber,
+        beneficiaryEmail: this.formData.beneficiaryEmail,
+        beneficiaryPhoneNumber: this.formData.beneficiaryPhoneNumber,
       },
     }
     try {
