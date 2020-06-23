@@ -71,7 +71,7 @@ export default class FetchAccountDetailsClass extends Vue {
     this.loading = true
 
     try {
-      await this.$accountsApi.getAccountById(this.formData.accountId)
+      await this.$wiresApi.getWireAccountById(this.formData.accountId)
     } catch (error) {
       this.error = error
       this.showError = true

@@ -144,7 +144,6 @@ export default class CreateTransferClass extends Vue {
 
     try {
       const res = await this.$walletsApi.getMasterWallet()
-      console.log(res)
       if (res.payments.masterWalletId) {
         this.formData.source.id = res.payments.masterWalletId
       }

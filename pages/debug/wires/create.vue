@@ -143,8 +143,8 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
 import { getLive } from '@/lib/apiTarget'
-import { exampleAccounts } from '@/lib/accountsTestData'
-import { CreateAccountPayload } from '@/lib/accountsApi'
+import { exampleWireAccounts } from '@/lib/wiresTestData'
+import { CreateWireAccountPayload } from '@/lib/wiresApi'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 @Component({
@@ -192,7 +192,7 @@ export default class CreateCardClass extends Vue {
     required: (v: string) => !!v || 'Field is required',
   }
 
-  prefillItems = exampleAccounts
+  prefillItems = exampleWireAccounts
   error = {}
   loading = false
   showError = false
@@ -208,18 +208,17 @@ export default class CreateCardClass extends Vue {
   }
 
   prefillForm(index: number) {
-    console.log(exampleAccounts[index])
-    this.formData = exampleAccounts[index].formData
+    this.formData = exampleWireAccounts[index].formData
   }
 
   async makeApiCall() {
     this.loading = true
-    const payload: CreateAccountPayload = {
+    const payload: CreateWireAccountPayload = {
       idempotencyKey: uuidv4(),
       ...this.formData,
     }
     try {
-      await this.$accountsApi.createAccount(payload)
+      await this.$wiresApi.createWireAccount(payload)
     } catch (error) {
       this.error = error
       this.showError = true

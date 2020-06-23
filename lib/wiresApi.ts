@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import { getAPIHostname } from './apiTarget'
 
-export interface CreateAccountPayload {
+export interface CreateWireAccountPayload {
   idempotencyKey: string
   beneficiaryName: string
   bankName: string
@@ -59,19 +59,19 @@ function getInstance() {
 }
 
 /**
- * Create Account
+ * Create Wire Account
  * @param {*} payload (contains form data)
  */
-function createAccount(payload: CreateAccountPayload) {
+function createWireAccount(payload: CreateWireAccountPayload) {
   const url = '/v1/wires'
   return instance.post(url, payload)
 }
 
 /**
- * Get Account By Id
+ * Get Wire Account By Id
  * @param {String} accountId
  */
-function getAccountById(accountId: string) {
+function getWireAccountById(accountId: string) {
   const url = `/v1/wires/${accountId}`
 
   return instance.get(url)
@@ -79,6 +79,6 @@ function getAccountById(accountId: string) {
 
 export default {
   getInstance,
-  createAccount,
-  getAccountById,
+  createWireAccount,
+  getWireAccountById,
 }

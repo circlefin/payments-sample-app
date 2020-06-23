@@ -1,17 +1,17 @@
-import accountsApi, { CreateAccountPayload } from '@/lib/accountsApi'
+import wiresApi, { CreateWireAccountPayload } from '@/lib/wiresApi'
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $accountsApi: {
-      createAccount: (payload: CreateAccountPayload) => any
-      getAccountById: any
+    $wiresApi: {
+      createWireAccount: (payload: CreateWireAccountPayload) => any
+      getWireAccountById: any
       getInstance: any
     }
   }
 }
 
 export default ({ store }: any, inject: any) => {
-  const instance = accountsApi.getInstance()
+  const instance = wiresApi.getInstance()
 
   instance.interceptors.request.use(
     function (config) {
@@ -39,5 +39,5 @@ export default ({ store }: any, inject: any) => {
     }
   )
 
-  inject('accountsApi', accountsApi)
+  inject('wiresApi', wiresApi)
 }

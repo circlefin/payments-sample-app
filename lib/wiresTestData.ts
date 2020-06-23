@@ -1,4 +1,4 @@
-export const exampleAccounts = [
+export const exampleWireAccounts = [
   {
     title: 'Test Data',
     formData: {
