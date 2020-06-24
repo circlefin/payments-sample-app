@@ -114,9 +114,8 @@
             hint="State / County / Province / Region portion of the address. US and Canada use the two-letter code for the subdivision"
           />
 
-          <v-select
+          <v-text-field
             v-model="formData.bankAddress.country"
-            :items="countriesList"
             label="Bank Address Country Code"
           />
 
@@ -200,12 +199,6 @@ export default class CreateCardClass extends Vue {
       v === '' || !isNaN(parseInt(v)) || 'Please enter valid number',
     required: (v: string) => !!v || 'Field is required',
   }
-
-  countriesList = [
-    { text: 'United States - US', value: 'US' },
-    { text: 'European Union - EU', value: 'EU' },
-    { text: 'Mexico - MX', value: 'MX' },
-  ]
 
   prefillItems = exampleWireAccounts
   error = {}

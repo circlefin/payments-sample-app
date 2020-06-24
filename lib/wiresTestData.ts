@@ -1,6 +1,6 @@
 export const exampleWireAccounts = [
   {
-    title: 'Test Data',
+    title: 'US Bank Account',
     formData: {
       beneficiaryName: 'Satoshi Nakamoto',
       bankName: 'WELLS FARGO BANK',
@@ -23,6 +23,60 @@ export const exampleWireAccounts = [
         line2: 'line2',
         district: 'CA',
         postalCode: '11111',
+      },
+    },
+  },
+  {
+    title: 'France Bank Account',
+    formData: {
+      beneficiaryName: 'Satoshi Nakamoto',
+      bankName: 'WELLS FARGO BANK',
+      accountNumber: '',
+      bankIdentifier: '',
+      iban: 'FR1420041010050500013M02606',
+      billingDetails: {
+        name: 'Satoshi Nakamoto',
+        city: 'Boston',
+        country: 'US',
+        line1: '100 Money Street',
+        line2: 'Suite 1',
+        district: 'MA',
+        postalCode: '01234',
+      },
+      bankAddress: {
+        city: 'SAN FRANCISCO',
+        country: 'US',
+        line1: 'line1',
+        line2: 'line2',
+        district: 'CA',
+        postalCode: '11111',
+      },
+    },
+  },
+  {
+    title: 'Mexico Bank Account',
+    formData: {
+      beneficiaryName: 'Satoshi Nakamoto',
+      bankName: 'Banco Nacional de México',
+      accountNumber: '002010077777777771',
+      bankIdentifier: '',
+      iban: '',
+      billingDetails: {
+        name: 'Satoshi Nakamoto',
+        city: 'Boston',
+        country: 'US',
+        line1: '100 Money Street',
+        line2: 'Suite 1',
+        district: 'MA',
+        postalCode: '01234',
+      },
+      bankAddress: {
+        city: 'México DF',
+        country: 'MX',
+        line1: 'Isabel la Católica 165',
+        line2: 'Colonia Obrera',
+        district: 'México DF',
+        postalCode: '06800',
       },
     },
   },
