@@ -281,6 +281,18 @@ export default class DefaultLayoutsClass extends Vue {
       title: 'POST /wires',
       to: '/debug/wires/create',
     },
+    {
+      title: 'GET /payouts',
+      to: '/debug/payments/payouts/fetch',
+    },
+    {
+      title: 'GET /payouts/{id}',
+      to: '/debug/payments/payouts/details',
+    },
+    {
+      title: 'POST /payouts',
+      to: '/debug/payments/payouts/create',
+    },
   ]
 
   walletsLinks = [
