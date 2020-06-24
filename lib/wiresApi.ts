@@ -5,10 +5,11 @@ import { getAPIHostname } from './apiTarget'
 
 export interface CreateWireAccountPayload {
   idempotencyKey: string
-  beneficiaryName: string
-  bankName: string
-  accountNumber: string
-  bankIdentifier: string
+  beneficiaryName: string | undefined
+  bankName: string | undefined
+  accountNumber: string | undefined
+  bankIdentifier: string | undefined
+  iban: string | undefined
   billingDetails: {
     name: string
     city: string
@@ -58,12 +59,24 @@ function getInstance() {
   return instance
 }
 
+const nullIfEmpty = (prop: string | undefined) => {
+  if (prop !== undefined && prop.trim() === '') {
+    return undefined
+  }
+  return prop
+}
+
 /**
  * Create Wire Account
  * @param {*} payload (contains form data)
  */
 function createWireAccount(payload: CreateWireAccountPayload) {
   const url = '/v1/wires'
+  payload.beneficiaryName = nullIfEmpty(payload.beneficiaryName)
+  payload.bankName = nullIfEmpty(payload.bankName)
+  payload.accountNumber = nullIfEmpty(payload.accountNumber)
+  payload.bankIdentifier = nullIfEmpty(payload.bankIdentifier)
+  payload.iban = nullIfEmpty(payload.iban)
   return instance.post(url, payload)
 }
 

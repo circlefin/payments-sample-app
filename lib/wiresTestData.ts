@@ -6,6 +6,7 @@ export const exampleWireAccounts = [
       bankName: 'WELLS FARGO BANK',
       accountNumber: '11111111111',
       bankIdentifier: '121000248',
+      iban: '',
       billingDetails: {
         name: 'Satoshi Nakamoto',
         city: 'Boston',
