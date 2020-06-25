@@ -221,9 +221,40 @@ export default class CreateCardClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
+    const {
+      beneficiaryName,
+      bankName,
+      accountNumber,
+      bankIdentifier,
+      iban,
+      ...data
+    } = this.formData
+    const { billingDetails, bankAddress } = data
+
     const payload: CreateWireAccountPayload = {
       idempotencyKey: uuidv4(),
-      ...this.formData,
+      beneficiaryName,
+      bankName,
+      accountNumber,
+      bankIdentifier,
+      iban,
+      billingDetails: {
+        name: billingDetails.name,
+        line1: billingDetails.line1,
+        line2: billingDetails.line2,
+        city: billingDetails.city,
+        district: billingDetails.district,
+        country: billingDetails.country,
+        postalCode: billingDetails.postalCode,
+      },
+      bankAddress: {
+        line1: bankAddress.line1,
+        line2: bankAddress.line2,
+        city: bankAddress.city,
+        district: bankAddress.district,
+        country: bankAddress.country,
+        postalCode: bankAddress.postalCode,
+      },
     }
     try {
       await this.$wiresApi.createWireAccount(payload)

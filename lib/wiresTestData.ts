@@ -27,13 +27,13 @@ export const exampleWireAccounts = [
     },
   },
   {
-    title: 'France Bank Account',
+    title: 'German Bank Account',
     formData: {
       beneficiaryName: 'Satoshi Nakamoto',
-      bankName: 'WELLS FARGO BANK',
+      bankName: 'COMMERZBANK',
       accountNumber: '',
       bankIdentifier: '',
-      iban: 'FR1420041010050500013M02606',
+      iban: 'DE31100400480532013000',
       billingDetails: {
         name: 'Satoshi Nakamoto',
         city: 'Boston',
@@ -44,17 +44,17 @@ export const exampleWireAccounts = [
         postalCode: '01234',
       },
       bankAddress: {
-        city: 'PARIS',
-        country: 'FR',
-        line1: '21 Avenue George V',
+        city: 'Kassel',
+        country: 'DE',
+        line1: 'Königspl 32 - 34',
         line2: '',
-        district: 'PARIS',
-        postalCode: '75008',
+        district: 'Kassel',
+        postalCode: '34117',
       },
     },
   },
   {
-    title: 'Mexico Bank Account',
+    title: 'Mexican Bank Account',
     formData: {
       beneficiaryName: 'Satoshi Nakamoto',
       bankName: 'Banco Nacional de México',
