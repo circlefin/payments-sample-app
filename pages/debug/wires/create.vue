@@ -49,7 +49,7 @@
           <v-text-field
             v-model="formData.iban"
             label="IBAN"
-            hint="Internationa Bank Account Number (IBAN) that identifies the account. Required for accounts outside of the US"
+            hint="International Bank Account Number (IBAN) that identifies the account. Required for accounts outside of the US"
           />
 
           <v-text-field
