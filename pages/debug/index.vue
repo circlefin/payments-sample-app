@@ -153,12 +153,7 @@
         </p>
       </v-card>
 
-      <v-card
-        v-if="!isMarketplace"
-        class="body-1 px-6 py-8 mb-4"
-        max-width="800"
-        outlined
-      >
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
         <h2 class="title">Wires endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
@@ -179,12 +174,7 @@
         </p>
       </v-card>
 
-      <v-card
-        v-if="!isMarketplace"
-        class="body-1 px-6 py-8 mb-4"
-        max-width="800"
-        outlined
-      >
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
         <h2 class="title">Payouts endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
@@ -193,17 +183,17 @@
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/payments/payouts/fetch">Get all payouts</a>
+          <a href="/debug/payouts/fetch">Get all payouts</a>
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/payments/payouts/details">
+          <a href="/debug/payouts/details">
             Get payout details by id
           </a>
         </p>
         <p>
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/payments/payouts/create">
+          <a href="/debug/payouts/create">
             Add payout
           </a>
         </p>

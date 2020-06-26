@@ -5,7 +5,7 @@ export const exampleWireAccounts = [
       beneficiaryName: 'Satoshi Nakamoto',
       bankName: 'WELLS FARGO BANK',
       accountNumber: '11111111111',
-      bankIdentifier: '121000248',
+      routingNumber: '121000248',
       iban: '',
       billingDetails: {
         name: 'Satoshi Nakamoto',
@@ -32,7 +32,7 @@ export const exampleWireAccounts = [
       beneficiaryName: 'Satoshi Nakamoto',
       bankName: 'COMMERZBANK',
       accountNumber: '',
-      bankIdentifier: '',
+      routingNumber: '',
       iban: 'DE31100400480532013000',
       billingDetails: {
         name: 'Satoshi Nakamoto',
@@ -59,7 +59,7 @@ export const exampleWireAccounts = [
       beneficiaryName: 'Satoshi Nakamoto',
       bankName: 'Banco Nacional de México',
       accountNumber: '002010077777777771',
-      bankIdentifier: '',
+      routingNumber: '',
       iban: '',
       billingDetails: {
         name: 'Satoshi Nakamoto',

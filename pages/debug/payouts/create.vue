@@ -15,12 +15,6 @@
             label="Beneficiary Email"
           />
 
-          <v-text-field
-            v-model="formData.beneficiaryPhoneNumber"
-            hint="Phone number of the user in E.164 format"
-            label="Beneficiary Phone Number"
-          />
-
           <v-btn
             depressed
             class="mb-7"
@@ -75,7 +69,6 @@ export default class CreatePayoutClass extends Vue {
     amount: '0.00',
     destination: '',
     beneficiaryEmail: '',
-    beneficiaryPhoneNumber: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']
@@ -99,7 +92,6 @@ export default class CreatePayoutClass extends Vue {
       destinationAccount: this.formData.destination,
       metadata: {
         beneficiaryEmail: this.formData.beneficiaryEmail,
-        beneficiaryPhoneNumber: this.formData.beneficiaryPhoneNumber,
       },
     }
     try {

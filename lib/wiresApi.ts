@@ -8,7 +8,7 @@ export interface CreateWireAccountPayload {
   beneficiaryName: string | undefined
   bankName: string | undefined
   accountNumber: string | undefined
-  bankIdentifier: string | undefined
+  routingNumber: string | undefined
   iban: string | undefined
   billingDetails: {
     name: string
@@ -71,11 +71,11 @@ const nullIfEmpty = (prop: string | undefined) => {
  * @param {*} payload (contains form data)
  */
 function createWireAccount(payload: CreateWireAccountPayload) {
-  const url = '/v1/wires'
+  const url = '/v1/banks/wires'
   payload.beneficiaryName = nullIfEmpty(payload.beneficiaryName)
   payload.bankName = nullIfEmpty(payload.bankName)
   payload.accountNumber = nullIfEmpty(payload.accountNumber)
-  payload.bankIdentifier = nullIfEmpty(payload.bankIdentifier)
+  payload.routingNumber = nullIfEmpty(payload.routingNumber)
   payload.iban = nullIfEmpty(payload.iban)
   return instance.post(url, payload)
 }
@@ -85,7 +85,7 @@ function createWireAccount(payload: CreateWireAccountPayload) {
  * @param {String} accountId
  */
 function getWireAccountById(accountId: string) {
-  const url = `/v1/wires/${accountId}`
+  const url = `/v1/banks/wires/${accountId}`
 
   return instance.get(url)
 }
