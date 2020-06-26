@@ -222,6 +222,26 @@ export default class DefaultLayoutsClass extends Vue {
       title: 'GET /settlements/{id}',
       to: '/debug/settlements/details',
     },
+    {
+      title: 'GET /wires/{id}',
+      to: '/debug/wires/details',
+    },
+    {
+      title: 'POST /wires',
+      to: '/debug/wires/create',
+    },
+    {
+      title: 'GET /payouts',
+      to: '/debug/payouts/fetch',
+    },
+    {
+      title: 'GET /payouts/{id}',
+      to: '/debug/payouts/details',
+    },
+    {
+      title: 'POST /payouts',
+      to: '/debug/payouts/create',
+    },
   ]
 
   paymentsLinks = [
@@ -283,15 +303,15 @@ export default class DefaultLayoutsClass extends Vue {
     },
     {
       title: 'GET /payouts',
-      to: '/debug/payments/payouts/fetch',
+      to: '/debug/payouts/fetch',
     },
     {
       title: 'GET /payouts/{id}',
-      to: '/debug/payments/payouts/details',
+      to: '/debug/payouts/details',
     },
     {
       title: 'POST /payouts',
-      to: '/debug/payments/payouts/create',
+      to: '/debug/payouts/create',
     },
   ]
 

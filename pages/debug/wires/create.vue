@@ -41,15 +41,15 @@
           />
 
           <v-text-field
-            v-model="formData.bankIdentifier"
-            label="Bank Identifier"
+            v-model="formData.routingNumber"
+            label="Routing Number"
             hint="RTN/BIC/Swift code of the bank associated with the account. Required for US accounts"
           />
 
           <v-text-field
             v-model="formData.iban"
             label="IBAN"
-            hint="Required for accounts outside of the US"
+            hint="Internationa Bank Account Number (IBAN) that identifies the account. Required for accounts outside of the US"
           />
 
           <v-text-field
@@ -173,7 +173,7 @@ export default class CreateCardClass extends Vue {
     beneficiaryName: '',
     bankName: '',
     accountNumber: '',
-    bankIdentifier: '',
+    routingNumber: '',
     iban: '',
     billingDetails: {
       name: '',
@@ -225,7 +225,7 @@ export default class CreateCardClass extends Vue {
       beneficiaryName,
       bankName,
       accountNumber,
-      bankIdentifier,
+      routingNumber,
       iban,
       ...data
     } = this.formData
@@ -236,7 +236,7 @@ export default class CreateCardClass extends Vue {
       beneficiaryName,
       bankName,
       accountNumber,
-      bankIdentifier,
+      routingNumber,
       iban,
       billingDetails: {
         name: billingDetails.name,
