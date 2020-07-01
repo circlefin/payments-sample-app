@@ -4,6 +4,10 @@
       <v-col cols="12" md="4">
         <v-form>
           <header>Optional filter params:</header>
+          <v-text-field
+            v-model="formData.destinationAccount"
+            label="Destination Account"
+          />
           <v-text-field v-model="formData.from" label="From" />
           <v-text-field v-model="formData.to" label="To" />
           <v-text-field v-model="formData.pageSize" label="PageSize" />
@@ -56,6 +60,7 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 export default class FetchPayoutsClass extends Vue {
   // data
   formData = {
+    destinationAccount: '',
     from: '',
     to: '',
     pageSize: '',
@@ -82,6 +87,7 @@ export default class FetchPayoutsClass extends Vue {
     this.loading = true
     try {
       await this.$payoutsApi.getPayouts(
+        this.formData.destinationAccount,
         this.formData.from,
         this.formData.to,
         this.formData.pageBefore,

@@ -54,6 +54,7 @@ function getInstance() {
 
 /**
  * Get payouts
+ * @param {String} destinationAccount
  * @param {String} from
  * @param {String} to
  * @param {String} pageBefore
@@ -61,6 +62,7 @@ function getInstance() {
  * @param {String} pageSize
  */
 function getPayouts(
+  destinationAccount: string,
   from: string,
   to: string,
   pageBefore: string,
@@ -68,6 +70,7 @@ function getPayouts(
   pageSize: string
 ) {
   const queryParams = {
+    destinationAccount: nullIfEmpty(destinationAccount),
     from: nullIfEmpty(from),
     to: nullIfEmpty(to),
     pageBefore: nullIfEmpty(pageBefore),
