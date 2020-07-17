@@ -5,7 +5,7 @@
         <v-form>
           <header>Optional filter params:</header>
           <v-text-field
-            v-model="formData.destinationAccount"
+            v-model="formData.destination"
             label="Destination Account"
           />
           <v-text-field v-model="formData.from" label="From" />
@@ -60,7 +60,7 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 export default class FetchPayoutsClass extends Vue {
   // data
   formData = {
-    destinationAccount: '',
+    destination: '',
     from: '',
     to: '',
     pageSize: '',
@@ -87,7 +87,7 @@ export default class FetchPayoutsClass extends Vue {
     this.loading = true
     try {
       await this.$payoutsApi.getPayouts(
-        this.formData.destinationAccount,
+        this.formData.destination,
         this.formData.from,
         this.formData.to,
         this.formData.pageBefore,
