@@ -89,7 +89,10 @@ export default class CreatePayoutClass extends Vue {
     const payload: CreatePayoutPayload = {
       idempotencyKey: uuidv4(),
       amount: amountDetail,
-      destinationAccount: this.formData.destination,
+      destination: {
+        id: this.formData.destination,
+        type: 'wire',
+      },
       metadata: {
         beneficiaryEmail: this.formData.beneficiaryEmail,
       },
