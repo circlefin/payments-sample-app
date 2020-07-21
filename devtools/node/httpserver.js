@@ -21,6 +21,8 @@ const http = require('http')
 const r = require('request')
 const MessageValidator = require('sns-validator')
 
+const circleArn = /^arn:aws:sns:.*:908968368384:(sandbox|prod)_platform-notifications-topic$/
+
 const validator = new MessageValidator()
 
 const server = http.createServer((request, response) => {
@@ -53,6 +55,14 @@ const server = http.createServer((request, response) => {
       } else {
         switch (envelope.Type) {
           case 'SubscriptionConfirmation': {
+            if (!circleArn.test(envelope.TopicArn)) {
+              console.error(
+                `\nUnable to confirm the subscription as the topic arn is not expected ${
+                  envelope.TopicArn
+                }. Valid topic arn must match ${circleArn}.`
+              )
+              break
+            }
             r(envelope.SubscribeURL, (err) => {
               if (err) {
                 console.error('Subscription NOT confirmed.', err)

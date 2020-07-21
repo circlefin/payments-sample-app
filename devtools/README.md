@@ -27,12 +27,18 @@ node httpserver.js
 node httpserver.js 127.0.0.1 8000 
 ```
 
-To expose the server IP to the internet some tools such as [ngrok](https://ngrok.com/download) can be used:
+To expose the server IP to the internet some tools such as [ngrok](https://ngrok.com/download) or [localhost.run](http://localhost.run) can be used:
 
 ```sh
+# ngrock
 ngrok http 8080
 ...
 Forwarding                    http://<ID>.ngrok.io -> http://localhost:8080
 Forwarding                    https://<ID>.ngrok.io -> http://localhost:8080
+
+# localhost.run
+# use 'uuidgen' to create a unique-domain-name
+ssh -R 80:localhost:8080 $(uuidgen)@ssh.localhost.run
 ...
+Connect to http://<unique-domain-name>.localhost.run
 ```
