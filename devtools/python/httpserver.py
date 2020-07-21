@@ -17,7 +17,10 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import logging
 import json
 import urllib.request
+import re
+import sys
 
+circleArn = re.compile("^arn:aws:sns:.*:908968368384:(sandbox|prod)_platform-notifications-topic$")
 
 class Server(BaseHTTPRequestHandler):
     def _set_response(self, code=200):
@@ -25,13 +28,23 @@ class Server(BaseHTTPRequestHandler):
         self.send_header('Content-type', 'application/json')
         self.end_headers()
 
+    def circleArn(self, topicArn):
+        return re.search("", topicArn)
+
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
         logging.info("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
                      str(self.path), str(self.headers), post_data.decode('utf-8'))
 
-        url = json.loads(post_data.decode('utf-8')).get("SubscribeURL")
+        envelope = json.loads(post_data.decode('utf-8'))
+        
+        if not circleArn.match(envelope.get("TopicArn")):
+            logging.error("Unable to confirm the subscription as the topic arn is not expected %s. Valid topic arn must match %s", envelope.get("TopicArn"), circleArn.pattern)
+            self._set_response(code=400)
+            return
+
+        url = envelope.get("SubscribeURL")
 
         if url is not None and url.lower().startswith('http'):
             req = urllib.request.Request(url)
