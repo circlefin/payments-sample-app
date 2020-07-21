@@ -21,7 +21,8 @@ const http = require('http')
 const r = require('request')
 const MessageValidator = require('sns-validator')
 
-const circleArn = /^arn:aws:sns:.*:908968368384:(sandbox|prod)_platform-notifications-topic$/
+// TODO: replace with more precise regex that would include account id
+const circleArn = /^arn:aws:sns:.*:*:(sandbox|prod)_platform-notifications-topic$/
 
 const validator = new MessageValidator()
 
@@ -57,7 +58,7 @@ const server = http.createServer((request, response) => {
           case 'SubscriptionConfirmation': {
             if (!circleArn.test(envelope.TopicArn)) {
               console.error(
-                `\nUnable to confirm the subscription as the topic arn is not expected ${
+                `Unable to confirm the subscription as the topic arn is not expected ${
                   envelope.TopicArn
                 }. Valid topic arn must match ${circleArn}.`
               )

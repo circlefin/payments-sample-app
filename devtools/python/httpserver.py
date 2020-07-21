@@ -20,7 +20,8 @@ import urllib.request
 import re
 import sys
 
-circleArn = re.compile("^arn:aws:sns:.*:908968368384:(sandbox|prod)_platform-notifications-topic$")
+# TODO: replace with more precise regex that would include account id
+circleArn = re.compile("^arn:aws:sns:.*:*:(sandbox|prod)_platform-notifications-topic$")
 
 class Server(BaseHTTPRequestHandler):
     def _set_response(self, code=200):
