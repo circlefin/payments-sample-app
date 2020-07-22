@@ -57,9 +57,7 @@ const server = http.createServer((request, response) => {
           case 'SubscriptionConfirmation': {
             if (!circleArn.test(envelope.TopicArn)) {
               console.error(
-                `\nUnable to confirm the subscription as the topic arn is not expected ${
-                  envelope.TopicArn
-                }. Valid topic arn must match ${circleArn}.`
+                `\nUnable to confirm the subscription as the topic arn is not expected ${envelope.TopicArn}. Valid topic arn must match ${circleArn}.`
               )
               break
             }
