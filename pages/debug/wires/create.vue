@@ -89,6 +89,11 @@
           />
 
           <v-text-field
+            v-model="formData.bankAddress.bankName"
+            label="Bank Name"
+          />
+
+          <v-text-field
             v-model="formData.bankAddress.line1"
             label="Bank Address Line 1"
           />
@@ -171,7 +176,6 @@ export default class CreateCardClass extends Vue {
   // data
   formData = {
     beneficiaryName: '',
-    bankName: '',
     accountNumber: '',
     routingNumber: '',
     iban: '',
@@ -185,6 +189,7 @@ export default class CreateCardClass extends Vue {
       postalCode: '',
     },
     bankAddress: {
+      bankName: '',
       city: '',
       country: '',
       line1: '',
@@ -223,7 +228,6 @@ export default class CreateCardClass extends Vue {
     this.loading = true
     const {
       beneficiaryName,
-      bankName,
       accountNumber,
       routingNumber,
       iban,
@@ -234,7 +238,6 @@ export default class CreateCardClass extends Vue {
     const payload: CreateWireAccountPayload = {
       idempotencyKey: uuidv4(),
       beneficiaryName,
-      bankName,
       accountNumber,
       routingNumber,
       iban,
@@ -248,6 +251,7 @@ export default class CreateCardClass extends Vue {
         postalCode: billingDetails.postalCode,
       },
       bankAddress: {
+        bankName: bankAddress.bankName,
         line1: bankAddress.line1,
         line2: bankAddress.line2,
         city: bankAddress.city,
