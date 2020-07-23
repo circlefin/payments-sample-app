@@ -16,7 +16,13 @@ export const exampleWireAccounts = [
         postalCode: '01234',
       },
       bankAddress: {
-        country: 'US'
+        bankName: '',
+        city: '',
+        country: 'US',
+        line1: '',
+        line2: '',
+        district: '',
+        postalCode: '',
       },
     },
   },
@@ -37,8 +43,13 @@ export const exampleWireAccounts = [
         postalCode: '01234',
       },
       bankAddress: {
+        bankName: '',
         city: 'Kassel',
-        country: 'DE'
+        country: 'DE',
+        line1: '',
+        line2: '',
+        district: '',
+        postalCode: '',
       },
     },
   },

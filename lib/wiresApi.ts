@@ -5,10 +5,10 @@ import { getAPIHostname } from './apiTarget'
 
 export interface CreateWireAccountPayload {
   idempotencyKey: string
-  beneficiaryName: string | undefined
-  accountNumber: string | undefined
-  routingNumber: string | undefined
-  iban: string | undefined
+  beneficiaryName?: string
+  accountNumber?: string
+  routingNumber?: string
+  iban?: string
   billingDetails: {
     name: string
     city: string
@@ -19,13 +19,13 @@ export interface CreateWireAccountPayload {
     postalCode: string
   }
   bankAddress: {
-    bankName: string | undefined
-    city: string
+    bankName?: string
+    city?: string
     country: string
-    line1: string
-    line2: string
-    district: string
-    postalCode: string
+    line1?: string
+    line2?: string
+    district?: string
+    postalCode?: string
   }
 }
 
@@ -76,6 +76,12 @@ function createWireAccount(payload: CreateWireAccountPayload) {
   payload.accountNumber = nullIfEmpty(payload.accountNumber)
   payload.routingNumber = nullIfEmpty(payload.routingNumber)
   payload.iban = nullIfEmpty(payload.iban)
+  payload.bankAddress.bankName = nullIfEmpty(payload.bankAddress.bankName)
+  payload.bankAddress.city = nullIfEmpty(payload.bankAddress.city)
+  payload.bankAddress.line1 = nullIfEmpty(payload.bankAddress.line1)
+  payload.bankAddress.line2 = nullIfEmpty(payload.bankAddress.line2)
+  payload.bankAddress.district = nullIfEmpty(payload.bankAddress.district)
+  payload.bankAddress.postalCode = nullIfEmpty(payload.bankAddress.postalCode)
   return instance.post(url, payload)
 }
 
