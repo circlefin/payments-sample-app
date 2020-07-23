@@ -16,13 +16,7 @@ export const exampleWireAccounts = [
         postalCode: '01234',
       },
       bankAddress: {
-        bankName: 'WELLS FARGO BANK',
-        city: 'SAN FRANCISCO',
-        country: 'US',
-        line1: 'line1',
-        line2: 'line2',
-        district: 'CA',
-        postalCode: '11111',
+        country: 'US'
       },
     },
   },
@@ -43,13 +37,8 @@ export const exampleWireAccounts = [
         postalCode: '01234',
       },
       bankAddress: {
-        bankName: 'COMMERZBANK',
         city: 'Kassel',
-        country: 'DE',
-        line1: 'Königspl 32 - 34',
-        line2: '',
-        district: 'Kassel',
-        postalCode: '34117',
+        country: 'DE'
       },
     },
   },
