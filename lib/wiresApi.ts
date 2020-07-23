@@ -5,7 +5,7 @@ import { getAPIHostname } from './apiTarget'
 
 export interface CreateWireAccountPayload {
   idempotencyKey: string
-  beneficiaryName?: string
+  beneficiaryName: string
   accountNumber?: string
   routingNumber?: string
   iban?: string
@@ -72,7 +72,6 @@ const nullIfEmpty = (prop: string | undefined) => {
  */
 function createWireAccount(payload: CreateWireAccountPayload) {
   const url = '/v1/banks/wires'
-  payload.beneficiaryName = nullIfEmpty(payload.beneficiaryName)
   payload.accountNumber = nullIfEmpty(payload.accountNumber)
   payload.routingNumber = nullIfEmpty(payload.routingNumber)
   payload.iban = nullIfEmpty(payload.iban)
