@@ -33,8 +33,6 @@
             label="Beneficiary Name"
           />
 
-          <v-text-field v-model="formData.bankName" label="Bank Name" />
-
           <v-text-field
             v-model="formData.accountNumber"
             label="Account Number"
