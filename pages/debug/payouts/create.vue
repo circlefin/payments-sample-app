@@ -6,8 +6,13 @@
           <v-text-field v-model="formData.amount" label="Amount" />
 
           <v-text-field
-            v-model="formData.destination"
-            label="Fiat Account Id"
+            v-model="formData.sourceWalletId"
+            label="Optional source Wallet Id"
+          />
+
+          <v-text-field
+            v-model="formData.beneficiaryEmail"
+            label="Beneficiary Email"
           />
 
           <v-text-field
@@ -65,6 +70,7 @@ import { CreatePayoutPayload } from '@/lib/payoutsApi'
 })
 export default class CreatePayoutClass extends Vue {
   formData = {
+    sourceWalletId: '',
     idempotencyKey: '',
     amount: '0.00',
     destination: '',
@@ -96,6 +102,12 @@ export default class CreatePayoutClass extends Vue {
       metadata: {
         beneficiaryEmail: this.formData.beneficiaryEmail,
       },
+    }
+    if (this.formData.sourceWalletId) {
+      payload.source = {
+        id: this.formData.sourceWalletId,
+        type: 'wire',
+      }
     }
     try {
       await this.$payoutsApi.createPayout(payload)
