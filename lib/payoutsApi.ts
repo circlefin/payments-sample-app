@@ -5,6 +5,10 @@ import { getAPIHostname } from './apiTarget'
 
 export interface CreatePayoutPayload {
   idempotencyKey: string
+  source?: {
+    id: string
+    type: string
+  }
   destination: {
     id: string
     type: string
