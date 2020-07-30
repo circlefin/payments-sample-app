@@ -11,8 +11,8 @@
           />
 
           <v-text-field
-            v-model="formData.beneficiaryEmail"
-            label="Beneficiary Email"
+            v-model="formData.destination"
+            label="Fiat Account Id"
           />
 
           <v-text-field
@@ -106,7 +106,7 @@ export default class CreatePayoutClass extends Vue {
     if (this.formData.sourceWalletId) {
       payload.source = {
         id: this.formData.sourceWalletId,
-        type: 'wire',
+        type: 'wallet',
       }
     }
     try {
