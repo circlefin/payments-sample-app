@@ -12,19 +12,9 @@ interface MetaData {
 
 export interface UpdateCardPayload {
   keyId: string
-  billingDetails: {
-    name: string
-    city: string
-    country: string
-    line1: string
-    line2: string
-    district: string
-    postalCode: string
-  }
   encryptedData: string
   expMonth: number
   expYear: number
-  metadata: MetaData
 }
 
 export interface CreateCardPayload {
@@ -140,11 +130,7 @@ function createCard(payload: CreateCardPayload) {
  * @returns Promise
  */
 function updateCard(cardId: string, payload: UpdateCardPayload) {
-  const url = `/v1/cards/${cardId}`
-  if (payload.metadata) {
-    payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
-  }
-  return instance.put(url, payload)
+  return instance.put(`/v1/cards/${cardId}`, payload)
 }
 
 export default {

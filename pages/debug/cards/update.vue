@@ -5,43 +5,12 @@
         <v-form>
           <v-text-field v-model="formData.cardId" label="Card Id" />
 
-          <v-text-field v-model="formData.cardNumber" label="Card Number" />
-
           <v-text-field v-model="formData.cvv" label="CVV" />
 
           <v-text-field v-model="formData.expiry.month" label="Expiry Month" />
 
           <v-text-field v-model="formData.expiry.year" label="Expiry Year" />
 
-          <v-text-field
-            v-model="formData.name"
-            hint="Full name of the card holder"
-            label="Full Name"
-          />
-
-          <v-text-field v-model="formData.line1" label="Address Line 1" />
-
-          <v-text-field v-model="formData.line2" label="Address Line 2" />
-
-          <v-text-field v-model="formData.postalCode" label="Postalcode" />
-
-          <v-text-field v-model="formData.city" label="City" />
-
-          <v-text-field
-            v-model="formData.district"
-            label="District"
-            hint="State / County / Province / Region portion of the address. US and Canada use the two-letter code for the subdivision"
-          />
-
-          <v-text-field v-model="formData.country" label="Country Code" />
-
-          <v-text-field
-            v-model="formData.phoneNumber"
-            hint="Phone number of the user in E.164 format"
-            label="Phone"
-          />
-
-          <v-text-field v-model="formData.email" label="Email" />
           <v-btn
             depressed
             color="primary"
@@ -94,18 +63,8 @@ import { getLive } from '@/lib/apiTarget'
 export default class UpdateCardsClass extends Vue {
   // data
   formData = {
-    name: '',
-    email: '',
     cardId: '',
-    cardNumber: '',
     cvv: '',
-    city: '',
-    country: '',
-    line1: '',
-    line2: '',
-    district: '',
-    postalCode: '',
-    phoneNumber: '',
     expiry: {
       month: '',
       year: '',
@@ -134,36 +93,19 @@ export default class UpdateCardsClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
-    const {
-      cardId,
-      cardNumber,
-      email,
-      phoneNumber,
-      cvv,
-      ...data
-    } = this.formData
-    const { expiry, ...billingDetails } = data
+    const { cardId, cvv, expiry } = this.formData
 
     const cardDetails: {
-      number: string
       cvv?: string
     } = {
-      number: cardNumber.trim().replace(/\D/g, ''),
       cvv,
     }
 
     const payload = {
-      billingDetails,
       expMonth: parseInt(expiry.month),
       expYear: 2000 + parseInt(expiry.year),
       keyId: '',
       encryptedData: '',
-      metadata: {
-        email,
-        phoneNumber,
-        sessionId: 'xxx',
-        ipAddress: '172.33.222.1',
-      },
     }
     try {
       const publicKey = await this.$cardsApi.getPCIPublicKey()
