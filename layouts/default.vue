@@ -321,6 +321,10 @@ export default class DefaultLayoutsClass extends Vue {
       title: 'GET /chargebacks/{id}',
       to: '/debug/chargebacks/details',
     },
+    {
+      title: 'POST /chargebacks',
+      to: '/debug/chargebacks/create',
+    },
   ]
 
   walletsLinks = [

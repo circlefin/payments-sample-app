@@ -3,27 +3,8 @@ import axios from 'axios'
 
 import { getAPIHostname } from './apiTarget'
 
-interface MetaData {
-  email: string
-  phoneNumber?: string
-  sessionId: string
-  ipAddress: string
-}
-
 export interface CreateMockChargebackPayload {
-  idempotencyKey: string
-  amount: {
-    amount: string
-    currency: string
-  }
-  verification: string
-  source: {
-    id: string
-    type: string
-  }
-  keyId?: string
-  encryptedData?: string
-  metadata: MetaData
+  paymentId: string
 }
 
 const instance = axios.create({
@@ -113,10 +94,7 @@ function getChargebackById(id: string, merchantId: string) {
  * @param {*} payload (contains form data and encrypted payment details)
  */
 function createMockChargeback(payload: CreateMockChargebackPayload) {
-  const url = '/v1/chargebacks'
-  if (payload.metadata) {
-    payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
-  }
+  const url = 'v1/mocks/cards/chargebacks'
   return instance.post(url, payload)
 }
 

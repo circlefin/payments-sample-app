@@ -3,18 +3,13 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <v-text-field
-            v-if="isMarketplace"
-            v-model="formData.merchantId"
-            label="Merchant Id"
-          />
-          <v-text-field v-model="formData.settlementId" label="Chargeback Id" />
+          <v-text-field v-model="formData.paymentId" label="Payment Id" />
           <v-btn
             depressed
             class="mb-7"
             color="primary"
             :loading="loading"
-            @click.prevent="makeApiCall()"
+            @click.prevent="makeApiCall"
           >
             Make api call
           </v-btn>
@@ -41,54 +36,43 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
-import MarketplaceInfoFields from '@/components/MarketplaceInfoFields.vue'
-
+import { CreateMockChargebackPayload } from '@/lib/chargebacksApi'
 @Component({
   components: {
     RequestInfo,
     ErrorSheet,
-    MarketplaceInfoFields,
   },
   computed: {
     ...mapGetters({
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
       requestUrl: 'getRequestUrl',
+      isMarketplace: 'isMarketplace',
     }),
   },
 })
-export default class FetchChargebackDetailsClass extends Vue {
-  // data
+export default class CreatePayoutClass extends Vue {
   formData = {
-    chargebackId: '',
-  }
-
-  marketplaceInfo = {
-    merchantId: '',
+    paymentId: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
   showError = false
-
-  // methods
   onErrorSheetClosed() {
     this.error = {}
     this.showError = false
   }
 
-  get isMarketplace() {
-    return this.$store.getters.isMarketplace
-  }
-
   async makeApiCall() {
     this.loading = true
+    const payload: CreateMockChargebackPayload = {
+      paymentId: this.formData.paymentId,
+    }
+
     try {
-      await this.$chargebacksApi.getChargebackById(
-        this.formData.chargebackId,
-        this.marketplaceInfo.merchantId
-      )
+      await this.$chargebacksApi.createMockChargeback(payload)
     } catch (error) {
       this.error = error
       this.showError = true
