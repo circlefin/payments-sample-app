@@ -8,7 +8,7 @@
             v-model="formData.merchantId"
             label="Merchant Id"
           />
-          <v-text-field v-model="formData.settlementId" label="Chargeback Id" />
+          <v-text-field v-model="formData.chargebackId" label="Chargeback Id" />
           <v-btn
             depressed
             class="mb-7"
