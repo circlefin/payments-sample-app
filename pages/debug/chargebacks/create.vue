@@ -5,6 +5,7 @@
         <v-form>
           <v-text-field v-model="formData.paymentId" label="Payment Id" />
           <v-btn
+            v-if="isSandbox"
             depressed
             class="mb-7"
             color="primary"
@@ -34,6 +35,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
+import { getLive } from '@/lib/apiTarget'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import { CreateMockChargebackPayload } from '@/lib/chargebacksApi'
@@ -51,11 +53,12 @@ import { CreateMockChargebackPayload } from '@/lib/chargebacksApi'
     }),
   },
 })
-export default class CreatePayoutClass extends Vue {
+export default class CreateMockChargebackClass extends Vue {
   formData = {
     paymentId: '',
   }
 
+  isSandbox: Boolean = !getLive()
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
