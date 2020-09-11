@@ -1,6 +1,6 @@
 import chargebacksApi, {
   CreateMockChargebackPayload,
-} from '~/lib/chargebacksApi'
+} from '@/lib/chargebacksApi'
 
 declare module 'vue/types/vue' {
   interface Vue {

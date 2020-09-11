@@ -46,6 +46,7 @@ function getInstance() {
 
 /**
  * Get Settlements
+ * @param {String} merchantId
  * @param {String} from
  * @param {String} to
  * @param {String} pageBefore
@@ -77,16 +78,11 @@ function getChargebacks(
 /**
  * Get a settlement
  * @param {String} id
- * @param {String} merchantId
  */
-function getChargebackById(id: string, merchantId: string) {
+function getChargebackById(id: string) {
   const url = `/v1/chargebacks/${id}`
 
-  return instance.get(url, {
-    params: {
-      merchantId: nullIfEmpty(merchantId),
-    },
-  })
+  return instance.get(url);
 }
 
 /**
