@@ -3,11 +3,6 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <v-text-field
-            v-if="isMarketplace"
-            v-model="formData.merchantId"
-            label="Merchant Id"
-          />
           <v-text-field v-model="formData.chargebackId" label="Chargeback Id" />
           <v-btn
             depressed
@@ -41,13 +36,11 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
-import MarketplaceInfoFields from '@/components/MarketplaceInfoFields.vue'
 
 @Component({
   components: {
     RequestInfo,
     ErrorSheet,
-    MarketplaceInfoFields,
   },
   computed: {
     ...mapGetters({
@@ -61,10 +54,6 @@ export default class FetchChargebackDetailsClass extends Vue {
   // data
   formData = {
     chargebackId: '',
-  }
-
-  marketplaceInfo = {
-    merchantId: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']
@@ -85,10 +74,7 @@ export default class FetchChargebackDetailsClass extends Vue {
   async makeApiCall() {
     this.loading = true
     try {
-      await this.$chargebacksApi.getChargebackById(
-        this.formData.chargebackId,
-        this.marketplaceInfo.merchantId
-      )
+      await this.$chargebacksApi.getChargebackById(this.formData.chargebackId)
     } catch (error) {
       this.error = error
       this.showError = true

@@ -76,13 +76,13 @@ function getChargebacks(
 }
 
 /**
- * Get a settlement
+ * Get a chargeback
  * @param {String} id
  */
 function getChargebackById(id: string) {
   const url = `/v1/chargebacks/${id}`
 
-  return instance.get(url);
+  return instance.get(url)
 }
 
 /**
