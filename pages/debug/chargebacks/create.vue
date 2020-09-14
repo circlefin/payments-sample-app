@@ -49,7 +49,6 @@ import { CreateMockChargebackPayload } from '@/lib/chargebacksApi'
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
       requestUrl: 'getRequestUrl',
-      isMarketplace: 'isMarketplace',
     }),
   },
 })
