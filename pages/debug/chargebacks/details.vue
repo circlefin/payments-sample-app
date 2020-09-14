@@ -67,10 +67,6 @@ export default class FetchChargebackDetailsClass extends Vue {
     this.showError = false
   }
 
-  get isMarketplace() {
-    return this.$store.getters.isMarketplace
-  }
-
   async makeApiCall() {
     this.loading = true
     try {
