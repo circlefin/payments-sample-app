@@ -40,6 +40,7 @@ export default {
     '~/plugins/paymentsApi',
     '~/plugins/cardsApi',
     '~/plugins/marketplaceApi',
+    '~/plugins/chargebacksApi',
     '~/plugins/settlementsApi',
     '~/plugins/walletsApi',
     '~/plugins/transfersApi',
