@@ -198,6 +198,31 @@
           </a>
         </p>
       </v-card>
+
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
+        <h2 class="title">Chargebacks endpoints</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>
+          Api endpoints to manage chargebacks.
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/chargebacks/fetch">Get all chargebacks</a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/chargebacks/details">
+            Get chargeback details by id
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/chargebacks/create">
+            Create mock chargeback
+          </a>
+        </p>
+      </v-card>
     </v-flex>
   </v-layout>
 </template>
