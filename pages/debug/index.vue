@@ -200,7 +200,7 @@
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Chargeback endpoints</h2>
+        <h2 class="title">Chargebacks endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
         <p>
