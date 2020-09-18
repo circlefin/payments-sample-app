@@ -5,7 +5,7 @@ import { getAPIHostname } from './apiTarget'
 
 export interface CreateWireAccountPayload {
   idempotencyKey: string
-  beneficiaryName: string
+  walletId: string
   accountNumber?: string
   routingNumber?: string
   iban?: string
