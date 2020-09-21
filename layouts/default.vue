@@ -383,7 +383,7 @@ export default class DefaultLayoutsClass extends Vue {
   showRightDrawer = false
   showDrawer = false
 
-  beforeCreate() {
+  created() {
     if (!getLive()){
       // add mock endpoints if we are in sandbox or smokebox
       this.paymentsLinks = this.paymentsLinks.concat(mockEndpoints)
