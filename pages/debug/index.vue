@@ -90,6 +90,12 @@
             Refund payment
           </a>
         </p>
+        <p  v-if="isSandbox">
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/payments/mock/incomingWire">
+            Simulate incoming wire payment
+          </a>
+        </p>
       </v-card>
 
       <v-card
@@ -216,9 +222,9 @@
             Get chargeback details by id
           </a>
         </p>
-        <p>
+        <p  v-if="isSandbox">
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/chargebacks/create">
+          <a href="/debug/chargebacks/mock/create">
             Create mock chargeback
           </a>
         </p>
@@ -230,6 +236,7 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
+import { getLive } from '@/lib/apiTarget'
 
 @Component({
   computed: {
@@ -238,5 +245,7 @@ import { mapGetters } from 'vuex'
     }),
   },
 })
-export default class DebugIndexClass extends Vue {}
+export default class DebugIndexClass extends Vue {
+  isSandbox: Boolean = !getLive()
+}
 </script>

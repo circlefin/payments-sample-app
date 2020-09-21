@@ -1,18 +1,20 @@
-import chargebacksApi, {
-} from '@/lib/chargebacksApi'
+import mocksAPI, {
+  CreateMockChargebackPayload, CreateMockIncomingWirePayload
+} from '@/lib/mocksApi'
 
 declare module 'vue/types/vue' {
+
   interface Vue {
-    $chargebacksApi: {
+    $mocksApi: {
       getInstance: any
-      getChargebacks: any
-      getChargebackById: any
+      createMockChargeback: (payload: CreateMockChargebackPayload) => any
+      createMockIncomingWire: (payload: CreateMockIncomingWirePayload) => any
     }
   }
 }
 
 export default ({ store }: any, inject: any) => {
-  const instance = chargebacksApi.getInstance()
+  const instance = mocksAPI.getInstance()
 
   instance.interceptors.request.use(
     function (config) {
@@ -40,5 +42,5 @@ export default ({ store }: any, inject: any) => {
     }
   )
 
-  inject('chargebacksApi', chargebacksApi)
+  inject('mocksAPI', mocksAPI)
 }

@@ -155,6 +155,18 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
+import { getLive } from '@/lib/apiTarget'
+
+const mockEndpoints = [
+  {
+    title: 'POST /mocks/cards/chargebacks',
+    to: '/debug/chargebacks/mocks/create',
+  },
+  {
+    title: 'POST /mocks/payments/incomingWires',
+    to: '/debug/payments/mocks/incomingWire',
+  },
+]
 
 @Component
 export default class DefaultLayoutsClass extends Vue {
@@ -250,10 +262,6 @@ export default class DefaultLayoutsClass extends Vue {
       title: 'GET /chargebacks/{id}',
       to: '/debug/chargebacks/details',
     },
-    {
-      title: 'POST /chargebacks',
-      to: '/debug/chargebacks/create',
-    },
   ]
 
   paymentsLinks = [
@@ -333,10 +341,6 @@ export default class DefaultLayoutsClass extends Vue {
       title: 'GET /chargebacks/{id}',
       to: '/debug/chargebacks/details',
     },
-    {
-      title: 'POST /chargebacks',
-      to: '/debug/chargebacks/create',
-    },
   ]
 
   walletsLinks = [
@@ -378,6 +382,14 @@ export default class DefaultLayoutsClass extends Vue {
   right = true
   showRightDrawer = false
   showDrawer = false
+
+  beforeCreate() {
+    if (!getLive()){
+      // add mock endpoints if we are in sandbox or smokebox
+      this.paymentsLinks = this.paymentsLinks.concat(mockEndpoints)
+      this.marketplaceLinks = this.marketplaceLinks.concat(mockEndpoints)
+    }
+  }
 
   get title() {
     const navItems = this.flowLinks.concat(this.paymentsLinks)
