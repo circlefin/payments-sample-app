@@ -1,5 +1,4 @@
-import chargebacksApi, {
-} from '@/lib/chargebacksApi'
+import chargebacksApi from '@/lib/chargebacksApi'
 
 declare module 'vue/types/vue' {
   interface Vue {

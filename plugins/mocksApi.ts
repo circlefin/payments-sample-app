@@ -1,4 +1,7 @@
-import mocksApi, { CreateMockChargebackPayload, CreateMockIncomingWirePayload, } from '@/lib/mocksApi'
+import mocksApi, {
+  CreateMockChargebackPayload,
+  CreateMockIncomingWirePayload,
+} from '@/lib/mocksApi'
 
 declare module 'vue/types/vue' {
   interface Vue {

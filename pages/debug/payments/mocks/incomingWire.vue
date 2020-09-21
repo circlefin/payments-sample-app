@@ -53,7 +53,6 @@ import { CreateMockIncomingWirePayload } from '@/lib/mocksApi'
     }),
   },
 })
-
 export default class CreateMockIncomingWireClass extends Vue {
   formData = {
     trackingRefId: '',
@@ -78,7 +77,7 @@ export default class CreateMockIncomingWireClass extends Vue {
     }
     const payload: CreateMockIncomingWirePayload = {
       trackingRefId: this.formData.trackingRefId,
-      amount: amountDetail
+      amount: amountDetail,
     }
 
     try {
