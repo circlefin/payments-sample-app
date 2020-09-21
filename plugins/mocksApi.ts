@@ -1,6 +1,6 @@
 import mocksApi, {
   CreateMockChargebackPayload,
-  CreateMockIncomingWirePayload,
+  CreateMockBankPaymentPayload,
 } from '@/lib/mocksApi'
 
 declare module 'vue/types/vue' {
@@ -8,7 +8,7 @@ declare module 'vue/types/vue' {
     $mocksApi: {
       getInstance: any
       createMockChargeback: (payload: CreateMockChargebackPayload) => any
-      createMockIncomingWire: (payload: CreateMockIncomingWirePayload) => any
+      createMockBankPayment: (payload: CreateMockBankPaymentPayload) => any
     }
   }
 }

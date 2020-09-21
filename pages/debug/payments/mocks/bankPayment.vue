@@ -39,7 +39,7 @@ import { mapGetters } from 'vuex'
 import { getLive } from '../../../../lib/apiTarget'
 import RequestInfo from '../../../../components/RequestInfo.vue'
 import ErrorSheet from '../../../../components/ErrorSheet.vue'
-import { CreateMockIncomingWirePayload } from '@/lib/mocksApi'
+import { CreateMockBankPaymentPayload } from '@/lib/mocksApi'
 @Component({
   components: {
     RequestInfo,
@@ -75,13 +75,13 @@ export default class CreateMockIncomingWireClass extends Vue {
       amount: this.formData.amount,
       currency: 'USD',
     }
-    const payload: CreateMockIncomingWirePayload = {
+    const payload: CreateMockBankPaymentPayload = {
       trackingRef: this.formData.trackingRef,
       amount: amountDetail,
     }
 
     try {
-      await this.$mocksApi.createMockIncomingWire(payload)
+      await this.$mocksApi.createMockBankPayment(payload)
     } catch (error) {
       this.error = error
       this.showError = true
