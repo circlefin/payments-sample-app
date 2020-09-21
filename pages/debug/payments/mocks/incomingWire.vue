@@ -36,7 +36,7 @@
 <script lang="ts">
   import { Component, Vue } from 'nuxt-property-decorator'
   import { mapGetters } from 'vuex'
-  import { getLive } from 'lib/apiTarget'
+  import { getLive } from '@/lib/apiTarget'
   import RequestInfo from '../../../../components/RequestInfo.vue'
   import ErrorSheet from '../../../../components/ErrorSheet.vue'
   import { CreateMockIncomingWirePayload } from 'lib/mocksApi'
