@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <v-text-field v-model="formData.trackingRef" label="Payment Id" />
+          <v-text-field v-model="formData.trackingRef" label="Tracking Ref" />
           <v-text-field v-model="formData.amount" label="Amount" />
           <v-btn
             v-if="isSandbox"
@@ -55,7 +55,7 @@ import { CreateMockIncomingWirePayload } from '@/lib/mocksApi'
 })
 export default class CreateMockIncomingWireClass extends Vue {
   formData = {
-    trackingRefId: '',
+    trackingRef: '',
     amount: '0.00',
   }
 
@@ -76,7 +76,7 @@ export default class CreateMockIncomingWireClass extends Vue {
       currency: 'USD',
     }
     const payload: CreateMockIncomingWirePayload = {
-      trackingRefId: this.formData.trackingRefId,
+      trackingRef: this.formData.trackingRef,
       amount: amountDetail,
     }
 

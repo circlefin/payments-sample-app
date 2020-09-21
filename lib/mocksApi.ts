@@ -4,7 +4,7 @@ import axios from 'axios'
 import { getAPIHostname } from './apiTarget'
 
 export interface CreateMockIncomingWirePayload {
-  trackingRefId: string
+  trackingRef: string
   amount: {
     amount: string
     currency: string
