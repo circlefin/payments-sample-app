@@ -63,7 +63,6 @@ function createMockChargeback(payload: CreateMockChargebackPayload) {
   return instance.post(url, payload)
 }
 
-
 export default {
   getInstance,
   createMockIncomingWire,

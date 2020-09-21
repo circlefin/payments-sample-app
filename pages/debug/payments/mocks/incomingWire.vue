@@ -34,61 +34,61 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'nuxt-property-decorator'
-  import { mapGetters } from 'vuex'
-  import { getLive } from '../../../../lib/apiTarget'
-  import RequestInfo from '../../../../components/RequestInfo.vue'
-  import ErrorSheet from '../../../../components/ErrorSheet.vue'
-  import { CreateMockIncomingWirePayload } from '@/lib/mocksApi'
-  @Component({
-    components: {
-      RequestInfo,
-      ErrorSheet,
-    },
-    computed: {
-      ...mapGetters({
-        payload: 'getRequestPayload',
-        response: 'getRequestResponse',
-        requestUrl: 'getRequestUrl',
-      }),
-    },
-  })
+import { Component, Vue } from 'nuxt-property-decorator'
+import { mapGetters } from 'vuex'
+import { getLive } from '../../../../lib/apiTarget'
+import RequestInfo from '../../../../components/RequestInfo.vue'
+import ErrorSheet from '../../../../components/ErrorSheet.vue'
+import { CreateMockIncomingWirePayload } from '@/lib/mocksApi'
+@Component({
+  components: {
+    RequestInfo,
+    ErrorSheet,
+  },
+  computed: {
+    ...mapGetters({
+      payload: 'getRequestPayload',
+      response: 'getRequestResponse',
+      requestUrl: 'getRequestUrl',
+    }),
+  },
+})
 
-  export default class CreateMockIncomingWireClass extends Vue {
-    formData = {
-      trackingRefId: '',
-      amount: '0.00',
+export default class CreateMockIncomingWireClass extends Vue {
+  formData = {
+    trackingRefId: '',
+    amount: '0.00',
+  }
+
+  isSandbox: Boolean = !getLive()
+  required = [(v: string) => !!v || 'Field is required']
+  error = {}
+  loading = false
+  showError = false
+  onErrorSheetClosed() {
+    this.error = {}
+    this.showError = false
+  }
+
+  async makeApiCall() {
+    this.loading = true
+    const amountDetail = {
+      amount: this.formData.amount,
+      currency: 'USD',
+    }
+    const payload: CreateMockIncomingWirePayload = {
+      trackingRefId: this.formData.trackingRefId,
+      amount: amountDetail
     }
 
-    isSandbox: Boolean = !getLive()
-    required = [(v: string) => !!v || 'Field is required']
-    error = {}
-    loading = false
-    showError = false
-    onErrorSheetClosed() {
-      this.error = {}
-      this.showError = false
-    }
-
-    async makeApiCall() {
-      this.loading = true
-      const amountDetail = {
-        amount: this.formData.amount,
-        currency: 'USD',
-      }
-      const payload: CreateMockIncomingWirePayload = {
-        trackingRefId: this.formData.trackingRefId,
-        amount: amountDetail
-      }
-
-      try {
-        await this.$mocksApi.createMockIncomingWire(payload)
-      } catch (error) {
-        this.error = error
-        this.showError = true
-      } finally {
-        this.loading = false
-      }
+    try {
+      await this.$mocksApi.createMockIncomingWire(payload)
+    } catch (error) {
+      this.error = error
+      this.showError = true
+    } finally {
+      this.loading = false
     }
   }
+}
 </script>

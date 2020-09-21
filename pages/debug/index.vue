@@ -90,9 +90,9 @@
             Refund payment
           </a>
         </p>
-        <p  v-if="isSandbox">
+        <p v-if="isSandbox">
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/payments/mock/incomingWire">
+          <a href="/debug/payments/mocks/incomingWire">
             Simulate incoming wire payment
           </a>
         </p>
@@ -222,9 +222,9 @@
             Get chargeback details by id
           </a>
         </p>
-        <p  v-if="isSandbox">
+        <p v-if="isSandbox">
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/chargebacks/mock/create">
+          <a href="/debug/chargebacks/mocks/create">
             Create mock chargeback
           </a>
         </p>
