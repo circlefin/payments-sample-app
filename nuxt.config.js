@@ -47,6 +47,7 @@ export default {
     '~/plugins/addressesApi',
     '~/plugins/payoutsApi',
     '~/plugins/wiresApi',
+    '~/plugins/mocksApi',
   ],
   /*
    ** Nuxt.js dev-modules

@@ -3,10 +3,6 @@ import axios from 'axios'
 
 import { getAPIHostname } from './apiTarget'
 
-export interface CreateMockChargebackPayload {
-  paymentId: string
-}
-
 const instance = axios.create({
   baseURL: getAPIHostname(),
 })
@@ -85,18 +81,8 @@ function getChargebackById(id: string) {
   return instance.get(url)
 }
 
-/**
- * Create payment
- * @param {*} payload (contains form data and encrypted payment details)
- */
-function createMockChargeback(payload: CreateMockChargebackPayload) {
-  const url = 'v1/mocks/cards/chargebacks'
-  return instance.post(url, payload)
-}
-
 export default {
   getInstance,
   getChargebacks,
   getChargebackById,
-  createMockChargeback,
 }

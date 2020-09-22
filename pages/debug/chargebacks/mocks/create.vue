@@ -35,10 +35,10 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import { getLive } from '@/lib/apiTarget'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
-import { CreateMockChargebackPayload } from '@/lib/chargebacksApi'
+import { getLive } from '../../../../lib/apiTarget'
+import RequestInfo from '../../../../components/RequestInfo.vue'
+import ErrorSheet from '../../../../components/ErrorSheet.vue'
+import { CreateMockChargebackPayload } from '@/lib/mocksApi'
 @Component({
   components: {
     RequestInfo,
@@ -74,7 +74,7 @@ export default class CreateMockChargebackClass extends Vue {
     }
 
     try {
-      await this.$chargebacksApi.createMockChargeback(payload)
+      await this.$mocksApi.createMockChargeback(payload)
     } catch (error) {
       this.error = error
       this.showError = true
