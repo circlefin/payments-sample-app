@@ -92,7 +92,7 @@
         </p>
         <p v-if="isSandbox">
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/payments/mocks/wirePayment">
+          <a href="/debug/payments/mocks/wire">
             Simulate an incoming bank payment
           </a>
         </p>

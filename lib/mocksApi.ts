@@ -50,7 +50,7 @@ function getInstance() {
  * @param {*} payload
  */
 function createMockWirePayment(payload: CreateMockWirePaymentPayload) {
-  const url = 'v1/mocks/payments/wirePayment'
+  const url = 'v1/mocks/payments/wire'
   return instance.post(url, payload)
 }
 
