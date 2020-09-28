@@ -378,6 +378,53 @@ export default class DefaultLayoutsClass extends Vue {
     },
   ]
 
+  businessAccountLinks = [
+    {
+      title: 'GET /businessAccount/banks/wires',
+      to: '/debug/businessAccount/banks/wires/fetch',
+    },
+    {
+      title: 'GET /businessAccount/banks/wires/{id}',
+      to: '/debug/businessAccount/banks/wires/details',
+    },
+    {
+      title: 'POST /businessAccount/banks/wires',
+      to: '/debug/businessAccount/banks/wires/create',
+    },
+    {
+      title: 'GET /businessAccount/banks/transfers',
+      to: '/debug/businessAccount/banks/transfers/fetch',
+    },
+    {
+      title: 'GET /businessAccount/banks/transfers/{id}',
+      to: '/debug/businessAccount/banks/transfers/details',
+    },
+    {
+      title: 'POST /businessAccount/banks/transfers',
+      to: '/debug/businessAccount/banks/transfers/create',
+    },
+    {
+      title: 'GET /businessAccount/wallets/addresses/deposit',
+      to: '/debug/businessAccount/wallets/addresses/deposit/fetch',
+    },
+    {
+      title: 'POST /businessAccount/wallets/addresses/deposit',
+      to: '/debug/businessAccount/wallets/addresses/deposit/create',
+    },
+    {
+      title: 'GET /businessAccount/wallets/addresses/recipient',
+      to: '/debug/businessAccount/wallets/addresses/recipient/fetch',
+    },
+    {
+      title: 'POST /businessAccount/wallets/addresses/recipient',
+      to: '/debug/businessAccount/wallets/addresses/recipient/create',
+    },
+    {
+      title: 'GET /businessAccount/balances',
+      to: '/debug/businessAccount/balances/fetch',
+    },
+  ]
+
   miniVariant = false
   right = true
   showRightDrawer = false
