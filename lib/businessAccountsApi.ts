@@ -11,6 +11,22 @@ interface MetaData {
   ipAddress: string
 }
 
+export interface BlockchainDestination {
+  type: string
+  address: string
+  chain: string
+}
+
+export interface AddressDestination {
+  type: string
+  addressId: string
+}
+
+export interface Amount {
+  amount: string
+  currency: string
+}
+
 export interface CreateBankAccountPayload {
   idempotencyKey: string
   beneficiaryName: string
@@ -18,6 +34,12 @@ export interface CreateBankAccountPayload {
   routingNumber: string
   billingDetails: BillingDetails
   bankAddress: BankAddress
+}
+
+export interface CreateTransferPayload {
+  idempotencyKey: string
+  destination: BlockchainDestination | AddressDestination
+  amount: Amount
 }
 
 const instance = axios.create({
@@ -92,4 +114,61 @@ function getBankAccountById(bankId: string) {
   const url = `/v1/businessAccount/banks/wires/${bankId}/instructions`
 
   return instance.get(url)
+}
+
+/**
+ * Create Transfer
+ * @param {*} payload (contains form data and encrypted transfer details)
+ */
+function createTransfer(payload: CreateTransferPayload) {
+  const url = '/v1/businessAccount/transfers'
+  return instance.post(url, payload)
+}
+
+/**
+ * Get transfers
+ * @param {String} from
+ * @param {String} to
+ * @param {String} pageBefore
+ * @param {String} pageAfter
+ * @param {String} pageSize
+ */
+function getTransfers(
+  from: string,
+  to: string,
+  pageBefore: string,
+  pageAfter: string,
+  pageSize: string
+) {
+  const queryParams = {
+    from: nullIfEmpty(from),
+    to: nullIfEmpty(to),
+    pageBefore: nullIfEmpty(pageBefore),
+    pageAfter: nullIfEmpty(pageAfter),
+    pageSize: nullIfEmpty(pageSize),
+  }
+
+  const url = '/v1/businessAccount/transfers'
+
+  return instance.get(url, { params: queryParams })
+}
+
+/**
+ * Get Transfer
+ * @param {String} transferId
+ */
+function getTransferById(transferId: string) {
+  const url = `/v1/businessAccounttransfers/${transferId}`
+
+  return instance.get(url)
+}
+
+export default {
+  getInstance,
+  createBankAccount,
+  getBankAccounts,
+  getBankAccountById,
+  createTransfer,
+  getTransfers,
+  getTransferById,
 }

@@ -392,16 +392,16 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/businessAccount/banks/wires/create',
     },
     {
-      title: 'GET /businessAccount/banks/transfers',
-      to: '/debug/businessAccount/banks/transfers/fetch',
+      title: 'GET /businessAccount/transfers',
+      to: '/debug/businessAccount/transfers/fetch',
     },
     {
-      title: 'GET /businessAccount/banks/transfers/{id}',
-      to: '/debug/businessAccount/banks/transfers/details',
+      title: 'GET /businessAccount/transfers/{id}',
+      to: '/debug/businessAccount/transfers/details',
     },
     {
-      title: 'POST /businessAccount/banks/transfers',
-      to: '/debug/businessAccount/banks/transfers/create',
+      title: 'POST /businessAccount/transfers',
+      to: '/debug/businessAccount/transfers/create',
     },
     {
       title: 'GET /businessAccount/wallets/addresses/deposit',
