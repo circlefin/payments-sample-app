@@ -384,8 +384,8 @@ export default class DefaultLayoutsClass extends Vue {
   showDrawer = false
 
   created() {
+    // Add mock endpoints if we are not in production environments
     if (!getLive()) {
-      // add mock endpoints if we are in sandbox or smokebox
       this.paymentsLinks = this.paymentsLinks.concat(mockEndpoints)
       this.marketplaceLinks = this.marketplaceLinks.concat(mockEndpoints)
     }
