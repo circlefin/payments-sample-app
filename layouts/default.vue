@@ -163,8 +163,8 @@ const mockEndpoints = [
     to: '/debug/chargebacks/mocks/create',
   },
   {
-    title: 'POST /mocks/payments/bankPayment',
-    to: '/debug/payments/mocks/bankPayment',
+    title: 'POST /mocks/payments/wire',
+    to: '/debug/payments/mocks/wire',
   },
 ]
 
