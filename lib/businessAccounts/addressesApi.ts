@@ -3,6 +3,19 @@ import axios from 'axios'
 
 import { getAPIHostname } from '../apiTarget'
 
+export interface CreateDepositAddressPayload {
+  idempotencyKey: string
+  currency: string
+  chain: string
+}
+
+export interface CreateRecipientAddressPayload {
+  idempotencyKey: string
+  address: string
+  chain: string
+  description: string
+}
+
 const instance = axios.create({
   baseURL: getAPIHostname(),
 })
@@ -44,17 +57,8 @@ function getInstance() {
  * Create deposit address
  * @param {*} payload (contains form data and encrypted Address details)
  */
-function createDepositAddress(
-  idempotencyKey: string,
-  currency: string,
-  chain: string
-) {
+function createDepositAddress(payload: CreateDepositAddressPayload) {
   const url = '/v1/businessAccount/wallets/addresses/deposit'
-  const payload = {
-    idempotencyKey,
-    currency,
-    chain,
-  }
   return instance.post(url, payload)
 }
 
@@ -77,19 +81,8 @@ function getDepositAddresses() {
  * Create deposit address
  * @param {*} payload (contains form data and encrypted Address details)
  */
-function createRecipientAddress(
-  idempotencyKey: string,
-  address: string,
-  chain: string,
-  description: string
-) {
+function createRecipientAddress(payload: CreateRecipientAddressPayload) {
   const url = '/v1/businessAccount/wallets/addresses/recipient'
-  const payload = {
-    idempotencyKey,
-    address,
-    chain,
-    description,
-  }
   return instance.post(url, payload)
 }
 
