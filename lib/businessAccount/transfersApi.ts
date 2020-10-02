@@ -9,7 +9,7 @@ export interface BlockchainDestination {
   chain: string
 }
 
-export interface AddressDestination {
+export interface WithdrawalDestination {
   type: string
   addressId: string
 }
@@ -21,7 +21,7 @@ export interface Amount {
 
 export interface CreateTransferPayload {
   idempotencyKey: string
-  destination: BlockchainDestination | AddressDestination
+  destination: BlockchainDestination | WithdrawalDestination
   amount: Amount
 }
 

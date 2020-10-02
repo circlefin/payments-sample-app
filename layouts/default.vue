@@ -381,15 +381,15 @@ export default class DefaultLayoutsClass extends Vue {
   businessAccountLinks = [
     {
       title: 'GET /businessAccount/banks/wires',
-      to: '/debug/businessAccount/banks/wires/fetch',
+      to: '/debug/businessAccount/bankAccounts/fetch',
     },
     {
       title: 'GET /businessAccount/banks/wires/{id}',
-      to: '/debug/businessAccount/banks/wires/details',
+      to: '/debug/businessAccount/bankAccounts/details',
     },
     {
       title: 'POST /businessAccount/banks/wires',
-      to: '/debug/businessAccount/banks/wires/create',
+      to: '/debug/businessAccount/bankAccounts/create',
     },
     {
       title: 'GET /businessAccount/transfers',
@@ -405,19 +405,19 @@ export default class DefaultLayoutsClass extends Vue {
     },
     {
       title: 'GET /businessAccount/wallets/addresses/deposit',
-      to: '/debug/businessAccount/wallets/addresses/deposit/fetch',
+      to: '/debug/businessAccount/addresses/deposit/fetch',
     },
     {
       title: 'POST /businessAccount/wallets/addresses/deposit',
-      to: '/debug/businessAccount/wallets/addresses/deposit/create',
+      to: '/debug/businessAccount/addresses/deposit/create',
     },
     {
       title: 'GET /businessAccount/wallets/addresses/recipient',
-      to: '/debug/businessAccount/wallets/addresses/recipient/fetch',
+      to: '/debug/businessAccount/addresses/recipient/fetch',
     },
     {
       title: 'POST /businessAccount/wallets/addresses/recipient',
-      to: '/debug/businessAccount/wallets/addresses/recipient/create',
+      to: '/debug/businessAccount/addresses/recipient/create',
     },
     {
       title: 'GET /businessAccount/balances',
