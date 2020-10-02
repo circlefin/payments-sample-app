@@ -1,22 +1,16 @@
-import addressesApi, {
-  CreateRecipientAddressPayload,
-  CreateDepositAddressPayload,
-} from '@/lib/businessAccounts/addressesApi'
+import balancesApi from '~/lib/businessAccount/balancesApi'
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $businessAccountAddressesApi: {
+    $balancesApi: {
       getInstance: any
-      createDepositAddress: (payload: CreateDepositAddressPayload) => any
-      getDepositAddresses: any
-      createRecipientAddress: (payload: CreateRecipientAddressPayload) => any
-      getRecipientAddresses: any
+      getBalances: any
     }
   }
 }
 
 export default ({ store }: any, inject: any) => {
-  const instance = addressesApi.getInstance()
+  const instance = balancesApi.getInstance()
 
   instance.interceptors.request.use(
     function (config) {
@@ -44,5 +38,5 @@ export default ({ store }: any, inject: any) => {
     }
   )
 
-  inject('businessAccountAddressesApi', addressesApi)
+  inject('balancesApi', balancesApi)
 }
