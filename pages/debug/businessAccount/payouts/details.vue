@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <v-text-field v-model="formData.bankId" label="Bank Id" />
+          <v-text-field v-model="formData.payoutId" label="Payout Id" />
           <v-btn
             depressed
             class="mb-7"
@@ -49,10 +49,10 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
     }),
   },
 })
-export default class FetchBankAccountDetailsClass extends Vue {
+export default class FetchPayoutDetailsClass extends Vue {
   // data
   formData = {
-    bankId: '',
+    payoutId: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']
@@ -68,7 +68,9 @@ export default class FetchBankAccountDetailsClass extends Vue {
   async makeApiCall() {
     this.loading = true
     try {
-      await this.$bankAccountsApi.getBankAccountById(this.formData.bankId)
+      await this.$businessAccountPayoutsApi.getPayoutById(
+        this.formData.payoutId
+      )
     } catch (error) {
       this.error = error
       this.showError = true

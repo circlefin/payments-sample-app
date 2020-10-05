@@ -420,6 +420,14 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/businessAccount/addresses/recipient/create',
     },
     {
+      title: 'GET /businessAccount/payouts/{id}',
+      to: '/debug/businessAccount/payouts/details',
+    },
+    {
+      title: 'POST /businessAccount/payouts',
+      to: '/debug/businessAccount/payouts/create',
+    },
+    {
       title: 'GET /businessAccount/balances',
       to: '/debug/businessAccount/balances/fetch',
     },

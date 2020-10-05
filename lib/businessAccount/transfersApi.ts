@@ -104,7 +104,7 @@ function getTransfers(
  * @param {String} transferId
  */
 function getTransferById(transferId: string) {
-  const url = `/v1/businessAccounttransfers/${transferId}`
+  const url = `/v1/businessAccount/transfers/${transferId}`
 
   return instance.get(url)
 }
