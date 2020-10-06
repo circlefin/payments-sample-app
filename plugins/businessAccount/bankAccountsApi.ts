@@ -9,6 +9,7 @@ declare module 'vue/types/vue' {
       createBankAccount: (payload: CreateBankAccountPayload) => any
       getBankAccounts: any
       getBankAccountById: any
+      getBankAccountInstructions: any
     }
   }
 }

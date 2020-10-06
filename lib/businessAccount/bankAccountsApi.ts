@@ -100,9 +100,20 @@ function getBankAccountById(bankId: string) {
   return instance.get(url)
 }
 
+/**
+ * Get wire bank account instructions
+ * @param {String} bankId
+ */
+function getBankAccountInstructions(bankId: string) {
+  const url = `/v1/businessAccount/banks/wires/${bankId}/instructions`
+
+  return instance.get(url)
+}
+
 export default {
   getInstance,
   createBankAccount,
   getBankAccounts,
   getBankAccountById,
+  getBankAccountInstructions,
 }
