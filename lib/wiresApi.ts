@@ -94,8 +94,19 @@ function getWireAccountById(accountId: string) {
   return instance.get(url)
 }
 
+/**
+ * Get Wire Account Instructions
+ * @param {String} accountId
+ */
+function getWireAccountInstructions(accountId: string) {
+  const url = `/v1/banks/wires/${accountId}/instructions`
+
+  return instance.get(url)
+}
+
 export default {
   getInstance,
   createWireAccount,
   getWireAccountById,
+  getWireAccountInstructions,
 }

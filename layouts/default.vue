@@ -239,6 +239,10 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/wires/details',
     },
     {
+      title: 'GET /wires/{id}/instructions',
+      to: '/debug/wires/instructions',
+    },
+    {
       title: 'POST /wires',
       to: '/debug/wires/create',
     },
@@ -316,6 +320,10 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /wires/{id}',
       to: '/debug/wires/details',
+    },
+    {
+      title: 'GET /wires/{id}/instructions',
+      to: '/debug/wires/instructions',
     },
     {
       title: 'POST /wires',
