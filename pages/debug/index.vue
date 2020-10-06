@@ -173,6 +173,12 @@
           </a>
         </p>
         <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/wires/instructions">
+            Get wire account instructions by id
+          </a>
+        </p>
+        <p>
           <v-chip small color="primary warning">POST</v-chip>
           <a href="/debug/wires/create">
             Create wire account
