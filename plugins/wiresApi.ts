@@ -5,6 +5,7 @@ declare module 'vue/types/vue' {
     $wiresApi: {
       createWireAccount: (payload: CreateWireAccountPayload) => any
       getWireAccountById: any
+      getWireAccountInstructions: any
       getInstance: any
     }
   }
