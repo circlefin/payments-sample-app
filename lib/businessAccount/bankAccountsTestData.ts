@@ -5,6 +5,7 @@ export const exampleBankAccounts = [
       beneficiaryName: 'Satoshi Nakamoto',
       accountNumber: '11111111111',
       routingNumber: '121000248',
+      iban: '',
       billingDetails: {
         name: 'Satoshi Nakamoto',
         city: 'Boston',
@@ -31,6 +32,7 @@ export const exampleBankAccounts = [
       beneficiaryName: 'Satoshi Nakamoto',
       accountNumber: '',
       routingNumber: '',
+      iban: '',
       billingDetails: {
         name: 'Satoshi Nakamoto',
         city: 'Boston',
@@ -57,6 +59,7 @@ export const exampleBankAccounts = [
       beneficiaryName: 'Satoshi Nakamoto',
       accountNumber: '002010077777777771',
       routingNumber: 'BDEMMXMF',
+      iban: '',
       billingDetails: {
         name: 'Satoshi Nakamoto',
         city: 'Boston',

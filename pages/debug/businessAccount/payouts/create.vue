@@ -54,7 +54,6 @@ import { CreatePayoutPayload } from '@/lib/businessAccount/payoutsApi'
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
       requestUrl: 'getRequestUrl',
-      isMarketplace: 'isMarketplace',
     }),
   },
 })

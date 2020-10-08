@@ -1,12 +1,12 @@
 import bankAccountsApi, {
-  CreateBankAccountPayload,
+  CreateWireAccountPayload,
 } from '~/lib/businessAccount/bankAccountsApi'
 
 declare module 'vue/types/vue' {
   interface Vue {
     $bankAccountsApi: {
       getInstance: any
-      createBankAccount: (payload: CreateBankAccountPayload) => any
+      createBankAccount: (payload: CreateWireAccountPayload) => any
       getBankAccounts: any
       getBankAccountById: any
       getBankAccountInstructions: any

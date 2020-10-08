@@ -53,7 +53,6 @@ import { CreateRecipientAddressPayload } from '@/lib/businessAccount/addressesAp
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
       requestUrl: 'getRequestUrl',
-      isMarketplace: 'isMarketplace',
     }),
   },
 })

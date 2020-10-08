@@ -79,24 +79,23 @@ import {
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
       requestUrl: 'getRequestUrl',
-      isMarketplace: 'isMarketplace',
     }),
   },
 })
 export default class CreateTransferClass extends Vue {
-  isWithdrawalTransfer = false
+  isFiatAccount = true
   formData = {
     idempotencyKey: '',
     amount: '0.00',
     destination: {
-      type: 'blockchain',
+      type: 'account',
       address: '',
       chain: '',
       id: '',
     },
   }
 
-  destinationTypes = ['blockchain', 'withdrawal']
+  destinationTypes = ['account', 'address']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
@@ -104,11 +103,11 @@ export default class CreateTransferClass extends Vue {
 
   @Watch('formData.destination.type', { immediate: true })
   onChildChanged(val: string) {
-    if (val === 'withdrawal') {
-      this.isWithdrawalTransfer = true
+    if (val === 'account') {
+      this.isFiatAccount = true
     }
-    if (val === 'blockchain') {
-      this.isWithdrawalTransfer = false
+    if (val === 'address') {
+      this.isFiatAccount = false
     }
   }
 
@@ -125,16 +124,16 @@ export default class CreateTransferClass extends Vue {
       currency: 'USD',
     }
     let destination: BlockchainDestination | WithdrawalDestination
-    if (this.isWithdrawalTransfer) {
+    if (this.isFiatAccount) {
       destination = {
-        type: 'withdrawal',
-        addressId: this.formData.destination.id,
+        type: 'account',
+        address: this.formData.destination.address,
+        chain: this.formData.destination.chain,
       }
     } else {
       destination = {
-        type: 'blockchain',
-        address: this.formData.destination.address,
-        chain: this.formData.destination.chain,
+        type: 'address',
+        addressId: this.formData.destination.id,
       }
     }
 

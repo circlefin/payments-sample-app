@@ -128,7 +128,7 @@
 
           <v-list-item
             v-for="(item, i) in businessAccountLinks"
-            :key="`walletsLinks-${i}`"
+            :key="`businessAccountLinks-${i}`"
             :to="item.to"
             router
             exact

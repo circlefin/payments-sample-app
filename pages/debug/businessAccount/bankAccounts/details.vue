@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <v-text-field v-model="formData.bankId" label="Bank Id" />
+          <v-text-field v-model="formData.bankId" label="Account Id" />
           <v-btn
             depressed
             class="mb-7"

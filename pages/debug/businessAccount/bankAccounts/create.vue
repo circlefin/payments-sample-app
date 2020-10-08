@@ -46,6 +46,12 @@
           />
 
           <v-text-field
+            v-model="formData.iban"
+            label="IBAN"
+            hint="International Bank Account Number (IBAN) that identifies the account. Required for accounts outside of the US"
+          />
+
+          <v-text-field
             v-model="formData.billingDetails.name"
             label="Billing Name"
           />
@@ -149,7 +155,7 @@ import { mapGetters } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
 import { getLive } from '@/lib/apiTarget'
 import { exampleBankAccounts } from '@/lib/businessAccount/bankAccountsTestData'
-import { CreateBankAccountPayload } from '@/lib/businessAccount/bankAccountsApi'
+import { CreateWireAccountPayload } from '@/lib/businessAccount/bankAccountsApi'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 @Component({
@@ -171,6 +177,7 @@ export default class CreateCardClass extends Vue {
     beneficiaryName: '',
     accountNumber: '',
     routingNumber: '',
+    iban: '',
     billingDetails: {
       name: '',
       city: '',
@@ -222,15 +229,17 @@ export default class CreateCardClass extends Vue {
       beneficiaryName,
       accountNumber,
       routingNumber,
+      iban,
       ...data
     } = this.formData
     const { billingDetails, bankAddress } = data
 
-    const payload: CreateBankAccountPayload = {
+    const payload: CreateWireAccountPayload = {
       idempotencyKey: uuidv4(),
       beneficiaryName,
       accountNumber,
       routingNumber,
+      iban,
       billingDetails: {
         name: billingDetails.name,
         line1: billingDetails.line1,

@@ -5,7 +5,7 @@
         <v-form>
           <v-text-field v-model="formData.currency" label="Currency" />
 
-          <v-text-field v-model="formData.chain" label="Blockchain ID" />
+          <v-text-field v-model="formData.chain" label="Chain" />
 
           <v-btn
             depressed
@@ -51,7 +51,6 @@ import { CreateDepositAddressPayload } from '@/lib/businessAccount/addressesApi'
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
       requestUrl: 'getRequestUrl',
-      isMarketplace: 'isMarketplace',
     }),
   },
 })

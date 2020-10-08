@@ -8,13 +8,6 @@
           Make api calls using your private api key. Explore payload and
           response data in the UI.
         </p>
-        <p>
-          Please use the settings panel on the right to configure your payments
-          api key.
-        </p>
-        <p class="subtitle-2">
-          (Caution: When using a production api key it will charge your card).
-        </p>
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>

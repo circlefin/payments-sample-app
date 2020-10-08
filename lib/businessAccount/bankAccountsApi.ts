@@ -3,11 +3,12 @@ import axios from 'axios'
 
 import { getAPIHostname } from '../apiTarget'
 
-export interface CreateBankAccountPayload {
+export interface CreateWireAccountPayload {
   idempotencyKey: string
   beneficiaryName: string
   accountNumber?: string
   routingNumber?: string
+  iban?: string
   billingDetails: {
     name: string
     city: string
@@ -69,7 +70,7 @@ function getInstance() {
  * Create wire bank account
  * @param {*} payload (contains form data)
  */
-function createBankAccount(payload: CreateBankAccountPayload) {
+function createBankAccount(payload: CreateWireAccountPayload) {
   const url = '/v1/businessAccount/banks/wires'
   payload.accountNumber = nullIfEmpty(payload.accountNumber)
   payload.routingNumber = nullIfEmpty(payload.routingNumber)
