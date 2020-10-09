@@ -40,7 +40,6 @@ instance.interceptors.response.use(
   }
 )
 
-
 /** Returns the axios instance */
 function getInstance() {
   return instance
