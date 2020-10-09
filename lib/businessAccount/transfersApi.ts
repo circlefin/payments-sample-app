@@ -5,12 +5,6 @@ import { getAPIHostname } from '../apiTarget'
 
 export interface BlockchainDestination {
   type: string
-  address: string
-  chain: string
-}
-
-export interface WithdrawalDestination {
-  type: string
   addressId: string
 }
 
@@ -21,7 +15,7 @@ export interface Amount {
 
 export interface CreateTransferPayload {
   idempotencyKey: string
-  destination: BlockchainDestination | WithdrawalDestination
+  destination: BlockchainDestination
   amount: Amount
 }
 

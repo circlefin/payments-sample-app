@@ -32,7 +32,7 @@ export const exampleBankAccounts = [
       beneficiaryName: 'Satoshi Nakamoto',
       accountNumber: '',
       routingNumber: '',
-      iban: '',
+      iban: 'DE31100400480532013000',
       billingDetails: {
         name: 'Satoshi Nakamoto',
         city: 'Boston',

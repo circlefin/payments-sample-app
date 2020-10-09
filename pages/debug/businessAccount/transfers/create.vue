@@ -5,30 +5,7 @@
         <v-form>
           <v-text-field v-model="formData.amount" label="Amount" />
 
-          <v-select
-            v-model="formData.destination.type"
-            :items="destinationTypes"
-            label="Destination Type"
-          />
-
-          <v-text-field
-            v-if="isWithdrawalTransfer"
-            v-model="formData.destination.id"
-            label="Blockchain Withdrawal Id"
-          />
-
-          <v-text-field
-            v-if="!isWithdrawalTransfer"
-            v-model="formData.destination.address"
-            label="Blockchain Address"
-          />
-
-          <v-text-field
-            v-if="!isWithdrawalTransfer"
-            v-model="formData.destination.chain"
-            hint="For example ETH"
-            label="Blockchain Id"
-          />
+          <v-text-field v-model="formData.address_id" label="Blockchain Id" />
 
           <v-btn
             depressed
@@ -58,16 +35,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
-import {
-  CreateTransferPayload,
-  BlockchainDestination,
-  WithdrawalDestination,
-} from '@/lib/businessAccount/transfersApi'
+import { CreateTransferPayload } from '@/lib/businessAccount/transfersApi'
 
 @Component({
   components: {
@@ -86,13 +59,8 @@ export default class CreateTransferClass extends Vue {
   isFiatAccount = true
   formData = {
     idempotencyKey: '',
-    amount: '0.00',
-    destination: {
-      type: 'account',
-      address: '',
-      chain: '',
-      id: '',
-    },
+    amount: '',
+    address_id: '',
   }
 
   destinationTypes = ['account', 'address']
@@ -100,16 +68,6 @@ export default class CreateTransferClass extends Vue {
   error = {}
   loading = false
   showError = false
-
-  @Watch('formData.destination.type', { immediate: true })
-  onChildChanged(val: string) {
-    if (val === 'account') {
-      this.isFiatAccount = true
-    }
-    if (val === 'address') {
-      this.isFiatAccount = false
-    }
-  }
 
   onErrorSheetClosed() {
     this.error = {}
@@ -123,24 +81,15 @@ export default class CreateTransferClass extends Vue {
       amount: this.formData.amount,
       currency: 'USD',
     }
-    let destination: BlockchainDestination | WithdrawalDestination
-    if (this.isFiatAccount) {
-      destination = {
-        type: 'account',
-        address: this.formData.destination.address,
-        chain: this.formData.destination.chain,
-      }
-    } else {
-      destination = {
-        type: 'address',
-        addressId: this.formData.destination.id,
-      }
+    const destinationDetail = {
+      type: 'address',
+      addressId: this.formData.address_id,
     }
 
     const payload: CreateTransferPayload = {
       idempotencyKey: uuidv4(),
       amount: amountDetail,
-      destination,
+      destination: destinationDetail,
     }
 
     try {

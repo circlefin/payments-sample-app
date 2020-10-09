@@ -5,7 +5,7 @@
         <v-form>
           <v-text-field v-model="formData.address" label="Recipient address" />
 
-          <v-text-field v-model="formData.chain" label="Blockchain ID" />
+          <v-text-field v-model="formData.chain" label="Chain" />
 
           <v-text-field v-model="formData.description" label="Description" />
 
