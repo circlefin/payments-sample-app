@@ -1,6 +1,6 @@
 import bankAccountsApi, {
   CreateWireAccountPayload,
-} from '~/lib/businessAccount/bankAccountsApi'
+} from '@/lib/businessAccount/bankAccountsApi'
 
 declare module 'vue/types/vue' {
   interface Vue {

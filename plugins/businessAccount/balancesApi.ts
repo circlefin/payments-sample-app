@@ -1,4 +1,4 @@
-import balancesApi from '~/lib/businessAccount/balancesApi'
+import balancesApi from '@/lib/businessAccount/balancesApi'
 
 declare module 'vue/types/vue' {
   interface Vue {

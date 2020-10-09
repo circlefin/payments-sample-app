@@ -1,4 +1,4 @@
-import paymentsApi, { CreatePaymentPayload } from '~/lib/paymentsApi'
+import paymentsApi, { CreatePaymentPayload } from '@/lib/paymentsApi'
 
 declare module 'vue/types/vue' {
   interface Vue {

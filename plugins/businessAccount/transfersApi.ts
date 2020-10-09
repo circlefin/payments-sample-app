@@ -1,6 +1,6 @@
 import transfersApi, {
   CreateTransferPayload,
-} from '~/lib/businessAccount/transfersApi'
+} from '@/lib/businessAccount/transfersApi'
 
 declare module 'vue/types/vue' {
   interface Vue {

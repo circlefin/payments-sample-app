@@ -1,7 +1,7 @@
 import addressesApi, {
   CreateRecipientAddressPayload,
   CreateDepositAddressPayload,
-} from '~/lib/businessAccount/addressesApi'
+} from '@/lib/businessAccount/addressesApi'
 
 declare module 'vue/types/vue' {
   interface Vue {

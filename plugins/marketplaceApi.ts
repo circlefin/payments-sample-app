@@ -1,6 +1,6 @@
 import marketplaceApi, {
   CreateMarketplacePaymentPayload,
-} from '~/lib/marketplaceApi'
+} from '@/lib/marketplaceApi'
 
 declare module 'vue/types/vue' {
   interface Vue {
