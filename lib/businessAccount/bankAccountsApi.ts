@@ -74,6 +74,7 @@ function createBankAccount(payload: CreateWireAccountPayload) {
   const url = '/v1/businessAccount/banks/wires'
   payload.accountNumber = nullIfEmpty(payload.accountNumber)
   payload.routingNumber = nullIfEmpty(payload.routingNumber)
+  payload.iban = nullIfEmpty(payload.iban)
   payload.bankAddress.bankName = nullIfEmpty(payload.bankAddress.bankName)
   payload.bankAddress.city = nullIfEmpty(payload.bankAddress.city)
   payload.bankAddress.line1 = nullIfEmpty(payload.bankAddress.line1)
