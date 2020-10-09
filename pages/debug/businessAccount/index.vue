@@ -19,9 +19,9 @@
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/businessAccount/bankAccounts/fetch"
-            >Get all wire accounts</a
-          >
+          <a href="/debug/businessAccount/bankAccounts/fetch">
+            Get all wire accounts
+          </a>
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
