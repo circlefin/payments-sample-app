@@ -1,22 +1,20 @@
-import paymentsApi, { CreatePaymentPayload } from '@/lib/paymentsApi'
+import payoutsApi, {
+  CreatePayoutPayload,
+} from '@/lib/businessAccount/payoutsApi'
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $paymentsApi: {
-      cancelPayment: any
-      createPayment: (payload: CreatePaymentPayload) => any
-      getPayments: any
-      getPaymentById: any
-      getPCIPublicKey: any
-      refundPayment: any
-      getBalance: any
+    $businessAccountPayoutsApi: {
+      getPayouts: any
+      getPayoutById: any
+      createPayout: (payload: CreatePayoutPayload) => any
       getInstance: any
     }
   }
 }
 
 export default ({ store }: any, inject: any) => {
-  const instance = paymentsApi.getInstance()
+  const instance = payoutsApi.getInstance()
 
   instance.interceptors.request.use(
     function (config) {
@@ -44,5 +42,5 @@ export default ({ store }: any, inject: any) => {
     }
   )
 
-  inject('paymentsApi', paymentsApi)
+  inject('businessAccountPayoutsApi', payoutsApi)
 }

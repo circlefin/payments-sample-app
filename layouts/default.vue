@@ -112,6 +112,32 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
+
+        <v-list-group>
+          <template v-slot:activator>
+            <v-list-item-title>Business Account APIs</v-list-item-title>
+          </template>
+
+          <v-list-item to="/debug/businessAccount" router exact>
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2">
+                Overview
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            v-for="(item, i) in businessAccountLinks"
+            :key="`businessAccountLinks-${i}`"
+            :to="item.to"
+            router
+            exact
+          >
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2" v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar clipped-left fixed app dark color="primary" dense>
@@ -383,6 +409,65 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'POST /transfers',
       to: '/debug/wallets/transfers/create',
+    },
+  ]
+
+  businessAccountLinks = [
+    {
+      title: 'GET /businessAccount/banks/wires',
+      to: '/debug/businessAccount/bankAccounts/fetch',
+    },
+    {
+      title: 'GET /businessAccount/banks/wires/{id}',
+      to: '/debug/businessAccount/bankAccounts/details',
+    },
+    {
+      title: 'GET /businessAccount/banks/wires/{id}/instructions',
+      to: '/debug/businessAccount/bankAccounts/instructions',
+    },
+    {
+      title: 'POST /businessAccount/banks/wires',
+      to: '/debug/businessAccount/bankAccounts/create',
+    },
+    {
+      title: 'GET /businessAccount/transfers',
+      to: '/debug/businessAccount/transfers/fetch',
+    },
+    {
+      title: 'GET /businessAccount/transfers/{id}',
+      to: '/debug/businessAccount/transfers/details',
+    },
+    {
+      title: 'POST /businessAccount/transfers',
+      to: '/debug/businessAccount/transfers/create',
+    },
+    {
+      title: 'GET /businessAccount/wallets/addresses/deposit',
+      to: '/debug/businessAccount/addresses/deposit/fetch',
+    },
+    {
+      title: 'POST /businessAccount/wallets/addresses/deposit',
+      to: '/debug/businessAccount/addresses/deposit/create',
+    },
+    {
+      title: 'GET /businessAccount/wallets/addresses/recipient',
+      to: '/debug/businessAccount/addresses/recipient/fetch',
+    },
+    {
+      title: 'POST /businessAccount/wallets/addresses/recipient',
+      to: '/debug/businessAccount/addresses/recipient/create',
+    },
+    {
+      title: 'GET /businessAccount/payouts/{id}',
+      to: '/debug/businessAccount/payouts/details',
+    },
+    {
+      title: 'POST /businessAccount/payouts',
+      to: '/debug/businessAccount/payouts/create',
+    },
+    {
+      title: 'GET /businessAccount/balances',
+      to: '/debug/businessAccount/balances/fetch',
     },
   ]
 
