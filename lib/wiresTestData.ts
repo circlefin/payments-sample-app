@@ -2,7 +2,6 @@ export const exampleWireAccounts = [
   {
     title: 'US Bank Account',
     formData: {
-      walletId: null as any,
       accountNumber: '11111111111',
       routingNumber: '121000248',
       iban: '',
@@ -29,7 +28,6 @@ export const exampleWireAccounts = [
   {
     title: 'German Bank Account',
     formData: {
-      walletId: null as any,
       accountNumber: '',
       routingNumber: '',
       iban: 'DE31100400480532013000',
@@ -56,7 +54,6 @@ export const exampleWireAccounts = [
   {
     title: 'Mexican Bank Account',
     formData: {
-      walletId: null as any,
       accountNumber: '002010077777777771',
       routingNumber: 'BDEMMXMF',
       iban: '',

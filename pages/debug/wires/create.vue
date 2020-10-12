@@ -29,13 +29,6 @@
 
         <v-form>
           <v-text-field
-            v-model="formData.walletId"
-            label="Wallet Id"
-            :rules="[rules.isNumber, rules.required]"
-            hint="Unique identifier of the wallet that you wish to wire the funds to. "
-          />
-
-          <v-text-field
             v-model="formData.accountNumber"
             label="Account Number"
           />
@@ -175,7 +168,6 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 export default class CreateCardClass extends Vue {
   // data
   formData = {
-    walletId: '',
     accountNumber: '',
     routingNumber: '',
     iban: '',
@@ -226,18 +218,11 @@ export default class CreateCardClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
-    const {
-      walletId,
-      accountNumber,
-      routingNumber,
-      iban,
-      ...data
-    } = this.formData
+    const { accountNumber, routingNumber, iban, ...data } = this.formData
     const { billingDetails, bankAddress } = data
 
     const payload: CreateWireAccountPayload = {
       idempotencyKey: uuidv4(),
-      walletId,
       accountNumber,
       routingNumber,
       iban,
