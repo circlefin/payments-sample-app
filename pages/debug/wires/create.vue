@@ -28,7 +28,6 @@
         </v-menu>
 
         <v-form>
-
           <v-text-field
             v-model="formData.accountNumber"
             label="Account Number"
@@ -219,12 +218,7 @@ export default class CreateCardClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
-    const {
-      accountNumber,
-      routingNumber,
-      iban,
-      ...data
-    } = this.formData
+    const { accountNumber, routingNumber, iban, ...data } = this.formData
     const { billingDetails, bankAddress } = data
 
     const payload: CreateWireAccountPayload = {
