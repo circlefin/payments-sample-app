@@ -3,9 +3,17 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <v-text-field v-model="formData.currency" label="Currency" />
+          <v-select
+            v-model="formData.currency"
+            :items="currencyTypes"
+            label="Currency"
+          />
 
-          <v-text-field v-model="formData.chain" label="Chain" />
+          <v-select
+            v-model="formData.chain"
+            :items="blockChains"
+            label="Chain"
+          />
 
           <v-btn
             depressed
@@ -60,6 +68,8 @@ export default class CreateDepositAddressClass extends Vue {
     chain: '',
   }
 
+  currencyTypes = ['USD']
+  blockChains = ['ETH', 'ALGO']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false

@@ -5,7 +5,11 @@
         <v-form>
           <v-text-field v-model="formData.address" label="Recipient address" />
 
-          <v-text-field v-model="formData.chain" label="Chain" />
+          <v-select
+            v-model="formData.chain"
+            :items="blockChains"
+            label="Chain"
+          />
 
           <v-text-field v-model="formData.description" label="Description" />
 
@@ -63,6 +67,7 @@ export default class CreateRecipientAddressClass extends Vue {
     description: '',
   }
 
+  blockChains = ['ETH', 'ALGO']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false

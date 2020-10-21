@@ -78,7 +78,7 @@ export default class CreateAddressClass extends Vue {
   }
 
   currencyTypes = ['USD']
-  blockChains = ['ETH']
+  blockChains = ['ETH', 'ALGO']
 
   // methods
   onErrorSheetClosed() {
