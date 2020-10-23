@@ -41,6 +41,13 @@ instance.interceptors.response.use(
   }
 )
 
+const nullIfEmpty = (prop: string | undefined) => {
+  if (prop === '') {
+    return undefined
+  }
+  return prop
+}
+
 /** Returns the axios instance */
 function getInstance() {
   return instance
@@ -57,12 +64,6 @@ function createDepositAddress(payload: CreateDepositAddressPayload) {
 
 /**
  * Get deposit addresses
- * @param {String} walletId
- * @param {String} from
- * @param {String} to
- * @param {String} pageBefore
- * @param {String} pageAfter
- * @param {String} pageSize
  */
 function getDepositAddresses() {
   const url = '/v1/businessAccount/wallets/addresses/deposit'
@@ -81,11 +82,29 @@ function createRecipientAddress(payload: CreateRecipientAddressPayload) {
 
 /**
  * Get deposit addresses
+ * @param {String} from
+ * @param {String} to
+ * @param {String} pageBefore
+ * @param {String} pageAfter
+ * @param {String} pageSize
  */
-function getRecipientAddresses() {
+function getRecipientAddresses(
+  from: string,
+  to: string,
+  pageBefore: string,
+  pageAfter: string,
+  pageSize: string
+) {
+  const queryParams = {
+    from: nullIfEmpty(from),
+    to: nullIfEmpty(to),
+    pageBefore: nullIfEmpty(pageBefore),
+    pageAfter: nullIfEmpty(pageAfter),
+    pageSize: nullIfEmpty(pageSize),
+  }
   const url = '/v1/businessAccount/wallets/addresses/recipient'
 
-  return instance.get(url)
+  return instance.get(url, { params: queryParams })
 }
 
 export default {
