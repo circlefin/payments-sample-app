@@ -43,14 +43,12 @@ import { mapGetters } from 'vuex'
 import openPGP from '@/lib/openpgp'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
-import ExpiryInput from '@/components/ExpiryInput.vue'
 import { getLive } from '@/lib/apiTarget'
 
 @Component({
   components: {
     RequestInfo,
     ErrorSheet,
-    ExpiryInput,
   },
   computed: {
     ...mapGetters({
@@ -103,7 +101,7 @@ export default class UpdateCardsClass extends Vue {
 
     const payload = {
       expMonth: parseInt(expiry.month),
-      expYear: 2000 + parseInt(expiry.year),
+      expYear: parseInt(expiry.year),
       keyId: '',
       encryptedData: '',
     }
