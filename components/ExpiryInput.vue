@@ -2,7 +2,7 @@
   <v-text-field
     ref="expiry"
     v-model="vModel"
-    v-mask="'## / ##'"
+    v-mask="'## / ####'"
     placeholder="01 / 23"
     type="tel"
     label="Expiry"
@@ -73,12 +73,18 @@ export default class ExpiryInput extends Vue {
           return 'Please enter a valid date'
         }
         if (expMonth > 12) {
-          return 'Please enter a valid date'
+          return 'Please enter a valid month'
         }
-        const expiryDate = new Date(2000 + expYear, expMonth)
+
+        if (expYear < 1000) {
+          return 'Year has to be 4 digits'
+        }
+
+        const expiryDate = new Date(expYear, expMonth)
         if (isNaN(expiryDate.getFullYear())) {
           return 'Please enter a valid date'
         }
+
         if (expiryDate < new Date()) {
           return 'Date has expired'
         }

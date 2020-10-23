@@ -6,7 +6,7 @@ export const exampleCards = [
       cvv: '123',
       expiry: {
         month: '01',
-        year: '25',
+        year: '2025',
       },
       name: 'Customer 0001',
       country: 'US',
@@ -26,7 +26,7 @@ export const exampleCards = [
       cvv: '123',
       expiry: {
         month: '01',
-        year: '25',
+        year: '2025',
       },
       name: 'Customer 0002',
       country: 'US',
@@ -46,7 +46,7 @@ export const exampleCards = [
       cvv: '123',
       expiry: {
         month: '01',
-        year: '25',
+        year: '2025',
       },
       name: 'Customer 0003',
       country: 'US',
@@ -66,7 +66,7 @@ export const exampleCards = [
       cvv: '123',
       expiry: {
         month: '01',
-        year: '25',
+        year: '2025',
       },
       name: 'Customer 0004',
       country: 'US',
@@ -86,7 +86,7 @@ export const exampleCards = [
       cvv: '123',
       expiry: {
         month: '01',
-        year: '25',
+        year: '2025',
       },
       name: 'Customer 0005',
       country: 'US',
@@ -106,7 +106,7 @@ export const exampleCards = [
       cvv: '123',
       expiry: {
         month: '01',
-        year: '25',
+        year: '2025',
       },
       name: 'Customer 0006',
       country: 'US',
@@ -126,7 +126,7 @@ export const exampleCards = [
       cvv: '123',
       expiry: {
         month: '01',
-        year: '25',
+        year: '2025',
       },
       name: 'Customer 0007',
       country: 'US',
