@@ -9,10 +9,11 @@
             label="Currency"
           />
 
-          <v-select
+          <ChainSelect
             v-model="formData.chain"
-            :items="blockChains"
+            :rules="[rules.required]"
             label="Chain"
+            :disabled="loading"
           />
 
           <v-btn
@@ -49,10 +50,12 @@ import { v4 as uuidv4 } from 'uuid'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import { CreateDepositAddressPayload } from '@/lib/businessAccount/addressesApi'
+import ChainSelect from '@/components/ChainSelect.vue'
 @Component({
   components: {
     RequestInfo,
     ErrorSheet,
+    ChainSelect,
   },
   computed: {
     ...mapGetters({
@@ -68,9 +71,11 @@ export default class CreateDepositAddressClass extends Vue {
     chain: '',
   }
 
+  rules = {
+    required: (v: string) => !!v || 'Field is required',
+  }
+
   currencyTypes = ['USD']
-  blockChains = ['ETH', 'ALGO']
-  required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
   showError = false

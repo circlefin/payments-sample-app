@@ -14,11 +14,11 @@
             label="Currency"
             hint="Currently, only USD is supported."
           />
-          <v-select
+          <ChainSelect
             v-model="formData.chain"
-            :items="blockChains"
-            label="Blockchain"
-            hint="Currently, only ETH is supported."
+            :rules="[rules.required]"
+            label="Chain"
+            :disabled="loading"
           />
           <v-btn
             depressed
@@ -52,11 +52,13 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
+import ChainSelect from '@/components/ChainSelect.vue'
 
 @Component({
   components: {
     RequestInfo,
     ErrorSheet,
+    ChainSelect,
   },
   computed: {
     ...mapGetters({
@@ -77,8 +79,11 @@ export default class CreateAddressClass extends Vue {
     chain: '',
   }
 
+  rules = {
+    required: (v: string) => !!v || 'Field is required',
+  }
+
   currencyTypes = ['USD']
-  blockChains = ['ETH', 'ALGO']
 
   // methods
   onErrorSheetClosed() {
