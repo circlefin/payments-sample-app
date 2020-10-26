@@ -11,7 +11,6 @@
 
           <ChainSelect
             v-model="formData.chain"
-            :rules="[rules.required]"
             label="Chain"
             :disabled="loading"
           />
@@ -69,10 +68,6 @@ export default class CreateDepositAddressClass extends Vue {
   formData = {
     currency: '',
     chain: '',
-  }
-
-  rules = {
-    required: (v: string) => !!v || 'Field is required',
   }
 
   currencyTypes = ['USD']

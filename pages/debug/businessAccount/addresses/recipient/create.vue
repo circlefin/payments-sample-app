@@ -7,7 +7,6 @@
 
           <ChainSelect
             v-model="formData.chain"
-            :rules="[rules.required]"
             label="Chain"
             :disabled="loading"
           />
@@ -68,10 +67,6 @@ export default class CreateRecipientAddressClass extends Vue {
     address: '',
     chain: '',
     description: '',
-  }
-
-  rules = {
-    required: (v: string) => !!v || 'Field is required',
   }
 
   error = {}
