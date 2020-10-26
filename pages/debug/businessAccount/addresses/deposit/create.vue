@@ -9,11 +9,7 @@
             label="Currency"
           />
 
-          <ChainSelect
-            v-model="formData.chain"
-            label="Chain"
-            :disabled="loading"
-          />
+          <ChainSelect v-model="formData.chain" label="Chain" />
 
           <v-btn
             depressed

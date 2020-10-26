@@ -14,11 +14,7 @@
             label="Currency"
             hint="Currently, only USD is supported."
           />
-          <ChainSelect
-            v-model="formData.chain"
-            label="Chain"
-            :disabled="loading"
-          />
+          <ChainSelect v-model="formData.chain" label="Chain" />
           <v-btn
             depressed
             class="mb-7"
@@ -77,7 +73,6 @@ export default class CreateAddressClass extends Vue {
     currency: '',
     chain: '',
   }
-
 
   currencyTypes = ['USD']
 
