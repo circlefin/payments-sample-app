@@ -3,9 +3,13 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <v-text-field v-model="formData.currency" label="Currency" />
+          <v-select
+            v-model="formData.currency"
+            :items="currencyTypes"
+            label="Currency"
+          />
 
-          <v-text-field v-model="formData.chain" label="Chain" />
+          <ChainSelect v-model="formData.chain" label="Chain" />
 
           <v-btn
             depressed
@@ -41,10 +45,12 @@ import { v4 as uuidv4 } from 'uuid'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import { CreateDepositAddressPayload } from '@/lib/businessAccount/addressesApi'
+import ChainSelect from '@/components/ChainSelect.vue'
 @Component({
   components: {
     RequestInfo,
     ErrorSheet,
+    ChainSelect,
   },
   computed: {
     ...mapGetters({
@@ -60,7 +66,7 @@ export default class CreateDepositAddressClass extends Vue {
     chain: '',
   }
 
-  required = [(v: string) => !!v || 'Field is required']
+  currencyTypes = ['USD']
   error = {}
   loading = false
   showError = false

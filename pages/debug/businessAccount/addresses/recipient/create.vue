@@ -5,7 +5,7 @@
         <v-form>
           <v-text-field v-model="formData.address" label="Recipient address" />
 
-          <v-text-field v-model="formData.chain" label="Chain" />
+          <ChainSelect v-model="formData.chain" label="Chain" />
 
           <v-text-field v-model="formData.description" label="Description" />
 
@@ -43,10 +43,12 @@ import { v4 as uuidv4 } from 'uuid'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import { CreateRecipientAddressPayload } from '@/lib/businessAccount/addressesApi'
+import ChainSelect from '@/components/ChainSelect.vue'
 @Component({
   components: {
     RequestInfo,
     ErrorSheet,
+    ChainSelect,
   },
   computed: {
     ...mapGetters({
@@ -63,7 +65,6 @@ export default class CreateRecipientAddressClass extends Vue {
     description: '',
   }
 
-  required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
   showError = false
