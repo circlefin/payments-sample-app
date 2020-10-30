@@ -4,6 +4,7 @@
       <v-col cols="12" md="4">
         <v-form>
           <header>Optional filter params:</header>
+          <v-text-field v-model="formData.source" label="Source Wallet ID" />
           <v-text-field
             v-model="formData.destination"
             label="Destination Account"
@@ -60,6 +61,7 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 export default class FetchPayoutsClass extends Vue {
   // data
   formData = {
+    source: '',
     destination: '',
     from: '',
     to: '',
@@ -87,6 +89,7 @@ export default class FetchPayoutsClass extends Vue {
     this.loading = true
     try {
       await this.$payoutsApi.getPayouts(
+        this.formData.source,
         this.formData.destination,
         this.formData.from,
         this.formData.to,
