@@ -229,6 +229,10 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/cards/update',
     },
     {
+      title: 'POST /ach',
+      to: 'debug/ach/create',
+    },
+    {
       title: 'GET /marketplace/payments',
       to: '/debug/marketplace/payments/fetch',
     },
@@ -310,6 +314,10 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'PUT /cards/{id}',
       to: '/debug/cards/update',
+    },
+    {
+      title: 'POST /ach',
+      to: 'debug/ach/create',
     },
     {
       title: 'GET /payments',
