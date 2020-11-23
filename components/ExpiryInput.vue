@@ -3,7 +3,7 @@
     ref="expiry"
     v-model="vModel"
     v-mask="'## / ####'"
-    placeholder="01 / 23"
+    placeholder="01 / 2023"
     type="tel"
     label="Expiry"
     :required="required"
