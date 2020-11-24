@@ -145,7 +145,6 @@ export default class CreatePaymentClass extends Vue {
     const payload: CreateCardPaymentPayload = {
       idempotencyKey: uuidv4(),
       amount: amountDetail,
-      verification: this.formData.verification,
       source: sourceDetails,
       metadata: {
         email: this.formData.email,
@@ -153,6 +152,10 @@ export default class CreatePaymentClass extends Vue {
         sessionId: 'xxx',
         ipAddress: '172.33.222.1',
       },
+    }
+
+    if (this.formData.sourceType === 'card') {
+      payload.verification = this.formData.verification
     }
 
     try {

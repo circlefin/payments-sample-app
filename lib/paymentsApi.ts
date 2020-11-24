@@ -11,7 +11,7 @@ interface MetaData {
 }
 
 export interface CreateCardPaymentPayload extends BasePaymentPayload {
-  verification: string
+  verification?: string
   keyId?: string
   encryptedData?: string
 }

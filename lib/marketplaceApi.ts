@@ -19,7 +19,7 @@ export interface MarketplaceInfo {
 
 export interface CreateMarketplaceCardPaymentPayload
   extends BasePaymentPayload {
-  verification: string
+  verification?: string
   keyId?: string
   encryptedData?: string
 }
