@@ -57,7 +57,6 @@ function createACHAccount(payload: CreateACHAccountPayload) {
 }
 
 /**
- * NOTE: Unused for now.
  * Get ACH Account By Id
  * @param {String} accountId
  */
