@@ -11,9 +11,7 @@
       <v-list>
         <v-list-item to="/" router exact>
           <v-list-item-content>
-            <v-list-item-title>
-              Home
-            </v-list-item-title>
+            <v-list-item-title> Home </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -101,8 +99,8 @@
           </v-list-item>
 
           <v-list-item
-            v-for="(item, i) in walletsLinks"
-            :key="`walletsLinks-${i}`"
+            v-for="(item, i) in payoutsLinks"
+            :key="`payoutsLinks-${i}`"
             :to="item.to"
             router
             exact
@@ -127,8 +125,8 @@
           </v-list-item>
 
           <v-list-item
-            v-for="(item, i) in businessAccountLinks"
-            :key="`businessAccountLinks-${i}`"
+            v-for="(item, i) in digitalDollarAccountsLinks"
+            :key="`digitalDollarAccountsLinks-${i}`"
             :to="item.to"
             router
             exact
@@ -160,9 +158,7 @@
       fixed
     >
       <v-content class="pa-3 pt-8">
-        <p>
-          Settings
-        </p>
+        <p>Settings</p>
         <v-form class="mt-8">
           <v-text-field v-model="apiKey" label="Your API key" outlined />
           <p class="subtitle-2 font-weight-light mb-8">
@@ -211,117 +207,18 @@ export default class DefaultLayoutsClass extends Vue {
     },
   ]
 
-  marketplaceLinks = [
-    {
-      title: 'GET /cards',
-      to: '/debug/cards/fetch',
-    },
-    {
-      title: 'GET /cards/{id}',
-      to: '/debug/cards/details',
-    },
-    {
-      title: 'POST /cards',
-      to: '/debug/cards/create',
-    },
-    {
-      title: 'PUT /cards/{id}',
-      to: '/debug/cards/update',
-    },
-    {
-      title: 'GET /marketplace/payments',
-      to: '/debug/marketplace/payments/fetch',
-    },
-    {
-      title: 'GET /marketplace/payments/{id}',
-      to: '/debug/marketplace/payments/details',
-    },
-    {
-      title: 'POST /marketplace/payments',
-      to: '/debug/marketplace/payments/create',
-    },
-    {
-      title: 'POST /marketplace/payments/{id}/cancel',
-      to: '/debug/marketplace/payments/cancel',
-    },
-    {
-      title: 'POST /marketplace/payments/{id}/refund',
-      to: '/debug/marketplace/payments/refund',
-    },
-    {
-      title: 'GET /marketplace/merchants',
-      to: '/debug/marketplace/merchants/fetch',
-    },
-    {
-      title: 'GET /settlements',
-      to: '/debug/settlements/fetch',
-    },
-    {
-      title: 'GET /settlements/{id}',
-      to: '/debug/settlements/details',
-    },
-    {
-      title: 'POST /wires',
-      to: '/debug/wires/create',
-    },
-    {
-      title: 'GET /wires/{id}',
-      to: '/debug/wires/details',
-    },
-    {
-      title: 'GET /wires/{id}/instructions',
-      to: '/debug/wires/instructions',
-    },
-    {
-      title: 'GET /payouts',
-      to: '/debug/payouts/fetch',
-    },
-    {
-      title: 'GET /payouts/{id}',
-      to: '/debug/payouts/details',
-    },
-    {
-      title: 'POST /payouts',
-      to: '/debug/payouts/create',
-    },
-    {
-      title: 'GET /chargebacks',
-      to: '/debug/chargebacks/fetch',
-    },
-    {
-      title: 'GET /chargebacks/{id}',
-      to: '/debug/chargebacks/details',
-    },
-  ]
-
   paymentsLinks = [
-    {
-      title: 'GET /cards',
-      to: '/debug/cards/fetch',
-    },
-    {
-      title: 'GET /cards/{id}',
-      to: '/debug/cards/details',
-    },
-    {
-      title: 'POST /cards',
-      to: '/debug/cards/create',
-    },
-    {
-      title: 'PUT /cards/{id}',
-      to: '/debug/cards/update',
-    },
     {
       title: 'GET /payments',
       to: '/debug/payments/fetch',
     },
     {
-      title: 'GET /payments/{id}',
-      to: '/debug/payments/details',
-    },
-    {
       title: 'POST /payments',
       to: '/debug/payments/create',
+    },
+    {
+      title: 'GET /payments/{id}',
+      to: '/debug/payments/details',
     },
     {
       title: 'POST /payments/{id}/cancel',
@@ -336,6 +233,81 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/payments/balances/fetch',
     },
     {
+      title: 'POST /cards',
+      to: '/debug/cards/create',
+    },
+    {
+      title: 'GET /cards',
+      to: '/debug/cards/fetch',
+    },
+    {
+      title: 'GET /cards/{id}',
+      to: '/debug/cards/details',
+    },
+    {
+      title: 'PUT /cards/{id}',
+      to: '/debug/cards/update',
+    },
+    {
+      title: 'GET /chargebacks',
+      to: '/debug/chargebacks/fetch',
+    },
+    {
+      title: 'GET /chargebacks/{id}',
+      to: '/debug/chargebacks/details',
+    },
+    {
+      title: 'GET /settlements',
+      to: '/debug/settlements/fetch',
+    },
+    {
+      title: 'GET /settlements/{id}',
+      to: '/debug/settlements/details',
+    },
+    {
+      title: 'POST /wires',
+      to: '/debug/wires/create',
+    },
+    {
+      title: 'GET /wires/{id}',
+      to: '/debug/wires/details',
+    },
+    {
+      title: 'GET /wires/{id}/instructions',
+      to: '/debug/wires/instructions',
+    },
+    {
+      title: 'POST /businessAccount/payouts',
+      to: '/debug/businessAccount/payouts/create',
+    },
+    {
+      title: 'GET /businessAccount/payouts/{id}',
+      to: '/debug/businessAccount/payouts/details',
+    },
+    {
+      title: 'POST /businessAccount/banks/wires',
+      to: '/debug/businessAccount/bankAccounts/create',
+    },
+    {
+      title: 'GET /businessAccount/banks/wires',
+      to: '/debug/businessAccount/bankAccounts/fetch',
+    },
+    {
+      title: 'GET /businessAccount/banks/wires/{id}',
+      to: '/debug/businessAccount/bankAccounts/details',
+    },
+    {
+      title: 'GET /businessAccount/banks/wires/{id}/instructions',
+      to: '/debug/businessAccount/bankAccounts/instructions',
+    },
+    {
+      title: 'GET /businessAccount/balances',
+      to: '/debug/businessAccount/balances/fetch',
+    },
+  ]
+
+  payoutsLinks = [
+    {
       title: 'GET /settlements',
       to: '/debug/settlements/fetch',
     },
@@ -360,59 +332,25 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/payouts/fetch',
     },
     {
-      title: 'GET /payouts/{id}',
-      to: '/debug/payouts/details',
-    },
-    {
       title: 'POST /payouts',
       to: '/debug/payouts/create',
     },
     {
-      title: 'GET /chargebacks',
-      to: '/debug/chargebacks/fetch',
+      title: 'GET /payouts/{id}',
+      to: '/debug/payouts/details',
     },
     {
-      title: 'GET /chargebacks/{id}',
-      to: '/debug/chargebacks/details',
-    },
-  ]
-
-  walletsLinks = [
-    {
-      title: 'GET /wallets',
-      to: '/debug/wallets/wallets/fetch',
+      title: 'POST /businessAccount/payouts',
+      to: '/debug/businessAccount/payouts/create',
     },
     {
-      title: 'GET /wallets/{id}',
-      to: '/debug/wallets/wallets/details',
+      title: 'GET /businessAccount/payouts/{id}',
+      to: '/debug/businessAccount/payouts/details',
     },
     {
-      title: 'POST /wallets',
-      to: '/debug/wallets/wallets/create',
+      title: 'POST /businessAccount/banks/wires',
+      to: '/debug/businessAccount/bankAccounts/create',
     },
-    {
-      title: 'GET /{walletId}/addresses',
-      to: '/debug/wallets/addresses/fetch',
-    },
-    {
-      title: 'POST /{walletId}/addresses',
-      to: '/debug/wallets/addresses/create',
-    },
-    {
-      title: 'GET /transfers',
-      to: '/debug/wallets/transfers/fetch',
-    },
-    {
-      title: 'GET /transfers/{id}',
-      to: '/debug/wallets/transfers/details',
-    },
-    {
-      title: 'POST /transfers',
-      to: '/debug/wallets/transfers/create',
-    },
-  ]
-
-  businessAccountLinks = [
     {
       title: 'GET /businessAccount/banks/wires',
       to: '/debug/businessAccount/bankAccounts/fetch',
@@ -426,8 +364,115 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/businessAccount/bankAccounts/instructions',
     },
     {
+      title: 'POST /wallets',
+      to: '/debug/wallets/wallets/create',
+    },
+    {
+      title: 'GET /wallets',
+      to: '/debug/wallets/wallets/fetch',
+    },
+    {
+      title: 'GET /wallets/{id}',
+      to: '/debug/wallets/wallets/details',
+    },
+    {
+      title: 'GET /{walletId}/addresses',
+      to: '/debug/wallets/addresses/fetch',
+    },
+    {
+      title: 'POST /{walletId}/addresses',
+      to: '/debug/wallets/addresses/create',
+    },
+    {
+      title: 'POST /transfers',
+      to: '/debug/wallets/transfers/create',
+    },
+    {
+      title: 'GET /transfers',
+      to: '/debug/wallets/transfers/fetch',
+    },
+    {
+      title: 'GET /transfers/{id}',
+      to: '/debug/wallets/transfers/details',
+    },
+    {
+      title: 'GET /businessAccount/balances',
+      to: '/debug/businessAccount/balances/fetch',
+    },
+  ]
+
+  digitalDollarAccountsLinks = [
+    {
+      title: 'GET /settlements',
+      to: '/debug/settlements/fetch',
+    },
+    {
+      title: 'GET /settlements/{id}',
+      to: '/debug/settlements/details',
+    },
+    {
+      title: 'POST /businessAccount/payouts',
+      to: '/debug/businessAccount/payouts/create',
+    },
+    {
+      title: 'GET /businessAccount/payouts/{id}',
+      to: '/debug/businessAccount/payouts/details',
+    },
+    {
       title: 'POST /businessAccount/banks/wires',
       to: '/debug/businessAccount/bankAccounts/create',
+    },
+    {
+      title: 'GET /businessAccount/banks/wires',
+      to: '/debug/businessAccount/bankAccounts/fetch',
+    },
+    {
+      title: 'GET /businessAccount/banks/wires/{id}',
+      to: '/debug/businessAccount/bankAccounts/details',
+    },
+    {
+      title: 'GET /businessAccount/banks/wires/{id}/instructions',
+      to: '/debug/businessAccount/bankAccounts/instructions',
+    },
+    {
+      title: 'POST /wallets',
+      to: '/debug/wallets/wallets/create',
+    },
+    {
+      title: 'GET /wallets',
+      to: '/debug/wallets/wallets/fetch',
+    },
+    {
+      title: 'GET /wallets/{id}',
+      to: '/debug/wallets/wallets/details',
+    },
+    {
+      title: 'GET /{walletId}/addresses',
+      to: '/debug/wallets/addresses/fetch',
+    },
+    {
+      title: 'POST /{walletId}/addresses',
+      to: '/debug/wallets/addresses/create',
+    },
+    {
+      title: 'POST /transfers',
+      to: '/debug/wallets/transfers/create',
+    },
+    {
+      title: 'GET /transfers',
+      to: '/debug/wallets/transfers/fetch',
+    },
+    {
+      title: 'GET /transfers/{id}',
+      to: '/debug/wallets/transfers/details',
+    },
+    {
+      title: 'GET /businessAccount/balances',
+      to: '/debug/businessAccount/balances/fetch',
+    },
+    {
+      title: 'POST /businessAccount/transfers',
+      to: '/debug/businessAccount/transfers/create',
     },
     {
       title: 'GET /businessAccount/transfers',
@@ -438,32 +483,163 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/businessAccount/transfers/details',
     },
     {
-      title: 'POST /businessAccount/transfers',
-      to: '/debug/businessAccount/transfers/create',
+      title: 'POST /businessAccount/wallets/addresses/deposit',
+      to: '/debug/businessAccount/addresses/deposit/create',
     },
     {
       title: 'GET /businessAccount/wallets/addresses/deposit',
       to: '/debug/businessAccount/addresses/deposit/fetch',
     },
     {
-      title: 'POST /businessAccount/wallets/addresses/deposit',
-      to: '/debug/businessAccount/addresses/deposit/create',
+      title: 'POST /businessAccount/wallets/addresses/recipient',
+      to: '/debug/businessAccount/addresses/recipient/create',
     },
     {
       title: 'GET /businessAccount/wallets/addresses/recipient',
       to: '/debug/businessAccount/addresses/recipient/fetch',
     },
+  ]
+
+  marketplaceLinks = [
     {
-      title: 'POST /businessAccount/wallets/addresses/recipient',
-      to: '/debug/businessAccount/addresses/recipient/create',
+      title: 'GET /marketplace/payments',
+      to: '/debug/marketplace/payments/fetch',
+    },
+    {
+      title: 'POST /marketplace/payments',
+      to: '/debug/marketplace/payments/create',
+    },
+    {
+      title: 'GET /marketplace/payments/{id}',
+      to: '/debug/marketplace/payments/details',
+    },
+    {
+      title: 'POST /marketplace/payments/{id}/cancel',
+      to: '/debug/marketplace/payments/cancel',
+    },
+    {
+      title: 'POST /marketplace/payments/{id}/refund',
+      to: '/debug/marketplace/payments/refund',
+    },
+    {
+      title: 'GET /balances',
+      to: '/debug/payments/balances/fetch',
+    },
+    {
+      title: 'POST /cards',
+      to: '/debug/cards/create',
+    },
+    {
+      title: 'GET /cards',
+      to: '/debug/cards/fetch',
+    },
+    {
+      title: 'GET /cards/{id}',
+      to: '/debug/cards/details',
+    },
+    {
+      title: 'PUT /cards/{id}',
+      to: '/debug/cards/update',
+    },
+    {
+      title: 'GET /chargebacks',
+      to: '/debug/chargebacks/fetch',
+    },
+    {
+      title: 'GET /chargebacks/{id}',
+      to: '/debug/chargebacks/details',
+    },
+    {
+      title: 'GET /settlements',
+      to: '/debug/settlements/fetch',
+    },
+    {
+      title: 'GET /settlements/{id}',
+      to: '/debug/settlements/details',
+    },
+    {
+      title: 'POST /wires',
+      to: '/debug/wires/create',
+    },
+    {
+      title: 'GET /wires/{id}',
+      to: '/debug/wires/details',
+    },
+    {
+      title: 'GET /wires/{id}/instructions',
+      to: '/debug/wires/instructions',
+    },
+    {
+      title: 'GET /payouts',
+      to: '/debug/payouts/fetch',
+    },
+    {
+      title: 'POST /payouts',
+      to: '/debug/payouts/create',
+    },
+    {
+      title: 'GET /payouts/{id}',
+      to: '/debug/payouts/details',
+    },
+    {
+      title: 'POST /businessAccount/payouts',
+      to: '/debug/businessAccount/payouts/create',
     },
     {
       title: 'GET /businessAccount/payouts/{id}',
       to: '/debug/businessAccount/payouts/details',
     },
     {
-      title: 'POST /businessAccount/payouts',
-      to: '/debug/businessAccount/payouts/create',
+      title: 'POST /businessAccount/banks/wires',
+      to: '/debug/businessAccount/bankAccounts/create',
+    },
+    {
+      title: 'GET /businessAccount/banks/wires',
+      to: '/debug/businessAccount/bankAccounts/fetch',
+    },
+    {
+      title: 'GET /businessAccount/banks/wires/{id}',
+      to: '/debug/businessAccount/bankAccounts/details',
+    },
+    {
+      title: 'GET /businessAccount/banks/wires/{id}/instructions',
+      to: '/debug/businessAccount/bankAccounts/instructions',
+    },
+    {
+      title: 'GET /marketplace/merchants',
+      to: '/debug/marketplace/merchants/fetch',
+    },
+    {
+      title: 'POST /wallets',
+      to: '/debug/wallets/wallets/create',
+    },
+    {
+      title: 'GET /wallets',
+      to: '/debug/wallets/wallets/fetch',
+    },
+    {
+      title: 'GET /wallets/{id}',
+      to: '/debug/wallets/wallets/details',
+    },
+    {
+      title: 'GET /{walletId}/addresses',
+      to: '/debug/wallets/addresses/fetch',
+    },
+    {
+      title: 'POST /{walletId}/addresses',
+      to: '/debug/wallets/addresses/create',
+    },
+    {
+      title: 'POST /transfers',
+      to: '/debug/wallets/transfers/create',
+    },
+    {
+      title: 'GET /transfers',
+      to: '/debug/wallets/transfers/fetch',
+    },
+    {
+      title: 'GET /transfers/{id}',
+      to: '/debug/wallets/transfers/details',
     },
     {
       title: 'GET /businessAccount/balances',
