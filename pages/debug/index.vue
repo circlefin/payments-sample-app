@@ -17,6 +17,22 @@
         </p>
       </v-card>
 
+      <v-card
+        v-if="isMarketplace"
+        class="body-1 px-6 py-8 mb-4"
+        max-width="800"
+        outlined
+      >
+        <h2 class="title">Merchant endpoints</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>Api endpoints specific to merchants.</p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/marketplace/merchants/fetch"> Get merchants </a>
+        </p>
+      </v-card>
+
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
         <h2 class="title">Payments endpoints</h2>
         <span class="caption">Requires: api key</span>
@@ -65,22 +81,11 @@
           <v-chip small color="primary warning">POST</v-chip>
           <a href="/debug/payments/refund"> Refund payment </a>
         </p>
-        <p v-if="isSandbox">
+        <p v-if="isSandbox && !isMarketplace">
           <v-chip small color="primary warning">POST</v-chip>
           <a href="/debug/payments/mocks/wire">
             Simulate an incoming bank wire payment
           </a>
-        </p>
-      </v-card>
-
-      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Balances endpoints</h2>
-        <span class="caption">Requires: api key</span>
-        <br /><br />
-        <p>Api endpoints to manage balances.</p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/payments/balances/fetch"> Get all balances </a>
         </p>
       </v-card>
 
@@ -110,23 +115,50 @@
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Chargebacks endpoints</h2>
+        <h2 class="title">Wires endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
-        <p>Api endpoints to manage chargebacks.</p>
+        <p>Api endpoints to manage wire accounts.</p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/chargebacks/fetch">Get all chargebacks</a>
+          <a href="/debug/wires/details"> Get wire account details by id </a>
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/chargebacks/details">
-            Get chargeback details by id
+          <a href="/debug/wires/instructions">
+            Get wire account instructions by id
           </a>
         </p>
-        <p v-if="isSandbox">
+        <p>
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/chargebacks/mocks/create"> Create mock chargeback </a>
+          <a href="/debug/wires/create"> Create wire account </a>
+        </p>
+      </v-card>
+
+      <v-card
+        v-if="!isMarketplace"
+        class="body-1 px-6 py-8 mb-4"
+        max-width="800"
+        outlined
+      >
+        <h2 class="title">On-chain payments endpoints</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>Api endpoints to initiate on-chain payments.</p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/wallets/wallets/fetch">Get all wallets</a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+
+          <a href="/debug/wallets/wallets/details">
+            Get wallet details by id
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/wallets/wallets/create"> Add wallet </a>
         </p>
       </v-card>
 
@@ -148,98 +180,39 @@
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Wires endpoints</h2>
+        <h2 class="title">Chargebacks endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
-        <p>Api endpoints to manage wire accounts.</p>
+        <p>Api endpoints to manage chargebacks.</p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/wires/details"> Get wire account details by id </a>
+          <a href="/debug/chargebacks/fetch">Get all chargebacks</a>
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/wires/instructions">
-            Get wire account instructions by id
+          <a href="/debug/chargebacks/details">
+            Get chargeback details by id
           </a>
         </p>
-        <p>
+        <p v-if="isSandbox && !isMarketplace">
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/wires/create"> Create wire account </a>
-        </p>
-      </v-card>
-
-      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Business Account Payout endpoints</h2>
-        <span class="caption">Requires: api key</span>
-        <br /><br />
-        <p>Api endpoints to manage payouts.</p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/businessAccount/payouts/details">
-            Get payout details by id
-          </a>
-        </p>
-        <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/businessAccount/payouts/create"> Create payout </a>
-        </p>
-      </v-card>
-
-      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Business Account Wire endpoints</h2>
-        <span class="caption">Requires: api key</span>
-        <br /><br />
-        <p>Api endpoints to manage wire bank accounts.</p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/businessAccount/bankAccounts/fetch">
-            Get all wire accounts
-          </a>
-        </p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/businessAccount/bankAccounts/details">
-            Get wire account details by id
-          </a>
-        </p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/businessAccount/bankAccounts/instructions">
-            Get wire instructions for id
-          </a>
-        </p>
-        <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/businessAccount/bankAccounts/create">
-            Create wire account
-          </a>
+          <a href="/debug/chargebacks/mocks/create"> Create mock chargeback </a>
         </p>
       </v-card>
 
       <v-card
-        v-if="isMarketplace"
+        v-if="!isMarketplace"
         class="body-1 px-6 py-8 mb-4"
         max-width="800"
         outlined
       >
-        <h2 class="title">Merchant endpoints</h2>
-        <span class="caption">Requires: api key</span>
-        <br /><br />
-        <p>Api endpoints specific to merchants.</p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/marketplace/merchants/fetch"> Get merchants </a>
-        </p>
-      </v-card>
-
-      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Business Account Balance endpoints</h2>
+        <h2 class="title">Balances endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
         <p>Api endpoints to manage balances.</p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/businessAccount/balances/fetch">Get all balances</a>
+          <a href="/debug/payments/balances/fetch"> Get all balances </a>
         </p>
       </v-card>
     </v-flex>

@@ -33,6 +33,32 @@
           </v-list-item>
         </v-list-group>
 
+        <v-list-group>
+          <template v-slot:activator>
+            <v-list-item-title>Core Functionality</v-list-item-title>
+          </template>
+
+          <v-list-item to="/debug/businessAccount" router exact>
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2">
+                Overview
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            v-for="(item, i) in coreLinks"
+            :key="`coreLinks-${i}`"
+            :to="item.to"
+            router
+            exact
+          >
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2" v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+
         <v-list-group v-if="!isMarketplace">
           <template v-slot:activator>
             <v-list-item-title>Payments APIs</v-list-item-title>
@@ -177,18 +203,6 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import { getLive } from '@/lib/apiTarget'
-
-const mockEndpoints = [
-  {
-    title: 'POST /mocks/cards/chargebacks',
-    to: '/debug/chargebacks/mocks/create',
-  },
-  {
-    title: 'POST /mocks/payments/wire',
-    to: '/debug/payments/mocks/wire',
-  },
-]
 
 @Component
 export default class DefaultLayoutsClass extends Vue {
@@ -207,7 +221,64 @@ export default class DefaultLayoutsClass extends Vue {
     },
   ]
 
-  // coreLinks = []
+  coreLinks = [
+    {
+      title: 'GET /businessAccount/balances',
+      to: '/debug/businessAccount/balances/fetch',
+    },
+    {
+      title: 'POST /businessAccount/payouts',
+      to: '/debug/businessAccount/payouts/create',
+    },
+    {
+      title: 'GET /businessAccount/payouts/{id}',
+      to: '/debug/businessAccount/payouts/details',
+    },
+    {
+      title: 'POST /businessAccount/banks/wires',
+      to: '/debug/businessAccount/bankAccounts/create',
+    },
+    {
+      title: 'GET /businessAccount/banks/wires',
+      to: '/debug/businessAccount/bankAccounts/fetch',
+    },
+    {
+      title: 'GET /businessAccount/banks/wires/{id}',
+      to: '/debug/businessAccount/bankAccounts/details',
+    },
+    {
+      title: 'GET /businessAccount/banks/wires/{id}/instructions',
+      to: '/debug/businessAccount/bankAccounts/instructions',
+    },
+    {
+      title: 'POST /businessAccount/transfers',
+      to: '/debug/businessAccount/transfers/create',
+    },
+    {
+      title: 'GET /businessAccount/transfers',
+      to: '/debug/businessAccount/transfers/fetch',
+    },
+    {
+      title: 'GET /businessAccount/transfers/{id}',
+      to: '/debug/businessAccount/transfers/details',
+    },
+    {
+      title: 'POST /businessAccount/wallets/addresses/deposit',
+      to: '/debug/businessAccount/addresses/deposit/create',
+    },
+    {
+      title: 'GET /businessAccount/wallets/addresses/deposit',
+      to: '/debug/businessAccount/addresses/deposit/fetch',
+    },
+    {
+      title: 'POST /businessAccount/wallets/addresses/recipient',
+      to: '/debug/businessAccount/addresses/recipient/create',
+    },
+    {
+      title: 'GET /businessAccount/wallets/addresses/recipient',
+      to: '/debug/businessAccount/addresses/recipient/fetch',
+    },
+  ]
 
   paymentsLinks = [
     {
@@ -231,6 +302,10 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/payments/refund',
     },
     {
+      title: 'POST /mocks/payments/wire',
+      to: '/debug/payments/mocks/wire',
+    },
+    {
       title: 'POST /cards',
       to: '/debug/cards/create',
     },
@@ -243,6 +318,10 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/cards/details',
     },
     {
+      title: 'PUT /cards/{id}',
+      to: '/debug/cards/update',
+    },
+    {
       title: 'POST /wires',
       to: '/debug/wires/create',
     },
@@ -253,6 +332,26 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /wires/{id}/instructions',
       to: '/debug/wires/instructions',
+    },
+    {
+      title: 'POST /wallets',
+      to: '/debug/wallets/wallets/create',
+    },
+    {
+      title: 'GET /wallets',
+      to: '/debug/wallets/wallets/fetch',
+    },
+    {
+      title: 'GET /wallets/{id}',
+      to: '/debug/wallets/wallets/details',
+    },
+    {
+      title: 'POST /{walletId}/addresses',
+      to: '/debug/wallets/addresses/create',
+    },
+    {
+      title: 'GET /{walletId}/addresses',
+      to: '/debug/wallets/addresses/fetch',
     },
     {
       title: 'GET /settlements',
@@ -269,6 +368,10 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /chargebacks/{id}',
       to: '/debug/chargebacks/details',
+    },
+    {
+      title: 'POST /mocks/cards/chargebacks',
+      to: '/debug/chargebacks/mocks/create',
     },
     {
       title: 'GET /balances',
@@ -314,22 +417,6 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/cards/details',
     },
     {
-      title: 'GET /chargebacks',
-      to: '/debug/chargebacks/fetch',
-    },
-    {
-      title: 'GET /chargebacks/{id}',
-      to: '/debug/chargebacks/details',
-    },
-    {
-      title: 'GET /settlements',
-      to: '/debug/settlements/fetch',
-    },
-    {
-      title: 'GET /settlements/{id}',
-      to: '/debug/settlements/details',
-    },
-    {
       title: 'POST /wires',
       to: '/debug/wires/create',
     },
@@ -340,6 +427,22 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /wires/{id}/instructions',
       to: '/debug/wires/instructions',
+    },
+    {
+      title: 'GET /settlements',
+      to: '/debug/settlements/fetch',
+    },
+    {
+      title: 'GET /settlements/{id}',
+      to: '/debug/settlements/details',
+    },
+    {
+      title: 'GET /chargebacks',
+      to: '/debug/chargebacks/fetch',
+    },
+    {
+      title: 'GET /chargebacks/{id}',
+      to: '/debug/chargebacks/details',
     },
     {
       title: 'GET /payouts',
@@ -408,12 +511,12 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/wallets/wallets/details',
     },
     {
-      title: 'GET /{walletId}/addresses',
-      to: '/debug/wallets/addresses/fetch',
-    },
-    {
       title: 'POST /{walletId}/addresses',
       to: '/debug/wallets/addresses/create',
+    },
+    {
+      title: 'GET /{walletId}/addresses',
+      to: '/debug/wallets/addresses/fetch',
     },
     {
       title: 'POST /transfers',
@@ -426,105 +529,6 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /transfers/{id}',
       to: '/debug/wallets/transfers/details',
-    },
-  ]
-
-  digitalDollarAccountsLinks1 = [
-    {
-      title: 'GET /settlements',
-      to: '/debug/settlements/fetch',
-    },
-    {
-      title: 'GET /settlements/{id}',
-      to: '/debug/settlements/details',
-    },
-    {
-      title: 'POST /businessAccount/payouts',
-      to: '/debug/businessAccount/payouts/create',
-    },
-    {
-      title: 'GET /businessAccount/payouts/{id}',
-      to: '/debug/businessAccount/payouts/details',
-    },
-    {
-      title: 'POST /businessAccount/banks/wires',
-      to: '/debug/businessAccount/bankAccounts/create',
-    },
-    {
-      title: 'GET /businessAccount/banks/wires',
-      to: '/debug/businessAccount/bankAccounts/fetch',
-    },
-    {
-      title: 'GET /businessAccount/banks/wires/{id}',
-      to: '/debug/businessAccount/bankAccounts/details',
-    },
-    {
-      title: 'GET /businessAccount/banks/wires/{id}/instructions',
-      to: '/debug/businessAccount/bankAccounts/instructions',
-    },
-    {
-      title: 'POST /wallets',
-      to: '/debug/wallets/wallets/create',
-    },
-    {
-      title: 'GET /wallets',
-      to: '/debug/wallets/wallets/fetch',
-    },
-    {
-      title: 'GET /wallets/{id}',
-      to: '/debug/wallets/wallets/details',
-    },
-    {
-      title: 'GET /{walletId}/addresses',
-      to: '/debug/wallets/addresses/fetch',
-    },
-    {
-      title: 'POST /{walletId}/addresses',
-      to: '/debug/wallets/addresses/create',
-    },
-    {
-      title: 'POST /transfers',
-      to: '/debug/wallets/transfers/create',
-    },
-    {
-      title: 'GET /transfers',
-      to: '/debug/wallets/transfers/fetch',
-    },
-    {
-      title: 'GET /transfers/{id}',
-      to: '/debug/wallets/transfers/details',
-    },
-    {
-      title: 'GET /businessAccount/balances',
-      to: '/debug/businessAccount/balances/fetch',
-    },
-    {
-      title: 'POST /businessAccount/transfers',
-      to: '/debug/businessAccount/transfers/create',
-    },
-    {
-      title: 'GET /businessAccount/transfers',
-      to: '/debug/businessAccount/transfers/fetch',
-    },
-    {
-      title: 'GET /businessAccount/transfers/{id}',
-      to: '/debug/businessAccount/transfers/details',
-    },
-    {
-      title: 'POST /businessAccount/wallets/addresses/deposit',
-      to: '/debug/businessAccount/addresses/deposit/create',
-    },
-    {
-      title: 'GET /businessAccount/wallets/addresses/deposit',
-      to: '/debug/businessAccount/addresses/deposit/fetch',
-    },
-    {
-      title: 'POST /businessAccount/wallets/addresses/recipient',
-      to: '/debug/businessAccount/addresses/recipient/create',
-    },
-    {
-      title: 'GET /businessAccount/wallets/addresses/recipient',
-      to: '/debug/businessAccount/addresses/recipient/fetch',
     },
   ]
 
@@ -532,14 +536,6 @@ export default class DefaultLayoutsClass extends Vue {
   right = true
   showRightDrawer = false
   showDrawer = false
-
-  created() {
-    // Add mock endpoints if we are not in production environments
-    if (!getLive()) {
-      this.paymentsLinks = this.paymentsLinks.concat(mockEndpoints)
-      this.marketplaceLinks = this.marketplaceLinks.concat(mockEndpoints)
-    }
-  }
 
   get title() {
     const navItems = this.flowLinks.concat(this.paymentsLinks)

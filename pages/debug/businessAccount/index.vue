@@ -11,12 +11,38 @@
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Business Wire Account endpoints</h2>
+        <h2 class="title">Business Account Balance endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
+        <p>Api endpoints to manage balances.</p>
         <p>
-          Api endpoints to manage business wire accounts.
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/businessAccount/balances/fetch">Get all balances</a>
         </p>
+      </v-card>
+
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
+        <h2 class="title">Business Account Payout endpoints</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>Api endpoints to manage payouts.</p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/businessAccount/payouts/details">
+            Get payout details by id
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/businessAccount/payouts/create"> Create payout </a>
+        </p>
+      </v-card>
+
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
+        <h2 class="title">Business Account Wire endpoints</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>Api endpoints to manage wire bank accounts.</p>
         <p>
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/businessAccount/bankAccounts/fetch">
@@ -44,12 +70,10 @@
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Transfer endpoints</h2>
+        <h2 class="title">Business Account Transfer endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
-        <p>
-          Api endpoints to manage transfers.
-        </p>
+        <p>Api endpoints to manage transfers.</p>
         <p>
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/businessAccount/transfers/fetch">Get all transfers</a>
@@ -69,12 +93,10 @@
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Address endpoints</h2>
+        <h2 class="title">Business Account Address endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
-        <p>
-          Api endpoints to manage blockchain addresses.
-        </p>
+        <p>Api endpoints to manage blockchain addresses.</p>
         <p>
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/businessAccount/addresses/deposit/fetch">
@@ -98,40 +120,6 @@
           <a href="/debug/businessAccount/addresses/recipient/create">
             Create recipient address
           </a>
-        </p>
-      </v-card>
-
-      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Payout endpoints</h2>
-        <span class="caption">Requires: api key</span>
-        <br /><br />
-        <p>
-          Api endpoints to manage payouts.
-        </p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/businessAccount/payouts/details">
-            Get payout details by id
-          </a>
-        </p>
-        <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/businessAccount/payouts/create">
-            Create payout
-          </a>
-        </p>
-      </v-card>
-
-      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Balance endpoints</h2>
-        <span class="caption">Requires: api key</span>
-        <br /><br />
-        <p>
-          Api endpoints to manage balances.
-        </p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/businessAccount/balances/fetch">Get all balances</a>
         </p>
       </v-card>
     </v-flex>
