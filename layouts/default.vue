@@ -207,6 +207,8 @@ export default class DefaultLayoutsClass extends Vue {
     },
   ]
 
+  // coreLinks = []
+
   paymentsLinks = [
     {
       title: 'GET /payments',
@@ -229,10 +231,6 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/payments/refund',
     },
     {
-      title: 'GET /balances',
-      to: '/debug/payments/balances/fetch',
-    },
-    {
       title: 'POST /cards',
       to: '/debug/cards/create',
     },
@@ -243,26 +241,6 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /cards/{id}',
       to: '/debug/cards/details',
-    },
-    {
-      title: 'PUT /cards/{id}',
-      to: '/debug/cards/update',
-    },
-    {
-      title: 'GET /chargebacks',
-      to: '/debug/chargebacks/fetch',
-    },
-    {
-      title: 'GET /chargebacks/{id}',
-      to: '/debug/chargebacks/details',
-    },
-    {
-      title: 'GET /settlements',
-      to: '/debug/settlements/fetch',
-    },
-    {
-      title: 'GET /settlements/{id}',
-      to: '/debug/settlements/details',
     },
     {
       title: 'POST /wires',
@@ -277,36 +255,32 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/wires/instructions',
     },
     {
-      title: 'POST /businessAccount/payouts',
-      to: '/debug/businessAccount/payouts/create',
+      title: 'GET /settlements',
+      to: '/debug/settlements/fetch',
     },
     {
-      title: 'GET /businessAccount/payouts/{id}',
-      to: '/debug/businessAccount/payouts/details',
+      title: 'GET /settlements/{id}',
+      to: '/debug/settlements/details',
     },
     {
-      title: 'POST /businessAccount/banks/wires',
-      to: '/debug/businessAccount/bankAccounts/create',
+      title: 'GET /chargebacks',
+      to: '/debug/chargebacks/fetch',
     },
     {
-      title: 'GET /businessAccount/banks/wires',
-      to: '/debug/businessAccount/bankAccounts/fetch',
+      title: 'GET /chargebacks/{id}',
+      to: '/debug/chargebacks/details',
     },
     {
-      title: 'GET /businessAccount/banks/wires/{id}',
-      to: '/debug/businessAccount/bankAccounts/details',
-    },
-    {
-      title: 'GET /businessAccount/banks/wires/{id}/instructions',
-      to: '/debug/businessAccount/bankAccounts/instructions',
-    },
-    {
-      title: 'GET /businessAccount/balances',
-      to: '/debug/businessAccount/balances/fetch',
+      title: 'GET /balances',
+      to: '/debug/payments/balances/fetch',
     },
   ]
 
   marketplaceLinks = [
+    {
+      title: 'GET /marketplace/merchants',
+      to: '/debug/marketplace/merchants/fetch',
+    },
     {
       title: 'GET /marketplace/payments',
       to: '/debug/marketplace/payments/fetch',
@@ -328,10 +302,6 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/marketplace/payments/refund',
     },
     {
-      title: 'GET /balances',
-      to: '/debug/payments/balances/fetch',
-    },
-    {
       title: 'POST /cards',
       to: '/debug/cards/create',
     },
@@ -342,10 +312,6 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /cards/{id}',
       to: '/debug/cards/details',
-    },
-    {
-      title: 'PUT /cards/{id}',
-      to: '/debug/cards/update',
     },
     {
       title: 'GET /chargebacks',
@@ -387,20 +353,20 @@ export default class DefaultLayoutsClass extends Vue {
       title: 'GET /payouts/{id}',
       to: '/debug/payouts/details',
     },
-    {
-      title: 'GET /marketplace/merchants',
-      to: '/debug/marketplace/merchants/fetch',
-    },
   ]
 
   payoutsLinks = [
     {
-      title: 'GET /settlements',
-      to: '/debug/settlements/fetch',
+      title: 'GET /payouts',
+      to: '/debug/payouts/fetch',
     },
     {
-      title: 'GET /settlements/{id}',
-      to: '/debug/settlements/details',
+      title: 'POST /payouts',
+      to: '/debug/payouts/create',
+    },
+    {
+      title: 'GET /payouts/{id}',
+      to: '/debug/payouts/details',
     },
     {
       title: 'POST /wires',
@@ -415,41 +381,20 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/wires/instructions',
     },
     {
-      title: 'GET /payouts',
-      to: '/debug/payouts/fetch',
+      title: 'POST /transfers',
+      to: '/debug/wallets/transfers/create',
     },
     {
-      title: 'POST /payouts',
-      to: '/debug/payouts/create',
+      title: 'GET /transfers',
+      to: '/debug/wallets/transfers/fetch',
     },
     {
-      title: 'GET /payouts/{id}',
-      to: '/debug/payouts/details',
+      title: 'GET /transfers/{id}',
+      to: '/debug/wallets/transfers/details',
     },
-    {
-      title: 'POST /businessAccount/payouts',
-      to: '/debug/businessAccount/payouts/create',
-    },
-    {
-      title: 'GET /businessAccount/payouts/{id}',
-      to: '/debug/businessAccount/payouts/details',
-    },
-    {
-      title: 'POST /businessAccount/banks/wires',
-      to: '/debug/businessAccount/bankAccounts/create',
-    },
-    {
-      title: 'GET /businessAccount/banks/wires',
-      to: '/debug/businessAccount/bankAccounts/fetch',
-    },
-    {
-      title: 'GET /businessAccount/banks/wires/{id}',
-      to: '/debug/businessAccount/bankAccounts/details',
-    },
-    {
-      title: 'GET /businessAccount/banks/wires/{id}/instructions',
-      to: '/debug/businessAccount/bankAccounts/instructions',
-    },
+  ]
+
+  digitalDollarAccountsLinks = [
     {
       title: 'POST /wallets',
       to: '/debug/wallets/wallets/create',
@@ -482,13 +427,9 @@ export default class DefaultLayoutsClass extends Vue {
       title: 'GET /transfers/{id}',
       to: '/debug/wallets/transfers/details',
     },
-    {
-      title: 'GET /businessAccount/balances',
-      to: '/debug/businessAccount/balances/fetch',
-    },
   ]
 
-  digitalDollarAccountsLinks = [
+  digitalDollarAccountsLinks1 = [
     {
       title: 'GET /settlements',
       to: '/debug/settlements/fetch',
