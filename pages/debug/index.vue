@@ -48,6 +48,14 @@
           <a href="/debug/payments/fetch"> Get all payments </a>
         </p>
         <p v-if="isMarketplace">
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/marketplace/payments/create">Make payment</a>
+        </p>
+        <p v-else>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/payments/create">Make payment</a>
+        </p>
+        <p v-if="isMarketplace">
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/marketplace/payments/details">
             Get payment details by id
@@ -59,17 +67,9 @@
         </p>
         <p v-if="isMarketplace">
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/marketplace/payments/create">Make payment</a>
-        </p>
-        <p v-else>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/payments/create">Make payment</a>
-        </p>
-        <p v-if="isMarketplace">
-          <v-chip small color="primary warning">POST</v-chip>
           <a href="/debug/marketplace/payments/cancel"> Cancel payment </a>
         </p>
-        <p>
+        <p v-else>
           <v-chip small color="primary warning">POST</v-chip>
           <a href="/debug/payments/cancel"> Cancel payment </a>
         </p>
@@ -94,7 +94,10 @@
         <span class="caption">Requires: api key</span>
         <br /><br />
         <p>Api endpoints to manage cards:</p>
-
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/cards/create"> Add card </a>
+        </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/cards/fetch">Get all cards</a>
@@ -103,10 +106,6 @@
           <v-chip small color="primary">GET</v-chip>
 
           <a href="/debug/cards/details"> Get card details by id </a>
-        </p>
-        <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/cards/create"> Add card </a>
         </p>
         <p>
           <v-chip small color="primary accent">PUT</v-chip>
@@ -120,6 +119,10 @@
         <br /><br />
         <p>Api endpoints to manage wire accounts.</p>
         <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/wires/create"> Create wire account </a>
+        </p>
+        <p>
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/wires/details"> Get wire account details by id </a>
         </p>
@@ -128,10 +131,6 @@
           <a href="/debug/wires/instructions">
             Get wire account instructions by id
           </a>
-        </p>
-        <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/wires/create"> Create wire account </a>
         </p>
       </v-card>
 
@@ -146,6 +145,10 @@
         <br /><br />
         <p>Api endpoints to initiate on-chain payments.</p>
         <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/wallets/wallets/create"> Add wallet </a>
+        </p>
+        <p>
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/wallets/wallets/fetch">Get all wallets</a>
         </p>
@@ -158,7 +161,11 @@
         </p>
         <p>
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/wallets/wallets/create"> Add wallet </a>
+          <a href="/debug/wallets/addresses/create"> Add address </a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/wallets/addresses/fetch">Get all addresses</a>
         </p>
       </v-card>
 
@@ -213,6 +220,30 @@
         <p>
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/payments/balances/fetch"> Get all balances </a>
+        </p>
+      </v-card>
+
+      <v-card
+        v-if="isMarketplace"
+        class="body-1 px-6 py-8 mb-4"
+        max-width="800"
+        outlined
+      >
+        <h2 class="title">Payouts endpoints</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>Api endpoints to manage payouts.</p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/payouts/create"> Add payout </a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/payouts/fetch">Get all payouts</a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/payouts/details"> Get payout details by id </a>
         </p>
       </v-card>
     </v-flex>

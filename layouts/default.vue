@@ -445,12 +445,12 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/chargebacks/details',
     },
     {
-      title: 'GET /payouts',
-      to: '/debug/payouts/fetch',
-    },
-    {
       title: 'POST /payouts',
       to: '/debug/payouts/create',
+    },
+    {
+      title: 'GET /payouts',
+      to: '/debug/payouts/fetch',
     },
     {
       title: 'GET /payouts/{id}',
@@ -460,12 +460,12 @@ export default class DefaultLayoutsClass extends Vue {
 
   payoutsLinks = [
     {
-      title: 'GET /payouts',
-      to: '/debug/payouts/fetch',
-    },
-    {
       title: 'POST /payouts',
       to: '/debug/payouts/create',
+    },
+    {
+      title: 'GET /payouts',
+      to: '/debug/payouts/fetch',
     },
     {
       title: 'GET /payouts/{id}',

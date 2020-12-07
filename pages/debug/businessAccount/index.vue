@@ -27,14 +27,14 @@
         <br /><br />
         <p>Api endpoints to manage payouts.</p>
         <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/businessAccount/payouts/create"> Create payout </a>
+        </p>
+        <p>
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/businessAccount/payouts/details">
             Get payout details by id
           </a>
-        </p>
-        <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/businessAccount/payouts/create"> Create payout </a>
         </p>
       </v-card>
 
@@ -43,6 +43,12 @@
         <span class="caption">Requires: api key</span>
         <br /><br />
         <p>Api endpoints to manage wire bank accounts.</p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/businessAccount/bankAccounts/create">
+            Create wire account
+          </a>
+        </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/businessAccount/bankAccounts/fetch">
@@ -61,12 +67,6 @@
             Get wire instructions for id
           </a>
         </p>
-        <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/businessAccount/bankAccounts/create">
-            Create wire account
-          </a>
-        </p>
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
@@ -74,6 +74,12 @@
         <span class="caption">Requires: api key</span>
         <br /><br />
         <p>Api endpoints to manage transfers.</p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/businessAccount/transfers/create">
+            Create transfer
+          </a>
+        </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/businessAccount/transfers/fetch">Get all transfers</a>
@@ -84,12 +90,6 @@
             Get transfer details by id
           </a>
         </p>
-        <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/businessAccount/transfers/create">
-            Create transfer
-          </a>
-        </p>
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
@@ -98,12 +98,6 @@
         <br /><br />
         <p>Api endpoints to manage blockchain addresses.</p>
         <p>
-          <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/businessAccount/addresses/deposit/fetch">
-            Get all deposit addresses
-          </a>
-        </p>
-        <p>
           <v-chip small color="primary warning">POST</v-chip>
           <a href="/debug/businessAccount/addresses/deposit/create">
             Create deposit address
@@ -111,14 +105,20 @@
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/businessAccount/addresses/recipient/fetch">
-            Get all recipient addresses
+          <a href="/debug/businessAccount/addresses/deposit/fetch">
+            Get all deposit addresses
           </a>
         </p>
         <p>
           <v-chip small color="primary warning">POST</v-chip>
           <a href="/debug/businessAccount/addresses/recipient/create">
             Create recipient address
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/businessAccount/addresses/recipient/fetch">
+            Get all recipient addresses
           </a>
         </p>
       </v-card>
