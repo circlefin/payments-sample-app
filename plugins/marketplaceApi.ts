@@ -1,11 +1,9 @@
-import marketplaceApi, {
-  CreateMarketplacePaymentPayload,
-} from '@/lib/marketplaceApi'
+import marketplaceApi, { BasePaymentPayload } from '@/lib/marketplaceApi'
 
 declare module 'vue/types/vue' {
   interface Vue {
     $marketplaceApi: {
-      createPayment: (payload: CreateMarketplacePaymentPayload) => any
+      createPayment: (payload: BasePaymentPayload) => any
       getPayments: any
       getPaymentById: any
       cancelPayment: any

@@ -199,9 +199,9 @@ import { mapGetters } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
 import { exampleCards } from '@/lib/cardTestData'
 import openPGP from '@/lib/openpgp'
-import { CreatePaymentPayload } from '@/lib/paymentsApi'
+import { CreateCardPaymentPayload } from '@/lib/paymentsApi'
 import {
-  CreateMarketplacePaymentPayload,
+  CreateMarketplaceCardPaymentPayload,
   MarketplaceInfo,
 } from '@/lib/marketplaceApi'
 import ErrorSheet from '@/components/ErrorSheet.vue'
@@ -334,7 +334,7 @@ export default class CardFlowClass extends Vue {
       type: 'card',
     }
 
-    const payload: CreatePaymentPayload = {
+    const payload: CreateCardPaymentPayload = {
       idempotencyKey: uuidv4(),
       amount: amountDetail,
       verification: 'cvv',
@@ -361,7 +361,7 @@ export default class CardFlowClass extends Vue {
       payload.keyId = encryptedData.keyId
 
       if (this.isMarketplace) {
-        const marketPlacePayload: CreateMarketplacePaymentPayload = {
+        const marketPlacePayload: CreateMarketplaceCardPaymentPayload = {
           marketplaceInfo: this.marketplaceInfo,
           ...payload,
         }

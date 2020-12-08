@@ -1,10 +1,10 @@
-import paymentsApi, { CreatePaymentPayload } from '@/lib/paymentsApi'
+import paymentsApi, { BasePaymentPayload } from '@/lib/paymentsApi'
 
 declare module 'vue/types/vue' {
   interface Vue {
     $paymentsApi: {
       cancelPayment: any
-      createPayment: (payload: CreatePaymentPayload) => any
+      createPayment: (payload: BasePaymentPayload) => any
       getPayments: any
       getPaymentById: any
       getPCIPublicKey: any

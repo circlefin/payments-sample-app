@@ -10,20 +10,23 @@ interface MetaData {
   ipAddress: string
 }
 
-export interface CreatePaymentPayload {
+export interface CreateCardPaymentPayload extends BasePaymentPayload {
+  verification?: string
+  keyId?: string
+  encryptedData?: string
+}
+
+export interface BasePaymentPayload {
   idempotencyKey: string
   amount: {
     amount: string
     currency: string
   }
-  verification: string
   source: {
     id: string
     type: string
   }
   description: string
-  keyId?: string
-  encryptedData?: string
   metadata: MetaData
 }
 
@@ -98,7 +101,7 @@ function cancelPayment(id: string, payload: any) {
  * Create payment
  * @param {*} payload (contains form data and encrypted payment details)
  */
-function createPayment(payload: CreatePaymentPayload) {
+function createPayment(payload: BasePaymentPayload) {
   const url = '/v1/payments'
   if (payload.metadata) {
     payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
