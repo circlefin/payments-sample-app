@@ -231,6 +231,10 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/businessAccount/payouts/create',
     },
     {
+      title: 'GET /businessAccount/payouts/',
+      to: '/debug/businessAccount/payouts/fetch',
+    },
+    {
       title: 'GET /businessAccount/payouts/{id}',
       to: '/debug/businessAccount/payouts/details',
     },
@@ -277,6 +281,10 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /businessAccount/wallets/addresses/recipient',
       to: '/debug/businessAccount/addresses/recipient/fetch',
+    },
+    {
+      title: 'GET /businessAccount/deposits',
+      to: '/debug/businessAccount/deposits/fetch',
     },
   ]
 

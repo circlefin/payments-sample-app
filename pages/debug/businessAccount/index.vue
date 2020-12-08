@@ -32,6 +32,10 @@
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/businessAccount/payouts/fetch"> Get all payouts </a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
           <a href="/debug/businessAccount/payouts/details">
             Get payout details by id
           </a>
@@ -120,6 +124,17 @@
           <a href="/debug/businessAccount/addresses/recipient/fetch">
             Get all recipient addresses
           </a>
+        </p>
+      </v-card>
+
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
+        <h2 class="title">Business Account Deposit endpoints</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>Api endpoints to manage deposits.</p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/businessAccount/deposits/fetch">Get all deposits</a>
         </p>
       </v-card>
     </v-flex>

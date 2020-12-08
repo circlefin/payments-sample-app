@@ -3,18 +3,6 @@ import axios from 'axios'
 
 import { getAPIHostname } from '../apiTarget'
 
-export interface CreatePayoutPayload {
-  idempotencyKey: string
-  destination: {
-    id: string
-    type: string
-  }
-  amount: {
-    amount: string
-    currency: string
-  }
-}
-
 const instance = axios.create({
   baseURL: getAPIHostname(),
 })
@@ -47,41 +35,23 @@ const nullIfEmpty = (prop: string | undefined) => {
   return prop
 }
 
+
 /** Returns the axios instance */
 function getInstance() {
   return instance
 }
 
 /**
- * Create Payout
- * @param {*} payload (contains form data and encrypted transfer details)
- */
-function createPayout(payload: CreatePayoutPayload) {
-  const url = '/v1/businessAccount/payouts'
-  return instance.post(url, payload)
-}
-
-/**
- * Get Payout
- * @param {String} payoutId
- */
-function getPayoutById(payoutId: string) {
-  const url = `/v1/businessAccount/payouts/${payoutId}`
-
-  return instance.get(url)
-}
-
-/**
- * Get Payouts
- * @param {String} destination
+ * Get Deposits
+ * @param {String} type
  * @param {String} from
  * @param {String} to
  * @param {String} pageBefore
  * @param {String} pageAfter
  * @param {String} pageSize
  */
-function getPayouts(
-  destination: string,
+function getDeposits(
+  type: string,
   from: string,
   to: string,
   pageBefore: string,
@@ -89,20 +59,18 @@ function getPayouts(
   pageSize: string
 ) {
   const queryParams = {
-    destination: nullIfEmpty(destination),
+    destination: nullIfEmpty(type),
     from: nullIfEmpty(from),
     to: nullIfEmpty(to),
     pageBefore: nullIfEmpty(pageBefore),
     pageAfter: nullIfEmpty(pageAfter),
     pageSize: nullIfEmpty(pageSize),
   }
-  const url = '/v1/businessAccount/payouts'
+  const url = '/v1/businessAccount/deposit'
   return instance.get(url, { params: queryParams })
 }
 
 export default {
   getInstance,
-  createPayout,
-  getPayoutById,
-  getPayouts,
+  getDeposits,
 }
