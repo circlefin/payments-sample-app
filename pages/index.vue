@@ -6,8 +6,8 @@
 
         <p class="mt-6">
           This sample web application demonstrates some of the features of the
-          <a href="https://www.circle.com/payments-api" target="_blank">
-            Circle Payments API
+          <a href="https://www.circle.com/en/developers" target="_blank">
+            Circle APIs
           </a>
         </p>
 
