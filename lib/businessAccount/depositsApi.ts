@@ -66,7 +66,7 @@ function getDeposits(
     pageAfter: nullIfEmpty(pageAfter),
     pageSize: nullIfEmpty(pageSize),
   }
-  const url = '/v1/businessAccount/deposit'
+  const url = '/v1/businessAccount/deposits'
   return instance.get(url, { params: queryParams })
 }
 
