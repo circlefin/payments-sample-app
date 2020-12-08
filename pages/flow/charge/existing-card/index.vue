@@ -48,6 +48,13 @@
               <CVVInput v-model="formData.cvv" :rules="[rules.required]" />
 
               <v-text-field
+                v-model="formData.description"
+                hint="Payment Description"
+                label="Description"
+                :disabled="loading"
+              />
+
+              <v-text-field
                 v-model="formData.phoneNumber"
                 hint="Phone number of the user in E.164 format"
                 label="Phone"
@@ -247,6 +254,7 @@ export default class CardFlowClass extends Vue {
     fiatAccountId: '',
     amount: '0.00',
     cvv: '',
+    description: '',
     phoneNumber: '',
     email: '',
   }
@@ -331,6 +339,7 @@ export default class CardFlowClass extends Vue {
       amount: amountDetail,
       verification: 'cvv',
       source: sourceDetails,
+      description: this.formData.description,
       keyId: '',
       encryptedData: '',
       metadata: {

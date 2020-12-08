@@ -34,6 +34,7 @@ export interface BasePaymentPayload {
     id: string
     type: string
   }
+  description: string
   metadata: MetaData
   marketplaceInfo: MarketplaceInfo
 }

@@ -28,6 +28,12 @@
           <v-text-field v-if="cvvRequired" v-model="formData.cvv" label="CVV" />
 
           <v-text-field
+            v-model="formData.description"
+            hint="Payment Description"
+            label="Description"
+          />
+
+          <v-text-field
             v-model="formData.phoneNumber"
             hint="Phone number of the user in E.164 format"
             label="Phone"
@@ -105,6 +111,7 @@ export default class CreatePaymentClass extends Vue {
     verification: 'cvv',
     amount: '0.00',
     cvv: '',
+    description: '',
     phoneNumber: '',
     email: '',
   }
@@ -171,6 +178,7 @@ export default class CreatePaymentClass extends Vue {
       idempotencyKey: uuidv4(),
       amount: amountDetail,
       source: sourceDetails,
+      description: this.formData.description,
       metadata: {
         email: this.formData.email,
         phoneNumber: this.formData.phoneNumber,
