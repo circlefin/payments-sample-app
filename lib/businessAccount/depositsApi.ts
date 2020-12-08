@@ -59,7 +59,7 @@ function getDeposits(
   pageSize: string
 ) {
   const queryParams = {
-    destination: nullIfEmpty(type),
+    type: nullIfEmpty(type),
     from: nullIfEmpty(from),
     to: nullIfEmpty(to),
     pageBefore: nullIfEmpty(pageBefore),
