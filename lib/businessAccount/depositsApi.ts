@@ -35,7 +35,6 @@ const nullIfEmpty = (prop: string | undefined) => {
   return prop
 }
 
-
 /** Returns the axios instance */
 function getInstance() {
   return instance
