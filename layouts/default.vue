@@ -338,6 +338,14 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/wires/details',
     },
     {
+      title: 'POST /ach',
+      to: '/debug/ach/create',
+    },
+    {
+      title: 'GET /ach/{id}',
+      to: '/debug/ach/details',
+    },
+    {
       title: 'GET /wires/{id}/instructions',
       to: '/debug/wires/instructions',
     },
@@ -431,6 +439,14 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /wires/{id}',
       to: '/debug/wires/details',
+    },
+    {
+      title: 'POST /ach',
+      to: '/debug/ach/create',
+    },
+    {
+      title: 'GET /ach/{id}',
+      to: '/debug/ach/details',
     },
     {
       title: 'GET /wires/{id}/instructions',
