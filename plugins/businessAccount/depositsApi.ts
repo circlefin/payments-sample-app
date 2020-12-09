@@ -1,22 +1,16 @@
-import marketplaceApi, { BasePaymentPayload } from '@/lib/marketplaceApi'
+import depositsApi from '@/lib/businessAccount/depositsApi'
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $marketplaceApi: {
-      createPayment: (payload: BasePaymentPayload) => any
-      getPayments: any
-      getPaymentById: any
-      cancelPayment: any
-      refundPayment: any
-      getMerchants: () => any
-      createWallet: () => any
+    $depositsApi: {
       getInstance: any
+      getDeposits: any
     }
   }
 }
 
 export default ({ store }: any, inject: any) => {
-  const instance = marketplaceApi.getInstance()
+  const instance = depositsApi.getInstance()
 
   instance.interceptors.request.use(
     function (config) {
@@ -44,5 +38,5 @@ export default ({ store }: any, inject: any) => {
     }
   )
 
-  inject('marketplaceApi', marketplaceApi)
+  inject('depositsApi', depositsApi)
 }

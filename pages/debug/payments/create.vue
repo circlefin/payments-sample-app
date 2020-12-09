@@ -3,20 +3,28 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <v-text-field
-            v-model="formData.sourceId"
-            label="Source Id (Card Id)"
+          <v-text-field v-model="formData.sourceId" label="Source Account Id" />
+          <v-select
+            v-model="formData.sourceType"
+            :items="sourceType"
+            label="Source Account Type"
           />
-
           <v-text-field v-model="formData.amount" label="Amount" />
 
           <v-select
+            v-if="formData.sourceType == 'card'"
             v-model="formData.verification"
             :items="verificationMethods"
             label="Verification Method"
           />
 
           <v-text-field v-if="cvvRequired" v-model="formData.cvv" label="CVV" />
+
+          <v-text-field
+            v-model="formData.description"
+            hint="Payment Description"
+            label="Description"
+          />
 
           <v-text-field
             v-model="formData.phoneNumber"
@@ -58,7 +66,7 @@ import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
 import openPGP from '@/lib/openpgp'
-import { CreatePaymentPayload } from '@/lib/paymentsApi'
+import { CreateCardPaymentPayload } from '@/lib/paymentsApi'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 
@@ -81,14 +89,17 @@ export default class CreatePaymentClass extends Vue {
   cvvRequired = true
   formData = {
     sourceId: '',
+    sourceType: 'card', // Default to card
     verification: 'cvv',
     amount: '0.00',
     cvv: '',
+    description: '',
     phoneNumber: '',
     email: '',
   }
 
   verificationMethods = ['none', 'cvv']
+  sourceType = ['card', 'ach']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
@@ -113,6 +124,16 @@ export default class CreatePaymentClass extends Vue {
     }
   }
 
+  @Watch('formData.sourceType', { immediate: true })
+  onSourceTypeChanged(val: string) {
+    if (val === 'card') {
+      this.formData.verification = 'cvv'
+    }
+    if (val === 'ach') {
+      this.formData.verification = 'none'
+    }
+  }
+
   onErrorSheetClosed() {
     this.error = {}
     this.showError = false
@@ -120,27 +141,29 @@ export default class CreatePaymentClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
-
     const amountDetail = {
       amount: this.formData.amount,
       currency: 'USD',
     }
     const sourceDetails = {
       id: this.formData.sourceId,
-      type: 'card',
+      type: this.formData.sourceType,
     }
-
-    const payload: CreatePaymentPayload = {
+    const payload: CreateCardPaymentPayload = {
       idempotencyKey: uuidv4(),
       amount: amountDetail,
-      verification: this.formData.verification,
       source: sourceDetails,
+      description: this.formData.description,
       metadata: {
         email: this.formData.email,
         phoneNumber: this.formData.phoneNumber,
         sessionId: 'xxx',
         ipAddress: '172.33.222.1',
       },
+    }
+
+    if (this.formData.sourceType === 'card') {
+      payload.verification = this.formData.verification
     }
 
     try {
@@ -150,11 +173,9 @@ export default class CreatePaymentClass extends Vue {
 
         const publicKey = await this.$paymentsApi.getPCIPublicKey()
         const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
-
         payload.encryptedData = encryptedData.encryptedMessage
         payload.keyId = encryptedData.keyId
       }
-
       await this.$paymentsApi.createPayment(payload)
     } catch (error) {
       this.error = error
