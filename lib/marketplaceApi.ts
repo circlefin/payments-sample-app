@@ -17,19 +17,24 @@ export interface MarketplaceInfo {
   walletId: string
 }
 
-export interface CreateMarketplacePaymentPayload {
+export interface CreateMarketplaceCardPaymentPayload
+  extends BasePaymentPayload {
+  verification?: string
+  keyId?: string
+  encryptedData?: string
+}
+
+export interface BasePaymentPayload {
   idempotencyKey: string
   amount: {
     amount: string
     currency: string
   }
-  verification: string
   source: {
     id: string
     type: string
   }
-  keyId?: string
-  encryptedData?: string
+  description: string
   metadata: MetaData
   marketplaceInfo: MarketplaceInfo
 }
@@ -88,7 +93,7 @@ function getInstance() {
  * Create payment
  * @param {*} payload (contains form data and encrypted payment details)
  */
-function createPayment(payload: CreateMarketplacePaymentPayload) {
+function createPayment(payload: BasePaymentPayload) {
   const url = '/v1/marketplace/payments'
   if (payload.metadata) {
     payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)

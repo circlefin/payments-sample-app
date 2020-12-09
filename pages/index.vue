@@ -6,14 +6,12 @@
 
         <p class="mt-6">
           This sample web application demonstrates some of the features of the
-          <a href="https://www.circle.com/payments-api" target="_blank">
-            Circle Payments API
+          <a href="https://www.circle.com/en/developers" target="_blank">
+            Circle APIs
           </a>
         </p>
 
-        <p class="font-weight-bold mt-8">
-          This app provides:
-        </p>
+        <p class="font-weight-bold mt-8">This app provides:</p>
 
         <ul>
           <li>a sample UI implementation of common payments flows</li>
@@ -28,21 +26,15 @@
           Explore the sample applications using your private api key.
         </p>
 
-        <p class="font-weight-bold mt-6">
-          Make payment UI
-        </p>
+        <p class="font-weight-bold mt-6">Make payment UI</p>
         <p class="font-weight-light">
           Example form that combines adding card details and making a payment.
         </p>
         <p>
-          <v-btn href="/flow/charge" color="primary">
-            Charge flow
-          </v-btn>
+          <v-btn href="/flow/charge" color="primary"> Charge flow </v-btn>
         </p>
 
-        <p class="font-weight-bold mt-6">
-          Use existing card UI
-        </p>
+        <p class="font-weight-bold mt-6">Use existing card UI</p>
         <p class="font-weight-light">
           Example form to make payment by selecting a previously added card.
           Card information is only saved in your browser using local storage.
@@ -53,12 +45,8 @@
           </v-btn>
         </p>
 
-        <p class="font-weight-bold mt-6">
-          Add card UI
-        </p>
-        <p class="font-weight-light">
-          Simple form to enter card details.
-        </p>
+        <p class="font-weight-bold mt-6">Add card UI</p>
+        <p class="font-weight-light">Simple form to enter card details.</p>
 
         <p>
           <v-btn href="/flow/card/create" color="primary">
@@ -75,9 +63,7 @@
           response data in the UI.
         </p>
 
-        <v-btn href="/debug/" color="primary">
-          API endpoints
-        </v-btn>
+        <v-btn href="/debug/" color="primary"> API endpoints </v-btn>
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>

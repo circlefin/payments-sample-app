@@ -71,6 +71,14 @@
                   />
                 </v-col>
               </v-row>
+
+              <v-text-field
+                v-model="formData.description"
+                hint="Payment Description"
+                label="Description"
+                :disabled="loading"
+              />
+
               <div class="my-4 subtitle-1 black--text">
                 Billing Details
               </div>
@@ -207,9 +215,9 @@ import openPGP from '@/lib/openpgp'
 import { getLive } from '@/lib/apiTarget'
 import { exampleCards } from '@/lib/cardTestData'
 import { CreateCardPayload } from '@/lib/cardsApi'
-import { CreatePaymentPayload } from '@/lib/paymentsApi'
+import { CreateCardPaymentPayload } from '@/lib/paymentsApi'
 import {
-  CreateMarketplacePaymentPayload,
+  CreateMarketplaceCardPaymentPayload,
   MarketplaceInfo,
 } from '@/lib/marketplaceApi'
 import CardInput from '@/components/CardInput.vue'
@@ -241,6 +249,7 @@ interface FormData {
     phoneNumber: string
     email: string
   }
+  description: string
 }
 
 interface CreateChargePayload {
@@ -300,6 +309,7 @@ export default class ChargeFlowClass extends Vue {
       phoneNumber: '',
       email: '',
     },
+    description: '',
   }
 
   rules = {
@@ -430,11 +440,12 @@ export default class ChargeFlowClass extends Vue {
       type: 'card',
     }
 
-    const payload: CreatePaymentPayload = {
+    const payload: CreateCardPaymentPayload = {
       idempotencyKey: uuidv4(),
       amount: amountDetail,
       verification: 'cvv',
       source: sourceDetails,
+      description: this.formData.description,
       metadata: {
         phoneNumber: this.formData.cardData.phoneNumber,
         email: this.formData.cardData.email,
@@ -453,7 +464,7 @@ export default class ChargeFlowClass extends Vue {
       payload.keyId = encryptedData.keyId
 
       if (this.isMarketplace) {
-        const marketPlacePayload: CreateMarketplacePaymentPayload = {
+        const marketPlacePayload: CreateMarketplaceCardPaymentPayload = {
           marketplaceInfo: this.marketplaceInfo,
           ...payload,
         }
