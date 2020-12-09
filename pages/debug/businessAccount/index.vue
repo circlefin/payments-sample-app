@@ -11,11 +11,47 @@
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Business Wire Account endpoints</h2>
+        <h2 class="title">Business Account Balance endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
+        <p>Api endpoints to manage balances.</p>
         <p>
-          Api endpoints to manage business wire accounts.
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/businessAccount/balances/fetch">Get all balances</a>
+        </p>
+      </v-card>
+
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
+        <h2 class="title">Business Account Payout endpoints</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>Api endpoints to manage payouts.</p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/businessAccount/payouts/create"> Create payout </a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/businessAccount/payouts/fetch"> Get all payouts </a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/businessAccount/payouts/details">
+            Get payout details by id
+          </a>
+        </p>
+      </v-card>
+
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
+        <h2 class="title">Business Account Wire endpoints</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>Api endpoints to manage wire bank accounts.</p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/businessAccount/bankAccounts/create">
+            Create wire account
+          </a>
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
@@ -35,20 +71,18 @@
             Get wire instructions for id
           </a>
         </p>
-        <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/businessAccount/bankAccounts/create">
-            Create wire account
-          </a>
-        </p>
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Transfer endpoints</h2>
+        <h2 class="title">Business Account Transfer endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
+        <p>Api endpoints to manage transfers.</p>
         <p>
-          Api endpoints to manage transfers.
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/businessAccount/transfers/create">
+            Create transfer
+          </a>
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
@@ -60,20 +94,18 @@
             Get transfer details by id
           </a>
         </p>
-        <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/businessAccount/transfers/create">
-            Create transfer
-          </a>
-        </p>
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Address endpoints</h2>
+        <h2 class="title">Business Account Address endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
+        <p>Api endpoints to manage blockchain addresses.</p>
         <p>
-          Api endpoints to manage blockchain addresses.
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/businessAccount/addresses/deposit/create">
+            Create deposit address
+          </a>
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
@@ -83,8 +115,8 @@
         </p>
         <p>
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/businessAccount/addresses/deposit/create">
-            Create deposit address
+          <a href="/debug/businessAccount/addresses/recipient/create">
+            Create recipient address
           </a>
         </p>
         <p>
@@ -93,45 +125,16 @@
             Get all recipient addresses
           </a>
         </p>
-        <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/businessAccount/addresses/recipient/create">
-            Create recipient address
-          </a>
-        </p>
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Payout endpoints</h2>
+        <h2 class="title">Business Account Deposit endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
-        <p>
-          Api endpoints to manage payouts.
-        </p>
+        <p>Api endpoints to manage deposits.</p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/businessAccount/payouts/details">
-            Get payout details by id
-          </a>
-        </p>
-        <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/businessAccount/payouts/create">
-            Create payout
-          </a>
-        </p>
-      </v-card>
-
-      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Balance endpoints</h2>
-        <span class="caption">Requires: api key</span>
-        <br /><br />
-        <p>
-          Api endpoints to manage balances.
-        </p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/businessAccount/balances/fetch">Get all balances</a>
+          <a href="/debug/businessAccount/deposits/fetch">Get all deposits</a>
         </p>
       </v-card>
     </v-flex>
