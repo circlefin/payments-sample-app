@@ -330,23 +330,23 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/cards/update',
     },
     {
-      title: 'POST /wires',
+      title: 'POST /banks/wires',
       to: '/debug/wires/create',
     },
     {
-      title: 'GET /wires/{id}',
+      title: 'GET /banks/wires/{id}',
       to: '/debug/wires/details',
     },
     {
-      title: 'GET /wires/{id}/instructions',
+      title: 'GET /banks/wires/{id}/instructions',
       to: '/debug/wires/instructions',
     },
     {
-      title: 'POST /ach',
+      title: 'POST /banks/ach',
       to: '/debug/ach/create',
     },
     {
-      title: 'GET /ach/{id}',
+      title: 'GET /banks/ach/{id}',
       to: '/debug/ach/details',
     },
     {
@@ -433,23 +433,23 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/cards/details',
     },
     {
-      title: 'POST /wires',
+      title: 'POST /banks/wires',
       to: '/debug/wires/create',
     },
     {
-      title: 'GET /wires/{id}',
+      title: 'GET /banks/wires/{id}',
       to: '/debug/wires/details',
     },
     {
-      title: 'GET /wires/{id}/instructions',
+      title: 'GET /banks/wires/{id}/instructions',
       to: '/debug/wires/instructions',
     },
     {
-      title: 'POST /ach',
+      title: 'POST /banks/ach',
       to: '/debug/ach/create',
     },
     {
-      title: 'GET /ach/{id}',
+      title: 'GET /banks/ach/{id}',
       to: '/debug/ach/details',
     },
     {
@@ -496,11 +496,11 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/payouts/details',
     },
     {
-      title: 'POST /wires',
+      title: 'POST /banks/wires',
       to: '/debug/wires/create',
     },
     {
-      title: 'GET /wires/{id}',
+      title: 'GET /banks/wires/{id}',
       to: '/debug/wires/details',
     },
     {
