@@ -10,6 +10,12 @@
             label="Fiat Account Id"
           />
 
+          <v-select
+            v-model="formData.destinationType"
+            :items="destinationType"
+            label="Fiat Account Type"
+          />
+
           <v-btn
             depressed
             class="mb-7"
@@ -62,9 +68,11 @@ export default class CreatePayoutClass extends Vue {
     idempotencyKey: '',
     amount: '0.00',
     destination: '',
+    destinationType: 'wire', // Default to wire
   }
 
   required = [(v: string) => !!v || 'Field is required']
+  destinationType = ['wire']
   error = {}
   loading = false
   showError = false
@@ -84,7 +92,7 @@ export default class CreatePayoutClass extends Vue {
       amount: amountDetail,
       destination: {
         id: this.formData.destination,
-        type: 'wire',
+        type: this.formData.destinationType,
       },
     }
     try {
