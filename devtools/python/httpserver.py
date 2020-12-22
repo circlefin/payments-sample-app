@@ -31,6 +31,11 @@ class Server(BaseHTTPRequestHandler):
     def circleArn(self, topicArn):
         return re.search("", topicArn)
 
+    def do_HEAD(self):
+        logging.info("HEAD request,\nPath: %s\nHeaders:\n%s\n\n",
+                     str(self.path), str(self.headers))
+        self._set_response(code=200)
+
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
@@ -38,7 +43,7 @@ class Server(BaseHTTPRequestHandler):
                      str(self.path), str(self.headers), post_data.decode('utf-8'))
 
         envelope = json.loads(post_data.decode('utf-8'))
-        
+
         if not circleArn.match(envelope.get("TopicArn")):
             logging.error("Unable to confirm the subscription as the topic arn is not expected %s. Valid topic arn must match %s", envelope.get("TopicArn"), circleArn.pattern)
             self._set_response(code=400)

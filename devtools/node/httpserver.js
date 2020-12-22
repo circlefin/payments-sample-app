@@ -26,6 +26,14 @@ const circleArn = /^arn:aws:sns:.*:908968368384:(sandbox|prod)_platform-notifica
 const validator = new MessageValidator()
 
 const server = http.createServer((request, response) => {
+  if (request.method === 'HEAD') {
+    response.writeHead(200, {
+      'Content-Type': 'text/html',
+    })
+    response.end(`HEAD request for ${request.url}`)
+    console.log('Received HEAD request')
+    return
+  }
   if (request.method === 'POST') {
     let body = ''
     request.on('data', (data) => {
@@ -44,7 +52,13 @@ const server = http.createServer((request, response) => {
       handleBody(body)
     })
   } else {
-    console.log('GET methods not supported')
+    const msg = `${request.method} method not supported`
+    console.log(msg)
+    response.writeHead(400, {
+      'Content-Type': 'text/html',
+    })
+    response.end(msg)
+    return
   }
 
   const handleBody = (body) => {
