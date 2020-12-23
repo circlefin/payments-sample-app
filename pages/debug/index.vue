@@ -43,6 +43,13 @@
 
         <p>
           <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/ach/mocks/create">
+            Create or update a mock ACH bank account
+          </a>
+        </p>
+
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
           <a href="/debug/ach/create">
             Add Plaid ACH account
           </a>
