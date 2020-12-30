@@ -63,7 +63,6 @@ export default class CreateTransferClass extends Vue {
     address_id: '',
   }
 
-  destinationTypes = ['account', 'address']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
@@ -82,7 +81,7 @@ export default class CreateTransferClass extends Vue {
       currency: 'USD',
     }
     const destinationDetail = {
-      type: 'address',
+      type: 'verified_blockchain',
       addressId: this.formData.address_id,
     }
 
