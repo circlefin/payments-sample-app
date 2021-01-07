@@ -342,6 +342,10 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/wires/instructions',
     },
     {
+      title: 'POST /mocks/ach/accounts',
+      to: '/debug/ach/mocks/create',
+    },
+    {
       title: 'POST /banks/ach',
       to: '/debug/ach/create',
     },
@@ -445,6 +449,10 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/wires/instructions',
     },
     {
+      title: 'POST /mocks/ach/accounts',
+      to: '/debug/ach/mocks/create',
+    },
+    {
       title: 'POST /banks/ach',
       to: '/debug/ach/create',
     },
@@ -506,6 +514,18 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /wires/{id}/instructions',
       to: '/debug/wires/instructions',
+    },
+    {
+      title: 'POST /mocks/ach/accounts',
+      to: '/debug/ach/mocks/create',
+    },
+    {
+      title: 'POST /banks/ach',
+      to: '/debug/ach/create',
+    },
+    {
+      title: 'GET /banks/ach/{id}',
+      to: '/debug/ach/details',
     },
     {
       title: 'POST /transfers',

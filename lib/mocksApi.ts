@@ -15,6 +15,18 @@ export interface CreateMockChargebackPayload {
   paymentId: string
 }
 
+export interface CreateMockACHBankAccount {
+  account: {
+    accountNumber: string
+    routingNumber: string
+    description: string
+  }
+  balance: {
+    amount: string
+    currency: string
+  }
+}
+
 const instance = axios.create({
   baseURL: getAPIHostname(),
 })
@@ -50,7 +62,7 @@ function getInstance() {
  * @param {*} payload
  */
 function createMockWirePayment(payload: CreateMockWirePaymentPayload) {
-  const url = 'v1/mocks/payments/wire'
+  const url = '/v1/mocks/payments/wire'
   return instance.post(url, payload)
 }
 
@@ -59,7 +71,16 @@ function createMockWirePayment(payload: CreateMockWirePaymentPayload) {
  * @param {*} payload
  */
 function createMockChargeback(payload: CreateMockChargebackPayload) {
-  const url = 'v1/mocks/cards/chargebacks'
+  const url = '/v1/mocks/cards/chargebacks'
+  return instance.post(url, payload)
+}
+
+/**
+ * Create a mock ACH bank account
+ * @param {*} payload
+ */
+function createMockACHBankAccount(payload: CreateMockACHBankAccount) {
+  const url = '/v1/mocks/ach/accounts'
   return instance.post(url, payload)
 }
 
@@ -67,4 +88,5 @@ export default {
   getInstance,
   createMockWirePayment,
   createMockChargeback,
+  createMockACHBankAccount,
 }
