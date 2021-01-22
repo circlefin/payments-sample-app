@@ -294,6 +294,10 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/payments/fetch',
     },
     {
+      title: 'GET /reversals',
+      to: '/debug/payments/reversals/fetch',
+    },
+    {
       title: 'POST /payments',
       to: '/debug/payments/create',
     },

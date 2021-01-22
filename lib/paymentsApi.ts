@@ -168,6 +168,34 @@ function getBalance() {
   return instance.get(url)
 }
 
+/**
+ * Get reversals
+ * @param {String} from
+ * @param {String} to
+ * @param {String} pageBefore
+ * @param {String} pageAfter
+ * @param {String} pageSize
+ */
+function getReversals(
+  from: string,
+  to: string,
+  pageBefore: string,
+  pageAfter: string,
+  pageSize: string
+) {
+  const queryParams = {
+    from: nullIfEmpty(from),
+    to: nullIfEmpty(to),
+    pageBefore: nullIfEmpty(pageBefore),
+    pageAfter: nullIfEmpty(pageAfter),
+    pageSize: nullIfEmpty(pageSize),
+  }
+
+  const url = '/v1/reversals'
+
+  return instance.get(url, { params: queryParams })
+}
+
 export default {
   getInstance,
   cancelPayment,
@@ -177,4 +205,5 @@ export default {
   getPCIPublicKey,
   refundPayment,
   getBalance,
+  getReversals,
 }

@@ -77,6 +77,10 @@
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/payments/fetch"> Get all payments </a>
         </p>
+        <p v-if="!isMarketplace">
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/payments/reversals/fetch"> Get all reversals </a>
+        </p>
         <p v-if="isMarketplace">
           <v-chip small color="primary warning">POST</v-chip>
           <a href="/debug/marketplace/payments/create">Make payment</a>

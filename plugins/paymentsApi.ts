@@ -11,6 +11,7 @@ declare module 'vue/types/vue' {
       refundPayment: any
       getBalance: any
       getInstance: any
+      getReversals: any
     }
   }
 }
