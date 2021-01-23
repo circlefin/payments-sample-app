@@ -237,6 +237,17 @@
         </p>
       </v-card>
 
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
+        <h2 class="title">Reversals endpoints</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>Api endpoints to manage reversals.</p>
+        <p v-if="!isMarketplace">
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/payments/reversals/fetch"> Get all reversals </a>
+        </p>
+      </v-card>
+
       <v-card
         v-if="!isMarketplace"
         class="body-1 px-6 py-8 mb-4"

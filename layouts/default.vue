@@ -394,6 +394,10 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/chargebacks/mocks/create',
     },
     {
+      title: 'GET /reversals',
+      to: '/debug/payments/reversals/fetch',
+    },
+    {
       title: 'GET /balances',
       to: '/debug/payments/balances/fetch',
     },
