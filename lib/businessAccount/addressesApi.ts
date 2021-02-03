@@ -12,6 +12,7 @@ export interface CreateDepositAddressPayload {
 export interface CreateRecipientAddressPayload {
   idempotencyKey: string
   address: string
+  addressTag?: string
   chain: string
   description: string
 }

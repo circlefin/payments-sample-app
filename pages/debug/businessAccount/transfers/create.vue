@@ -5,7 +5,7 @@
         <v-form>
           <v-text-field v-model="formData.amount" label="Amount" />
 
-          <v-text-field v-model="formData.address_id" label="Blockchain Id" />
+          <v-text-field v-model="formData.addressId" label="Address ID" />
 
           <v-btn
             depressed
@@ -60,7 +60,7 @@ export default class CreateTransferClass extends Vue {
   formData = {
     idempotencyKey: '',
     amount: '',
-    address_id: '',
+    addressId: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']
@@ -82,7 +82,7 @@ export default class CreateTransferClass extends Vue {
     }
     const destinationDetail = {
       type: 'verified_blockchain',
-      addressId: this.formData.address_id,
+      addressId: this.formData.addressId,
     }
 
     const payload: CreateTransferPayload = {

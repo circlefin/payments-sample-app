@@ -1,4 +1,6 @@
 [
-  { "value": "ETH", "text": "ETH" },
-  { "value": "ALGO", "text": "ALGO" }
+  { "value": "ETH", "text": "ETH", "addressTagSupport": false },
+  { "value": "ALGO", "text": "ALGO", "addressTagSupport": false },
+  { "value": "SOL", "text": "SOL", "addressTagSupport": false },
+  { "value": "XLM", "text": "XLM", "addressTagSupport": true }
 ]
