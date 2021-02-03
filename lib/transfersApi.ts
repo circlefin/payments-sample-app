@@ -7,6 +7,7 @@ export interface BlockchainDestination {
   type: string
   address: string
   chain: string
+  addressTag?: string
 }
 
 export interface WalletDestination {

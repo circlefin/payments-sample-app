@@ -18,7 +18,7 @@ export default class ChainSelect extends Vue {
   @Prop({ type: String }) value!: string
   @Prop({ type: String, default: 'Chain' }) label!: string
   @Prop({ type: Boolean, default: false }) disabled!: boolean
-  @Prop({ type: Array, default: false }) rules!: Array<Function>
+  @Prop({ type: Array }) rules!: Array<Function>
 
   items = chains
 

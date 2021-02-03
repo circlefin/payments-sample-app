@@ -7,7 +7,7 @@
             <v-col>
               <v-text-field
                 v-model="formData.source.id"
-                label="Source Wallet Id"
+                label="Source Wallet ID"
               />
             </v-col>
             <v-col>
@@ -33,7 +33,13 @@
           <v-text-field
             v-if="isWalletTransfer"
             v-model="formData.destination.id"
-            label="Destination Wallet Id"
+            label="Destination Wallet ID"
+          />
+
+          <ChainSelect
+            v-if="!isWalletTransfer"
+            v-model="formData.destination.chain"
+            label="Chain"
           />
 
           <v-text-field
@@ -43,15 +49,15 @@
           />
 
           <v-text-field
-            v-if="!isWalletTransfer"
-            v-model="formData.destination.chain"
-            hint="For example ETH"
-            label="Blockchain Id"
+            v-if="hasAddressTagSupport(formData.destination.chain)"
+            v-model="formData.destination.addressTag"
+            label="Address Tag"
+            hint="The secondary identifier for a blockchain address which can be text, id, or hash format."
           />
 
           <v-btn
             depressed
-            class="mb-7"
+            class="mb-7 mt-5"
             color="primary"
             :loading="loading"
             @click.prevent="makeApiCall"
@@ -82,16 +88,19 @@ import { mapGetters } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
+import ChainSelect from '@/components/ChainSelect.vue'
 import {
   CreateTransferPayload,
   BlockchainDestination,
   WalletDestination,
 } from '@/lib/transfersApi'
+import chains from '@/lib/chains.json'
 
 @Component({
   components: {
     RequestInfo,
     ErrorSheet,
+    ChainSelect,
   },
   computed: {
     ...mapGetters({
@@ -104,6 +113,7 @@ import {
 })
 export default class CreateTransferClass extends Vue {
   isWalletTransfer = true
+  chains = chains
   formData = {
     idempotencyKey: '',
     source: {
@@ -113,6 +123,7 @@ export default class CreateTransferClass extends Vue {
     destination: {
       type: 'wallet',
       address: '',
+      addressTag: '',
       chain: '',
       id: '',
     },
@@ -137,6 +148,12 @@ export default class CreateTransferClass extends Vue {
   onErrorSheetClosed() {
     this.error = {}
     this.showError = false
+  }
+
+  hasAddressTagSupport(chain: string) {
+    return this.chains.find((_chain) => {
+      return _chain.value === chain && _chain.addressTagSupport
+    })
   }
 
   async makeWalletApiCall() {
@@ -172,6 +189,9 @@ export default class CreateTransferClass extends Vue {
         type: 'blockchain',
         address: this.formData.destination.address,
         chain: this.formData.destination.chain,
+      }
+      if (this.hasAddressTagSupport(this.formData.destination.chain)) {
+        destination.addressTag = this.formData.destination.addressTag
       }
     }
 

@@ -3,10 +3,16 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <v-text-field v-model="formData.address" label="Recipient address" />
-
           <ChainSelect v-model="formData.chain" label="Chain" />
 
+          <v-text-field v-model="formData.address" label="Recipient address" />
+
+          <v-text-field
+            v-if="hasAddressTagSupport(formData.chain)"
+            v-model="formData.addressTag"
+            label="Address Tag"
+            hint="The secondary identifier for a blockchain address which can be text, id, or hash format."
+          />
           <v-text-field v-model="formData.description" label="Description" />
 
           <v-btn
@@ -44,6 +50,8 @@ import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import { CreateRecipientAddressPayload } from '@/lib/businessAccount/addressesApi'
 import ChainSelect from '@/components/ChainSelect.vue'
+import chains from '@/lib/chains.json'
+
 @Component({
   components: {
     RequestInfo,
@@ -63,24 +71,37 @@ export default class CreateRecipientAddressClass extends Vue {
     address: '',
     chain: '',
     description: '',
+    addressTag: '',
   }
 
   error = {}
   loading = false
   showError = false
+  chains = chains
+
   onErrorSheetClosed() {
     this.error = {}
     this.showError = false
   }
 
+  hasAddressTagSupport(chain: string) {
+    return this.chains.find((_chain) => {
+      return _chain.value === chain && _chain.addressTagSupport
+    })
+  }
+
   async makeApiCall() {
     this.loading = true
-    const { address, chain, description } = this.formData
+    const { address, chain, description, addressTag } = this.formData
     const payload: CreateRecipientAddressPayload = {
       idempotencyKey: uuidv4(),
       address,
       chain,
       description,
+    }
+
+    if (this.hasAddressTagSupport(chain)) {
+      payload.addressTag = addressTag
     }
     try {
       await this.$businessAccountAddressesApi.createRecipientAddress(payload)
