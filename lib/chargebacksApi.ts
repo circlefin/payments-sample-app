@@ -43,6 +43,7 @@ function getInstance() {
 /**
  * Get Settlements
  * @param {String} merchantId
+ * @param {String} settlementId
  * @param {String} from
  * @param {String} to
  * @param {String} pageBefore
@@ -51,6 +52,7 @@ function getInstance() {
  */
 function getChargebacks(
   merchantId: string,
+  settlementId: string,
   from: string,
   to: string,
   pageBefore: string,
@@ -59,6 +61,7 @@ function getChargebacks(
 ) {
   const queryParams = {
     merchantId: nullIfEmpty(merchantId),
+    settlementId: nullIfEmpty(settlementId),
     from: nullIfEmpty(from),
     to: nullIfEmpty(to),
     pageBefore: nullIfEmpty(pageBefore),
