@@ -2,6 +2,30 @@
   <v-layout>
     <v-row>
       <v-col cols="12" md="4">
+        <v-menu>
+          <template v-slot:activator="{ on }">
+            <div class="d-flex flex-row-reverse">
+              <v-btn
+                v-if="isSandbox"
+                small
+                color="blue-grey lighten-1"
+                dark
+                v-on="on"
+              >
+                Prefill form
+              </v-btn>
+            </div>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="(item, index) in prefillItems"
+              :key="index"
+              @click="prefillForm(index)"
+            >
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
         <v-form>
           <v-text-field
             v-model="formData.account.accountNumber"
@@ -63,6 +87,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import { getLive } from '@/lib/apiTarget'
 import { CreateMockACHBankAccount } from '@/lib/mocksApi'
+import { exampleACHAccounts } from '@/lib/achTestData'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 @Component({
@@ -98,11 +123,17 @@ export default class CreateCardClass extends Vue {
   error = {}
   loading = false
   showError = false
+  prefillItems = exampleACHAccounts
 
   isSandbox: Boolean = !getLive()
+
   onErrorSheetClosed() {
     this.error = {}
     this.showError = false
+  }
+
+  prefillForm(index: number) {
+    this.formData = exampleACHAccounts[index].formData
   }
 
   async makeApiCall() {

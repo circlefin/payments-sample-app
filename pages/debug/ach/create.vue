@@ -31,8 +31,16 @@
           <v-text-field
             v-model="formData.plaidProcessorToken"
             label="Plaid Processor Token"
-          />
-
+          >
+            <router-link
+              v-if="isSandbox"
+              slot="append"
+              :to="'/debug/ach/mocks/create'"
+              class="subtitle-2 text-right"
+            >
+              Create plaid token
+            </router-link>
+          </v-text-field>
           <v-text-field
             v-model="formData.billingDetails.name"
             label="Billing Name"
@@ -100,7 +108,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
 import { getLive } from '@/lib/apiTarget'
-import { exampleACHAccoounts } from '@/lib/achTestData'
+import { exampleACHBillingDetails } from '@/lib/achTestData'
 import { CreateACHAccountPayload } from '@/lib/achApi'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
@@ -132,7 +140,7 @@ export default class CreateACHAccountClass extends Vue {
     },
   }
 
-  prefillItems = exampleACHAccoounts
+  prefillItems = exampleACHBillingDetails
   error = {}
   loading = false
   showError = false
@@ -144,7 +152,7 @@ export default class CreateACHAccountClass extends Vue {
   }
 
   prefillForm(index: number) {
-    this.formData = exampleACHAccoounts[index].formData
+    this.formData = exampleACHBillingDetails[index].formData
   }
 
   async makeApiCall() {
