@@ -176,7 +176,7 @@ export default class CreateCardFormClass extends Vue {
   isSandbox: Boolean = !getLive()
 
   prefillForm(index: number) {
-    this.formData = exampleCards[index].formData
+    this.formData = this.prefillItems[index].formData
 
     this.$nextTick(() => {
       const vuetifyForm: any = this.$refs.form

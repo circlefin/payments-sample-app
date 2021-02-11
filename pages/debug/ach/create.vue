@@ -152,7 +152,7 @@ export default class CreateACHAccountClass extends Vue {
   }
 
   prefillForm(index: number) {
-    this.formData = exampleACHBillingDetails[index].formData
+    this.formData = this.prefillItems[index].formData
   }
 
   async makeApiCall() {

@@ -314,7 +314,7 @@ export default class CardFlowClass extends Vue {
   }
 
   prefillForm(index: number) {
-    this.prefillFormData = exampleCards[index].formData
+    this.prefillFormData = this.prefillItems[index].formData
   }
 
   showMarketplaceInfoError(error: object) {
