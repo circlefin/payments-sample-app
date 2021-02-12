@@ -338,8 +338,7 @@ export default class ChargeFlowClass extends Vue {
   }
 
   prefillForm(index: number) {
-    const cardData = exampleCards[index].formData
-    this.formData.cardData = cardData
+    this.formData.cardData = this.prefillItems[index].formData
 
     this.$nextTick(() => {
       const vuetifyForm: any = this.$refs.form

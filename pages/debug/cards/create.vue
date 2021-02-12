@@ -176,7 +176,7 @@ export default class CreateCardClass extends Vue {
   }
 
   prefillForm(index: number) {
-    this.formData = exampleCards[index].formData
+    this.formData = this.prefillItems[index].formData
   }
 
   async makeApiCall() {

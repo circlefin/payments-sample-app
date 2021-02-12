@@ -116,7 +116,7 @@ export default class CreateCardClass extends Vue {
   prefillFormData = {}
 
   prefillForm(index: number) {
-    this.prefillFormData = exampleCards[index].formData
+    this.prefillFormData = this.prefillItems[index].formData
   }
 
   onLoading(value: boolean) {
