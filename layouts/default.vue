@@ -395,7 +395,7 @@ export default class DefaultLayoutsClass extends Vue {
     },
     {
       title: 'GET /reversals',
-      to: '/debug/payments/reversals/fetch',
+      to: '/debug/reversals/fetch',
     },
     {
       title: 'GET /balances',
@@ -542,6 +542,10 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /transfers/{id}',
       to: '/debug/wallets/transfers/details',
+    },
+    {
+      title: 'GET /returns',
+      to: '/debug/returns/fetch',
     },
   ]
 

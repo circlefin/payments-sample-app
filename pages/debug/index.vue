@@ -244,7 +244,7 @@
         <p>Api endpoints to manage reversals.</p>
         <p v-if="!isMarketplace">
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/payments/reversals/fetch"> Get all reversals </a>
+          <a href="/debug/reversals/fetch"> Get all reversals </a>
         </p>
       </v-card>
 
