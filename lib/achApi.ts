@@ -3,6 +3,13 @@ import axios from 'axios'
 
 import { getAPIHostname } from './apiTarget'
 
+interface MetaData {
+  email?: string
+  phoneNumber?: string
+  sessionId: string
+  ipAddress: string
+}
+
 export interface CreateACHAccountPayload {
   idempotencyKey: string
   plaidProcessorToken: string
@@ -15,6 +22,7 @@ export interface CreateACHAccountPayload {
     district: string
     postalCode: string
   }
+  metadata: MetaData
 }
 
 const instance = axios.create({
@@ -42,6 +50,13 @@ instance.interceptors.response.use(
   }
 )
 
+const nullIfEmpty = (prop: string | undefined) => {
+  if (prop !== undefined && prop.trim() === '') {
+    return undefined
+  }
+  return prop
+}
+
 /** Returns the axios instance */
 function getInstance() {
   return instance
@@ -53,6 +68,10 @@ function getInstance() {
  */
 function createACHAccount(payload: CreateACHAccountPayload) {
   const url = '/v1/banks/ach'
+  if (payload.metadata) {
+    payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
+    payload.metadata.email = nullIfEmpty(payload.metadata.email)
+  }
   return instance.post(url, payload)
 }
 
