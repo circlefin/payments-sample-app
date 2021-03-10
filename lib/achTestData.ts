@@ -12,6 +12,10 @@ export const exampleACHBillingDetails = [
         district: 'MA',
         postalCode: '01234',
       },
+      metadata: {
+        email: 'nakamoto@bitcoin.com',
+        phoneNumber: '+12025550180',
+      },
     },
   },
 ]

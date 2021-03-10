@@ -77,6 +77,14 @@
             label="Billing Country Code"
           />
 
+          <v-text-field v-model="formData.metadata.email" label="Email" />
+
+          <v-text-field
+            v-model="formData.metadata.phoneNumber"
+            label="Phone"
+            hint="Phone number of the user in E.164 format"
+          />
+
           <v-btn
             depressed
             color="primary"
@@ -138,6 +146,10 @@ export default class CreateACHAccountClass extends Vue {
       district: '',
       postalCode: '',
     },
+    metadata: {
+      email: '',
+      phoneNumber: '',
+    },
   }
 
   prefillItems = exampleACHBillingDetails
@@ -157,8 +169,7 @@ export default class CreateACHAccountClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
-    const { plaidProcessorToken, ...data } = this.formData
-    const { billingDetails } = data
+    const { plaidProcessorToken, billingDetails, metadata } = this.formData
     const payload: CreateACHAccountPayload = {
       idempotencyKey: uuidv4(),
       plaidProcessorToken,
@@ -170,6 +181,12 @@ export default class CreateACHAccountClass extends Vue {
         district: billingDetails.district,
         country: billingDetails.country,
         postalCode: billingDetails.postalCode,
+      },
+      metadata: {
+        email: metadata.email,
+        phoneNumber: metadata.phoneNumber,
+        sessionId: 'xxx',
+        ipAddress: '172.33.222.1',
       },
     }
     try {
