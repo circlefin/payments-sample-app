@@ -6,14 +6,17 @@
  */
 
 function getAPIHostname() {
-  // If the URL is provided via an environment variable (ie, in dev) use that.
+  // If app is running on localhost (ie, in  dev) the URL is provided via an environment variable (.env file), use that.
   // Otherwise, base it off the window location.
-  return process.env.baseUrl || window.location.origin.replace('sample', 'api')
+  if (window.location && window.location.hostname === 'localhost') {
+    return process.env.baseUrl
+  }
+  return window.location.origin.replace('sample', 'api')
 }
 
 function getLive() {
   const hostname = getAPIHostname()
-  return !(hostname.includes('sandbox') || hostname.includes('smokebox'))
+  return !(hostname!.includes('sandbox') || hostname!.includes('smokebox'))
 }
 
 export { getAPIHostname, getLive }
