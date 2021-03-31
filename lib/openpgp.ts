@@ -18,7 +18,7 @@ interface PublicKey {
  */
 async function encrypt(dataToEncrypt: object, { keyId, publicKey }: PublicKey) {
   if (!publicKey || !keyId) {
-    return ''
+    throw new Error('Unable to encrypt data')
   }
 
   const decodedPublicKey = atob(publicKey)
