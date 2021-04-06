@@ -105,6 +105,6 @@ export default {
     },
   },
   env: {
-    baseUrl: process.env.BASE_URL,
+    baseUrl: process.env.BASE_URL || 'https://api-sandbox.circle.com',
   },
 }

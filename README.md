@@ -14,12 +14,6 @@ You can manually clone the sample app by running:
 $ git clone https://github.com/circlefin/payments-sample-app.git
 ```
 
-Create a `.env` file in the project's root folder in order to configure the base url for api calls. To run the sample app against the sandbox environment API endpoints, configure it as follows:
-
-```bash
-$ echo BASE_URL=https://api-sandbox.circle.com > .env
-```
-
 ## Install the dependencies
 
 Run the following to install the dependencies:
@@ -45,6 +39,16 @@ You are now ready to use the sample app and test some payments flows. In a produ
 ## Test Card Numbers
 
 To automatically trigger certain responses from the Circle Payments API, you can use some pre-defined [test card numbers](https://developers.circle.com/docs/test-card-numbers) that exercise specific behaviors.
+
+## Change API base url
+
+By default the API base url will be set to https://api-sandbox.circle.com.
+
+If you would like to point to another API base url you need to create a `.env` file in the project's root folder and configure it as follows:
+
+```bash
+$ echo BASE_URL=https://[base-url.com] > .env
+```
 
 ## Nuxt
 

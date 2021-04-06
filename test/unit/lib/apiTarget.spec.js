@@ -10,7 +10,9 @@ describe('apiTarget', () => {
     }
   })
 
-  test('returns environment variable if its set', () => {
+  test('returns environment variable if localhost', () => {
+    window.location.hostname = 'localhost'
+
     process.env.baseUrl = 'foobar'
 
     expect(getAPIHostname()).toStrictEqual('foobar')
