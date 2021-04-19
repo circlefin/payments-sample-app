@@ -14,6 +14,7 @@ export interface CreateRecipientAddressPayload {
   address: string
   addressTag?: string
   chain: string
+  currency: string
   description: string
 }
 
