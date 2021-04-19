@@ -14,7 +14,7 @@ export interface CreateRecipientAddressPayload {
   address: string
   addressTag?: string
   chain: string
-  currency: string
+  currency?: string
   description: string
 }
 
@@ -79,6 +79,7 @@ function getDepositAddresses() {
  */
 function createRecipientAddress(payload: CreateRecipientAddressPayload) {
   const url = '/v1/businessAccount/wallets/addresses/recipient'
+  payload.currency = nullIfEmpty(payload.currency)
   return instance.post(url, payload)
 }
 
