@@ -7,6 +7,8 @@
 
           <v-text-field v-model="formData.address" label="Recipient address" />
 
+          <v-text-field v-model="formData.currency" label="Currency" />
+
           <v-text-field
             v-if="hasAddressTagSupport(formData.chain)"
             v-model="formData.addressTag"
@@ -70,6 +72,7 @@ export default class CreateRecipientAddressClass extends Vue {
   formData = {
     address: '',
     chain: '',
+    currency: '',
     description: '',
     addressTag: '',
   }
@@ -92,11 +95,12 @@ export default class CreateRecipientAddressClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
-    const { address, chain, description, addressTag } = this.formData
+    const { address, chain, currency, description, addressTag } = this.formData
     const payload: CreateRecipientAddressPayload = {
       idempotencyKey: uuidv4(),
       address,
       chain,
+      currency,
       description,
     }
 
