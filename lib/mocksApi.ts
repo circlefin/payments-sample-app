@@ -11,6 +11,14 @@ export interface CreateMockWirePaymentPayload {
   }
 }
 
+export interface CreateMockSEPAPaymentPayload {
+  trackingRef: string
+  amount: {
+    amount: string
+    currency: string
+  }
+}
+
 export interface CreateMockChargebackPayload {
   paymentId: string
 }
@@ -67,6 +75,15 @@ function createMockWirePayment(payload: CreateMockWirePaymentPayload) {
 }
 
 /**
+ * Trigger a mock sepa payment
+ * @param {*} payload
+ */
+function createMockSEPAPayment(payload: CreateMockSEPAPaymentPayload) {
+  const url = '/v1/mocks/payments/sepa'
+  return instance.post(url, payload)
+}
+
+/**
  * Create a mock chargeback
  * @param {*} payload
  */
@@ -87,6 +104,7 @@ function createMockACHBankAccount(payload: CreateMockACHBankAccount) {
 export default {
   getInstance,
   createMockWirePayment,
+  createMockSEPAPayment,
   createMockChargeback,
   createMockACHBankAccount,
 }
