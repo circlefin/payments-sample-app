@@ -20,9 +20,15 @@
 
           <v-text-field v-if="cvvRequired" v-model="formData.cvv" label="CVV" />
 
-          <v-text-field v-model="formData.verificationSuccessUrl" label="VerificationSuccessUrl" />
+          <v-text-field
+            v-model="formData.verificationSuccessUrl"
+            label="VerificationSuccessUrl"
+          />
 
-          <v-text-field v-model="formData.verificationFailureUrl" label="VerificationFailureUrl" />
+          <v-text-field
+            v-model="formData.verificationFailureUrl"
+            label="VerificationFailureUrl"
+          />
 
           <v-text-field
             v-model="formData.description"
