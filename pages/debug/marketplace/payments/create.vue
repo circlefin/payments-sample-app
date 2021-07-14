@@ -116,7 +116,7 @@ export default class CreatePaymentClass extends Vue {
     email: '',
   }
 
-  verificationMethods = ['none', 'cvv']
+  verificationMethods = ['none', 'cvv', 'three_d_secure']
   sourceType = ['card', 'ach']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
