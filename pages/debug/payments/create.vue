@@ -21,6 +21,16 @@
           <v-text-field v-if="cvvRequired" v-model="formData.cvv" label="CVV" />
 
           <v-text-field
+            v-model="formData.verificationSuccessUrl"
+            label="VerificationSuccessUrl"
+          />
+
+          <v-text-field
+            v-model="formData.verificationFailureUrl"
+            label="VerificationFailureUrl"
+          />
+
+          <v-text-field
             v-model="formData.description"
             hint="Payment Description"
             label="Description"
@@ -94,11 +104,13 @@ export default class CreatePaymentClass extends Vue {
     amount: '0.00',
     cvv: '',
     description: '',
+    verificationSuccessUrl: '',
+    verificationFailureUrl: '',
     phoneNumber: '',
     email: '',
   }
 
-  verificationMethods = ['none', 'cvv']
+  verificationMethods = ['none', 'cvv', 'three_d_secure']
   sourceType = ['card', 'ach']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
@@ -154,6 +166,8 @@ export default class CreatePaymentClass extends Vue {
       amount: amountDetail,
       source: sourceDetails,
       description: this.formData.description,
+      verificationSuccessUrl: this.formData.verificationSuccessUrl,
+      verificationFailureUrl: this.formData.verificationFailureUrl,
       metadata: {
         email: this.formData.email,
         phoneNumber: this.formData.phoneNumber,
