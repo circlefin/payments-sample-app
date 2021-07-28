@@ -6,6 +6,7 @@ declare module 'vue/types/vue' {
       createPayment: (payload: BasePaymentPayload) => any
       getPayments: any
       getPaymentById: any
+      capturePayment: any
       cancelPayment: any
       refundPayment: any
       getMerchants: () => any

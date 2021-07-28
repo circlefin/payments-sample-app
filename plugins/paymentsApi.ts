@@ -9,6 +9,7 @@ declare module 'vue/types/vue' {
       getPaymentById: any
       getPCIPublicKey: any
       refundPayment: any
+      capturePayment: any
       getBalance: any
       getInstance: any
       getReversals: any

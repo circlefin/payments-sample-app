@@ -18,6 +18,12 @@
 
           <v-text-field v-model="formData.amount" label="Amount" />
 
+          <v-checkbox
+            v-if="formData.sourceType == 'card'"
+            v-model="formData.autoCapture"
+            label="Auto capture"
+          />
+
           <v-select
             v-if="formData.sourceType == 'card'"
             v-model="formData.verification"
@@ -108,6 +114,7 @@ export default class CreatePaymentClass extends Vue {
   formData = {
     sourceId: '',
     sourceType: 'card', // Default to card
+    autoCapture: true,
     verification: 'cvv',
     amount: '0.00',
     cvv: '',
@@ -176,6 +183,7 @@ export default class CreatePaymentClass extends Vue {
 
     const payload: CreateMarketplaceCardPaymentPayload = {
       idempotencyKey: uuidv4(),
+      autoCapture: this.formData.autoCapture ? undefined : false,
       amount: amountDetail,
       source: sourceDetails,
       description: this.formData.description,

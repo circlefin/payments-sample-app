@@ -302,6 +302,10 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/payments/details',
     },
     {
+      title: 'POST /payments/{id}/capture',
+      to: '/debug/payments/capture',
+    },
+    {
       title: 'POST /payments/{id}/cancel',
       to: '/debug/payments/cancel',
     },
@@ -419,6 +423,10 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /marketplace/payments/{id}',
       to: '/debug/marketplace/payments/details',
+    },
+    {
+      title: 'POST /marketplace/payments/{id}/capture',
+      to: '/debug/marketplace/payments/capture',
     },
     {
       title: 'POST /marketplace/payments/{id}/cancel',
