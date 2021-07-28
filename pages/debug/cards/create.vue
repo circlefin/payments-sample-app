@@ -17,7 +17,7 @@
           <template v-slot:activator="{ on }">
             <div class="d-flex flex-row-reverse">
               <v-btn
-                v-if="isSandbox"
+                v-if="!isSandbox"
                 small
                 color="blue-grey lighten-1"
                 dark
@@ -39,7 +39,19 @@
         </v-menu>
 
         <v-form>
-          <v-text-field v-model="formData.cardNumber" label="Card Number" />
+          <v-select
+            v-if="isSandbox"
+            label="Card Number"
+            v-model="formData.cardNumber"
+            :items="testCardNumbers"
+          >
+          </v-select>
+
+          <v-text-field
+            v-if="!isSandbox"
+            v-model="formData.cardNumber"
+            label="Card Number"
+          />
 
           <v-text-field v-model="formData.cvv" label="CVV" />
 
@@ -158,6 +170,16 @@ export default class CreateCardClass extends Vue {
       v === '' || !isNaN(parseInt(v)) || 'Please enter valid number',
     required: (v: string) => !!v || 'Field is required',
   }
+
+  testCardNumbers = [
+    '4007400000000007',
+    '4007410000000006',
+    '4200000000000000',
+    '4757140000000001',
+    '5102420000000006',
+    '5173375000000006',
+    '5555555555554444',
+  ]
 
   prefillItems = exampleCards
   error = {}
