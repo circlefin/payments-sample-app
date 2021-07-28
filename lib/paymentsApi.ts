@@ -175,7 +175,7 @@ function refundPayment(id: string, payload: RefundPaymentPayload) {
  * Capture a payment
  * @param {String} id
  */
- function capturePayment(id: string, payload: CapturePaymentPayload) {
+function capturePayment(id: string, payload: CapturePaymentPayload) {
   const url = `/v1/payments/${id}/capture`
   return instance.post(url, payload)
 }

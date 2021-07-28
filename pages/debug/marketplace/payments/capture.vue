@@ -64,7 +64,7 @@ export default class CapturePaymentClass extends Vue {
   formData = {
     paymentId: '',
     idempotencyKey: '',
-    amount: '0.00'
+    amount: '0.00',
   }
 
   required = [(v: string) => !!v || 'Field is required']
@@ -88,11 +88,14 @@ export default class CapturePaymentClass extends Vue {
 
     const payload: CapturePaymentPayload = {
       idempotencyKey: this.formData.idempotencyKey,
-      amount: amountDetail
+      amount: amountDetail,
     }
 
     try {
-      await this.$marketplaceApi.capturePayment(this.formData.paymentId, payload)
+      await this.$marketplaceApi.capturePayment(
+        this.formData.paymentId,
+        payload
+      )
     } catch (error) {
       this.error = error
       this.showError = true
