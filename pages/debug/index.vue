@@ -97,6 +97,14 @@
         </p>
         <p v-if="isMarketplace">
           <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/marketplace/payments/capture"> Capture payment </a>
+        </p>
+        <p v-else>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/payments/capture"> Capture payment </a>
+        </p>
+        <p v-if="isMarketplace">
+          <v-chip small color="primary warning">POST</v-chip>
           <a href="/debug/marketplace/payments/cancel"> Cancel payment </a>
         </p>
         <p v-else>

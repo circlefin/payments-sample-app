@@ -22,6 +22,7 @@ export interface CreateMarketplaceCardPaymentPayload
   verification?: string
   keyId?: string
   encryptedData?: string
+  autoCapture?: boolean
 }
 
 export interface BasePaymentPayload {
@@ -37,6 +38,14 @@ export interface BasePaymentPayload {
   description: string
   metadata: MetaData
   marketplaceInfo: MarketplaceInfo
+}
+
+export interface CapturePaymentPayload {
+  idempotencyKey: string
+  amount: {
+    amount: string
+    currency: string
+  }
 }
 
 export interface RefundPaymentPayload {
@@ -150,6 +159,15 @@ function getPaymentById(id: string) {
 }
 
 /**
+ * Capture a payment
+ * @param {String} id
+ */
+function capturePayment(id: string, payload: CapturePaymentPayload) {
+  const url = `/v1/payments/${id}/capture`
+  return instance.post(url, payload)
+}
+
+/**
  * Refund a payment
  * @param {String} id
  */
@@ -192,6 +210,7 @@ export default {
   getInstance,
   getPayments,
   getPaymentById,
+  capturePayment,
   refundPayment,
   cancelPayment,
   createPayment,

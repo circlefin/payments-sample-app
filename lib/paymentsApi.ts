@@ -12,6 +12,7 @@ interface MetaData {
 
 export interface CreateCardPaymentPayload extends BasePaymentPayload {
   verification?: string
+  autoCapture?: boolean
   verificationSuccessUrl?: string
   verificationFailureUrl?: string
   keyId?: string
@@ -39,6 +40,14 @@ export interface RefundPaymentPayload {
     currency: string
   }
   reason: string | undefined
+}
+
+export interface CapturePaymentPayload {
+  idempotencyKey: string
+  amount: {
+    amount: string
+    currency: string
+  }
 }
 
 const instance = axios.create({
@@ -163,6 +172,15 @@ function refundPayment(id: string, payload: RefundPaymentPayload) {
 }
 
 /**
+ * Capture a payment
+ * @param {String} id
+ */
+function capturePayment(id: string, payload: CapturePaymentPayload) {
+  const url = `/v1/payments/${id}/capture`
+  return instance.post(url, payload)
+}
+
+/**
  * Get balance
  */
 function getBalance() {
@@ -206,6 +224,7 @@ export default {
   getPaymentById,
   getPCIPublicKey,
   refundPayment,
+  capturePayment,
   getBalance,
   getReversals,
 }
