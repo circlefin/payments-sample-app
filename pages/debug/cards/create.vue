@@ -17,7 +17,7 @@
           <template v-slot:activator="{ on }">
             <div class="d-flex flex-row-reverse">
               <v-btn
-                v-if="!isSandbox"
+                v-if="isSandbox"
                 small
                 color="blue-grey lighten-1"
                 dark
