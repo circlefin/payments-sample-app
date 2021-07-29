@@ -49,10 +49,19 @@
               />
 
               <CardInput
+                v-if="!isSandbox"
                 v-model="formData.cardData.cardNumber"
                 label="Card Number"
                 :disabled="loading"
               />
+
+              <v-select
+                v-if="isSandbox"
+                label="Card Number"
+                v-model="formData.cardData.cardNumber"
+                :items="testCardNumbers"
+              >
+              </v-select>
 
               <v-row>
                 <v-col cols="12" md="6">
@@ -311,6 +320,16 @@ export default class ChargeFlowClass extends Vue {
     },
     description: '',
   }
+
+  testCardNumbers = [
+    '4007400000000007',
+    '4007410000000006',
+    '4200000000000000',
+    '4757140000000001',
+    '5102420000000006',
+    '5173375000000006',
+    '5555555555554444',
+  ]
 
   rules = {
     isNumber: (v: string) =>
