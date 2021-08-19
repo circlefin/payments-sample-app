@@ -79,6 +79,13 @@
                 :disabled="loading"
               />
 
+              <v-text-field
+                v-model="formData.channel"
+                hint="Channel"
+                label="Channel"
+                :disabled="loading"
+              />
+
               <div class="my-4 subtitle-1 black--text">
                 Billing Details
               </div>
@@ -250,6 +257,7 @@ interface FormData {
     email: string
   }
   description: string
+  channel: string
 }
 
 interface CreateChargePayload {
@@ -310,6 +318,7 @@ export default class ChargeFlowClass extends Vue {
       email: '',
     },
     description: '',
+    channel: '',
   }
 
   rules = {
@@ -445,6 +454,7 @@ export default class ChargeFlowClass extends Vue {
       verification: 'cvv',
       source: sourceDetails,
       description: this.formData.description,
+      channel: this.formData.channel,
       metadata: {
         phoneNumber: this.formData.cardData.phoneNumber,
         email: this.formData.cardData.email,
