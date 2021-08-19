@@ -40,6 +40,12 @@
           />
 
           <v-text-field
+            v-model="formData.channel"
+            hint="Channel"
+            label="Channel"
+          />
+
+          <v-text-field
             v-model="formData.phoneNumber"
             hint="Phone number of the user in E.164 format"
             label="Phone"
@@ -119,6 +125,7 @@ export default class CreatePaymentClass extends Vue {
     amount: '0.00',
     cvv: '',
     description: '',
+    channel: '',
     phoneNumber: '',
     email: '',
   }
@@ -194,6 +201,7 @@ export default class CreatePaymentClass extends Vue {
         ipAddress: '172.33.222.1',
       },
       marketplaceInfo: this.marketplaceInfo,
+      channel: this.formData.channel,
     }
 
     if (this.formData.sourceType === 'card') {

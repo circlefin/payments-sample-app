@@ -30,6 +30,7 @@ export interface BasePaymentPayload {
     type: string
   }
   description: string
+  channel: string
   metadata: MetaData
 }
 

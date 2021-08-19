@@ -43,6 +43,12 @@
           />
 
           <v-text-field
+            v-model="formData.channel"
+            hint="Channel"
+            label="Channel"
+          />
+
+          <v-text-field
             v-model="formData.phoneNumber"
             hint="Phone number of the user in E.164 format"
             label="Phone"
@@ -111,6 +117,7 @@ export default class CreatePaymentClass extends Vue {
     autoCapture: true,
     cvv: '',
     description: '',
+    channel: '',
     verificationSuccessUrl: '',
     verificationFailureUrl: '',
     phoneNumber: '',
@@ -182,6 +189,7 @@ export default class CreatePaymentClass extends Vue {
         sessionId: 'xxx',
         ipAddress: '172.33.222.1',
       },
+      channel: this.formData.channel
     }
 
     if (this.formData.sourceType === 'card') {
