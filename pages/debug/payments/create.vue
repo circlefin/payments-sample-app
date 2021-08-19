@@ -189,7 +189,7 @@ export default class CreatePaymentClass extends Vue {
         sessionId: 'xxx',
         ipAddress: '172.33.222.1',
       },
-      channel: this.formData.channel
+      channel: this.formData.channel,
     }
 
     if (this.formData.sourceType === 'card') {
