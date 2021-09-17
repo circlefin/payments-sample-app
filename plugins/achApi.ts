@@ -1,16 +1,9 @@
-import achApi, {
-  CreateACHAccountPayload,
-  UpdateACHAccountPayload,
-} from '@/lib/achApi'
+import achApi, { CreateACHAccountPayload } from '@/lib/achApi'
 
 declare module 'vue/types/vue' {
   interface Vue {
     $achApi: {
       createACHAccount: (payload: CreateACHAccountPayload) => any
-      updateACHAccount: (
-        payload: UpdateACHAccountPayload,
-        accountId: string
-      ) => any
       getACHAccountById: any
       getInstance: any
     }
