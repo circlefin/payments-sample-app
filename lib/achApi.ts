@@ -91,7 +91,7 @@ function createACHAccount(payload: CreateACHAccountPayload) {
  * @param {*} payload (contains form data)
  */
 function updateACHAccount(payload: UpdateACHAccountPayload, accountId: string) {
-  const url = `/v1/banks/ach/{${accountId}}`
+  const url = `/v1/banks/ach/${accountId}`
   return instance.post(url, payload)
 }
 
