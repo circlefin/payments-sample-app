@@ -25,17 +25,6 @@ export interface CreateACHAccountPayload {
   metadata: MetaData
 }
 
-export interface UpdateACHAccountPayload {
-  billingDetails: {
-    city: string
-    country: string
-    line1: string
-    line2: string
-    district: string
-    postalCode: string
-  }
-}
-
 const instance = axios.create({
   baseURL: getAPIHostname(),
 })
@@ -87,15 +76,6 @@ function createACHAccount(payload: CreateACHAccountPayload) {
 }
 
 /**
- * Update ACH Account Billing Details
- * @param {*} payload (contains form data)
- */
-function updateACHAccount(payload: UpdateACHAccountPayload, accountId: string) {
-  const url = `/v1/banks/ach/${accountId}`
-  return instance.post(url, payload)
-}
-
-/**
  * Get ACH Account By Id
  * @param {String} accountId
  */
@@ -108,6 +88,5 @@ function getACHAccountById(accountId: string) {
 export default {
   getInstance,
   createACHAccount,
-  updateACHAccount,
   getACHAccountById,
 }

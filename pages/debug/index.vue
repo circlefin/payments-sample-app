@@ -56,13 +56,6 @@
         </p>
 
         <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/ach/billingAddress">
-            Update the billing details of an ACH account
-          </a>
-        </p>
-
-        <p>
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/ach/details">
             Get ACH account details by id
