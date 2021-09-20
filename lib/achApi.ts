@@ -15,12 +15,12 @@ export interface CreateACHAccountPayload {
   plaidProcessorToken: string
   billingDetails: {
     name: string
-    city: string
-    country: string
-    line1: string
-    line2: string
-    district: string
-    postalCode: string
+    city?: string
+    country?: string
+    line1?: string
+    line2?: string
+    district?: string
+    postalCode?: string
   }
   metadata: MetaData
 }
