@@ -123,7 +123,7 @@ export const exampleCards = [
     title: '5555555555554444 (mastercard)',
     formData: {
       cardNumber: '5555555555554444',
-      cvv: '123',
+      cvv: '1234',
       expiry: {
         month: '01',
         year: '2025',
@@ -143,7 +143,7 @@ export const exampleCards = [
     title: '345678901234564 (amex)',
     formData: {
       cardNumber: '345678901234564',
-      cvv: '123',
+      cvv: '1234',
       expiry: {
         month: '01',
         year: '2025',
