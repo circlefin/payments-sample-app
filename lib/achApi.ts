@@ -68,6 +68,18 @@ function getInstance() {
  */
 function createACHAccount(payload: CreateACHAccountPayload) {
   const url = '/v1/banks/ach'
+  if (payload.billingDetails) {
+    payload.billingDetails.line1 = nullIfEmpty(payload.billingDetails.line1)
+    payload.billingDetails.line2 = nullIfEmpty(payload.billingDetails.line2)
+    payload.billingDetails.city = nullIfEmpty(payload.billingDetails.city)
+    payload.billingDetails.district = nullIfEmpty(
+      payload.billingDetails.district
+    )
+    payload.billingDetails.country = nullIfEmpty(payload.billingDetails.country)
+    payload.billingDetails.postalCode = nullIfEmpty(
+      payload.billingDetails.postalCode
+    )
+  }
   if (payload.metadata) {
     payload.metadata.phoneNumber = nullIfEmpty(payload.metadata.phoneNumber)
     payload.metadata.email = nullIfEmpty(payload.metadata.email)
