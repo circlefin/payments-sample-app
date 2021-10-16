@@ -1,7 +1,4 @@
-// lazily load openpgp
-const openpgpModule = import(
-  /* webpackChunkName: "openpgp,  webpackPrefetch: true" */ 'openpgp'
-)
+import { createMessage, encrypt as pgpEncrypt, readKey } from 'openpgp'
 
 interface PublicKey {
   keyId: string
@@ -21,16 +18,14 @@ async function encrypt(dataToEncrypt: object, { keyId, publicKey }: PublicKey) {
     throw new Error('Unable to encrypt data')
   }
 
-  const decodedPublicKey = atob(publicKey)
-  const openpgp = await openpgpModule
-  const options = {
-    message: openpgp.message.fromText(JSON.stringify(dataToEncrypt)),
-    publicKeys: (await openpgp.key.readArmored(decodedPublicKey)).keys,
-  }
-
-  return openpgp.encrypt(options).then((ciphertext) => {
+  const decodedPublicKey = await readKey({ armoredKey: atob(publicKey) })
+  const message = await createMessage({ text: JSON.stringify(dataToEncrypt) })
+  return pgpEncrypt({
+    message,
+    encryptionKeys: decodedPublicKey,
+  }).then((ciphertext) => {
     return {
-      encryptedMessage: btoa(ciphertext.data),
+      encryptedMessage: btoa(ciphertext),
       keyId,
     }
   })
