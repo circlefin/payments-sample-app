@@ -28,7 +28,6 @@
         </v-menu>
 
         <v-form>
-
           <v-text-field
             v-model="formData.iban"
             label="IBAN"
@@ -130,7 +129,7 @@ export default class CreateSepaClass extends Vue {
       line2: '',
       district: '',
       postalCode: '',
-    }
+    },
   }
 
   rules = {

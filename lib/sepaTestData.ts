@@ -11,7 +11,7 @@ export const exampleSepaAccounts = [
         line2: 'Suite 1',
         district: 'Berlin',
         postalCode: '01234',
-      }
+      },
     },
   },
   {
@@ -26,7 +26,7 @@ export const exampleSepaAccounts = [
         line2: 'Suite 1',
         district: 'Dublin',
         postalCode: '01234',
-      }
+      },
     },
   },
 ]
