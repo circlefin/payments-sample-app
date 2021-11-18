@@ -318,6 +318,10 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/payments/mocks/wire',
     },
     {
+      title: 'POST /mocks/payments/sepa',
+      to: '/debug/payments/mocks/sepa',
+    },
+    {
       title: 'POST /cards',
       to: '/debug/cards/create',
     },
@@ -344,6 +348,18 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /banks/wires/{id}/instructions',
       to: '/debug/wires/instructions',
+    },
+    {
+      title: 'POST /banks/sepa',
+      to: '/debug/sepa/create',
+    },
+    {
+      title: 'GET /banks/sepa/{id}',
+      to: '/debug/sepa/details',
+    },
+    {
+      title: 'GET /banks/sepa/{id}/instructions',
+      to: '/debug/sepa/instructions',
     },
     {
       title: 'POST /mocks/ach/accounts',
@@ -526,6 +542,18 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /wires/{id}/instructions',
       to: '/debug/wires/instructions',
+    },
+    {
+      title: 'POST /banks/sepa',
+      to: '/debug/sepa/create',
+    },
+    {
+      title: 'GET /banks/sepa/{id}',
+      to: '/debug/sepa/details',
+    },
+    {
+      title: 'GET /banks/sepa/{id}/instructions',
+      to: '/debug/sepa/instructions',
     },
     {
       title: 'POST /mocks/ach/accounts',

@@ -3,15 +3,13 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <v-text-field v-model="formData.trackingRef" label="Tracking Ref" />
-          <v-text-field v-model="formData.amount" label="Amount" />
+          <v-text-field v-model="formData.accountId" label="Account Id" />
           <v-btn
-            v-if="isSandbox"
             depressed
             class="mb-7"
             color="primary"
             :loading="loading"
-            @click.prevent="makeApiCall"
+            @click.prevent="makeApiCall()"
           >
             Make api call
           </v-btn>
@@ -36,10 +34,9 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import { getLive } from '../../../../lib/apiTarget'
-import RequestInfo from '../../../../components/RequestInfo.vue'
-import ErrorSheet from '../../../../components/ErrorSheet.vue'
-import { CreateMockPushPaymentPayload } from '@/lib/mocksApi'
+import RequestInfo from '@/components/RequestInfo.vue'
+import ErrorSheet from '@/components/ErrorSheet.vue'
+
 @Component({
   components: {
     RequestInfo,
@@ -53,17 +50,18 @@ import { CreateMockPushPaymentPayload } from '@/lib/mocksApi'
     }),
   },
 })
-export default class CreateMockIncomingWireClass extends Vue {
+export default class FetchAccountInstructionsClass extends Vue {
+  // data
   formData = {
-    trackingRef: '',
-    amount: '0.00',
+    accountId: '',
   }
 
-  isSandbox: Boolean = !getLive()
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
   showError = false
+
+  // methods
   onErrorSheetClosed() {
     this.error = {}
     this.showError = false
@@ -71,17 +69,9 @@ export default class CreateMockIncomingWireClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
-    const amountDetail = {
-      amount: this.formData.amount,
-      currency: 'USD',
-    }
-    const payload: CreateMockPushPaymentPayload = {
-      trackingRef: this.formData.trackingRef,
-      amount: amountDetail,
-    }
 
     try {
-      await this.$mocksApi.createMockWirePayment(payload)
+      await this.$sepaApi.getSepaAccountInstructions(this.formData.accountId)
     } catch (error) {
       this.error = error
       this.showError = true

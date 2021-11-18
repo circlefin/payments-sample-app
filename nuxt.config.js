@@ -47,6 +47,7 @@ export default {
     '~/plugins/addressesApi',
     '~/plugins/payoutsApi',
     '~/plugins/wiresApi',
+    '~/plugins/sepaApi',
     '~/plugins/achApi',
     '~/plugins/mocksApi',
     '~/plugins/businessAccount/addressesApi',

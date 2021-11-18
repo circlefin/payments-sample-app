@@ -1,23 +1,18 @@
-import mocksApi, {
-  CreateMockChargebackPayload,
-  CreateMockPushPaymentPayload,
-  CreateMockACHBankAccount,
-} from '@/lib/mocksApi'
+import sepaApi, { CreateSepaAccountPayload } from '@/lib/sepaApi'
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $mocksApi: {
+    $sepaApi: {
+      createSepaAccount: (payload: CreateSepaAccountPayload) => any
+      getSepaAccountById: any
+      getSepaAccountInstructions: any
       getInstance: any
-      createMockChargeback: (payload: CreateMockChargebackPayload) => any
-      createMockWirePayment: (payload: CreateMockPushPaymentPayload) => any
-      createMockSEPAPayment: (payload: CreateMockPushPaymentPayload) => any
-      createMockACHBankAccount: (payload: CreateMockACHBankAccount) => any
     }
   }
 }
 
 export default ({ store }: any, inject: any) => {
-  const instance = mocksApi.getInstance()
+  const instance = sepaApi.getInstance()
 
   instance.interceptors.request.use(
     function (config) {
@@ -45,5 +40,5 @@ export default ({ store }: any, inject: any) => {
     }
   )
 
-  inject('mocksApi', mocksApi)
+  inject('sepaApi', sepaApi)
 }
