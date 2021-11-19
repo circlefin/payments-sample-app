@@ -85,7 +85,7 @@ export default class CreatePayoutClass extends Vue {
   }
 
   required = [(v: string) => !!v || 'Field is required']
-  destinationType = ['wire', 'ach']
+  destinationType = ['wire', 'ach', 'sepa']
   error = {}
   loading = false
   showError = false

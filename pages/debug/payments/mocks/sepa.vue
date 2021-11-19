@@ -53,7 +53,7 @@ import { CreateMockPushPaymentPayload } from '@/lib/mocksApi'
     }),
   },
 })
-export default class CreateMockIncomingWireClass extends Vue {
+export default class CreateMockSEPAClass extends Vue {
   formData = {
     trackingRef: '',
     amount: '0.00',
@@ -73,7 +73,7 @@ export default class CreateMockIncomingWireClass extends Vue {
     this.loading = true
     const amountDetail = {
       amount: this.formData.amount,
-      currency: 'USD',
+      currency: 'EUR',
     }
     const payload: CreateMockPushPaymentPayload = {
       trackingRef: this.formData.trackingRef,
@@ -81,7 +81,7 @@ export default class CreateMockIncomingWireClass extends Vue {
     }
 
     try {
-      await this.$mocksApi.createMockWirePayment(payload)
+      await this.$mocksApi.createMockSEPAPayment(payload)
     } catch (error) {
       this.error = error
       this.showError = true

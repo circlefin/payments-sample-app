@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import { getAPIHostname } from './apiTarget'
 
-export interface CreateMockWirePaymentPayload {
+export interface CreateMockPushPaymentPayload {
   trackingRef: string
   amount: {
     amount: string
@@ -61,8 +61,17 @@ function getInstance() {
  * Trigger arrival of an incoming wire
  * @param {*} payload
  */
-function createMockWirePayment(payload: CreateMockWirePaymentPayload) {
+function createMockWirePayment(payload: CreateMockPushPaymentPayload) {
   const url = '/v1/mocks/payments/wire'
+  return instance.post(url, payload)
+}
+
+/**
+ * Trigger a mock sepa payment
+ * @param {*} payload
+ */
+function createMockSEPAPayment(payload: CreateMockPushPaymentPayload) {
+  const url = '/v1/mocks/payments/sepa'
   return instance.post(url, payload)
 }
 
@@ -87,6 +96,7 @@ function createMockACHBankAccount(payload: CreateMockACHBankAccount) {
 export default {
   getInstance,
   createMockWirePayment,
+  createMockSEPAPayment,
   createMockChargeback,
   createMockACHBankAccount,
 }
