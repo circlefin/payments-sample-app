@@ -4,11 +4,15 @@
  * the client via a configuration endpoint), so we're stuck using this.  We can get away with
  * this because we have very consistent naming between our environments.
  */
-
 function getAPIHostname() {
   // If app is running on localhost (ie, in  dev) the URL is provided via an environment variable (.env file), use that.
   // Otherwise, base it off the window location.
-  if (window.location && window.location.hostname === 'localhost') {
+  const hostname = window.location && window.location.hostname
+  if (
+    hostname &&
+    !hostname.includes('sandbox') &&
+    !hostname.includes('smokebox')
+  ) {
     return process.env.baseUrl
   }
   return window.location.origin.replace('sample', 'api')
