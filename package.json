@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nuxt",
     "build": "nuxt build",
-    "start": "cross-env NODE_ENV=production nuxt",
+    "start": "cross-env NODE_ENV=production start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .ts,.js,.vue .",
     "test": "jest",
