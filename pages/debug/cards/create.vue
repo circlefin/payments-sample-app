@@ -14,7 +14,7 @@
           on how to trigger error responses.
         </small>
         <v-menu>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <div class="d-flex flex-row-reverse">
               <v-btn
                 v-if="isSandbox"

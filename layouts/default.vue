@@ -16,7 +16,7 @@
         </v-list-item>
 
         <v-list-group>
-          <template v-slot:activator>
+          <template #activator>
             <v-list-item-title>Sample flows</v-list-item-title>
           </template>
 
@@ -34,7 +34,7 @@
         </v-list-group>
 
         <v-list-group>
-          <template v-slot:activator>
+          <template #activator>
             <v-list-item-title>Core Functionality</v-list-item-title>
           </template>
 
@@ -60,7 +60,7 @@
         </v-list-group>
 
         <v-list-group v-if="!isMarketplace">
-          <template v-slot:activator>
+          <template #activator>
             <v-list-item-title>Payments APIs</v-list-item-title>
           </template>
 
@@ -86,7 +86,7 @@
         </v-list-group>
 
         <v-list-group v-if="isMarketplace">
-          <template v-slot:activator>
+          <template #activator>
             <v-list-item-title>Marketplace APIs</v-list-item-title>
           </template>
 
@@ -112,7 +112,7 @@
         </v-list-group>
 
         <v-list-group>
-          <template v-slot:activator>
+          <template #activator>
             <v-list-item-title>Payouts APIs</v-list-item-title>
           </template>
 
@@ -138,7 +138,7 @@
         </v-list-group>
 
         <v-list-group>
-          <template v-slot:activator>
+          <template #activator>
             <v-list-item-title>Digital Dollar Accounts APIs</v-list-item-title>
           </template>
 

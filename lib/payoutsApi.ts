@@ -1,4 +1,4 @@
-import { get } from 'lodash'
+import get from 'lodash/get'
 import axios from 'axios'
 
 import { getAPIHostname } from './apiTarget'

@@ -23,6 +23,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'nuxt-property-decorator'
+// eslint-disable-next-line import/named
 import { mask } from 'vue-the-mask'
 import valid from 'card-validator'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -43,7 +44,7 @@ library.add(
   faCcMastercard,
   faCcDinersClub
 )
-Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('FontAwesomeIcon', FontAwesomeIcon)
 
 @Component({
   directives: {

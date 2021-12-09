@@ -25,9 +25,7 @@
 
       <v-expansion-panels multiple :value="collapsed">
         <v-expansion-panel>
-          <v-expansion-panel-header>
-            Billing Details
-          </v-expansion-panel-header>
+          <v-expansion-panel-header> Billing Details </v-expansion-panel-header>
           <v-expansion-panel-content>
             <v-text-field
               v-model="formData.name"

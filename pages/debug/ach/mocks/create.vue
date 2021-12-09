@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-menu>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <div class="d-flex flex-row-reverse">
               <v-btn
                 v-if="isSandbox"

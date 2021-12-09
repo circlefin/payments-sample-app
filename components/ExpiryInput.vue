@@ -18,6 +18,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
+// eslint-disable-next-line import/named
 import { mask } from 'vue-the-mask'
 
 @Component({

@@ -22,7 +22,17 @@ module.exports = {
     'vue/html-self-closing': 'off',
     'vue/singleline-html-element-content-newline': 'off',
     'vue/max-attributes-per-line': 'off',
+    'vue/multi-word-component-names': 'off',
     'space-before-function-paren': 'off',
     'comma-dangle': 'off',
+    'vue/script-indent': ['warn', 2, { switchCase: 1 }],
   },
+  overrides: [
+    {
+      files: ['*.vue'],
+      rules: {
+        indent: 'off',
+      },
+    },
+  ],
 }

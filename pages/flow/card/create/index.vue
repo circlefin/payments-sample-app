@@ -10,7 +10,7 @@
             </v-list-item-title>
           </v-list-item-content>
           <v-menu>
-            <template v-slot:activator="{ on }">
+            <template #activator="{ on }">
               <v-btn
                 v-if="isSandbox"
                 class="mt-n8"

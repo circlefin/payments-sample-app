@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-menu>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <div class="d-flex flex-row-reverse">
               <v-btn
                 v-if="isSandbox"
@@ -225,13 +225,8 @@ export default class CreateCardClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
-    const {
-      beneficiaryName,
-      accountNumber,
-      routingNumber,
-      iban,
-      ...data
-    } = this.formData
+    const { beneficiaryName, accountNumber, routingNumber, iban, ...data } =
+      this.formData
     const { billingDetails, bankAddress } = data
 
     const payload: CreateWireAccountPayload = {

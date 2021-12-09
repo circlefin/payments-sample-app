@@ -1,4 +1,4 @@
-import { get } from 'lodash'
+import get from 'lodash/get'
 import axios from 'axios'
 
 import { getAPIHostname } from './apiTarget'
@@ -8,15 +8,6 @@ interface MetaData {
   phoneNumber?: string
   sessionId: string
   ipAddress: string
-}
-
-export interface CreateCardPaymentPayload extends BasePaymentPayload {
-  verification?: string
-  autoCapture?: boolean
-  verificationSuccessUrl?: string
-  verificationFailureUrl?: string
-  keyId?: string
-  encryptedData?: string
 }
 
 export interface BasePaymentPayload {
@@ -32,6 +23,15 @@ export interface BasePaymentPayload {
   description: string
   channel: string
   metadata: MetaData
+}
+
+export interface CreateCardPaymentPayload extends BasePaymentPayload {
+  verification?: string
+  autoCapture?: boolean
+  verificationSuccessUrl?: string
+  verificationFailureUrl?: string
+  keyId?: string
+  encryptedData?: string
 }
 
 export interface RefundPaymentPayload {
