@@ -18,7 +18,7 @@ $ git clone https://github.com/circlefin/payments-sample-app.git
 
 Run the following to install the dependencies:
 
-``` bash
+```bash
 $ yarn install
 ```
 
@@ -26,7 +26,7 @@ $ yarn install
 
 Run the following to run the sample app locally:
 
-``` bash
+```bash
 $ yarn dev
 ```
 
@@ -50,6 +50,10 @@ If you would like to point to another API base url you need to create a `.env` f
 $ echo BASE_URL=https://[base-url.com] > .env
 ```
 
+## Devtools
+
+Dev tools to confirm SNS subscription / receive notifications can be found (here)[https://github.com/circlefin/payments-sample-app/tree/master/devtools]
+
 ## Nuxt
 
 This sample app was written with Nuxt. For a more detailed explanation of how Nuxt works, check the [Nuxt.js docs](https://nuxtjs.org).
@@ -60,12 +64,12 @@ The sample app uses jest for testing. You can find the tests in the `test` folde
 
 To run the tests:
 
-``` bash
+```bash
 $ yarn test
 ```
 
 To watch the tests:
 
-``` bash
+```bash
 $ yarn test:watch
 ```

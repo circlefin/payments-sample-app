@@ -1,4 +1,4 @@
-import { get } from 'lodash'
+import get from 'lodash/get'
 import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -17,14 +17,6 @@ export interface MarketplaceInfo {
   walletId: string
 }
 
-export interface CreateMarketplaceCardPaymentPayload
-  extends BasePaymentPayload {
-  verification?: string
-  keyId?: string
-  encryptedData?: string
-  autoCapture?: boolean
-}
-
 export interface BasePaymentPayload {
   idempotencyKey: string
   amount: {
@@ -39,6 +31,14 @@ export interface BasePaymentPayload {
   channel: string
   metadata: MetaData
   marketplaceInfo: MarketplaceInfo
+}
+
+export interface CreateMarketplaceCardPaymentPayload
+  extends BasePaymentPayload {
+  verification?: string
+  keyId?: string
+  encryptedData?: string
+  autoCapture?: boolean
 }
 
 export interface CapturePaymentPayload {

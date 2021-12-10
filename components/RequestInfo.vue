@@ -30,6 +30,7 @@
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 // @ts-ignore
 import VueJsonPretty from 'vue-json-pretty'
+import 'vue-json-pretty/lib/styles.css'
 
 @Component({
   components: {

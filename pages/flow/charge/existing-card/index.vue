@@ -101,13 +101,9 @@
             width="500"
           >
             <v-btn icon class="float-right" @click="createCardOverlay = false">
-              <v-icon>
-                mdi-close
-              </v-icon>
+              <v-icon> mdi-close </v-icon>
             </v-btn>
-            <h2 class="title">
-              Add card
-            </h2>
+            <h2 class="title">Add card</h2>
             <v-form>
               <v-text-field
                 v-model="cardIdInput"
@@ -124,12 +120,10 @@
               </v-btn>
             </v-form>
 
-            <p class="separator subtitle-2">
-              OR
-            </p>
+            <p class="separator subtitle-2">OR</p>
 
             <v-menu>
-              <template v-slot:activator="{ on }">
+              <template #activator="{ on }">
                 <v-btn
                   v-if="isSandbox"
                   class="mt-n8"

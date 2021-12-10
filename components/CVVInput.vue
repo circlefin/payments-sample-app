@@ -14,6 +14,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'nuxt-property-decorator'
+// eslint-disable-next-line import/named
 import { mask } from 'vue-the-mask'
 import { EventBus } from '@/lib/eventBus.js'
 

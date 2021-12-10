@@ -3,9 +3,9 @@ import colors from 'vuetify/es5/util/colors'
 require('dotenv').config()
 
 export default {
-  mode: 'spa',
+  ssr: false,
   server: {
-    host: '0.0.0.0',
+    host: 'localhost',
     port: 3011,
   },
   /*
