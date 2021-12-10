@@ -4,17 +4,18 @@
   "description": "#### HTTP server for local debug",
   "main": "httpserver.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ext .ts,.js ."
   },
   "author": "Circle",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.20.2",
+    "eslint": "8.4.1",
+    "eslint-config-standard": "16.0.3",
+    "eslint-plugin-import": "2.25.3",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1"
+    "eslint-plugin-promise": "5.2.0",
+    "eslint-plugin-standard": "5.0.0"
   },
   "dependencies": {
     "request": "^2.88.2",
