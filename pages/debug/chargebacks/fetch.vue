@@ -10,6 +10,7 @@
           />
           <header>Optional filter params:</header>
           <v-text-field v-model="formData.settlementId" label="Settlement ID" />
+          <v-text-field v-model="formData.paymentId" label="Payment ID" />
           <v-text-field v-model="formData.from" label="From" />
           <v-text-field v-model="formData.to" label="To" />
           <v-text-field v-model="formData.pageSize" label="PageSize" />
@@ -65,6 +66,7 @@ export default class FetchChargebacksClass extends Vue {
   formData = {
     merchantId: '',
     settlementId: '',
+    paymentId: '',
     from: '',
     to: '',
     pageSize: '',
@@ -98,6 +100,7 @@ export default class FetchChargebacksClass extends Vue {
       await this.$chargebacksApi.getChargebacks(
         this.formData.merchantId,
         this.formData.settlementId,
+        this.formData.paymentId,
         this.formData.from,
         this.formData.to,
         this.formData.pageBefore,
