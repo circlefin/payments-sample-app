@@ -1961,6 +1961,11 @@
   dependencies:
     anymatch "*"
 
+"@types/applepayjs@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@types/applepayjs/-/applepayjs-3.0.3.tgz#60553647487ddddf75797e83fc6a13774c352725"
+  integrity sha512-8hHE87c/JN/BebRDYzkOWIuTkuB1JHaQUEaQd1atNn/9FQb6s9iEpptAcugxbvQL1ykE0czQgEkUAyVVtR8Jzw==
+
 "@types/autoprefixer@9.7.2":
   version "9.7.2"
   resolved "https://registry.yarnpkg.com/@types/autoprefixer/-/autoprefixer-9.7.2.tgz#64b3251c9675feef5a631b7dd34cfea50a8fdbcc"
