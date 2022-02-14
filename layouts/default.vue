@@ -203,9 +203,16 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-
+import { getIsStaging, getIsLocalHost } from '@/lib/apiTarget'
+import { getIsSafari } from '@/lib/navigatorInfo'
 @Component
 export default class DefaultLayoutsClass extends Vue {
+  isStaging: Boolean = getIsStaging()
+
+  issLocalHost: Boolean = getIsLocalHost()
+
+  isSafari: Boolean = getIsSafari()
+
   flowLinks = [
     {
       title: 'Charge a card',
@@ -422,6 +429,13 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/payments/balances/fetch',
     },
   ]
+  
+  applePayStaging = {
+    title: 'Apple Pay',
+    to: '/debug/payments/applepay/create',
+  }
+
+  appendApplePayOnce = false;
 
   marketplaceLinks = [
     {
@@ -626,6 +640,11 @@ export default class DefaultLayoutsClass extends Vue {
   showDrawer = false
 
   get title() {
+    if (this.isSafari && !this.appendApplePayOnce && (this.isStaging || this.issLocalHost)) {
+      // Apple Pay only works on safari
+      this.appendApplePayOnce = true;
+      this.paymentsLinks.push(this.applePayStaging)
+    }
     const navItems = this.flowLinks.concat(this.paymentsLinks)
     const currentPage = navItems.find((item) => {
       return item.to === this.$route.path
