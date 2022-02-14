@@ -19,4 +19,14 @@ function getLive() {
   return !(hostname!.includes('sandbox') || hostname!.includes('smokebox'))
 }
 
-export { getAPIHostname, getLive }
+function getIsStaging() {
+  const hostname = getAPIHostname()
+  return hostname!.includes('staging')
+}
+
+function getIsLocalHost() {
+  const hostname = getAPIHostname()
+  return hostname!.includes('192.168.1.4:3011')
+}
+
+export { getAPIHostname, getLive, getIsStaging, getIsLocalHost }
