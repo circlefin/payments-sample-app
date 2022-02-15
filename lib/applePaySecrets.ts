@@ -4,7 +4,7 @@ const merchantIdentityCertificate: string = "/stg/platform/sampleapp/applepay/me
 const merchantIdentityKey: string = "/stg/platform/sampleapp/applepay/merchantIdentityCertificate/pem"
 
 async function getApplePayCertAndKey(retry: boolean): Promise<[string, string]> {
-    let a = await getSSMParameters([merchantIdentityCertificate, merchantIdentityKey]);
+    let a = await getSSMParameters([merchantIdentityCertificate, merchantIdentityKey])
     return [a[0], a[1]]
 }
 

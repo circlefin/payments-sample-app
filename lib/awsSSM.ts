@@ -1,7 +1,7 @@
-import { SSM } from 'aws-sdk';
-// AWS.config.update({ region: "us-west-1" });
+import { SSM } from 'aws-sdk'
+// AWS.config.update({ region: "us-west-1" })
 
-const ssm: SSM = new SSM();
+const ssm: SSM = new SSM()
 
 async function getSSMParameters(parameters: string[]): Promise<string[]> {
     return ssm
@@ -11,8 +11,8 @@ async function getSSMParameters(parameters: string[]): Promise<string[]> {
     .promise()
     .then(res => res.Parameters!.map(e => e.Value!))
     .catch(err => {
-        throw new Error("TODO ERROR");
-    });
+        throw new Error("Could not obtain values from SSM with keys: " + parameters.toString())
+    })
 }
 
 export { getSSMParameters }

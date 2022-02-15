@@ -4,6 +4,7 @@
         dark
         class="apple-pay-button apple-pay-button-text-pay"
         v-on="on"
+        v-if="isApplePayAvailable"
         @click.prevent="doApplePay"
         >
     </v-btn>
@@ -11,9 +12,11 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import { startApplePaySession, default_config } from 'lib/applePay'
+import { startApplePaySession, default_config, applePayAvailable } from 'lib/applePay'
 @Component({})
 export default class CreateApplePayVue extends Vue {
+    isApplePayAvailable:boolean = applePayAvailable()
+
     async doApplePay() {
         startApplePaySession({
             currencyCode: default_config.shop.shop_localisation.currencyCode,
