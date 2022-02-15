@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+// http://localhost:3000/api/applePaySessionValidation
+
 const BACKEND_URL_VALIDATE_SESSION = 'https://{yourServer}/validateSession'
 const BACKEND_URL_PAY = 'https://{yourServer}/pay'
 
