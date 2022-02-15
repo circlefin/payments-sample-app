@@ -207,11 +207,11 @@ import { getIsStaging, getIsLocalHost } from '@/lib/apiTarget'
 import { getIsSafari } from '@/lib/navigatorInfo'
 @Component
 export default class DefaultLayoutsClass extends Vue {
-  isStaging: Boolean = getIsStaging()
+  isStaging: boolean = getIsStaging()
 
-  issLocalHost: Boolean = getIsLocalHost()
+  issLocalHost: boolean = getIsLocalHost()
 
-  isSafari: Boolean = getIsSafari()
+  isSafari: boolean = getIsSafari()
 
   flowLinks = [
     {

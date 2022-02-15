@@ -24,9 +24,9 @@ function getIsStaging() {
   return hostname!.includes('staging')
 }
 
-function getIsLocalHost() {
+function getIsLocalHost(): boolean {
   const hostname = getAPIHostname()
-  return hostname!.includes('192.168.1.4:3011')
+  return hostname!.includes(':3011')
 }
 
 export { getAPIHostname, getLive, getIsStaging, getIsLocalHost }
