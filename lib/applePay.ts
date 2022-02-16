@@ -1,15 +1,13 @@
 import axios from 'axios'
-// import { getAPIHostname } from '@/lib/apiTarget'
 
-// http://localhost:3000/api/applePaySessionValidation
-
-const BACKEND_URL_VALIDATE_SESSION = 'https://sample-staging.circle.com/api/applePaySessionValidation' // todo use getAPIHostname and replace http with https
+// currently endpoints are used only in staging
+const BACKEND_URL_VALIDATE_SESSION = 'https://sample-staging.circle.com/api/applePaySessionValidation'
 const BACKEND_URL_PAY = 'https://sample-staging.circle.com/api/payWithApplePay'
 
-// High level configuration options.
+// default configuration used in staging
 const default_config = {
     payments: {
-        acceptedCardSchemes: ['amex', 'masterCard', 'maestro', 'visa', 'mada']
+        acceptedCardSchemes: ['amex', 'masterCard', 'visa']
     },
     shop: {
         product_price: '10.0',
@@ -21,17 +19,17 @@ const default_config = {
     },
     shipping: {
         US_region: [{
-                label: 'Free Shipping',
-                amount: '0.00',
-                detail: 'Arrives in 3-5 days',
-                identifier: 'freeShipping'
-            },
-            {
-                label: 'Express Shipping',
-                amount: '5.00',
-                detail: 'Arrives in 1-2 days',
-                identifier: 'expressShipping'
-            }
+            label: 'Free Shipping',
+            amount: '0.00',
+            detail: 'Arrives in 3-5 days',
+            identifier: 'freeShipping'
+        },
+        {
+            label: 'Express Shipping',
+            amount: '5.00',
+            detail: 'Arrives in 1-2 days',
+            identifier: 'expressShipping'
+        }
         ],
         WORLDWIDE_region: [{
             label: 'Worldwide Standard Shipping',
@@ -42,18 +40,19 @@ const default_config = {
     }
 }
 
-// here we talk to our backend to send the Apple Pay Payload and return the transaction outcome
+// call backend to send the Apple Pay Payload and return the transaction outcome
 function performTransaction(details: ApplePayJS.ApplePayPayment, callback: any) {
-    axios.post(BACKEND_URL_PAY,
+    axios.post(
+        BACKEND_URL_PAY,
         {
             details
         },
         {
             headers: { 'Access-Control-Allow-Origin': '*' }
         })
-    .then(function (response) {
-        callback(response.data)
-    })
+        .then(function (response) {
+            callback(response.data)
+        })
 }
 
 function getAvailableShippingMethods(region: string) {
@@ -67,7 +66,7 @@ function getAvailableShippingMethods(region: string) {
 
 function calculateTotal(subtotal: string, shipping: string) {
     return (parseFloat(subtotal) + parseFloat(shipping)).toFixed(2)
-  }
+}
 
 function handleApplePayEvents(appleSession: ApplePaySession) {
     // This is the first event that Apple triggers. Validate the Apple Pay Session from endpoint
@@ -76,7 +75,7 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
         // complete validation by calling the appleSession.completeMerchantValidation(merchantSession), by passing the response from your server-side
         validateApplePaySession(event.validationURL, (merchantSession: any): void => appleSession.completeMerchantValidation(merchantSession))
     }
-    
+
     // This method is triggered before populating the shipping methods
     appleSession.onshippingcontactselected = function (event) {
         // populate with the availbale shipping methods for the region (Apple will tell you the region).
@@ -94,16 +93,16 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
             )
         }
         var newLineItems: ApplePayJS.ApplePayLineItem[] = [
-        {
-            type: 'final',
-            label: 'Subtotal',
-            amount: default_config.shop.product_price
-        },
-        {
-            type: 'final',
-            label: shipping.methods[0].label,
-            amount: shipping.methods[0].amount
-        }]
+            {
+                type: 'final',
+                label: 'Subtotal',
+                amount: default_config.shop.product_price
+            },
+            {
+                type: 'final',
+                label: shipping.methods[0].label,
+                amount: shipping.methods[0].amount
+            }]
         appleSession.completeShippingContactSelection(
             ApplePaySession.STATUS_SUCCESS, // ApplePaySession.STATUS_SUCCESS - indicates event was successfully handled
             shipping.methods, // list of shipping methods we want to offer
@@ -124,16 +123,16 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
             )
         }
         var newLineItems: ApplePayJS.ApplePayLineItem[] = [
-        {
-            type: 'final',
-            label: 'Subtotal',
-            amount: default_config.shop.product_price
-        },
-        {
-            type: 'final',
-            label: event.shippingMethod.label,
-            amount: event.shippingMethod.amount
-        }]
+            {
+                type: 'final',
+                label: 'Subtotal',
+                amount: default_config.shop.product_price
+            },
+            {
+                type: 'final',
+                label: event.shippingMethod.label,
+                amount: event.shippingMethod.amount
+            }]
         appleSession.completeShippingMethodSelection(
             ApplePaySession.STATUS_SUCCESS,
             newTotal, // updated total obtained by taking the product value and adding the shipping
@@ -162,7 +161,6 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
 // @param {function} callback Callback function used to return the server call outcome
 // @return {object} The session payload
 function validateApplePaySession(appleUrl: string, callback: any): void {
-    // I'm using AXIOS to do a POST request to the backend but any HTTP client can be used
     axios.post(
         BACKEND_URL_VALIDATE_SESSION,
         {
@@ -171,9 +169,9 @@ function validateApplePaySession(appleUrl: string, callback: any): void {
         {
             headers: { 'Access-Control-Allow-Origin': '*' }
         })
-    .then(function (response) {
-        callback(response.data)
-    })
+        .then(function (response) {
+            callback(response.data)
+        })
 }
 
 // Starts the Apple Pay session using a configuration

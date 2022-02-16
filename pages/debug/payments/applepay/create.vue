@@ -3,7 +3,6 @@
         elevation="24"
         dark
         class="apple-pay-button apple-pay-button-text-pay"
-        v-on="on"
         v-if="isApplePayAvailable"
         @click.prevent="doApplePay"
         >
@@ -12,7 +11,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import { startApplePaySession, default_config, applePayAvailable } from 'lib/applePay'
+import { startApplePaySession, default_config, applePayAvailable } from '@/lib/applePay'
 @Component({})
 export default class CreateApplePayVue extends Vue {
     isApplePayAvailable:boolean = applePayAvailable()
@@ -23,7 +22,6 @@ export default class CreateApplePayVue extends Vue {
             countryCode: default_config.shop.shop_localisation.countryCode,
             merchantCapabilities: [
                 'supports3DS',
-                'supportsEMV',
                 'supportsCredit',
                 'supportsDebit'
             ],

@@ -1,11 +1,6 @@
-import { getSSMParameters } from '@/lib/awsSSM'
+const applePaySecretsAreSet = !(process.env.apple_pay_certifcate == null || process.env.apple_pay_private_key == null)
 
-const merchantIdentityCertificate: string = "/stg/platform/sampleapp/applepay/merchantIdentityCertificate/pem"
-const merchantIdentityKey: string = "/stg/platform/sampleapp/applepay/merchantIdentityCertificate/pem"
+const merchantIdentityCertificate: string = applePaySecretsAreSet ? process.env.apple_pay_certifcate! : ""
+const merchantIdentityKey: string = applePaySecretsAreSet ? process.env.apple_pay_private_key! : ""
 
-async function getApplePayCertAndKey(retry: boolean): Promise<[string, string]> {
-    let a = await getSSMParameters([merchantIdentityCertificate, merchantIdentityKey])
-    return [a[0], a[1]]
-}
-
-export { getApplePayCertAndKey }
+export { merchantIdentityCertificate, merchantIdentityKey }

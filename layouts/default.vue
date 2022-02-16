@@ -209,7 +209,7 @@ import { getIsSafari } from '@/lib/navigatorInfo'
 export default class DefaultLayoutsClass extends Vue {
   isStaging: boolean = getIsStaging()
 
-  issLocalHost: boolean = getIsLocalHost()
+  isLocalHost: boolean = getIsLocalHost()
 
   isSafari: boolean = getIsSafari()
 
@@ -435,7 +435,7 @@ export default class DefaultLayoutsClass extends Vue {
     to: '/debug/payments/applepay/create',
   }
 
-  appendApplePayOnce = false;
+  paymentsLinksWithApplePay = [...this.paymentsLinks, this.applePayStaging]
 
   marketplaceLinks = [
     {
@@ -640,12 +640,13 @@ export default class DefaultLayoutsClass extends Vue {
   showDrawer = false
 
   get title() {
-    if (this.isSafari && !this.appendApplePayOnce && (this.isStaging || this.issLocalHost)) {
-      // Apple Pay only works on safari
-      this.appendApplePayOnce = true;
-      this.paymentsLinks.push(this.applePayStaging)
+    var navItems = null
+    // Apple Pay only works on safari
+    if (this.isSafari && (this.isStaging || this.isLocalHost)) {
+      navItems = this.flowLinks.concat(this.paymentsLinksWithApplePay)
+    } else {
+      navItems = this.flowLinks.concat(this.paymentsLinks)
     }
-    const navItems = this.flowLinks.concat(this.paymentsLinks)
     const currentPage = navItems.find((item) => {
       return item.to === this.$route.path
     })
