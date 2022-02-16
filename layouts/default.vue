@@ -429,7 +429,7 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/payments/balances/fetch',
     },
   ]
-  
+
   applePayStaging = {
     title: 'Apple Pay',
     to: '/debug/payments/applepay/create',
