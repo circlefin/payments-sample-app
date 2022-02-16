@@ -8,7 +8,7 @@
 function getAPIHostname() {
   // If app is running on localhost (ie, in  dev) the URL is provided via an environment variable (.env file), use that.
   // Otherwise, base it off the window location.
-  if (window.location && window.location.hostname === 'localhost') {
+  if (getIsLocalHost()) {
     return process.env.baseUrl
   }
   return window.location.origin.replace('sample', 'api')
@@ -25,8 +25,7 @@ function getIsStaging() {
 }
 
 function getIsLocalHost(): boolean {
-  const hostname = getAPIHostname()
-  return hostname!.includes(':3011')
+  return window.location && window.location.hostname === 'localhost'
 }
 
 export { getAPIHostname, getLive, getIsStaging, getIsLocalHost }

@@ -3,11 +3,10 @@ import * as https from 'https'
 import {
   merchantIdentityCertificate,
   merchantIdentityKey,
-} from 'lib/applePaySecrets'
+} from '~/server/applePaySecrets'
 import type { IncomingMessage, ServerResponse } from 'http'
 
 export default async (req: IncomingMessage, res: ServerResponse) => {
-  // console.log(req.method, req.url, req.headers)
   let appleUrl = ''
   req.on('data', (chunk) => {
     appleUrl += chunk
