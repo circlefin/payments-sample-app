@@ -11,8 +11,14 @@ const MERCHANT_IDENTIFIER = 'merchant.bigtimetestmerchant.com'
 const DOMAIN_NAME = 'sample-staging.circle.com'
 const DISPLAY_NAME = 'Circle Apple Pay'
 
-app.post('/pay', async (req, res) => {
-  const appleUrl: string = req.body
+// Steps:
+// 1) validate session, requested by client
+// 2) pay with apple token
+
+// Validates Apple Pay Session, requested by client by providing applePayUrl at which we validate
+// responds with validation to client
+app.post('/validate', async (req, res) => {
+  const applePayUrl: string = req.body
 
   var httpsAgent = new https.Agent({
     rejectUnauthorized: false,
@@ -20,7 +26,7 @@ app.post('/pay', async (req, res) => {
     key: merchantIdentityKey, // key apple
   })
   var response = axios.post(
-    appleUrl,
+    applePayUrl,
     {
       merchantIdentifier: MERCHANT_IDENTIFIER,
       domainName: DOMAIN_NAME,
@@ -30,11 +36,11 @@ app.post('/pay', async (req, res) => {
       httpsAgent,
     }
   )
-
-  res.send('pay')
+  res.send(response)
 })
 
-app.post('/validate', async (req, res) => {
+// after client recieves session validation, client provides apple pay token which we use to hit EFT endpoint
+app.post('/pay', async (req, res) => {
   console.log(
     'Apple Pay token received, when endpoint on a target service is implemented this will be updated'
   )
