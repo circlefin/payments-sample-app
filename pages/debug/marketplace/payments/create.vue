@@ -190,7 +190,7 @@ export default class CreatePaymentClass extends Vue {
 
     const payload: CreateMarketplaceCardPaymentPayload = {
       idempotencyKey: uuidv4(),
-      autoCapture: this.formData.autoCapture ? undefined : false,
+      autoCapture: this.formData.autoCapture,
       amount: amountDetail,
       source: sourceDetails,
       description: this.formData.description,
