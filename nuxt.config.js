@@ -110,8 +110,8 @@ export default {
   },
   serverMiddleware: [
     {
-      path: '/restapi/applePaySessionValidation',
-      handler: '~/server-middleware/rest.ts',
+      path: '/applepay/pay',
+      handler: '~/server-middleware/applepay.ts',
     },
   ],
 }
