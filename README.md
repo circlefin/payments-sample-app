@@ -14,6 +14,8 @@ You can manually clone the sample app by running:
 $ git clone https://github.com/circlefin/payments-sample-app.git
 ```
 
+To support Apple Pay you must set environment variables APPLE_PAY_CERTIFICATE and APPLE_PAY_PRIVATE_KEY, where values are contents of Apple merchant identifier .pem certificate and private key. Apple Pay can be initiated only on Safari.
+
 ## Install the dependencies
 
 Run the following to install the dependencies:

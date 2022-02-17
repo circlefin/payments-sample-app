@@ -108,4 +108,10 @@ export default {
   env: {
     baseUrl: process.env.BASE_URL || 'https://api-sandbox.circle.com',
   },
+  serverMiddleware: [
+    {
+      path: '/restapi/applePaySessionValidation',
+      handler: '~/server-middleware/rest.ts',
+    },
+  ],
 }

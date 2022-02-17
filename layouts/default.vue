@@ -73,7 +73,7 @@
           </v-list-item>
 
           <v-list-item
-            v-for="(item, i) in paymentsLinks"
+            v-for="(item, i) in getPaymentLinks()"
             :key="`paymentlink-${i}`"
             :to="item.to"
             router
@@ -435,7 +435,7 @@ export default class DefaultLayoutsClass extends Vue {
     to: '/debug/payments/applepay/create',
   }
 
-  paymentsLinksWithApplePay = [...this.paymentsLinks, this.applePayStaging]
+  paymentsLinksWithApplePay = this.paymentsLinks.concat(this.applePayStaging)
 
   marketplaceLinks = [
     {
@@ -639,14 +639,15 @@ export default class DefaultLayoutsClass extends Vue {
   showRightDrawer = false
   showDrawer = false
 
-  get title() {
-    var navItems = null
-    // Apple Pay only works on safari
+  getPaymentLinks() {
     if (this.isSafari && (this.isStaging || this.isLocalHost)) {
-      navItems = this.flowLinks.concat(this.paymentsLinksWithApplePay)
-    } else {
-      navItems = this.flowLinks.concat(this.paymentsLinks)
+      return this.paymentsLinksWithApplePay
     }
+    return this.paymentsLinks
+  }
+
+  get title() {
+    const navItems = this.flowLinks.concat(this.getPaymentLinks())
     const currentPage = navItems.find((item) => {
       return item.to === this.$route.path
     })
