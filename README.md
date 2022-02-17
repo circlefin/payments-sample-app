@@ -40,13 +40,6 @@ You are now ready to use the sample app and test some payments flows. In a produ
 
 To automatically trigger certain responses from the Circle Payments API, you can use some pre-defined [test card numbers](https://developers.circle.com/docs/test-card-numbers) that exercise specific behaviors.
 
-## Apple Pay
-
-To enable Apple Pay you must set environment variables APPLE_PAY_CERTIFICATE, APPLE_PAY_PRIVATE_KEY, APPLE_PAY_SESSION_VALIDATE_URL and APPLE_PAY_PERFORM_PAY_URL.
-Store contents of your merchant identifier .pem certificate in APPLE_PAY_CERTIFICATE and your merchant identifier private key in APPLE_PAY_PRIVATE_KEY.
-Store in APPLE_PAY_SESSION_VALIDATE_URL full https url to your endpoint where you validate session with received applePayUrl from client.
-Store in APPLE_PAY_PERFORM_PAY_URL full https url to your endpoint where you obtain apple pay token from client and are ready to call our backend.
-
 ## Change API base url
 
 By default the API base url will be set to https://api-sandbox.circle.com.
