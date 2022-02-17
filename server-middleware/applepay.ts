@@ -43,8 +43,13 @@ app.post('/validate', async (req, res) => {
 // after client recieves session validation, client provides apple pay token which we use to hit EFT endpoint
 app.post('/pay', async (req, res) => {
   const { data } = req.body
+
   console.log(data)
-  res.send('unfinished')
+  // TODO send to endpoint once endpoint is ready
+
+  res.send({
+    approved: true,
+  })
 })
 
 export default {
