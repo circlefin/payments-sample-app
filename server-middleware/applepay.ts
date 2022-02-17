@@ -4,7 +4,7 @@ import * as https from 'https'
 import {
   merchantIdentityCertificate,
   merchantIdentityKey,
-} from '~/server/applePaySecrets'
+} from '@/server/applePaySecrets'
 
 const app = express()
 const MERCHANT_IDENTIFIER = 'merchant.bigtimetestmerchant.com'
@@ -36,6 +36,7 @@ app.post('/validate', async (req, res) => {
       httpsAgent,
     }
   )
+  // return the json received from Apple Pay server unmodified
   res.send(response)
 })
 
