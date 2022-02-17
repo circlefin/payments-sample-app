@@ -41,7 +41,9 @@ function startApplePaySession(config: any): void {
 // onvalidatemerchant, onshippingcontactselected, onshippingmethodselected, completeShippingMethodSelection and onpaymentauthorized.
 function handleApplePayEvents(appleSession: ApplePaySession) {
   // This is the first event that Apple triggers. Validate the Apple Pay Session from endpoint.
-  appleSession.onvalidatemerchant = function (event) {
+  appleSession.onvalidatemerchant = function (
+    event: ApplePayJS.ApplePayValidateMerchantEvent
+  ) {
     // Gets the validationURL at Apple Pay servers from client and sends it to endpoint here (at sample-app) at /applepay/validate.
     // complete validation by calling the appleSession.completeMerchantValidation(merchantSession), by passing the json response we got from Apple.
     validateApplePaySession(event.validationURL, (merchantSession: any): void =>
@@ -82,13 +84,12 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
     appleSession.completeShippingContactSelection(
       ApplePaySession.STATUS_SUCCESS, // event was successfully handled
       shipping.methods, // list of shipping methods we want to offer
-      newTotal, // shipping methods have different prices, we need to make sure that the total displayed in the Apple Pay pop-up is up to date
-      newLineItems // for a great user experience you want to show the shipping method selected in the transaction summary of the Apple Pay pop-up
+      newTotal, // different shippint methods may have different prices, make sure that the total displayed in the Apple Pay pop-up is up to date
+      newLineItems // show the shipping method selected in the transaction summary of the Apple Pay pop-up
     )
   }
 
-  // This method is triggered when a user select one of the shipping options.
-  // Here you generally want to keep track of the transaction amount
+  // This method is triggered when a user select one of the shipping options. Update transaction ammounts on change.
   appleSession.onshippingmethodselected = function (event) {
     var newTotal: ApplePayJS.ApplePayLineItem = {
       type: 'final',
@@ -111,17 +112,17 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
       },
     ]
     appleSession.completeShippingMethodSelection(
-      ApplePaySession.STATUS_SUCCESS,
-      newTotal, // updated total obtained by taking the product value and adding the shipping
-      newLineItems // update order summary (so it reflects the name of the new payment method selected)
+      ApplePaySession.STATUS_SUCCESS, // event was successfully handled
+      newTotal, // total to display
+      newLineItems // order summary updated
     )
   }
 
-  // This method is the most important method. It gets triggered after the user has
-  // confirmed the transaction with the Touch ID or Face ID. Besides getting all the
-  // details about the customer (email, address ...) you also get the Apple Pay payload
-  // needed to perform a payment.
-  appleSession.onpaymentauthorized = function (event) {
+  // Final event which performs debit. Triggered after the user has confirmed the transaction with the Touch ID or Face ID.
+  // All details about the customer are provided and most importantly we get the Apple Pay token in payload needed to perform a payment.
+  appleSession.onpaymentauthorized = function (
+    event: ApplePayJS.ApplePayPaymentAuthorizedEvent
+  ) {
     performTransaction(event.payment, (outcome: any) => {
       if (outcome.approved) {
         appleSession.completePayment(ApplePaySession.STATUS_SUCCESS)
