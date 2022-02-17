@@ -50,11 +50,13 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
   }
 
   // This method is triggered before populating the shipping methods.
-  appleSession.onshippingcontactselected = function (event) {
-    // populate with the availbale shipping methods for the region (Apple provides the region).
+  appleSession.onshippingcontactselected = function (
+    event: ApplePayJS.ApplePayShippingContactSelectedEvent
+  ) {
+    // Populate with the availbale shipping methods for the region (Apple provides the region).
     // Full user address will be available after the user confirms the payment.
     var shipping = getAvailableShippingMethods(
-      default_config.shop.shop_localisation.countryCode
+      event.shippingContact.countryCode
     )
     // Update total and line items based on the shipping methods
     var newTotal: ApplePayJS.ApplePayLineItem = {
@@ -78,7 +80,7 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
       },
     ]
     appleSession.completeShippingContactSelection(
-      ApplePaySession.STATUS_SUCCESS, // ApplePaySession.STATUS_SUCCESS - indicates event was successfully handled
+      ApplePaySession.STATUS_SUCCESS, // event was successfully handled
       shipping.methods, // list of shipping methods we want to offer
       newTotal, // shipping methods have different prices, we need to make sure that the total displayed in the Apple Pay pop-up is up to date
       newLineItems // for a great user experience you want to show the shipping method selected in the transaction summary of the Apple Pay pop-up
@@ -153,7 +155,7 @@ function performTransaction(
 }
 
 // return the shipping methods available based on region
-function getAvailableShippingMethods(region: string) {
+function getAvailableShippingMethods(region?: string) {
   return { methods: default_config.shipping.WORLDWIDE_region }
 }
 
