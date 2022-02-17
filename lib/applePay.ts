@@ -185,6 +185,7 @@ function validateApplePaySession(appleUrl: string, callback: any): void {
 
 function applePayAvailable(): boolean {
   return ApplePaySession && ApplePaySession.canMakePayments()
+  // alternatively, our merchant identifier should be `merchant.bigtimetestmerchant.com`
   // canMakePaymentsWithActiveCard(merchantIdentifier: string):
 }
 
