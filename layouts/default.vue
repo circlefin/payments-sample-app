@@ -73,7 +73,7 @@
           </v-list-item>
 
           <v-list-item
-            v-for="(item, i) in getPaymentLinks()"
+            v-for="(item, i) in allPaymentLinks"
             :key="`paymentlink-${i}`"
             :to="item.to"
             router
@@ -639,7 +639,7 @@ export default class DefaultLayoutsClass extends Vue {
   showRightDrawer = false
   showDrawer = false
 
-  get paymentLinks() {
+  get allPaymentLinks() {
     if (this.isSafari && (this.isStaging || this.isLocalHost)) {
       return this.paymentsLinksWithApplePay
     }
@@ -647,7 +647,7 @@ export default class DefaultLayoutsClass extends Vue {
   }
 
   get title() {
-    const navItems = this.flowLinks.concat(this.paymentLinks)
+    const navItems = this.flowLinks.concat(this.allPaymentLinks)
     const currentPage = navItems.find((item) => {
       return item.to === this.$route.path
     })
