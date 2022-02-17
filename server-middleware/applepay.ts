@@ -4,7 +4,7 @@ import * as https from 'https'
 import {
   merchantIdentityCertificate,
   merchantIdentityKey,
-} from '@/server/applePaySecrets'
+} from './applePaySecrets'
 
 const app = express()
 const MERCHANT_IDENTIFIER = 'merchant.bigtimetestmerchant.com'
