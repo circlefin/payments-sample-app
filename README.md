@@ -14,8 +14,6 @@ You can manually clone the sample app by running:
 $ git clone https://github.com/circlefin/payments-sample-app.git
 ```
 
-To support Apple Pay you must set environment variables APPLE_PAY_CERTIFICATE and APPLE_PAY_PRIVATE_KEY, where values are contents of Apple merchant identifier .pem certificate and private key. Apple Pay can be initiated only on Safari.
-
 ## Install the dependencies
 
 Run the following to install the dependencies:
@@ -41,6 +39,13 @@ You are now ready to use the sample app and test some payments flows. In a produ
 ## Test Card Numbers
 
 To automatically trigger certain responses from the Circle Payments API, you can use some pre-defined [test card numbers](https://developers.circle.com/docs/test-card-numbers) that exercise specific behaviors.
+
+## Apple Pay
+
+To enable Apple Pay you must set environment variables APPLE_PAY_CERTIFICATE, APPLE_PAY_PRIVATE_KEY, APPLE_PAY_SESSION_VALIDATE_URL and APPLE_PAY_PERFORM_PAY_URL.
+Store contents of your merchant identifier .pem certificate in APPLE_PAY_CERTIFICATE and your merchant identifier private key in APPLE_PAY_PRIVATE_KEY.
+Store in APPLE_PAY_SESSION_VALIDATE_URL full https url to your endpoint where you validate session with received applePayUrl from client.
+Store in APPLE_PAY_PERFORM_PAY_URL full https url to your endpoint where you obtain apple pay token from client and are ready to call our backend.
 
 ## Change API base url
 

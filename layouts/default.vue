@@ -639,7 +639,7 @@ export default class DefaultLayoutsClass extends Vue {
   showRightDrawer = false
   showDrawer = false
 
-  getPaymentLinks() {
+  get paymentLinks() {
     if (this.isSafari && (this.isStaging || this.isLocalHost)) {
       return this.paymentsLinksWithApplePay
     }
@@ -647,7 +647,7 @@ export default class DefaultLayoutsClass extends Vue {
   }
 
   get title() {
-    const navItems = this.flowLinks.concat(this.getPaymentLinks())
+    const navItems = this.flowLinks.concat(this.paymentLinks)
     const currentPage = navItems.find((item) => {
       return item.to === this.$route.path
     })

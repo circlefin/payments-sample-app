@@ -32,7 +32,7 @@ const default_config = {
 
 // Starts the Apple Pay session, registers event handlers
 function startApplePaySession(config: any): void {
-  var applePaySession = new ApplePaySession(6, config)
+  let applePaySession: ApplePaySession = new ApplePaySession(6, config)
   handleApplePayEvents(applePaySession)
   applePaySession.begin()
 }
@@ -57,11 +57,11 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
   ) {
     // Populate with the availbale shipping methods for the region (Apple provides the region).
     // Full user address will be available after the user confirms the payment.
-    var shipping = getAvailableShippingMethods(
+    const shipping = getAvailableShippingMethods(
       event.shippingContact.countryCode
     )
     // Update total and line items based on the shipping methods
-    var newTotal: ApplePayJS.ApplePayLineItem = {
+    const newTotal: ApplePayJS.ApplePayLineItem = {
       type: 'final',
       label: default_config.shop.shop_name,
       amount: calculateTotal(
@@ -69,7 +69,7 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
         shipping.methods[0].amount
       ),
     }
-    var newLineItems: ApplePayJS.ApplePayLineItem[] = [
+    const newLineItems: ApplePayJS.ApplePayLineItem[] = [
       {
         type: 'final',
         label: 'Subtotal',
@@ -91,7 +91,7 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
 
   // This method is triggered when a user select one of the shipping options. Update transaction ammounts on change.
   appleSession.onshippingmethodselected = function (event) {
-    var newTotal: ApplePayJS.ApplePayLineItem = {
+    const newTotal: ApplePayJS.ApplePayLineItem = {
       type: 'final',
       label: default_config.shop.shop_name,
       amount: calculateTotal(
@@ -99,7 +99,7 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
         event.shippingMethod.amount
       ),
     }
-    var newLineItems: ApplePayJS.ApplePayLineItem[] = [
+    const newLineItems: ApplePayJS.ApplePayLineItem[] = [
       {
         type: 'final',
         label: 'Subtotal',

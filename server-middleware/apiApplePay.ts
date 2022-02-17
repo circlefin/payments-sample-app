@@ -4,7 +4,7 @@ import * as https from 'https'
 import {
   merchantIdentityCertificate,
   merchantIdentityKey,
-} from './applePaySecrets'
+} from './applePaySettings'
 
 const app = express()
 const MERCHANT_IDENTIFIER = 'merchant.bigtimetestmerchant.com'
@@ -20,12 +20,12 @@ const DISPLAY_NAME = 'Circle Apple Pay'
 app.post('/validate', async (req, res) => {
   const { applePayUrl } = req.body
   console.log(applePayUrl)
-  var httpsAgent = new https.Agent({
+  let httpsAgent = new https.Agent({
     rejectUnauthorized: false,
     cert: merchantIdentityCertificate, // pem apple cert
     key: merchantIdentityKey, // key apple
   })
-  var response = await axios.post(
+  const response = await axios.post(
     applePayUrl,
     {
       merchantIdentifier: MERCHANT_IDENTIFIER,
@@ -53,6 +53,6 @@ app.post('/pay', async (req, res) => {
 })
 
 export default {
-  path: '/applepay',
+  path: 'api/applepay',
   handler: app,
 }
