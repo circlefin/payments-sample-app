@@ -25,7 +25,7 @@ app.post('/validate', async (req, res) => {
     cert: merchantIdentityCertificate, // pem apple cert
     key: merchantIdentityKey, // key apple
   })
-  var response = axios.post(
+  var response = await axios.post(
     applePayUrl,
     {
       merchantIdentifier: MERCHANT_IDENTIFIER,
@@ -37,7 +37,7 @@ app.post('/validate', async (req, res) => {
     }
   )
   // return the json received from Apple Pay server unmodified
-  res.send((await response).data)
+  res.send(response.data)
 })
 
 // after client recieves session validation, client provides apple pay token which we use to hit EFT endpoint
