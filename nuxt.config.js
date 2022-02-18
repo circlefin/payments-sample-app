@@ -108,4 +108,10 @@ export default {
   env: {
     baseUrl: process.env.BASE_URL || 'https://api-sandbox.circle.com',
   },
+  serverMiddleware: [
+    {
+      path: '/api/applepay',
+      handler: '~/server-middleware/apiApplePay.ts',
+    },
+  ],
 }

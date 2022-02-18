@@ -73,7 +73,7 @@
           </v-list-item>
 
           <v-list-item
-            v-for="(item, i) in paymentsLinks"
+            v-for="(item, i) in allPaymentLinks"
             :key="`paymentlink-${i}`"
             :to="item.to"
             router
@@ -203,9 +203,16 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-
+import { getIsStaging, getIsLocalHost } from '@/lib/apiTarget'
+import { getIsSafari } from '@/lib/navigatorInfo'
 @Component
 export default class DefaultLayoutsClass extends Vue {
+  isStaging: boolean = getIsStaging()
+
+  isLocalHost: boolean = getIsLocalHost()
+
+  isSafari: boolean = getIsSafari()
+
   flowLinks = [
     {
       title: 'Charge a card',
@@ -423,6 +430,13 @@ export default class DefaultLayoutsClass extends Vue {
     },
   ]
 
+  applePayStaging = {
+    title: 'Apple Pay',
+    to: '/debug/payments/applepay/create',
+  }
+
+  paymentsLinksWithApplePay = this.paymentsLinks.concat(this.applePayStaging)
+
   marketplaceLinks = [
     {
       title: 'GET /marketplace/merchants',
@@ -625,8 +639,15 @@ export default class DefaultLayoutsClass extends Vue {
   showRightDrawer = false
   showDrawer = false
 
+  get allPaymentLinks() {
+    if (this.isSafari && (this.isStaging || this.isLocalHost)) {
+      return this.paymentsLinksWithApplePay
+    }
+    return this.paymentsLinks
+  }
+
   get title() {
-    const navItems = this.flowLinks.concat(this.paymentsLinks)
+    const navItems = this.flowLinks.concat(this.allPaymentLinks)
     const currentPage = navItems.find((item) => {
       return item.to === this.$route.path
     })
