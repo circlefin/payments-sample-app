@@ -6,7 +6,7 @@ const BACKEND_URL_VALIDATE_SESSION =
 const BACKEND_URL_PAY = 'https://sample-staging.circle.com/applepay/pay'
 
 // default configuration used in staging
-const default_config = {
+const DEFAULT_CONFIG = {
   payments: {
     acceptedCardSchemes: ['amex', 'masterCard', 'visa'],
   },
@@ -32,7 +32,7 @@ const default_config = {
 
 // Starts the Apple Pay session, registers event handlers
 function startApplePaySession(config: any): void {
-  let applePaySession: ApplePaySession = new ApplePaySession(6, config)
+  const applePaySession: ApplePaySession = new ApplePaySession(6, config)
   handleApplePayEvents(applePaySession)
   applePaySession.begin()
 }
@@ -63,9 +63,9 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
     // Update total and line items based on the shipping methods
     const newTotal: ApplePayJS.ApplePayLineItem = {
       type: 'final',
-      label: default_config.shop.shop_name,
+      label: DEFAULT_CONFIG.shop.shop_name,
       amount: calculateTotal(
-        default_config.shop.product_price,
+        DEFAULT_CONFIG.shop.product_price,
         shipping.methods[0].amount
       ),
     }
@@ -73,7 +73,7 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
       {
         type: 'final',
         label: 'Subtotal',
-        amount: default_config.shop.product_price,
+        amount: DEFAULT_CONFIG.shop.product_price,
       },
       {
         type: 'final',
@@ -93,9 +93,9 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
   appleSession.onshippingmethodselected = function (event) {
     const newTotal: ApplePayJS.ApplePayLineItem = {
       type: 'final',
-      label: default_config.shop.shop_name,
+      label: DEFAULT_CONFIG.shop.shop_name,
       amount: calculateTotal(
-        default_config.shop.product_price,
+        DEFAULT_CONFIG.shop.product_price,
         event.shippingMethod.amount
       ),
     }
@@ -103,7 +103,7 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
       {
         type: 'final',
         label: 'Subtotal',
-        amount: default_config.shop.product_price,
+        amount: DEFAULT_CONFIG.shop.product_price,
       },
       {
         type: 'final',
@@ -156,8 +156,8 @@ function performTransaction(
 }
 
 // return the shipping methods available based on region
-function getAvailableShippingMethods(region?: string) {
-  return { methods: default_config.shipping.WORLDWIDE_region }
+function getAvailableShippingMethods(_?: string) {
+  return { methods: DEFAULT_CONFIG.shipping.WORLDWIDE_region }
 }
 
 function calculateTotal(subtotal: string, shipping: string) {
@@ -189,4 +189,4 @@ function applePayAvailable(): boolean {
   // canMakePaymentsWithActiveCard(merchantIdentifier: string):
 }
 
-export { startApplePaySession, default_config, applePayAvailable }
+export { startApplePaySession, DEFAULT_CONFIG, applePayAvailable }

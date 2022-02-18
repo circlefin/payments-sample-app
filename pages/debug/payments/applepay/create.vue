@@ -1,9 +1,9 @@
 <template>
   <v-btn
+    v-if="isApplePayAvailable"
     elevation="24"
     dark
     class="apple-pay-button apple-pay-button-text-pay"
-    v-if="isApplePayAvailable"
     @click.prevent="doApplePay"
   >
   </v-btn>
@@ -13,19 +13,19 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import {
   startApplePaySession,
-  default_config,
+  DEFAULT_CONFIG,
   applePayAvailable,
 } from '@/lib/applePay'
 @Component({})
 export default class CreateApplePayVue extends Vue {
   isApplePayAvailable: boolean = applePayAvailable()
 
-  async doApplePay() {
+  doApplePay() {
     startApplePaySession({
-      currencyCode: default_config.shop.shop_localisation.currencyCode,
-      countryCode: default_config.shop.shop_localisation.countryCode,
+      currencyCode: DEFAULT_CONFIG.shop.shop_localisation.currencyCode,
+      countryCode: DEFAULT_CONFIG.shop.shop_localisation.countryCode,
       merchantCapabilities: ['supports3DS', 'supportsCredit', 'supportsDebit'],
-      supportedNetworks: default_config.payments.acceptedCardSchemes,
+      supportedNetworks: DEFAULT_CONFIG.payments.acceptedCardSchemes,
       shippingType: 'shipping',
       requiredBillingContactFields: ['postalAddress', 'name', 'phone', 'email'],
       requiredShippingContactFields: [
@@ -35,8 +35,8 @@ export default class CreateApplePayVue extends Vue {
         'email',
       ],
       total: {
-        label: default_config.shop.shop_name,
-        amount: default_config.shop.product_price,
+        label: DEFAULT_CONFIG.shop.shop_name,
+        amount: DEFAULT_CONFIG.shop.product_price,
         type: 'final',
       },
     })

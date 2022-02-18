@@ -1,6 +1,6 @@
+import * as https from 'https'
 import axios from 'axios'
 import express from 'express'
-import * as https from 'https'
 import {
   merchantIdentityCertificate,
   merchantIdentityKey,
@@ -20,7 +20,7 @@ const DISPLAY_NAME = 'Circle Apple Pay'
 app.post('/validate', async (req, res) => {
   const { applePayUrl } = req.body
   console.log(applePayUrl)
-  let httpsAgent = new https.Agent({
+  const httpsAgent = new https.Agent({
     rejectUnauthorized: false,
     cert: merchantIdentityCertificate, // pem apple cert
     key: merchantIdentityKey, // key apple
@@ -41,11 +41,11 @@ app.post('/validate', async (req, res) => {
 })
 
 // after client recieves session validation, client provides apple pay token which we use to hit EFT endpoint
-app.post('/pay', async (req, res) => {
+app.post('/pay', (req, res) => {
   const { data } = req.body
 
   console.log(data)
-  // TODO send to endpoint once endpoint is ready
+  // TODO send to processing endpoint once endpoint is ready
 
   res.send({
     approved: true,
