@@ -18,7 +18,6 @@ const DISPLAY_NAME = 'Circle Apple Pay'
 // Validates Apple Pay Session, requested by client by providing applePayUrl at which we validate
 // responds with validation to client
 app.post('/validate', async (req, res) => {
-  console.log('validate')
   const { applePayUrl } = req.body
   console.log(applePayUrl)
   const httpsAgent = new https.Agent({
@@ -44,7 +43,7 @@ app.post('/validate', async (req, res) => {
 // after client recieves session validation, client provides apple pay token which we use to hit EFT endpoint
 app.post('/pay', (req, res) => {
   const { data } = req.body
-  console.log('pay')
+
   console.log(data)
   // TODO send to processing endpoint once endpoint is ready
 
