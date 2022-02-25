@@ -111,7 +111,7 @@ export default {
   serverMiddleware: [
     {
       path: '/api/applepay',
-      handler: '../server-middleware/apiApplePay.ts',
+      handler: '~/server-middleware/apiApplePay.ts',
     },
   ],
 }
