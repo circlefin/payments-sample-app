@@ -2,8 +2,8 @@ import axios from 'axios'
 
 // endpoints are hardcoded as they are used only in staging
 const BACKEND_URL_VALIDATE_SESSION =
-  'https://sample-staging.circle.com/applepay/validate'
-const BACKEND_URL_PAY = 'https://sample-staging.circle.com/applepay/pay'
+  'https://sample-staging.circle.com/api/applepay/validate'
+const BACKEND_URL_PAY = 'https://sample-staging.circle.com/api/applepay/pay'
 
 // default configuration used in staging
 const DEFAULT_CONFIG = {

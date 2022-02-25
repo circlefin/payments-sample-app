@@ -53,6 +53,6 @@ app.post('/pay', (req, res) => {
 })
 
 export default {
-  path: 'api/applepay',
+  path: '/api/applepay',
   handler: app,
 }
