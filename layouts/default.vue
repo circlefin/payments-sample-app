@@ -428,6 +428,10 @@ export default class DefaultLayoutsClass extends Vue {
       title: 'GET /balances',
       to: '/debug/payments/balances/fetch',
     },
+    {
+      title: 'POST /convertToken',
+      to: '/debug/payments/googlepay/convertToken',
+    },
   ]
 
   applePayStaging = {
