@@ -132,7 +132,7 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
   ) {
     console.log('received authorization')
     console.log(event.payment)
-    console.log(event.payment.token)
+    console.log(JSON.stringify(event.payment.token))
     performTransaction(event.payment, (outcome: any) => {
       console.log('received response from pay')
       console.log(JSON.stringify(outcome))
