@@ -46,8 +46,15 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
   ) {
     // Gets the validationURL at Apple Pay servers from client and sends it to endpoint here (at sample-app) at /applepay/validate.
     // complete validation by calling the appleSession.completeMerchantValidation(merchantSession), by passing the json response we got from Apple.
-    validateApplePaySession(event.validationURL, (merchantSession: any): void =>
-      appleSession.completeMerchantValidation(merchantSession)
+    validateApplePaySession(
+      event.validationURL,
+      (merchantSession: any): void => {
+        console.log('received session validation response')
+        console.log(merchantSession)
+        if (merchantSession != null) {
+          appleSession.completeMerchantValidation(merchantSession)
+        }
+      }
     )
   }
 
@@ -123,13 +130,16 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
   appleSession.onpaymentauthorized = function (
     event: ApplePayJS.ApplePayPaymentAuthorizedEvent
   ) {
+    console.log('received authorization')
+    console.log(event.payment)
+    console.log(event.payment.token)
     performTransaction(event.payment, (outcome: any) => {
+      console.log('received response from pay')
+      console.log(JSON.stringify(outcome))
       if (outcome.approved) {
         appleSession.completePayment(ApplePaySession.STATUS_SUCCESS)
-        console.log(outcome)
       } else {
         appleSession.completePayment(ApplePaySession.STATUS_FAILURE)
-        console.log(outcome)
       }
     })
   }
