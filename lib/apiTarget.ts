@@ -39,4 +39,11 @@ function getIsLocalHost(): boolean {
   return hostname!.includes(':3011')
 }
 
-export { getAPIHostname, getLive, getIsStaging, getIsLocalHost, getIsSandbox, getIsSmokebox }
+export {
+  getAPIHostname,
+  getLive,
+  getIsStaging,
+  getIsLocalHost,
+  getIsSandbox,
+  getIsSmokebox,
+}

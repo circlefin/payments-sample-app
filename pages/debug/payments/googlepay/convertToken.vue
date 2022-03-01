@@ -91,6 +91,7 @@ export default class ConvertToken extends Vue {
   error = {}
   loading = false
   showError = false
+  payload = {}
 
   onErrorSheetClosed() {
     this.error = {}
@@ -128,6 +129,7 @@ export default class ConvertToken extends Vue {
           token_data: 'TODO: implement apply pay payload',
         }
     }
+    this.payload = payload
     // TODO: implement API call to token converter endpoint once endpoint is finished for google pay
   }
 }
