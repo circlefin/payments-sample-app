@@ -4,6 +4,7 @@
       <v-col cols="12" md="4">
         <v-form>
           <v-btn
+            v-if="showAutogenerateButton"
             depressed
             class="mb-7"
             color="primary"
@@ -12,11 +13,15 @@
           >
             Autogenerate token
           </v-btn>
-
           <v-select
             v-model="formData.type"
             :items="paymentType"
             label="Payment Type"
+          />
+          <v-select
+            v-model="formData.protocolVersion"
+            :items="protocolVersions"
+            label="Protocol Version"
           />
           <v-text-field v-model="formData.signature" label="Signature" />
           <v-text-field
@@ -56,6 +61,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
+import { getIsLocalHost, getIsSmokebox, getIsSandbox } from '~/lib/apiTarget'
 
 @Component({
   components: {
@@ -73,11 +79,14 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 export default class ConvertToken extends Vue {
   formData = {
     type: 'Google Pay',
+    protocolVersion: 'ECv1',
     signature: '',
     signedMessage: '',
   }
 
+  // const paymentsClient = new google.payments.api.PaymentsClient({ environment: 'TEST' })
   paymentType = ['Google Pay', 'Apple Pay']
+  protocolVersions = ['ECv1']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
@@ -86,6 +95,10 @@ export default class ConvertToken extends Vue {
   onErrorSheetClosed() {
     this.error = {}
     this.showError = false
+  }
+
+  showAutogenerateButton() {
+    return getIsLocalHost() || getIsSmokebox() || getIsSandbox()
   }
 
   // autogenerate token info by assigning random strings to each field
@@ -103,7 +116,7 @@ export default class ConvertToken extends Vue {
         payload = {
           type,
           token_data: {
-            protocolVersion: 'ECv1',
+            protocolVersion: this.formData.protocolVersion,
             signature: this.formData.signature,
             signedMessage: this.formData.signedMessage,
           },
@@ -115,8 +128,6 @@ export default class ConvertToken extends Vue {
           token_data: 'TODO: implement apply pay payload',
         }
     }
-
-    console.log(payload)
     // TODO: implement API call to token converter endpoint once endpoint is finished for google pay
   }
 }
