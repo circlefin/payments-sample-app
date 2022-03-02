@@ -11,7 +11,7 @@ const merchantIdentityKey: string = applePaySecretsAreSet
   : ''
 
 const domainValidation: string = applePaySecretsAreSet
-  ? process.env.APPLE_PAY_DOMAIN_VALIDATION!
+  ? process.env.APPLE_PAY_DOMAIN_VERIFICATION!
   : ''
 
 export { merchantIdentityCertificate, merchantIdentityKey, domainValidation }
