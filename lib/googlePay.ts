@@ -48,7 +48,18 @@ const paymentDataRequest: PaymentDataRequest = {
   },
 }
 
-const buttonOptions: ButtonOptions = {}
+const buttonOptions: ButtonOptions = {
+  onClick: onGooglePayButtonClicked,
+  allowedPaymentMethods: [
+    {
+      type: 'CARD',
+      parameters: {
+        allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
+        allowedCardNetworks: ['MASTERCARD', 'VISA'],
+      },
+    },
+  ],
+}
 
 function onGooglePayLoaded() {
   const paymentsClient = new google.payments.api.PaymentsClient({ environment: 'TEST' })
@@ -57,7 +68,6 @@ function onGooglePayLoaded() {
     .then(function (response) {
       if (response.result) {
         const button = paymentsClient.createButton(buttonOptions)
-        document.getElementById('google-pay-button').append(button)
       } else {
         console.log('no google pay button')
       }
@@ -65,6 +75,10 @@ function onGooglePayLoaded() {
     .catch(function (err) {
       console.error(err)
     })
+}
+
+function onGooglePayButtonClicked() {
+  console.log(paymentDataRequest)
 }
 
 // function googlePayAvailable() {
