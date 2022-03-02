@@ -61,7 +61,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
-import { getIsLocalHost, getIsSmokebox, getIsSandbox } from '~/lib/apiTarget'
+import { getLive } from '~/lib/apiTarget'
 
 @Component({
   components: {
@@ -99,7 +99,7 @@ export default class ConvertToken extends Vue {
   }
 
   showAutogenerateButton() {
-    return getIsLocalHost() || getIsSmokebox() || getIsSandbox()
+    return !getLive()
   }
 
   // autogenerate token info by assigning random strings to each field
