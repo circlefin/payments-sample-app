@@ -4,7 +4,7 @@
       <v-col cols="12" md="4">
         <v-form>
           <v-btn
-            v-if="showAutogenerateButton"
+            v-if="showAutogenerateButton()"
             depressed
             class="mb-7"
             color="primary"
