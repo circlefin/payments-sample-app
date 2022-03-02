@@ -95,9 +95,6 @@ export default class ConvertToken extends Vue {
   payload = {}
 
   mounted() {
-    const googleScript = document.createElement('script')
-    googleScript.setAttribute('src', 'https://pay.google.com/gp/p/js/pay.js')
-    document.head.appendChild(googleScript)
     onGooglePayLoaded()
   }
 
