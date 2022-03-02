@@ -4,7 +4,10 @@
       <v-col cols="12" md="4">
         <v-form>
           <v-text-field v-model="formData.trackingRef" label="Tracking Ref" />
-          <v-text-field v-model="formData.beneficiaryAccountNumber" label="Beneficiary Account Number" />
+          <v-text-field
+            v-model="formData.beneficiaryAccountNumber"
+            label="Beneficiary Account Number"
+          />
           <v-text-field v-model="formData.amount" label="Amount" />
           <v-btn
             v-if="isSandbox"
