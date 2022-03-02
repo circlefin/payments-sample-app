@@ -13,6 +13,7 @@
           >
             Autogenerate token
           </v-btn>
+          <v-btn id="google-pay-button"></v-btn>
           <v-select
             v-model="formData.type"
             :items="paymentType"
@@ -62,6 +63,7 @@ import { mapGetters } from 'vuex'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import { getLive } from '~/lib/apiTarget'
+import { onGooglePayLoaded } from '@/lib/googlePay'
 
 @Component({
   components: {
@@ -92,6 +94,10 @@ export default class ConvertToken extends Vue {
   loading = false
   showError = false
   payload = {}
+
+  mounted() {
+    onGooglePayLoaded()
+  }
 
   onErrorSheetClosed() {
     this.error = {}
