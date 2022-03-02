@@ -13,7 +13,6 @@
           >
             Autogenerate token
           </v-btn>
-          <v-btn id="google-pay-button"></v-btn>
           <v-select
             v-model="formData.type"
             :items="paymentType"
@@ -96,6 +95,9 @@ export default class ConvertToken extends Vue {
   payload = {}
 
   mounted() {
+    const googleScript = document.createElement('script')
+    googleScript.setAttribute('src', 'https://pay.google.com/gp/p/js/pay.js')
+    document.head.appendChild(googleScript)
     onGooglePayLoaded()
   }
 

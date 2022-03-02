@@ -1,6 +1,7 @@
 import IsReadyToPayRequest = google.payments.api.IsReadyToPayRequest
 import PaymentDataRequest = google.payments.api.PaymentDataRequest
 import ButtonOptions = google.payments.api.ButtonOptions
+import IsReadyToPayResponse = google.payments.api.IsReadyToPayResponse
 
 const isReadyToPayRequest: IsReadyToPayRequest = {
   apiVersion: 2,
@@ -61,28 +62,36 @@ const buttonOptions: ButtonOptions = {
   ],
 }
 
+let paymentsClient: any = null
+
+function getGooglePaymentsClient() {
+  if (paymentsClient === null) {
+    paymentsClient = new google.payments.api.PaymentsClient({
+      environment: 'TEST',
+    })
+  }
+  return paymentsClient
+}
+
 function onGooglePayLoaded() {
-  const paymentsClient = new google.payments.api.PaymentsClient({ environment: 'TEST' })
+  paymentsClient = getGooglePaymentsClient()
   paymentsClient
     .isReadyToPay(isReadyToPayRequest)
-    .then(function (response) {
+    .then(function (response: IsReadyToPayResponse) {
       if (response.result) {
         const button = paymentsClient.createButton(buttonOptions)
-      } else {
-        console.log('no google pay button')
+        document.body.append(button)
       }
     })
-    .catch(function (err) {
+    .catch(function (err: any) {
       console.error(err)
     })
 }
 
 function onGooglePayButtonClicked() {
-  console.log(paymentDataRequest)
+  paymentsClient.loadPaymentData(paymentDataRequest).catch(function (err: any) {
+    console.error(err)
+  })
 }
-
-// function googlePayAvailable() {
-//   return
-// }
 
 export { isReadyToPayRequest, onGooglePayLoaded }
