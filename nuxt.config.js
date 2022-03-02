@@ -113,5 +113,9 @@ export default {
       path: '/api/applepay',
       handler: '~/server-middleware/apiApplePay.ts',
     },
+    {
+      path: '/.well-known',
+      handler: '~/server-middleware/domainVerification.ts',
+    },
   ],
 }
