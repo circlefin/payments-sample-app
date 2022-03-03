@@ -2,6 +2,7 @@ import IsReadyToPayRequest = google.payments.api.IsReadyToPayRequest
 import PaymentDataRequest = google.payments.api.PaymentDataRequest
 import ButtonOptions = google.payments.api.ButtonOptions
 import IsReadyToPayResponse = google.payments.api.IsReadyToPayResponse
+import PaymentData = google.payments.api.PaymentData
 
 const isReadyToPayRequest: IsReadyToPayRequest = {
   apiVersion: 2,
@@ -62,12 +63,19 @@ const buttonOptions: ButtonOptions = {
   ],
 }
 
+interface PaymentToken {
+  protocolVersion: String
+  signature: String
+  intermediateSigningKey: Object
+  signedMessage: String
+}
+
 let paymentsClient: any = null
 
 function getGooglePaymentsClient() {
   if (paymentsClient === null) {
     paymentsClient = new google.payments.api.PaymentsClient({
-      environment: 'TEST',
+      environment: 'TEST', // TODO: get real environment once implementation is finished
     })
   }
   return paymentsClient
@@ -80,7 +88,7 @@ function onGooglePayLoaded() {
     .then(function (response: IsReadyToPayResponse) {
       if (response.result) {
         const button = paymentsClient.createButton(buttonOptions)
-        document.body.append(button)
+        document.getElementById('google-pay-button')?.append(button)
       }
     })
     .catch(function (err: any) {
@@ -89,9 +97,20 @@ function onGooglePayLoaded() {
 }
 
 function onGooglePayButtonClicked() {
-  paymentsClient.loadPaymentData(paymentDataRequest).catch(function (err: any) {
-    console.error(err)
-  })
+  const paymentsClient = getGooglePaymentsClient()
+  paymentsClient
+    .loadPaymentData(paymentDataRequest)
+    .then(function (paymentData: PaymentData) {
+      console.log(paymentData)
+      const paymentTokenString =
+        paymentData.paymentMethodData.tokenizationData.token // payment token as JSON string
+      const paymentToken: PaymentToken = JSON.parse(paymentTokenString) // payment token as object with keys protocolVersion, signature, and signedMessage
+      console.log(paymentToken)
+      // TODO: update form fields with values from paymentToken - how to do this?
+    })
+    .catch(function (err: any) {
+      console.error(err)
+    })
 }
 
-export { isReadyToPayRequest, onGooglePayLoaded }
+export { onGooglePayLoaded }

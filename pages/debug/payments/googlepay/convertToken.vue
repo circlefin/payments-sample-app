@@ -13,6 +13,10 @@
           >
             Autogenerate token
           </v-btn>
+          <v-container
+            id="google-pay-button"
+            v-if="showGooglePayButton()"
+          ></v-container>
           <v-select
             v-model="formData.type"
             :items="paymentType"
@@ -85,7 +89,6 @@ export default class ConvertToken extends Vue {
     signedMessage: '',
   }
 
-  // const paymentsClient = new google.payments.api.PaymentsClient({ environment: 'TEST' })
   paymentType = ['Google Pay', 'Apple Pay']
   protocolVersions = ['ECv1']
   required = [(v: string) => !!v || 'Field is required']
@@ -105,6 +108,10 @@ export default class ConvertToken extends Vue {
 
   showAutogenerateButton() {
     return !getLive()
+  }
+
+  showGooglePayButton() {
+    return this.formData.type === 'Google Pay' && getLive() // TODO: AND if googlepay is supported
   }
 
   // autogenerate token info by assigning random strings to each field
@@ -135,7 +142,7 @@ export default class ConvertToken extends Vue {
         }
     }
     this.payload = payload
-    // TODO: implement API call to token converter endpoint once endpoint is finished for google pay
+    // TODO: implement API call to /tokens endpoint
   }
 }
 </script>
