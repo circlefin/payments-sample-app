@@ -56,7 +56,7 @@ import { CreateMockPushPaymentPayload } from '@/lib/mocksApi'
 export default class CreateMockSEPAClass extends Vue {
   formData = {
     trackingRef: '',
-    beneficiaryAccountNumber: '',
+    accountNumber: '',
     amount: '0.00',
   }
 
@@ -78,7 +78,7 @@ export default class CreateMockSEPAClass extends Vue {
     }
     const payload: CreateMockPushPaymentPayload = {
       trackingRef: this.formData.trackingRef,
-      beneficiaryAccountNumber: this.formData.beneficiaryAccountNumber,
+      accountNumber: this.formData.accountNumber,
       amount: amountDetail,
     }
 

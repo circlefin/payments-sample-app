@@ -5,8 +5,8 @@
         <v-form>
           <v-text-field v-model="formData.trackingRef" label="Tracking Ref" />
           <v-text-field
-            v-model="formData.beneficiaryAccountNumber"
-            label="Beneficiary Account Number"
+            v-model="formData.accountNumber"
+            label="Account Number"
           />
           <v-text-field v-model="formData.amount" label="Amount" />
           <v-btn
@@ -60,7 +60,7 @@ import { CreateMockPushPaymentPayload } from '@/lib/mocksApi'
 export default class CreateMockIncomingWireClass extends Vue {
   formData = {
     trackingRef: '',
-    beneficiaryAccountNumber: '',
+    accountNumber: '',
     amount: '0.00',
   }
 
@@ -82,7 +82,7 @@ export default class CreateMockIncomingWireClass extends Vue {
     }
     const payload: CreateMockPushPaymentPayload = {
       trackingRef: this.formData.trackingRef,
-      beneficiaryAccountNumber: this.formData.beneficiaryAccountNumber,
+      accountNumber: this.formData.accountNumber,
       amount: amountDetail,
     }
 
