@@ -102,10 +102,30 @@ function getMasterWallet() {
   return instance.get(url)
 }
 
+/**
+ * Convert digital wallets token
+ * @param {String} type
+ * @param {Object} tokenData
+ * @param {UUID} idempotencyKey
+ */
+function convertToken(type: string, tokenData: Object) {
+  const url = '/v1/tokens'
+  const payload = {
+    type,
+    tokenData,
+    idempotencyKey: '394dffd9-e992-4b86-b3f3-0a242a44db48',
+  }
+  const config = {
+    headers: { 'Access-Control-Allow-Origin': '*' },
+  }
+  return instance.post(url, payload, config)
+}
+
 export default {
   getInstance,
   getWallets,
   getWalletById,
   createWallet,
   getMasterWallet,
+  convertToken,
 }

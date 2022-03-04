@@ -4,30 +4,34 @@
       <v-col cols="12" md="4">
         <v-form>
           <v-select
-            v-on:change="clearTokens()"
             v-model="formData.type"
             :items="paymentType"
             label="Payment Type"
+            @change="clearTokens()"
           />
           <v-btn
             v-if="showAutogenerateButton()"
+            outlined
+            small
             depressed
             class="mb-7"
-            color="primary"
             :loading="loading"
             @click.prevent="autogenerateToken()"
           >
             Autogenerate token
           </v-btn>
-          <v-container
-            id="google-pay-button"
-            v-if="showGooglePayButton()"
-          ></v-container>
+          <div v-if="showGooglePayButton()" id="google-pay-button"></div>
           <v-card v-if="tokensGenerated" class="body-1 px-6 py-8 mb-4">
-            <h1>Token Information</h1>
-            <p>Protocol Version: {{ formData.protocolVersion }}</p>
-            <p>Signature: {{ formData.signature }}</p>
-            <p>Signed Message: {{ formData.signedMessage }}</p>
+            <h2 class="title">Token Information</h2>
+            <p class="font-weight-light mt-2">
+              Protocol Version: {{ formData.protocolVersion }}
+            </p>
+            <p class="font-weight-light mt-2">
+              Signature: {{ formData.signature }}
+            </p>
+            <p class="font-weight-light mt-2">
+              Signed Message: {{ formData.signedMessage }}
+            </p>
           </v-card>
           <v-btn
             v-if="tokensGenerated"
@@ -37,7 +41,7 @@
             :loading="loading"
             @click.prevent="makeApiCall()"
           >
-            POST /tokens
+            Make API Call
           </v-btn>
         </v-form>
       </v-col>
@@ -60,15 +64,15 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
+import RequestInfo from '~/components/RequestInfo.vue'
+import ErrorSheet from '~/components/ErrorSheet.vue'
 import { getLive } from '~/lib/apiTarget'
 import {
   onGooglePayLoaded,
   getGooglePaymentsClient,
   paymentDataRequest,
   PaymentToken,
-} from '@/lib/googlePay'
+} from '~/lib/googlePay'
 import ButtonOptions = google.payments.api.ButtonOptions
 import PaymentData = google.payments.api.PaymentData
 
@@ -94,12 +98,9 @@ export default class ConvertToken extends Vue {
   }
 
   paymentType = ['Google Pay', 'Apple Pay']
-  protocolVersions = ['ECv1']
-  required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
   showError = false
-  payload = {}
   tokensGenerated = false
 
   buttonOptions: ButtonOptions = {
@@ -113,6 +114,7 @@ export default class ConvertToken extends Vue {
         },
       },
     ],
+    buttonSizeMode: 'fill',
   }
 
   mounted() {
@@ -151,7 +153,6 @@ export default class ConvertToken extends Vue {
         const paymentTokenString =
           paymentData.paymentMethodData.tokenizationData.token // payment token as JSON string
         const paymentToken: PaymentToken = JSON.parse(paymentTokenString) // payment token as object with keys protocolVersion, signature, and signedMessage
-        // fill form with googlepay token data
         this.formData.signature = paymentToken.signature
         this.formData.signedMessage = paymentToken.signedMessage
       })
@@ -160,28 +161,29 @@ export default class ConvertToken extends Vue {
       })
   }
 
-  makeApiCall() {
+  async makeApiCall() {
+    this.loading = true
     const type = this.formData.type === 'Google Pay' ? 'googlepay' : 'applepay'
-    let payload = null
-
+    let tokenData = null
     switch (type) {
       case 'googlepay':
-        payload = {
-          type,
-          token_data: {
-            protocolVersion: this.formData.protocolVersion,
-            signature: this.formData.signature,
-            signedMessage: this.formData.signedMessage,
-          },
+        tokenData = {
+          protocolVersion: this.formData.protocolVersion,
+          signature: this.formData.signature,
+          signedMessage: this.formData.signedMessage,
         }
         break
       case 'applepay':
-        payload = {
-          type,
-          token_data: 'TODO: implement apply pay payload',
-        }
+        tokenData = { signature: 'TODO: implement apply pay payload' }
     }
-    this.payload = payload
+    try {
+      await this.$walletsApi.convertToken(type, tokenData)
+    } catch (error) {
+      this.error = error
+      this.showError = true
+    } finally {
+      this.loading = false
+    }
     // TODO: implement API call to /tokens endpoint
   }
 }
