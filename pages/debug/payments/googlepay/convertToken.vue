@@ -3,6 +3,12 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
+          <v-select
+            v-on:change="clearTokens()"
+            v-model="formData.type"
+            :items="paymentType"
+            label="Payment Type"
+          />
           <v-btn
             v-if="showAutogenerateButton()"
             depressed
@@ -17,30 +23,21 @@
             id="google-pay-button"
             v-if="showGooglePayButton()"
           ></v-container>
-          <v-select
-            v-model="formData.type"
-            :items="paymentType"
-            label="Payment Type"
-          />
-          <v-select
-            v-model="formData.protocolVersion"
-            :items="protocolVersions"
-            label="Protocol Version"
-          />
-          <v-text-field v-model="formData.signature" label="Signature" />
-          <v-text-field
-            v-model="formData.signedMessage"
-            label="Signed Message"
-          />
-
+          <v-card v-if="tokensGenerated" class="body-1 px-6 py-8 mb-4">
+            <h1>Token Information</h1>
+            <p>Protocol Version: {{ formData.protocolVersion }}</p>
+            <p>Signature: {{ formData.signature }}</p>
+            <p>Signed Message: {{ formData.signedMessage }}</p>
+          </v-card>
           <v-btn
+            v-if="tokensGenerated"
             depressed
             class="mb-7"
             color="primary"
             :loading="loading"
             @click.prevent="makeApiCall()"
           >
-            Convert Token
+            POST /tokens
           </v-btn>
         </v-form>
       </v-col>
@@ -103,6 +100,7 @@ export default class ConvertToken extends Vue {
   loading = false
   showError = false
   payload = {}
+  tokensGenerated = false
 
   buttonOptions: ButtonOptions = {
     onClick: this.onGooglePayButtonClicked,
@@ -134,10 +132,15 @@ export default class ConvertToken extends Vue {
     return this.formData.type === 'Google Pay' && getLive()
   }
 
+  clearTokens() {
+    this.tokensGenerated = false
+  }
+
   // autogenerate token info by assigning random strings to each field
   autogenerateToken() {
     this.formData.signature = Math.random().toString(36).substring(2, 12)
     this.formData.signedMessage = Math.random().toString(36).substring(2, 12)
+    this.tokensGenerated = true
   }
 
   onGooglePayButtonClicked() {
