@@ -1,12 +1,12 @@
 import * as https from 'https'
 import axios from 'axios'
 import express from 'express'
-import { getAPIHostname } from '@/lib/apiTarget'
 import { v4 as uuidv4 } from 'uuid'
 import {
   merchantIdentityCertificate,
   merchantIdentityKey,
 } from './applePaySettings'
+import { getAPIHostname } from '@/lib/apiTarget'
 
 const app = express()
 const MERCHANT_IDENTIFIER = 'merchant.bigtimetestmerchant.com'
@@ -106,10 +106,16 @@ app.post('/pay', (req, res) => {
 
     console.log(JSON.stringify(details))
     sendToken(details.token)
-
-    res.send({
-      approved: true,
-    })
+      .then((_response) => {
+        res.send({
+          approved: true,
+        })
+      })
+      .catch((_response) => {
+        res.send({
+          approved: false,
+        })
+      })
   })
 })
 
