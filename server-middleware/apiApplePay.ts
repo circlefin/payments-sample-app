@@ -1,6 +1,8 @@
 import * as https from 'https'
 import axios from 'axios'
 import express from 'express'
+import { getAPIHostname } from '@/lib/apiTarget'
+import { v4 as uuidv4 } from 'uuid'
 import {
   merchantIdentityCertificate,
   merchantIdentityKey,
@@ -56,6 +58,44 @@ app.post('/validate', (req, res) => {
   })
 })
 
+export interface TokensPayload {
+  idempotencyKey: string
+  type: string
+  tokenData: {
+    verson: string
+    data: string
+    signature: string
+    header: {
+      ephemeralPublicKey: string
+      publicKeyHash: string
+      transactionId: string
+    }
+  }
+}
+
+const instance = axios.create({
+  baseURL: getAPIHostname(),
+})
+
+function sendToken(token: ApplePayJS.ApplePayPaymentToken) {
+  const url = '/v1/tokens'
+  const payload: TokensPayload = {
+    idempotencyKey: uuidv4(),
+    type: 'applepay',
+    tokenData: {
+      verson: token.paymentData.version,
+      data: token.paymentData.data,
+      signature: token.paymentData.signature,
+      header: {
+        ephemeralPublicKey: token.paymentData.header.ephemeralPublicKey,
+        publicKeyHash: token.paymentData.header.publicKeyHash,
+        transactionId: token.transactionIdentifier,
+      },
+    },
+  }
+  return instance.post(url, payload)
+}
+
 // after client recieves session validation, client provides apple pay token which we use to hit EFT endpoint
 app.post('/pay', (req, res) => {
   req.on('data', (data) => {
@@ -65,7 +105,7 @@ app.post('/pay', (req, res) => {
     ).details
 
     console.log(JSON.stringify(details))
-    // soon will update with call to wallets API endpoint
+    sendToken(details.token)
 
     res.send({
       approved: true,
