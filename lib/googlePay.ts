@@ -7,7 +7,7 @@ import IsReadyToPayPaymentMethodSpecification = google.payments.api.IsReadyToPay
 const DEFAULT_CONFIG = {
   apiVersion: 2,
   apiVersionMinor: 0,
-  allowedPaymentMethods: <IsReadyToPayPaymentMethodSpecification> {
+  allowedPaymentMethods: <IsReadyToPayPaymentMethodSpecification>{
     type: 'CARD',
     parameters: {
       allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
@@ -34,20 +34,6 @@ const DEFAULT_CONFIG = {
   },
 }
 
-// const isReadyToPayRequest: IsReadyToPayRequest = {
-//   apiVersion: 2,
-//   apiVersionMinor: 0,
-//   allowedPaymentMethods: [
-//     {
-//       type: 'CARD',
-//       parameters: {
-//         allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
-//         allowedCardNetworks: ['MASTERCARD', 'VISA'],
-//       },
-//     },
-//   ],
-// }
-
 function getIsReadyToPayRequest() {
   const isReadyToPayRequest: IsReadyToPayRequest = {
     apiVersion: DEFAULT_CONFIG.apiVersion,
@@ -56,14 +42,6 @@ function getIsReadyToPayRequest() {
   }
   return isReadyToPayRequest
 }
-
-// const defaultPaymentMethods: IsReadyToPayPaymentMethodSpecification = {
-//   type: 'CARD',
-//   parameters: {
-//     allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
-//     allowedCardNetworks: ['MASTERCARD', 'VISA'],
-//   },
-// }
 
 const paymentDataRequest: PaymentDataRequest = {
   apiVersion: 2,
