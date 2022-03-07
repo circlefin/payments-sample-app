@@ -6,7 +6,7 @@ import {
   merchantIdentityCertificate,
   merchantIdentityKey,
 } from './applePaySettings'
-import { getAPIHostname } from '@/lib/apiTarget'
+import { apiHostname } from './serverEnv'
 
 const app = express()
 const MERCHANT_IDENTIFIER = 'merchant.bigtimetestmerchant.com'
@@ -74,7 +74,7 @@ export interface TokensPayload {
 }
 
 const instance = axios.create({
-  baseURL: getAPIHostname(),
+  baseURL: apiHostname,
 })
 
 function sendToken(token: ApplePayJS.ApplePayPaymentToken) {

@@ -27,11 +27,13 @@
           <v-text-field v-if="cvvRequired" v-model="formData.cvv" label="CVV" />
 
           <v-text-field
+            v-if="formData.sourceType != 'token'"
             v-model="formData.verificationSuccessUrl"
             label="VerificationSuccessUrl"
           />
 
           <v-text-field
+            v-if="formData.sourceType != 'token'"
             v-model="formData.verificationFailureUrl"
             label="VerificationFailureUrl"
           />
@@ -125,7 +127,7 @@ export default class CreatePaymentClass extends Vue {
   }
 
   verificationMethods = ['none', 'cvv', 'three_d_secure']
-  sourceType = ['card', 'ach']
+  sourceType = ['card', 'ach', 'token']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
@@ -154,8 +156,7 @@ export default class CreatePaymentClass extends Vue {
   onSourceTypeChanged(val: string) {
     if (val === 'card') {
       this.formData.verification = 'cvv'
-    }
-    if (val === 'ach') {
+    } else {
       this.formData.verification = 'none'
     }
   }

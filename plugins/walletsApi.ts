@@ -8,6 +8,7 @@ declare module 'vue/types/vue' {
       createWallet: any
       getInstance: any
       getMasterWallet: any
+      convertToken: any
     }
   }
 }
