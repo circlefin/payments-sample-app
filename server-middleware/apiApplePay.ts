@@ -6,7 +6,7 @@ import {
   merchantIdentityCertificate,
   merchantIdentityKey,
 } from './applePaySettings'
-import { apiHostname } from './serverSecrets'
+import { apiHostname } from './serverEnv'
 
 const app = express()
 const MERCHANT_IDENTIFIER = 'merchant.bigtimetestmerchant.com'
