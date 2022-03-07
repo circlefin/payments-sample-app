@@ -430,7 +430,7 @@ export default class DefaultLayoutsClass extends Vue {
     },
     {
       title: 'POST /convertToken',
-      to: '/debug/payments/googlepay/convertToken',
+      to: '/debug/payments/digitalWallets/convertToken',
     },
   ]
 

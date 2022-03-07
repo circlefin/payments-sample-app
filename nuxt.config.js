@@ -24,6 +24,13 @@ export default {
       },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    script: [
+      {
+        src: 'https://pay.google.com/gp/p/js/pay.js',
+        async: true,
+        defer: true,
+      },
+    ],
   },
   /*
    ** Customize the progress-bar color
