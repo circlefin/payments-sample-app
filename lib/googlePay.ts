@@ -32,6 +32,7 @@ const DEFAULT_CONFIG = {
     currencyCode: 'USD',
     countryCode: 'US',
     totalPriceStatus: 'FINAL',
+    totalPrice: '0.00',
     checkoutOption: 'COMPLETE_IMMEDIATE_PURCHASE',
   },
   environment: <Environment>'TEST', // TODO: change to 'PRODUCTION' after completing testing
@@ -61,7 +62,10 @@ function getIsReadyToPayRequest() {
 }
 
 function getPaymentDataRequest(config: PaymentRequestConfig) {
-  const amount = config.amount === null ? '0.00' : config.amount
+  const amount =
+    config.amount === null
+      ? DEFAULT_CONFIG.transactionInfo.totalPrice
+      : config.amount
   const id =
     config.merchantId === null
       ? DEFAULT_CONFIG.merchantInfo.merchantId
