@@ -1,0 +1,95 @@
+{
+  "name": "nuxt-property-decorator",
+  "version": "2.9.1",
+  "description": "Property decorators for Nuxt",
+  "browser": "lib/nuxt-property-decorator.umd.js",
+  "main": "lib/nuxt-property-decorator.common.js",
+  "typings": "lib/nuxt-property-decorator.d.ts",
+  "module": "lib/nuxt-property-decorator.esm.js",
+  "keywords": [
+    "vue",
+    "typescript",
+    "nuxt",
+    "decorator"
+  ],
+  "author": "davidbernal",
+  "contributors": [
+    {
+      "name": "Tony BRIET",
+      "email": "tony.briet@viacesi.fr"
+    },
+    {
+      "name": "HG",
+      "email": "husayt@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "files": [
+    "lib"
+  ],
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "build:full": "npm run build && npm run apiextract && npm run tsdoc",
+    "test": "jest",
+    "apiextract": "api-extractor run --local --verbose",
+    "tsdoc": "typedoc --excludeNotExported --mode library --out docs/ src/",
+    "release": "standard-version && git push --follow-tags && npm publish"
+  },
+  "gitHooks": {
+    "pre-commit": "npm run build:full"
+  },
+  "dependencies": {
+    "vue-class-component": "^7.2.6",
+    "vue-property-decorator": "^9.0.0",
+    "vuex-class": "^0.3.2",
+    "vuex-module-decorators": "^1.0.1"
+  },
+  "devDependencies": {
+    "@microsoft/api-extractor": "^7.9.22",
+    "@std/esm": "^0.26.0",
+    "@types/jest": "^26.0.4",
+    "@types/node": "12.11.1",
+    "@vue/test-utils": "^1.0.0",
+    "babel-jest": "^26.3.0",
+    "jest": "^26.4.2",
+    "rollup": "^2.28.1",
+    "rollup-plugin-typescript2": "^0.29.0",
+    "standard-version": "^9.0.0",
+    "ts-jest": "^26.4.0",
+    "ts-node": "^9.0.0",
+    "typedoc": "0.17.0-3",
+    "typescript": "^4.0.3",
+    "vue": "^2.6.12",
+    "vue-jest": "^3.0.7",
+    "vue-template-compiler": "^2.6.12",
+    "vuex": "^3.5.1",
+    "yorkie": "^2.0.0"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
+    },
+    "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nuxt-community/nuxt-property-decorator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nuxt-community/nuxt-property-decorator/issues"
+  },
+  "homepage": "https://github.com/nuxt-community/nuxt-property-decorator#readme"
+}
