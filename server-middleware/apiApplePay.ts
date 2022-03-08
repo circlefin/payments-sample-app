@@ -80,7 +80,7 @@ const instance = axios.create({
 function sendToken(token: ApplePayJS.ApplePayPaymentToken, apiKey: string) {
   const url = '/v1/paymenttokens'
 
-  let config = {
+  const config = {
     headers: {
       Authorization: `Bearer ${apiKey}`,
     },
@@ -112,7 +112,7 @@ app.post('/pay', (req, res) => {
     const details: ApplePayJS.ApplePayPayment = request.details
     const apiKey: string = request.apiKey
 
-    let responseToClient = {
+    const responseToClient = {
       approved: false,
       logs: '',
       details: details.token,
