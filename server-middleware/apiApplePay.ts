@@ -184,7 +184,7 @@ app.post('/pay', (req, res) => {
               ';apiurl=' +
               apiHostname +
               ';innerResponse=' +
-              JSON.stringify(response.data)
+              JSON.stringify(innerResponse.data)
             res.send(responseToClient)
           })
           .catch((innerErr) => {
