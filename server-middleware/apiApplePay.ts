@@ -62,7 +62,7 @@ export interface TokensPayload {
   idempotencyKey: string
   type: string
   tokenData: {
-    verson: string
+    version: string
     data: string
     signature: string
     header: {
@@ -74,7 +74,7 @@ export interface TokensPayload {
 }
 
 const instance = axios.create({
-  baseURL: apiHostname,
+  baseURL: 'https://api-staging.circle.com',
 })
 
 function sendToken(token: ApplePayJS.ApplePayPaymentToken, apiKey: string) {
@@ -90,7 +90,7 @@ function sendToken(token: ApplePayJS.ApplePayPaymentToken, apiKey: string) {
     idempotencyKey: uuidv4(),
     type: 'applepay',
     tokenData: {
-      verson: token.paymentData.version,
+      version: token.paymentData.version,
       data: token.paymentData.data,
       signature: token.paymentData.signature,
       header: {
@@ -123,7 +123,10 @@ app.post('/pay', (req, res) => {
       .then((_response) => {
         responseToClient.approved = true
         responseToClient.logs =
-          responseToClient.logs + JSON.stringify(_response.data)
+          responseToClient.logs +
+          JSON.stringify(_response.data) +
+          ';apiurl=' +
+          apiHostname
         res.send(responseToClient)
       })
       .catch((a) => {
