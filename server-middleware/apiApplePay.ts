@@ -148,10 +148,6 @@ function createPaymentPayload(sourceId: string): BasePaymentPayload {
   return payload
 }
 
-/**
- * Create payment
- * @param {*} payload (contains form data and encrypted payment details)
- */
 function createPayment(payload: BasePaymentPayload) {
   const url = '/v1/payments'
   return instance.post(url, payload)
