@@ -123,10 +123,12 @@ export default class ConvertToken extends Vue {
     allowedPaymentMethods: [DEFAULT_CONFIG.allowedPaymentMethods],
   }
 
+  // Production environment is not yet enabled for googlepay - will uncomment lines 129-131 when it is
   getGooglePayEnvironment() {
-    return getLive()
-      ? DEFAULT_CONFIG.environment.prod
-      : DEFAULT_CONFIG.environment.test
+    return DEFAULT_CONFIG.environment.test
+    // return getLive() && !getIsStaging()
+    //   ? DEFAULT_CONFIG.environment.prod
+    //   : DEFAULT_CONFIG.environment.test
   }
 
   mounted() {
