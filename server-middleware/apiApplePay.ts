@@ -78,7 +78,7 @@ const instance = axios.create({
 })
 
 function sendToken(token: ApplePayJS.ApplePayPaymentToken) {
-  const url = '/v1/tokens'
+  const url = '/v1/paymenttokens'
   const payload: TokensPayload = {
     idempotencyKey: uuidv4(),
     type: 'applepay',
