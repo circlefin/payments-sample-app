@@ -62,7 +62,7 @@ export interface TokensPayload {
   idempotencyKey: string
   type: string
   tokenData: {
-    verson: string
+    version: string
     data: string
     signature: string
     header: {
@@ -90,7 +90,7 @@ function sendToken(token: ApplePayJS.ApplePayPaymentToken, apiKey: string) {
     idempotencyKey: uuidv4(),
     type: 'applepay',
     tokenData: {
-      verson: token.paymentData.version,
+      version: token.paymentData.version,
       data: token.paymentData.data,
       signature: token.paymentData.signature,
       header: {
