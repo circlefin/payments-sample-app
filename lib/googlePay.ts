@@ -32,7 +32,7 @@ const DEFAULT_CONFIG = {
     currencyCode: 'USD',
     countryCode: 'US',
     totalPriceStatus: 'FINAL',
-    totalPrice: '0.00',
+    totalPrice: '1.00',
     checkoutOption: 'COMPLETE_IMMEDIATE_PURCHASE',
   },
   environment: {
@@ -51,6 +51,9 @@ interface PaymentToken {
 interface PaymentRequestConfig {
   amount: string
   environment: Environment
+  merchantId: string
+  merchantName: string
+  checkoutKey: string
 }
 
 function getIsReadyToPayRequest() {
@@ -67,21 +70,38 @@ function getPaymentDataRequest(config: PaymentRequestConfig) {
     config.amount === null
       ? DEFAULT_CONFIG.transactionInfo.totalPrice
       : config.amount
+  const merchantId =
+    config.merchantId === null
+      ? DEFAULT_CONFIG.merchantInfo.merchantId
+      : config.merchantId
+  const merchantName =
+    config.merchantName === null
+      ? DEFAULT_CONFIG.merchantInfo.merchantName
+      : config.merchantName
+  const checkoutKey =
+    config.checkoutKey === null
+      ? DEFAULT_CONFIG.tokenizationSpecification.parameters.gatewayMerchantId
+      : config.checkoutKey
 
   const paymentDataRequest: PaymentDataRequest = {
     apiVersion: DEFAULT_CONFIG.apiVersion,
     apiVersionMinor: DEFAULT_CONFIG.apiVersionMinor,
     merchantInfo: {
-      merchantId: DEFAULT_CONFIG.merchantInfo.merchantId,
-      merchantName: DEFAULT_CONFIG.merchantInfo.merchantName,
+      merchantId,
+      merchantName,
     },
     allowedPaymentMethods: [
       {
         type: DEFAULT_CONFIG.allowedPaymentMethods.type,
         parameters: DEFAULT_CONFIG.allowedPaymentMethods.parameters,
-        tokenizationSpecification: <PaymentMethodTokenizationSpecification>(
-          DEFAULT_CONFIG.tokenizationSpecification
-        ),
+        tokenizationSpecification: <PaymentMethodTokenizationSpecification>{
+          type: DEFAULT_CONFIG.tokenizationSpecification.type,
+          parameters: {
+            gateway:
+              DEFAULT_CONFIG.tokenizationSpecification.parameters.gateway,
+            gatewayId: checkoutKey,
+          },
+        },
       },
     ],
     transactionInfo: <TransactionInfo>{

@@ -78,6 +78,11 @@ import {
 } from '~/lib/googlePay'
 import ButtonOptions = google.payments.api.ButtonOptions
 import PaymentData = google.payments.api.PaymentData
+import {
+  checkoutKey,
+  merchantId,
+  merchantName,
+} from '~/server-middleware/googlePaySecrets'
 
 @Component({
   components: {
@@ -151,11 +156,14 @@ export default class ConvertToken extends Vue {
   }
 
   onGooglePayButtonClicked() {
-    const env = this.getGooglePayEnvironment()
-    const paymentsClient = getGooglePaymentsClient(env)
+    const environment = this.getGooglePayEnvironment()
+    const paymentsClient = getGooglePaymentsClient(environment)
     const paymentDataConfig: PaymentRequestConfig = {
       amount: this.formData.amount,
-      environment: env,
+      environment,
+      merchantId,
+      merchantName,
+      checkoutKey,
     }
     paymentsClient
       .loadPaymentData(getPaymentDataRequest(paymentDataConfig))
