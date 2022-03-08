@@ -22,7 +22,11 @@
             Autogenerate token
           </v-btn>
           <div v-if="displayGooglePayButton" id="google-pay-button"></div>
-          <v-card v-if="tokensGenerated" class="body-1 px-6 py-8 mb-4">
+          <v-card
+            v-if="tokensGenerated"
+            max-width="400"
+            class="body-1 px-6 py-8 mb-4"
+          >
             <h2 class="title">Token Information</h2>
             <p class="font-weight-light mt-2">
               Protocol Version: {{ formData.protocolVersion }}
@@ -100,7 +104,7 @@ import {
 export default class ConvertToken extends Vue {
   formData = {
     type: 'Google Pay',
-    protocolVersion: 'ECv1',
+    protocolVersion: '',
     signature: '',
     signedMessage: '',
     amount: '0.00',
@@ -171,8 +175,10 @@ export default class ConvertToken extends Vue {
         const paymentTokenString =
           paymentData.paymentMethodData.tokenizationData.token // payment token as JSON string
         const paymentToken: PaymentToken = JSON.parse(paymentTokenString) // payment token as object with keys protocolVersion, signature, and signedMessage
+        this.formData.protocolVersion = paymentToken.protocolVersion
         this.formData.signature = paymentToken.signature
         this.formData.signedMessage = paymentToken.signedMessage
+        this.tokensGenerated = true
       })
       .catch(function (err: any) {
         console.error(err)

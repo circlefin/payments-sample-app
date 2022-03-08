@@ -86,7 +86,7 @@ function getPaymentDataRequest(config: PaymentRequestConfig) {
           parameters: {
             gateway:
               DEFAULT_CONFIG.tokenizationSpecification.parameters.gateway,
-            gatewayId: config.checkoutKey,
+            gatewayMerchantId: config.checkoutKey,
           },
         },
       },
