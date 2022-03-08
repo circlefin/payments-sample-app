@@ -100,7 +100,7 @@ function sendToken(token: ApplePayJS.ApplePayPaymentToken, apiKey: string) {
       },
     },
   }
-  return instance.post(url, payload)
+  return instance.post(url, payload, config)
 }
 
 // after client recieves session validation, client provides apple pay token which we use to hit EFT endpoint
