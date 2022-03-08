@@ -104,17 +104,30 @@ app.post('/pay', (req, res) => {
       data.toString()
     ).details
 
+    var responseToClient = {
+      approved: false,
+      logs: '',
+      details: details.token,
+    }
+
     console.log(JSON.stringify(details))
     sendToken(details.token)
       .then((_response) => {
-        res.send({
-          approved: true,
-        })
+        responseToClient.approved = true
+        responseToClient.logs =
+          responseToClient.logs + JSON.stringify(_response.data)
+        res.send(responseToClient)
       })
-      .catch((_response) => {
-        res.send({
-          approved: false,
-        })
+      .catch((a) => {
+        responseToClient.logs =
+          responseToClient.logs +
+          ';message:' +
+          a.response.message +
+          ';status:' +
+          a.response.status +
+          ';data:a.response.data' +
+          a.response.data
+        res.send(responseToClient)
       })
   })
 })

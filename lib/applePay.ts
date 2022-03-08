@@ -136,6 +136,7 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
     performTransaction(event.payment, (outcome: any) => {
       console.log('received response from pay')
       console.log(JSON.stringify(outcome))
+      console.log(outcome.logs)
       if (outcome.approved) {
         appleSession.completePayment(ApplePaySession.STATUS_SUCCESS)
       } else {
