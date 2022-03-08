@@ -77,8 +77,15 @@ const instance = axios.create({
   baseURL: apiHostname,
 })
 
-function sendToken(token: ApplePayJS.ApplePayPaymentToken) {
+function sendToken(token: ApplePayJS.ApplePayPaymentToken, apiKey: string) {
   const url = '/v1/paymenttokens'
+
+  let config = {
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  }
+
   const payload: TokensPayload = {
     idempotencyKey: uuidv4(),
     type: 'applepay',
@@ -99,10 +106,11 @@ function sendToken(token: ApplePayJS.ApplePayPaymentToken) {
 // after client recieves session validation, client provides apple pay token which we use to hit EFT endpoint
 app.post('/pay', (req, res) => {
   req.on('data', (data) => {
-    // data is in byte array so first transform it to string and then parse it to object, and then take it's property details
-    const details: ApplePayJS.ApplePayPayment = JSON.parse(
-      data.toString()
-    ).details
+    // data is in byte array so first transform it to string and then parse it to object
+    const request = JSON.parse(data.toString())
+
+    const details: ApplePayJS.ApplePayPayment = request.details
+    const apiKey: string = request.apiKey
 
     let responseToClient = {
       approved: false,
@@ -111,7 +119,7 @@ app.post('/pay', (req, res) => {
     }
 
     console.log(JSON.stringify(details))
-    sendToken(details.token)
+    sendToken(details.token, apiKey)
       .then((_response) => {
         responseToClient.approved = true
         responseToClient.logs =
