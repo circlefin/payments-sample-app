@@ -128,13 +128,7 @@ app.post('/pay', (req, res) => {
       })
       .catch((a) => {
         responseToClient.logs =
-          responseToClient.logs +
-          ';message:' +
-          a.response.message +
-          ';status:' +
-          a.response.status +
-          ';data:a.response.data' +
-          a.response.data
+          responseToClient.logs + ';message:' + JSON.stringify(a)
         res.send(responseToClient)
       })
   })
