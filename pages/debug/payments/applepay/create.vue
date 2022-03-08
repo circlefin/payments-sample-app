@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import {
   startApplePaySession,
