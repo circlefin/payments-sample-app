@@ -104,7 +104,7 @@ app.post('/pay', (req, res) => {
       data.toString()
     ).details
 
-    var responseToClient = {
+    let responseToClient = {
       approved: false,
       logs: '',
       details: details.token,
