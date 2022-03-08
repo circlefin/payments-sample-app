@@ -156,8 +156,8 @@ function performTransaction(
     .post(
       BACKEND_URL_PAY,
       {
-        details: details,
-        apiKey: apiKey,
+        details,
+        apiKey,
       },
       {
         headers: { 'Access-Control-Allow-Origin': '*' },
