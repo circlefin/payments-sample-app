@@ -7,10 +7,11 @@
             v-model="formData.type"
             :items="paymentType"
             label="Payment Type"
-            @change="clearTokens()"
+            @change="onPaymentTypeChange()"
           />
+          <v-text-field v-model="formData.amount" label="Amount" />
           <v-btn
-            v-if="showAutogenerateButton()"
+            v-if="displayAutogenerateButton"
             outlined
             small
             depressed
@@ -20,7 +21,7 @@
           >
             Autogenerate token
           </v-btn>
-          <div v-if="showGooglePayButton()" id="google-pay-button"></div>
+          <div v-if="displayGooglePayButton" id="google-pay-button"></div>
           <v-card v-if="tokensGenerated" class="body-1 px-6 py-8 mb-4">
             <h2 class="title">Token Information</h2>
             <p class="font-weight-light mt-2">
@@ -70,8 +71,10 @@ import { getLive } from '~/lib/apiTarget'
 import {
   onGooglePayLoaded,
   getGooglePaymentsClient,
-  paymentDataRequest,
+  getPaymentDataRequest,
   PaymentToken,
+  PaymentRequestConfig,
+  DEFAULT_CONFIG
 } from '~/lib/googlePay'
 import ButtonOptions = google.payments.api.ButtonOptions
 import PaymentData = google.payments.api.PaymentData
@@ -95,6 +98,7 @@ export default class ConvertToken extends Vue {
     protocolVersion: 'ECv1',
     signature: '',
     signedMessage: '',
+    amount: '0.00',
   }
 
   paymentType = ['Google Pay', 'Apple Pay']
@@ -102,19 +106,12 @@ export default class ConvertToken extends Vue {
   loading = false
   showError = false
   tokensGenerated = false
+  displayAutogenerateButton = !getLive()
+  displayGooglePayButton = this.formData.type === 'Google Pay' && getLive()
 
   buttonOptions: ButtonOptions = {
     onClick: this.onGooglePayButtonClicked,
-    allowedPaymentMethods: [
-      {
-        type: 'CARD',
-        parameters: {
-          allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
-          allowedCardNetworks: ['MASTERCARD', 'VISA'],
-        },
-      },
-    ],
-    buttonSizeMode: 'fill',
+    allowedPaymentMethods: [DEFAULT_CONFIG.allowedPaymentMethods],
   }
 
   mounted() {
@@ -126,16 +123,18 @@ export default class ConvertToken extends Vue {
     this.showError = false
   }
 
-  showAutogenerateButton() {
-    return !getLive()
-  }
-
-  showGooglePayButton() {
-    return this.formData.type === 'Google Pay' && getLive()
-  }
-
-  clearTokens() {
+  onPaymentTypeChange() {
     this.tokensGenerated = false
+    if (getLive()) {
+      switch (this.formData.type) {
+        case 'Google Pay':
+          this.displayGooglePayButton = true
+          break
+        case 'Apple Pay':
+          this.displayGooglePayButton = false
+          break
+      }
+    }
   }
 
   // autogenerate token info by assigning random strings to each field
@@ -147,8 +146,11 @@ export default class ConvertToken extends Vue {
 
   onGooglePayButtonClicked() {
     const paymentsClient = getGooglePaymentsClient()
+    const paymentDataConfig: PaymentRequestConfig = {
+      amount: this.formData.amount,
+    }
     paymentsClient
-      .loadPaymentData(paymentDataRequest)
+      .loadPaymentData(getPaymentDataRequest(paymentDataConfig))
       .then((paymentData: PaymentData) => {
         const paymentTokenString =
           paymentData.paymentMethodData.tokenizationData.token // payment token as JSON string
@@ -184,7 +186,6 @@ export default class ConvertToken extends Vue {
     } finally {
       this.loading = false
     }
-    // TODO: implement API call to /tokens endpoint
   }
 }
 </script>

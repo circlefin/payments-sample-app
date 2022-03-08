@@ -3,6 +3,9 @@ import PaymentDataRequest = google.payments.api.PaymentDataRequest
 import ButtonOptions = google.payments.api.ButtonOptions
 import IsReadyToPayResponse = google.payments.api.IsReadyToPayResponse
 import IsReadyToPayPaymentMethodSpecification = google.payments.api.IsReadyToPayPaymentMethodSpecification
+import Environment = google.payments.api.Environment
+import PaymentMethodTokenizationSpecification = google.payments.api.PaymentMethodTokenizationSpecification
+import TransactionInfo = google.payments.api.TransactionInfo
 
 const DEFAULT_CONFIG = {
   apiVersion: 2,
@@ -29,9 +32,21 @@ const DEFAULT_CONFIG = {
     currencyCode: 'USD',
     countryCode: 'US',
     totalPriceStatus: 'FINAL',
-    totalPrice: '12.00',
+    totalPrice: '0.00',
     checkoutOption: 'COMPLETE_IMMEDIATE_PURCHASE',
   },
+  environment: <Environment>'TEST',
+}
+
+interface PaymentToken {
+  protocolVersion: string
+  signature: string
+  intermediateSigningKey: Object
+  signedMessage: string
+}
+
+interface PaymentRequestConfig {
+  amount: string
 }
 
 function getIsReadyToPayRequest() {
@@ -75,11 +90,37 @@ const paymentDataRequest: PaymentDataRequest = {
   },
 }
 
-interface PaymentToken {
-  protocolVersion: string
-  signature: string
-  intermediateSigningKey: Object
-  signedMessage: string
+function getPaymentDataRequest(config: PaymentRequestConfig) {
+  const amount =
+    config.amount === null
+      ? DEFAULT_CONFIG.transactionInfo.totalPrice
+      : config.amount
+
+  const paymentDataRequest: PaymentDataRequest = {
+    apiVersion: DEFAULT_CONFIG.apiVersion,
+    apiVersionMinor: DEFAULT_CONFIG.apiVersionMinor,
+    merchantInfo: {
+      merchantId: DEFAULT_CONFIG.merchantInfo.merchantId,
+      merchantName: DEFAULT_CONFIG.merchantInfo.merchantName,
+    },
+    allowedPaymentMethods: [
+      {
+        type: DEFAULT_CONFIG.allowedPaymentMethods.type,
+        parameters: DEFAULT_CONFIG.allowedPaymentMethods.parameters,
+        tokenizationSpecification: <PaymentMethodTokenizationSpecification>(
+          DEFAULT_CONFIG.tokenizationSpecification
+        ),
+      },
+    ],
+    transactionInfo: <TransactionInfo>{
+      currencyCode: DEFAULT_CONFIG.transactionInfo.currencyCode,
+      countryCode: DEFAULT_CONFIG.transactionInfo.countryCode,
+      totalPriceStatus: DEFAULT_CONFIG.transactionInfo.totalPriceStatus,
+      totalPrice: amount,
+      checkoutOption: DEFAULT_CONFIG.transactionInfo.checkoutOption,
+    },
+  }
+  return paymentDataRequest
 }
 
 let paymentsClient: any = null
@@ -87,7 +128,7 @@ let paymentsClient: any = null
 function getGooglePaymentsClient() {
   if (paymentsClient === null) {
     paymentsClient = new google.payments.api.PaymentsClient({
-      environment: 'TEST', // TODO: get real environment once implementation is finished
+      environment: DEFAULT_CONFIG.environment,
     })
   }
   return paymentsClient
@@ -111,6 +152,8 @@ function onGooglePayLoaded(buttonOptions: ButtonOptions) {
 export {
   onGooglePayLoaded,
   getGooglePaymentsClient,
-  paymentDataRequest,
+  getPaymentDataRequest,
   PaymentToken,
+  PaymentRequestConfig,
+  DEFAULT_CONFIG
 }
