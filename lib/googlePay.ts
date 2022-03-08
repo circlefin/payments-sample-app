@@ -35,7 +35,10 @@ const DEFAULT_CONFIG = {
     totalPrice: '0.00',
     checkoutOption: 'COMPLETE_IMMEDIATE_PURCHASE',
   },
-  environment: <Environment>'TEST',
+  environment: {
+    test: <Environment>'TEST',
+    prod: <Environment>'PRODUCTION',
+  },
 }
 
 interface PaymentToken {
@@ -47,6 +50,7 @@ interface PaymentToken {
 
 interface PaymentRequestConfig {
   amount: string
+  environment: Environment
 }
 
 function getIsReadyToPayRequest() {
@@ -93,17 +97,17 @@ function getPaymentDataRequest(config: PaymentRequestConfig) {
 
 let paymentsClient: any = null
 
-function getGooglePaymentsClient() {
+function getGooglePaymentsClient(env: Environment) {
   if (paymentsClient === null) {
     paymentsClient = new google.payments.api.PaymentsClient({
-      environment: DEFAULT_CONFIG.environment,
+      environment: env,
     })
   }
   return paymentsClient
 }
 
-function onGooglePayLoaded(buttonOptions: ButtonOptions) {
-  paymentsClient = getGooglePaymentsClient()
+function onGooglePayLoaded(buttonOptions: ButtonOptions, env: Environment) {
+  paymentsClient = getGooglePaymentsClient(env)
   paymentsClient
     .isReadyToPay(getIsReadyToPayRequest())
     .then(function (response: IsReadyToPayResponse) {

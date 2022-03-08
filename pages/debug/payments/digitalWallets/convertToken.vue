@@ -114,8 +114,14 @@ export default class ConvertToken extends Vue {
     allowedPaymentMethods: [DEFAULT_CONFIG.allowedPaymentMethods],
   }
 
+  getGooglePayEnvironment() {
+    return getLive()
+      ? DEFAULT_CONFIG.environment.prod
+      : DEFAULT_CONFIG.environment.test
+  }
+
   mounted() {
-    onGooglePayLoaded(this.buttonOptions)
+    onGooglePayLoaded(this.buttonOptions, this.getGooglePayEnvironment())
   }
 
   onErrorSheetClosed() {
@@ -145,9 +151,11 @@ export default class ConvertToken extends Vue {
   }
 
   onGooglePayButtonClicked() {
-    const paymentsClient = getGooglePaymentsClient()
+    const env = this.getGooglePayEnvironment()
+    const paymentsClient = getGooglePaymentsClient(env)
     const paymentDataConfig: PaymentRequestConfig = {
       amount: this.formData.amount,
+      environment: env,
     }
     paymentsClient
       .loadPaymentData(getPaymentDataRequest(paymentDataConfig))
