@@ -77,8 +77,15 @@ const instance = axios.create({
   baseURL: apiHostname,
 })
 
-function sendToken(token: ApplePayJS.ApplePayPaymentToken) {
-  const url = '/v1/tokens'
+function sendToken(token: ApplePayJS.ApplePayPaymentToken, apiKey: string) {
+  const url = '/v1/paymenttokens'
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  }
+
   const payload: TokensPayload = {
     idempotencyKey: uuidv4(),
     type: 'applepay',
@@ -93,28 +100,42 @@ function sendToken(token: ApplePayJS.ApplePayPaymentToken) {
       },
     },
   }
-  return instance.post(url, payload)
+  return instance.post(url, payload, config)
 }
 
 // after client recieves session validation, client provides apple pay token which we use to hit EFT endpoint
 app.post('/pay', (req, res) => {
   req.on('data', (data) => {
-    // data is in byte array so first transform it to string and then parse it to object, and then take it's property details
-    const details: ApplePayJS.ApplePayPayment = JSON.parse(
-      data.toString()
-    ).details
+    // data is in byte array so first transform it to string and then parse it to object
+    const request = JSON.parse(data.toString())
+
+    const details: ApplePayJS.ApplePayPayment = request.details
+    const apiKey: string = request.apiKey
+
+    const responseToClient = {
+      approved: false,
+      logs: '',
+      details: details.token,
+    }
 
     console.log(JSON.stringify(details))
-    sendToken(details.token)
+    sendToken(details.token, apiKey)
       .then((_response) => {
-        res.send({
-          approved: true,
-        })
+        responseToClient.approved = true
+        responseToClient.logs =
+          responseToClient.logs + JSON.stringify(_response.data)
+        res.send(responseToClient)
       })
-      .catch((_response) => {
-        res.send({
-          approved: false,
-        })
+      .catch((a) => {
+        responseToClient.logs =
+          responseToClient.logs +
+          ';message:' +
+          a.response.message +
+          ';status:' +
+          a.response.status +
+          ';data:a.response.data' +
+          a.response.data
+        res.send(responseToClient)
       })
   })
 })

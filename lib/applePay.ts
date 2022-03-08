@@ -31,15 +31,15 @@ const DEFAULT_CONFIG = {
 }
 
 // Starts the Apple Pay session, registers event handlers
-function startApplePaySession(config: any): void {
+function startApplePaySession(config: any, apiKey: string): void {
   const applePaySession: ApplePaySession = new ApplePaySession(6, config)
-  handleApplePayEvents(applePaySession)
+  handleApplePayEvents(applePaySession, apiKey)
   applePaySession.begin()
 }
 
 // Registers event handlers. There are 5 steps associated with Apple Pay, transition between steps triggers event, these events are:
 // onvalidatemerchant, onshippingcontactselected, onshippingmethodselected, completeShippingMethodSelection and onpaymentauthorized.
-function handleApplePayEvents(appleSession: ApplePaySession) {
+function handleApplePayEvents(appleSession: ApplePaySession, apiKey: string) {
   // This is the first event that Apple triggers. Validate the Apple Pay Session from endpoint.
   appleSession.onvalidatemerchant = function (
     event: ApplePayJS.ApplePayValidateMerchantEvent
@@ -133,9 +133,10 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
     console.log('received authorization')
     console.log(event.payment)
     console.log(JSON.stringify(event.payment.token))
-    performTransaction(event.payment, (outcome: any) => {
+    performTransaction(event.payment, apiKey, (outcome: any) => {
       console.log('received response from pay')
       console.log(JSON.stringify(outcome))
+      console.log(outcome.logs)
       if (outcome.approved) {
         appleSession.completePayment(ApplePaySession.STATUS_SUCCESS)
       } else {
@@ -148,6 +149,7 @@ function handleApplePayEvents(appleSession: ApplePaySession) {
 // call backend to send the Apple Pay Payload and return the transaction outcome
 function performTransaction(
   details: ApplePayJS.ApplePayPayment,
+  apiKey: string,
   callback: any
 ) {
   axios
@@ -155,6 +157,7 @@ function performTransaction(
       BACKEND_URL_PAY,
       {
         details,
+        apiKey,
       },
       {
         headers: { 'Access-Control-Allow-Origin': '*' },

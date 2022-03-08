@@ -11,35 +11,56 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import { mapGetters } from 'vuex'
 import {
   startApplePaySession,
   DEFAULT_CONFIG,
   applePayAvailable,
 } from '@/lib/applePay'
-@Component({})
+@Component({
+  computed: {
+    ...mapGetters({
+      apiKey: 'getApiKey',
+    }),
+  },
+})
 export default class CreateApplePayVue extends Vue {
+  apiKey!: string
+
   isApplePayAvailable: boolean = applePayAvailable()
 
   doApplePay() {
-    startApplePaySession({
-      currencyCode: DEFAULT_CONFIG.shop.shop_localisation.currencyCode,
-      countryCode: DEFAULT_CONFIG.shop.shop_localisation.countryCode,
-      merchantCapabilities: ['supports3DS', 'supportsCredit', 'supportsDebit'],
-      supportedNetworks: DEFAULT_CONFIG.payments.acceptedCardSchemes,
-      shippingType: 'shipping',
-      requiredBillingContactFields: ['postalAddress', 'name', 'phone', 'email'],
-      requiredShippingContactFields: [
-        'postalAddress',
-        'name',
-        'phone',
-        'email',
-      ],
-      total: {
-        label: DEFAULT_CONFIG.shop.shop_name,
-        amount: DEFAULT_CONFIG.shop.product_price,
-        type: 'final',
+    startApplePaySession(
+      {
+        currencyCode: DEFAULT_CONFIG.shop.shop_localisation.currencyCode,
+        countryCode: DEFAULT_CONFIG.shop.shop_localisation.countryCode,
+        merchantCapabilities: [
+          'supports3DS',
+          'supportsCredit',
+          'supportsDebit',
+        ],
+        supportedNetworks: DEFAULT_CONFIG.payments.acceptedCardSchemes,
+        shippingType: 'shipping',
+        requiredBillingContactFields: [
+          'postalAddress',
+          'name',
+          'phone',
+          'email',
+        ],
+        requiredShippingContactFields: [
+          'postalAddress',
+          'name',
+          'phone',
+          'email',
+        ],
+        total: {
+          label: DEFAULT_CONFIG.shop.shop_name,
+          amount: DEFAULT_CONFIG.shop.product_price,
+          type: 'final',
+        },
       },
-    })
+      this.apiKey
+    )
   }
 }
 </script>
