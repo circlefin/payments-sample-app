@@ -58,38 +58,6 @@ function getIsReadyToPayRequest() {
   return isReadyToPayRequest
 }
 
-const paymentDataRequest: PaymentDataRequest = {
-  apiVersion: 2,
-  apiVersionMinor: 0,
-  merchantInfo: {
-    merchantId: '12345678901234567890',
-    merchantName: 'Example Merchant',
-  },
-  allowedPaymentMethods: [
-    {
-      type: 'CARD',
-      parameters: {
-        allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
-        allowedCardNetworks: ['MASTERCARD', 'VISA'],
-      },
-      tokenizationSpecification: {
-        type: 'PAYMENT_GATEWAY',
-        parameters: {
-          gateway: 'checkoutltd',
-          gatewayMerchantId: 'YOUR_PUBLIC_KEY',
-        },
-      },
-    },
-  ],
-  transactionInfo: {
-    currencyCode: 'USD',
-    countryCode: 'US',
-    totalPriceStatus: 'FINAL',
-    totalPrice: '12.00',
-    checkoutOption: 'COMPLETE_IMMEDIATE_PURCHASE',
-  },
-}
-
 function getPaymentDataRequest(config: PaymentRequestConfig) {
   const amount =
     config.amount === null
@@ -155,5 +123,5 @@ export {
   getPaymentDataRequest,
   PaymentToken,
   PaymentRequestConfig,
-  DEFAULT_CONFIG
+  DEFAULT_CONFIG,
 }

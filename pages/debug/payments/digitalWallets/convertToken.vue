@@ -74,7 +74,7 @@ import {
   getPaymentDataRequest,
   PaymentToken,
   PaymentRequestConfig,
-  DEFAULT_CONFIG
+  DEFAULT_CONFIG,
 } from '~/lib/googlePay'
 import ButtonOptions = google.payments.api.ButtonOptions
 import PaymentData = google.payments.api.PaymentData
