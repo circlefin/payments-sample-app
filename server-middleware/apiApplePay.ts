@@ -103,6 +103,56 @@ function sendToken(token: ApplePayJS.ApplePayPaymentToken, apiKey: string) {
   return instance.post(url, payload, config)
 }
 
+interface MetaData {
+  email: string
+  phoneNumber?: string
+  sessionId: string
+  ipAddress: string
+}
+
+export interface BasePaymentPayload {
+  idempotencyKey: string
+  amount: {
+    amount: string
+    currency: string
+  }
+  source: {
+    id: string
+    type: string
+  }
+  description: string
+  channel: string
+  metadata: MetaData
+}
+
+function createPaymentPayload(sourceId: string): BasePaymentPayload {
+  const payload: BasePaymentPayload = {
+    idempotencyKey: uuidv4(),
+    amount: {
+      amount: '0.5',
+      currency: 'USD',
+    },
+    source: {
+      id: sourceId,
+      type: 'token',
+    },
+    description: 'apple pay test',
+    channel: 'xxx',
+    metadata: {
+      phoneNumber: '+15103901174',
+      email: 'wallet@circle.com',
+      sessionId: 'xxx',
+      ipAddress: '172.33.222.1',
+    },
+  }
+  return payload
+}
+
+function createPayment(payload: BasePaymentPayload) {
+  const url = '/v1/payments'
+  return instance.post(url, payload)
+}
+
 // after client recieves session validation, client provides apple pay token which we use to hit EFT endpoint
 app.post('/pay', (req, res) => {
   req.on('data', (data) => {
@@ -120,18 +170,28 @@ app.post('/pay', (req, res) => {
 
     console.log(JSON.stringify(details))
     sendToken(details.token, apiKey)
-      .then((_response) => {
-        responseToClient.approved = true
-        responseToClient.logs =
-          responseToClient.logs +
-          JSON.stringify(_response.data) +
-          ';apiurl=' +
-          apiHostname
-        res.send(responseToClient)
+      .then((response) => {
+        createPayment(createPaymentPayload(response.data.id))
+          .then((innerResponse) => {
+            responseToClient.approved = true
+            responseToClient.logs =
+              responseToClient.logs +
+              JSON.stringify(response.data) +
+              ';apiurl=' +
+              apiHostname +
+              ';innerResponse=' +
+              JSON.stringify(innerResponse.data)
+            res.send(responseToClient)
+          })
+          .catch((innerErr) => {
+            responseToClient.logs =
+              responseToClient.logs + ';message:' + JSON.stringify(innerErr)
+            res.send(responseToClient)
+          })
       })
-      .catch((a) => {
+      .catch((err) => {
         responseToClient.logs =
-          responseToClient.logs + ';message:' + JSON.stringify(a)
+          responseToClient.logs + ';message:' + JSON.stringify(err)
         res.send(responseToClient)
       })
   })
