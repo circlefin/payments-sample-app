@@ -148,9 +148,15 @@ function createPaymentPayload(sourceId: string): BasePaymentPayload {
   return payload
 }
 
-function createPayment(payload: BasePaymentPayload) {
+function createPayment(payload: BasePaymentPayload, apiKey: string) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  }
+
   const url = '/v1/payments'
-  return instance.post(url, payload)
+  return instance.post(url, payload, config)
 }
 
 // after client recieves session validation, client provides apple pay token which we use to hit EFT endpoint
@@ -171,7 +177,7 @@ app.post('/pay', (req, res) => {
     console.log(JSON.stringify(details))
     sendToken(details.token, apiKey)
       .then((response) => {
-        createPayment(createPaymentPayload(response.data.id))
+        createPayment(createPaymentPayload(response.data.id), apiKey)
           .then((innerResponse) => {
             responseToClient.approved = true
             responseToClient.logs =
