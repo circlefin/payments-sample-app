@@ -38,6 +38,21 @@
               Signed Message: {{ formData.signedMessage }}
             </p>
           </v-card>
+          <v-text-field
+            v-if="tokensGenerated"
+            v-model="formData.protocolVersion"
+            label="Protocol Version"
+          />
+          <v-text-field
+            v-if="tokensGenerated"
+            v-model="formData.signature"
+            label="Signature"
+          />
+          <v-text-field
+            v-if="tokensGenerated"
+            v-model="formData.signedMessage"
+            label="Signed Message"
+          />
           <v-btn
             v-if="tokensGenerated"
             depressed
