@@ -22,7 +22,11 @@
             Autogenerate token
           </v-btn>
           <div v-if="displayGooglePayButton" id="google-pay-button"></div>
-          <v-card v-if="tokensGenerated" class="body-1 px-6 py-8 mb-4">
+          <v-card
+            v-if="tokensGenerated"
+            max-width="400"
+            class="body-1 px-6 py-8 mb-4"
+          >
             <h2 class="title">Token Information</h2>
             <p class="font-weight-light mt-2">
               Protocol Version: {{ formData.protocolVersion }}
@@ -78,6 +82,11 @@ import {
 } from '~/lib/googlePay'
 import ButtonOptions = google.payments.api.ButtonOptions
 import PaymentData = google.payments.api.PaymentData
+import {
+  checkoutKey,
+  merchantId,
+  merchantName,
+} from '~/server-middleware/googlePaySecrets'
 
 @Component({
   components: {
@@ -95,7 +104,7 @@ import PaymentData = google.payments.api.PaymentData
 export default class ConvertToken extends Vue {
   formData = {
     type: 'Google Pay',
-    protocolVersion: 'ECv1',
+    protocolVersion: '',
     signature: '',
     signedMessage: '',
     amount: '0.00',
@@ -114,10 +123,12 @@ export default class ConvertToken extends Vue {
     allowedPaymentMethods: [DEFAULT_CONFIG.allowedPaymentMethods],
   }
 
+  // Production environment is not yet enabled for googlepay - will uncomment lines 129-131 when it is
   getGooglePayEnvironment() {
-    return getLive()
-      ? DEFAULT_CONFIG.environment.prod
-      : DEFAULT_CONFIG.environment.test
+    return DEFAULT_CONFIG.environment.test
+    // return getLive() && !getIsStaging()
+    //   ? DEFAULT_CONFIG.environment.prod
+    //   : DEFAULT_CONFIG.environment.test
   }
 
   mounted() {
@@ -151,11 +162,14 @@ export default class ConvertToken extends Vue {
   }
 
   onGooglePayButtonClicked() {
-    const env = this.getGooglePayEnvironment()
-    const paymentsClient = getGooglePaymentsClient(env)
+    const environment = this.getGooglePayEnvironment()
+    const paymentsClient = getGooglePaymentsClient(environment)
     const paymentDataConfig: PaymentRequestConfig = {
       amount: this.formData.amount,
-      environment: env,
+      environment,
+      merchantId,
+      merchantName,
+      checkoutKey,
     }
     paymentsClient
       .loadPaymentData(getPaymentDataRequest(paymentDataConfig))
@@ -163,8 +177,10 @@ export default class ConvertToken extends Vue {
         const paymentTokenString =
           paymentData.paymentMethodData.tokenizationData.token // payment token as JSON string
         const paymentToken: PaymentToken = JSON.parse(paymentTokenString) // payment token as object with keys protocolVersion, signature, and signedMessage
+        this.formData.protocolVersion = paymentToken.protocolVersion
         this.formData.signature = paymentToken.signature
         this.formData.signedMessage = paymentToken.signedMessage
+        this.tokensGenerated = true
       })
       .catch(function (err: any) {
         console.error(err)
