@@ -121,7 +121,6 @@ export interface BasePaymentPayload {
     type: string
   }
   description: string
-  channel: string
   metadata: MetaData
 }
 
@@ -137,7 +136,6 @@ function createPaymentPayload(sourceId: string): BasePaymentPayload {
       type: 'token',
     },
     description: 'apple pay test',
-    channel: 'xxx',
     metadata: {
       phoneNumber: '+15103901174',
       email: 'wallet@circle.com',
