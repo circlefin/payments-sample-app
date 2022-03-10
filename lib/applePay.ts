@@ -30,6 +30,17 @@ const DEFAULT_CONFIG = {
   },
 }
 
+interface PaymentToken {
+  version: string
+  data: string
+  signature: string
+  header: {
+    ephemeralPublicKey: string
+    publicKeyHash: string
+    transactionId: string
+  }
+}
+
 // Starts the Apple Pay session, registers event handlers
 function startApplePaySession(config: any, apiKey: string): void {
   const applePaySession: ApplePaySession = new ApplePaySession(6, config)
@@ -202,4 +213,4 @@ function applePayAvailable(): boolean {
   // canMakePaymentsWithActiveCard(merchantIdentifier: string):
 }
 
-export { startApplePaySession, DEFAULT_CONFIG, applePayAvailable }
+export { startApplePaySession, DEFAULT_CONFIG, applePayAvailable, PaymentToken }

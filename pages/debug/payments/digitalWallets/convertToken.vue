@@ -109,21 +109,22 @@ import { mapGetters } from 'vuex'
 import RequestInfo from '~/components/RequestInfo.vue'
 import ErrorSheet from '~/components/ErrorSheet.vue'
 import { getLive } from '~/lib/apiTarget'
+import { PaymentToken as ApplePayTokenData } from '~/lib/applePay'
 import {
-  onGooglePayLoaded,
+  DEFAULT_CONFIG,
   getGooglePaymentsClient,
   getPaymentDataRequest,
-  PaymentToken,
+  onGooglePayLoaded,
   PaymentRequestConfig,
-  DEFAULT_CONFIG,
+  PaymentToken as GooglePayTokenData,
 } from '~/lib/googlePay'
-import ButtonOptions = google.payments.api.ButtonOptions
-import PaymentData = google.payments.api.PaymentData
 import {
   checkoutKey,
   merchantId,
   merchantName,
 } from '~/server-middleware/googlePaySecrets'
+import ButtonOptions = google.payments.api.ButtonOptions
+import PaymentData = google.payments.api.PaymentData
 
 @Component({
   components: {
@@ -144,22 +145,8 @@ export default class ConvertToken extends Vue {
     amount: '0.00',
   }
 
-  googlePayTokenData = {
-    protocolVersion: '',
-    signature: '',
-    signedMessage: '',
-  }
-
-  applePayTokenData = {
-    version: '',
-    data: '',
-    signature: '',
-    header: {
-      ephemeralPublicKey: '',
-      publicKeyHash: '',
-      transactionId: '',
-    },
-  }
+  googlePayTokenData = {} as GooglePayTokenData
+  applePayTokenData = {} as ApplePayTokenData
 
   paymentType = ['Google Pay', 'Apple Pay']
   error = {}
@@ -222,9 +209,11 @@ export default class ConvertToken extends Vue {
       this.applePayTokenData.version = 'EC_v1'
       this.applePayTokenData.data = this.randomString()
       this.applePayTokenData.signature = this.randomString()
-      this.applePayTokenData.header.ephemeralPublicKey = this.randomString()
-      this.applePayTokenData.header.publicKeyHash = this.randomString()
-      this.applePayTokenData.header.transactionId = this.randomString()
+      this.applePayTokenData.header = {
+        ephemeralPublicKey: this.randomString(),
+        publicKeyHash: this.randomString(),
+        transactionId: this.randomString(),
+      }
       this.displayAppleTokens = true
     }
   }
@@ -244,7 +233,7 @@ export default class ConvertToken extends Vue {
       .then((paymentData: PaymentData) => {
         const paymentTokenString =
           paymentData.paymentMethodData.tokenizationData.token // payment token as JSON string
-        const paymentToken: PaymentToken = JSON.parse(paymentTokenString) // payment token as object with keys protocolVersion, signature, and signedMessage
+        const paymentToken: GooglePayTokenData = JSON.parse(paymentTokenString) // payment token as object with keys protocolVersion, signature, and signedMessage
         this.googlePayTokenData.protocolVersion = paymentToken.protocolVersion
         this.googlePayTokenData.signature = paymentToken.signature
         this.googlePayTokenData.signedMessage = paymentToken.signedMessage
