@@ -22,6 +22,17 @@
             Autogenerate token
           </v-btn>
           <div v-if="displayGooglePayButton" id="google-pay-button"></div>
+          <v-btn
+            v-if="displayApplePayButton && isApplePayAvailable"
+            elevation="24"
+            dark
+            class="apple-pay-button apple-pay-button-text-pay"
+            @click.prevent="onApplePayButtonClicked()"
+          >
+          </v-btn>
+          <v-p v-if="displayApplePayButton && !isApplePayAvailable">
+            Apple Pay not available.
+          </v-p>
           <v-card
             v-if="displayGoogleTokens"
             id="google-pay-tokens"
@@ -109,9 +120,15 @@ import { mapGetters } from 'vuex'
 import RequestInfo from '~/components/RequestInfo.vue'
 import ErrorSheet from '~/components/ErrorSheet.vue'
 import { getLive } from '~/lib/apiTarget'
-import { PaymentToken as ApplePayTokenData } from '~/lib/applePay'
 import {
-  DEFAULT_CONFIG,
+  DEFAULT_CONFIG as DEFAULT_APPLE_PAY_CONFIG,
+  applePayAvailable,
+  startApplePaySession,
+  getApplePayTokens,
+  PaymentToken as ApplePayTokenData,
+} from '~/lib/applePayTokens'
+import {
+  DEFAULT_CONFIG as DEFAULT_GOOGLE_PAY_CONFIG,
   getGooglePaymentsClient,
   getPaymentDataRequest,
   onGooglePayLoaded,
@@ -156,18 +173,20 @@ export default class ConvertToken extends Vue {
   displayAppleTokens = false
   displayAutogenerateButton = !getLive()
   displayGooglePayButton = this.formData.type === 'Google Pay' && getLive()
+  displayApplePayButton = this.formData.type === 'Apple Pay' && getLive()
+  isApplePayAvailable = false
 
   buttonOptions: ButtonOptions = {
     onClick: this.onGooglePayButtonClicked,
-    allowedPaymentMethods: [DEFAULT_CONFIG.allowedPaymentMethods],
+    allowedPaymentMethods: [DEFAULT_GOOGLE_PAY_CONFIG.allowedPaymentMethods],
   }
 
   // Production environment is not yet enabled for googlepay - will uncomment lines 129-131 when it is
   getGooglePayEnvironment() {
-    return DEFAULT_CONFIG.environment.test
+    return DEFAULT_GOOGLE_PAY_CONFIG.environment.test
     // return getLive() && !getIsStaging()
-    //   ? DEFAULT_CONFIG.environment.prod
-    //   : DEFAULT_CONFIG.environment.test
+    //   ? DEFAULT_GOOGLE_PAY_CONFIG.environment.prod
+    //   : DEFAULT_GOOGLE_PAY_CONFIG.environment.test
   }
 
   mounted() {
@@ -186,9 +205,12 @@ export default class ConvertToken extends Vue {
       switch (this.formData.type) {
         case 'Google Pay':
           this.displayGooglePayButton = true
+          this.displayApplePayButton = false
           break
         case 'Apple Pay':
           this.displayGooglePayButton = false
+          this.displayApplePayButton = true
+          this.isApplePayAvailable = applePayAvailable()
           break
       }
     }
@@ -216,6 +238,34 @@ export default class ConvertToken extends Vue {
       }
       this.displayAppleTokens = true
     }
+  }
+
+  onApplePayButtonClicked() {
+    startApplePaySession({
+      currencyCode:
+        DEFAULT_APPLE_PAY_CONFIG.shop.shop_localisation.currencyCode,
+      countryCode: DEFAULT_APPLE_PAY_CONFIG.shop.shop_localisation.countryCode,
+      merchantCapabilities: ['supports3DS', 'supportsCredit', 'supportsDebit'],
+      supportedNetworks: DEFAULT_APPLE_PAY_CONFIG.payments.acceptedCardSchemes,
+      shippingType: 'shipping',
+      requiredBillingContactFields: ['postalAddress', 'name', 'phone', 'email'],
+      requiredShippingContactFields: [
+        'postalAddress',
+        'name',
+        'phone',
+        'email',
+      ],
+      total: {
+        label: DEFAULT_APPLE_PAY_CONFIG.shop.shop_name,
+        amount: DEFAULT_APPLE_PAY_CONFIG.shop.product_price,
+        type: 'final',
+      },
+    })
+    const token: ApplePayJS.ApplePayPaymentToken = getApplePayTokens()
+    this.applePayTokenData.version = token.paymentData.version
+    this.applePayTokenData.data = token.paymentData.data
+    this.applePayTokenData.signature = token.paymentData.signature
+    this.applePayTokenData.header = token.paymentData.header
   }
 
   onGooglePayButtonClicked() {
@@ -275,3 +325,16 @@ export default class ConvertToken extends Vue {
   }
 }
 </script>
+
+<style scoped>
+.apple-pay-button {
+  width: 250px;
+  height: 40px;
+  display: inline-block;
+  -webkit-appearance: -apple-pay-button;
+  cursor: pointer;
+}
+.apple-pay-button-text-pay {
+  -apple-pay-button-type: pay;
+}
+</style>

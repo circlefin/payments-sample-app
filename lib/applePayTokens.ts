@@ -3,7 +3,6 @@ import axios from 'axios'
 // endpoints are hardcoded as they are used only in staging
 const BACKEND_URL_VALIDATE_SESSION =
   'https://sample-staging.circle.com/api/applepay/validate'
-const BACKEND_URL_PAY = 'https://sample-staging.circle.com/api/applepay/pay'
 
 // default configuration used in staging
 const DEFAULT_CONFIG = {
@@ -30,16 +29,29 @@ const DEFAULT_CONFIG = {
   },
 }
 
+let tokens: ApplePayJS.ApplePayPaymentToken
+
+interface PaymentToken {
+  version: string
+  data: string
+  signature: string
+  header: {
+    ephemeralPublicKey: string
+    publicKeyHash: string
+    transactionId: string
+  }
+}
+
 // Starts the Apple Pay session, registers event handlers
-function startApplePaySession(config: any, apiKey: string): void {
+function startApplePaySession(config: any): void {
   const applePaySession: ApplePaySession = new ApplePaySession(6, config)
-  handleApplePayEvents(applePaySession, apiKey)
+  handleApplePayEvents(applePaySession)
   applePaySession.begin()
 }
 
 // Registers event handlers. There are 5 steps associated with Apple Pay, transition between steps triggers event, these events are:
 // onvalidatemerchant, onshippingcontactselected, onshippingmethodselected, completeShippingMethodSelection and onpaymentauthorized.
-function handleApplePayEvents(appleSession: ApplePaySession, apiKey: string) {
+function handleApplePayEvents(appleSession: ApplePaySession) {
   // This is the first event that Apple triggers. Validate the Apple Pay Session from endpoint.
   appleSession.onvalidatemerchant = function (
     event: ApplePayJS.ApplePayValidateMerchantEvent
@@ -133,39 +145,8 @@ function handleApplePayEvents(appleSession: ApplePaySession, apiKey: string) {
     console.log('received authorization')
     console.log(event.payment)
     console.log(JSON.stringify(event.payment.token))
-    performTransaction(event.payment, apiKey, (outcome: any) => {
-      console.log('received response from pay')
-      console.log(JSON.stringify(outcome))
-      console.log(outcome.logs)
-      if (outcome.approved) {
-        appleSession.completePayment(ApplePaySession.STATUS_SUCCESS)
-      } else {
-        appleSession.completePayment(ApplePaySession.STATUS_FAILURE)
-      }
-    })
+    tokens = event.payment.token
   }
-}
-
-// call backend to send the Apple Pay Payload and return the transaction outcome
-function performTransaction(
-  details: ApplePayJS.ApplePayPayment,
-  apiKey: string,
-  callback: any
-) {
-  axios
-    .post(
-      BACKEND_URL_PAY,
-      {
-        details,
-        apiKey,
-      },
-      {
-        headers: { 'Access-Control-Allow-Origin': '*' },
-      }
-    )
-    .then(function (response) {
-      callback(response.data)
-    })
 }
 
 // return the shipping methods available based on region
@@ -202,4 +183,14 @@ function applePayAvailable(): boolean {
   // canMakePaymentsWithActiveCard(merchantIdentifier: string):
 }
 
-export { startApplePaySession, DEFAULT_CONFIG, applePayAvailable }
+function getApplePayTokens() {
+  return tokens
+}
+
+export {
+  startApplePaySession,
+  DEFAULT_CONFIG,
+  applePayAvailable,
+  PaymentToken,
+  getApplePayTokens,
+}
