@@ -145,13 +145,13 @@ export default class ConvertToken extends Vue {
   }
 
   googlePayTokenData = {
-    protocolVersion: 'ECv1',
+    protocolVersion: '',
     signature: '',
     signedMessage: '',
   }
 
   applePayTokenData = {
-    version: 'EC_v1',
+    version: '',
     data: '',
     signature: '',
     header: {
@@ -214,10 +214,12 @@ export default class ConvertToken extends Vue {
   // autogenerate token info by assigning random strings to each field
   autogenerateTokens() {
     if (this.formData.type === 'Google Pay') {
+      this.googlePayTokenData.protocolVersion = 'ECv1'
       this.googlePayTokenData.signature = this.randomString()
       this.googlePayTokenData.signedMessage = this.randomString()
       this.displayGoogleTokens = true
     } else if (this.formData.type === 'Apple Pay') {
+      this.applePayTokenData.version = 'EC_v1'
       this.applePayTokenData.data = this.randomString()
       this.applePayTokenData.signature = this.randomString()
       this.applePayTokenData.header.ephemeralPublicKey = this.randomString()
