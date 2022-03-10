@@ -17,44 +17,66 @@
             depressed
             class="mb-7"
             :loading="loading"
-            @click.prevent="autogenerateToken()"
+            @click.prevent="autogenerateTokens()"
           >
             Autogenerate token
           </v-btn>
           <div v-if="displayGooglePayButton" id="google-pay-button"></div>
           <v-card
-            v-if="tokensGenerated"
+            v-if="displayGoogleTokens"
+            id="google-pay-tokens"
             max-width="400"
             class="body-1 px-6 py-8 mb-4"
           >
             <h2 class="title">Token Information</h2>
             <p class="font-weight-light mt-2">
-              Protocol Version: {{ formData.protocolVersion }}
+              Protocol Version: {{ googlePayTokenData.protocolVersion }}
             </p>
             <p class="font-weight-light mt-2">
-              Signature: {{ formData.signature }}
+              Signature: {{ googlePayTokenData.signature }}
             </p>
             <p class="font-weight-light mt-2">
-              Signed Message: {{ formData.signedMessage }}
+              Signed Message: {{ googlePayTokenData.signedMessage }}
             </p>
           </v-card>
+          <v-card
+            v-if="displayAppleTokens"
+            id="apple-pay-tokens"
+            max-width="400"
+            class="body-1 px-6 py-8 mb-4"
+          >
+            <h2 class="title">Token Information</h2>
+            <p class="font-weight-light mt-2">
+              Version: {{ applePayTokenData.version }}
+            </p>
+            <p class="font-weight-light mt-2">
+              Data: {{ applePayTokenData.data }}
+            </p>
+            <p class="font-weight-light mt-2">
+              Signature: {{ applePayTokenData.signature }}
+            </p>
+            <p class="font-weight-light mt-2">
+              Header: {{ applePayTokenData.header }}
+            </p>
+          </v-card>
+          <!-- 3 text fields below for debugging only - to be removed once resolved -->
           <v-text-field
-            v-if="tokensGenerated"
-            v-model="formData.protocolVersion"
+            v-if="displayGoogleTokens"
+            v-model="googlePayTokenData.protocolVersion"
             label="Protocol Version"
           />
           <v-text-field
-            v-if="tokensGenerated"
-            v-model="formData.signature"
+            v-if="displayGoogleTokens"
+            v-model="googlePayTokenData.signature"
             label="Signature"
           />
           <v-text-field
-            v-if="tokensGenerated"
-            v-model="formData.signedMessage"
+            v-if="displayGoogleTokens"
+            v-model="googlePayTokenData.signedMessage"
             label="Signed Message"
           />
           <v-btn
-            v-if="tokensGenerated"
+            v-if="displayGoogleTokens || displayAppleTokens"
             depressed
             class="mb-7"
             color="primary"
@@ -87,21 +109,22 @@ import { mapGetters } from 'vuex'
 import RequestInfo from '~/components/RequestInfo.vue'
 import ErrorSheet from '~/components/ErrorSheet.vue'
 import { getLive } from '~/lib/apiTarget'
+import { PaymentToken as ApplePayTokenData } from '~/lib/applePay'
 import {
-  onGooglePayLoaded,
+  DEFAULT_CONFIG,
   getGooglePaymentsClient,
   getPaymentDataRequest,
-  PaymentToken,
+  onGooglePayLoaded,
   PaymentRequestConfig,
-  DEFAULT_CONFIG,
+  PaymentToken as GooglePayTokenData,
 } from '~/lib/googlePay'
-import ButtonOptions = google.payments.api.ButtonOptions
-import PaymentData = google.payments.api.PaymentData
 import {
   checkoutKey,
   merchantId,
   merchantName,
 } from '~/server-middleware/googlePaySecrets'
+import ButtonOptions = google.payments.api.ButtonOptions
+import PaymentData = google.payments.api.PaymentData
 
 @Component({
   components: {
@@ -119,17 +142,18 @@ import {
 export default class ConvertToken extends Vue {
   formData = {
     type: 'Google Pay',
-    protocolVersion: '',
-    signature: '',
-    signedMessage: '',
     amount: '0.00',
   }
+
+  googlePayTokenData = {} as GooglePayTokenData
+  applePayTokenData = {} as ApplePayTokenData
 
   paymentType = ['Google Pay', 'Apple Pay']
   error = {}
   loading = false
   showError = false
-  tokensGenerated = false
+  displayGoogleTokens = false
+  displayAppleTokens = false
   displayAutogenerateButton = !getLive()
   displayGooglePayButton = this.formData.type === 'Google Pay' && getLive()
 
@@ -156,7 +180,8 @@ export default class ConvertToken extends Vue {
   }
 
   onPaymentTypeChange() {
-    this.tokensGenerated = false
+    this.displayGoogleTokens = false
+    this.displayAppleTokens = false
     if (getLive()) {
       switch (this.formData.type) {
         case 'Google Pay':
@@ -169,11 +194,28 @@ export default class ConvertToken extends Vue {
     }
   }
 
+  randomString() {
+    return Math.random().toString(36).substring(2, 12)
+  }
+
   // autogenerate token info by assigning random strings to each field
-  autogenerateToken() {
-    this.formData.signature = Math.random().toString(36).substring(2, 12)
-    this.formData.signedMessage = Math.random().toString(36).substring(2, 12)
-    this.tokensGenerated = true
+  autogenerateTokens() {
+    if (this.formData.type === 'Google Pay') {
+      this.googlePayTokenData.protocolVersion = 'ECv1'
+      this.googlePayTokenData.signature = this.randomString()
+      this.googlePayTokenData.signedMessage = this.randomString()
+      this.displayGoogleTokens = true
+    } else if (this.formData.type === 'Apple Pay') {
+      this.applePayTokenData.version = 'EC_v1'
+      this.applePayTokenData.data = this.randomString()
+      this.applePayTokenData.signature = this.randomString()
+      this.applePayTokenData.header = {
+        ephemeralPublicKey: this.randomString(),
+        publicKeyHash: this.randomString(),
+        transactionId: this.randomString(),
+      }
+      this.displayAppleTokens = true
+    }
   }
 
   onGooglePayButtonClicked() {
@@ -191,11 +233,11 @@ export default class ConvertToken extends Vue {
       .then((paymentData: PaymentData) => {
         const paymentTokenString =
           paymentData.paymentMethodData.tokenizationData.token // payment token as JSON string
-        const paymentToken: PaymentToken = JSON.parse(paymentTokenString) // payment token as object with keys protocolVersion, signature, and signedMessage
-        this.formData.protocolVersion = paymentToken.protocolVersion
-        this.formData.signature = paymentToken.signature
-        this.formData.signedMessage = paymentToken.signedMessage
-        this.tokensGenerated = true
+        const paymentToken: GooglePayTokenData = JSON.parse(paymentTokenString) // payment token as object with keys protocolVersion, signature, and signedMessage
+        this.googlePayTokenData.protocolVersion = paymentToken.protocolVersion
+        this.googlePayTokenData.signature = paymentToken.signature
+        this.googlePayTokenData.signedMessage = paymentToken.signedMessage
+        this.displayGoogleTokens = true
       })
       .catch(function (err: any) {
         console.error(err)
@@ -209,13 +251,18 @@ export default class ConvertToken extends Vue {
     switch (type) {
       case 'googlepay':
         tokenData = {
-          protocolVersion: this.formData.protocolVersion,
-          signature: this.formData.signature,
-          signedMessage: this.formData.signedMessage,
+          protocolVersion: this.googlePayTokenData.protocolVersion,
+          signature: this.googlePayTokenData.signature,
+          signedMessage: this.googlePayTokenData.signedMessage,
         }
         break
       case 'applepay':
-        tokenData = { signature: 'TODO: implement apply pay payload' }
+        tokenData = {
+          version: this.applePayTokenData.version,
+          data: this.applePayTokenData.data,
+          signature: this.applePayTokenData.signature,
+          header: this.applePayTokenData.header,
+        }
     }
     try {
       await this.$walletsApi.convertToken(type, tokenData)
