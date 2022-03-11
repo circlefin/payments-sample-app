@@ -13,9 +13,9 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import {
-  startApplePaySession,
   DEFAULT_CONFIG,
   applePayAvailable,
+  startApplePaySessionBackendPay,
 } from '@/lib/applePay'
 @Component({
   computed: {
@@ -30,7 +30,7 @@ export default class CreateApplePayVue extends Vue {
   isApplePayAvailable: boolean = applePayAvailable()
 
   doApplePay() {
-    startApplePaySession(
+    startApplePaySessionBackendPay(
       {
         currencyCode: DEFAULT_CONFIG.shop.shop_localisation.currencyCode,
         countryCode: DEFAULT_CONFIG.shop.shop_localisation.countryCode,

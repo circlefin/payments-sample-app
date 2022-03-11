@@ -123,10 +123,10 @@ import { getLive } from '~/lib/apiTarget'
 import {
   DEFAULT_CONFIG as DEFAULT_APPLE_PAY_CONFIG,
   applePayAvailable,
-  startApplePaySession,
+  startApplePaySessionFrontendPay,
   getApplePayTokens,
   PaymentToken as ApplePayTokenData,
-} from '~/lib/applePayTokens'
+} from '~/lib/applePay'
 import {
   DEFAULT_CONFIG as DEFAULT_GOOGLE_PAY_CONFIG,
   getGooglePaymentsClient,
@@ -241,7 +241,7 @@ export default class ConvertToken extends Vue {
   }
 
   onApplePayButtonClicked() {
-    startApplePaySession({
+    startApplePaySessionFrontendPay({
       currencyCode:
         DEFAULT_APPLE_PAY_CONFIG.shop.shop_localisation.currencyCode,
       countryCode: DEFAULT_APPLE_PAY_CONFIG.shop.shop_localisation.countryCode,
