@@ -3,7 +3,8 @@ import axios from 'axios'
 import express from 'express'
 import { v4 as uuidv4 } from 'uuid'
 import {
-  partnershipMerchantIdentityCertificate, partnershipMerchantIdentityKey,
+  partnershipMerchantIdentityCertificate,
+  partnershipMerchantIdentityKey,
   payfacMerchantIdentityCertificate,
   payfacMerchantIdentityKey,
 } from './applePaySettings'
@@ -132,7 +133,7 @@ export interface BasePaymentPayload {
 }
 
 function createPaymentPayload(sourceId: string): BasePaymentPayload {
-  const payload: BasePaymentPayload = {
+  return {
     idempotencyKey: uuidv4(),
     amount: {
       amount: '0.5',
@@ -150,7 +151,6 @@ function createPaymentPayload(sourceId: string): BasePaymentPayload {
       ipAddress: '172.33.222.1',
     },
   }
-  return payload
 }
 
 function createPayment(payload: BasePaymentPayload, apiKey: string) {
