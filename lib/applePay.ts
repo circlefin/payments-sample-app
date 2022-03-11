@@ -274,7 +274,7 @@ function validateApplePaySession(
 
 function applePayAvailable(): boolean {
   try {
-    return ApplePaySession && ApplePaySession.canMakePayments();
+    return ApplePaySession && ApplePaySession.canMakePayments()
   } catch (error) {
     console.log('Failed to get apple session validity ' + error)
     return false
