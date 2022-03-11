@@ -208,6 +208,7 @@ function handleApplePayPaymentOnFrontendEvent(
     tokenObject.data = tokens.paymentData.data
     tokenObject.signature = tokens.paymentData.signature
     tokenObject.header = tokens.paymentData.header
+    appleSession.completePayment(ApplePaySession.STATUS_SUCCESS)
   }
 }
 
