@@ -8,14 +8,17 @@ const BACKEND_URL_PAY = 'https://sample-staging.circle.com/api/applepay/pay'
 // default configuration used in staging
 const DEFAULT_CONFIG = {
   payments: {
-    acceptedCardSchemes: ['amex', 'masterCard', 'visa'],
-  },
-  shop: {
-    product_price: '0.5',
-    shop_name: 'Demo Shop',
-    shop_localisation: {
-      currencyCode: 'USD',
-      countryCode: 'US',
+    currencyCode: 'USD',
+    countryCode: 'US',
+    merchantCapabilities: ['supports3DS', 'supportsCredit', 'supportsDebit'],
+    supportedNetworks: ['amex', 'masterCard', 'visa'],
+    shippingType: 'shipping',
+    requiredBillingContactFields: ['postalAddress', 'name', 'phone', 'email'],
+    requiredShippingContactFields: ['postalAddress', 'name', 'phone', 'email'],
+    total: {
+      label: 'Demo Shop',
+      amount: '0.5',
+      type: 'final',
     },
   },
   shipping: {
@@ -41,16 +44,27 @@ interface PaymentToken {
   }
 }
 
-// Starts the Apple Pay session, registers event handlers
-function startApplePaySession(config: any, apiKey: string): void {
+// Starts the Apple Pay session to pay on backend, registers event handlers
+function startApplePaySessionBackendPay(config: any, apiKey: string): void {
   const applePaySession: ApplePaySession = new ApplePaySession(6, config)
-  handleApplePayEvents(applePaySession, apiKey)
+  handleCommonApplePayEvents(applePaySession)
+  handleApplePayPaymentOnBackendEvent(applePaySession, apiKey)
+  applePaySession.begin()
+}
+
+function startApplePaySessionFrontendPay(
+  config: any,
+  tokenObject: PaymentToken
+): void {
+  const applePaySession: ApplePaySession = new ApplePaySession(6, config)
+  handleCommonApplePayEvents(applePaySession)
+  handleApplePayPaymentOnFrontendEvent(applePaySession, tokenObject)
   applePaySession.begin()
 }
 
 // Registers event handlers. There are 5 steps associated with Apple Pay, transition between steps triggers event, these events are:
 // onvalidatemerchant, onshippingcontactselected, onshippingmethodselected, completeShippingMethodSelection and onpaymentauthorized.
-function handleApplePayEvents(appleSession: ApplePaySession, apiKey: string) {
+function handleCommonApplePayEvents(appleSession: ApplePaySession) {
   // This is the first event that Apple triggers. Validate the Apple Pay Session from endpoint.
   appleSession.onvalidatemerchant = function (
     event: ApplePayJS.ApplePayValidateMerchantEvent
@@ -81,9 +95,9 @@ function handleApplePayEvents(appleSession: ApplePaySession, apiKey: string) {
     // Update total and line items based on the shipping methods
     const newTotal: ApplePayJS.ApplePayLineItem = {
       type: 'final',
-      label: DEFAULT_CONFIG.shop.shop_name,
+      label: DEFAULT_CONFIG.payments.total.label,
       amount: calculateTotal(
-        DEFAULT_CONFIG.shop.product_price,
+        DEFAULT_CONFIG.payments.total.amount,
         shipping.methods[0].amount
       ),
     }
@@ -91,7 +105,7 @@ function handleApplePayEvents(appleSession: ApplePaySession, apiKey: string) {
       {
         type: 'final',
         label: 'Subtotal',
-        amount: DEFAULT_CONFIG.shop.product_price,
+        amount: DEFAULT_CONFIG.payments.total.amount,
       },
       {
         type: 'final',
@@ -111,9 +125,9 @@ function handleApplePayEvents(appleSession: ApplePaySession, apiKey: string) {
   appleSession.onshippingmethodselected = function (event) {
     const newTotal: ApplePayJS.ApplePayLineItem = {
       type: 'final',
-      label: DEFAULT_CONFIG.shop.shop_name,
+      label: DEFAULT_CONFIG.payments.total.label,
       amount: calculateTotal(
-        DEFAULT_CONFIG.shop.product_price,
+        DEFAULT_CONFIG.payments.total.amount,
         event.shippingMethod.amount
       ),
     }
@@ -121,7 +135,7 @@ function handleApplePayEvents(appleSession: ApplePaySession, apiKey: string) {
       {
         type: 'final',
         label: 'Subtotal',
-        amount: DEFAULT_CONFIG.shop.product_price,
+        amount: DEFAULT_CONFIG.payments.total.amount,
       },
       {
         type: 'final',
@@ -135,9 +149,14 @@ function handleApplePayEvents(appleSession: ApplePaySession, apiKey: string) {
       newLineItems // order summary updated
     )
   }
+}
 
-  // Final event which performs debit. Triggered after the user has confirmed the transaction with the Touch ID or Face ID.
-  // All details about the customer are provided and most importantly we get the Apple Pay token in payload needed to perform a payment.
+// Final event which performs debit. Triggered after the user has confirmed the transaction with the Touch ID or Face ID.
+// All details about the customer are provided and most importantly we get the Apple Pay token in payload needed to perform a payment.
+function handleApplePayPaymentOnBackendEvent(
+  appleSession: ApplePaySession,
+  apiKey: string
+) {
   appleSession.onpaymentauthorized = function (
     event: ApplePayJS.ApplePayPaymentAuthorizedEvent
   ) {
@@ -154,6 +173,24 @@ function handleApplePayEvents(appleSession: ApplePaySession, apiKey: string) {
         appleSession.completePayment(ApplePaySession.STATUS_FAILURE)
       }
     })
+  }
+}
+
+function handleApplePayPaymentOnFrontendEvent(
+  appleSession: ApplePaySession,
+  tokenObject: PaymentToken
+) {
+  appleSession.onpaymentauthorized = function (
+    event: ApplePayJS.ApplePayPaymentAuthorizedEvent
+  ) {
+    console.log('received authorization')
+    console.log(event.payment)
+    console.log(JSON.stringify(event.payment.token))
+    const tokens = event.payment.token
+    tokenObject.version = tokens.paymentData.version
+    tokenObject.data = tokens.paymentData.data
+    tokenObject.signature = tokens.paymentData.signature
+    tokenObject.header = tokens.paymentData.header
   }
 }
 
@@ -213,4 +250,10 @@ function applePayAvailable(): boolean {
   // canMakePaymentsWithActiveCard(merchantIdentifier: string):
 }
 
-export { startApplePaySession, DEFAULT_CONFIG, applePayAvailable, PaymentToken }
+export {
+  startApplePaySessionBackendPay,
+  startApplePaySessionFrontendPay,
+  DEFAULT_CONFIG,
+  applePayAvailable,
+  PaymentToken,
+}
