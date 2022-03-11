@@ -31,7 +31,8 @@
           >
           </v-btn>
           <v-p v-if="displayApplePayButton && !isApplePayAvailable">
-            Apple Pay not available.
+            Apple Pay not available on this browser, please make sure you are
+            using Safari.
           </v-p>
           <v-card
             v-if="displayGoogleTokens"
@@ -122,12 +123,14 @@ import ErrorSheet from '~/components/ErrorSheet.vue'
 import { getLive } from '~/lib/apiTarget'
 import {
   DEFAULT_CONFIG as DEFAULT_APPLE_PAY_CONFIG,
+  AUTOGEN_TOKEN_LENGTH as APPLE_PAY_AUTOGEN_TOKEN_LENGTH,
   applePayAvailable,
   startApplePaySessionFrontendPay,
   PaymentToken as ApplePayTokenData,
 } from '~/lib/applePay'
 import {
   DEFAULT_CONFIG as DEFAULT_GOOGLE_PAY_CONFIG,
+  AUTOGEN_TOKEN_LENGTH as GOOGLE_PAY_AUTOGEN_TOKEN_LENGTH,
   getGooglePaymentsClient,
   getPaymentDataRequest,
   onGooglePayLoaded,
@@ -174,6 +177,7 @@ export default class ConvertToken extends Vue {
   displayGooglePayButton = this.formData.type === 'Google Pay' && getLive()
   displayApplePayButton = this.formData.type === 'Apple Pay' && getLive()
   isApplePayAvailable = false
+  tokenLength = 50
 
   buttonOptions: ButtonOptions = {
     onClick: this.onGooglePayButtonClicked,
@@ -215,25 +219,48 @@ export default class ConvertToken extends Vue {
     }
   }
 
-  randomString() {
-    return Math.random().toString(36).substring(2, 12)
+  randomString(length: number) {
+    // return Math.random().toString(36).substring(2, 10)
+    const chars =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    let str = ''
+    for (let i = 0; i < length; i++) {
+      str += chars.charAt(Math.floor(Math.random() * chars.length))
+    }
+    return str
   }
 
   // autogenerate token info by assigning random strings to each field
   autogenerateTokens() {
     if (this.formData.type === 'Google Pay') {
+      this.displayGoogleTokens = false
       this.googlePayTokenData.protocolVersion = 'ECv1'
-      this.googlePayTokenData.signature = this.randomString()
-      this.googlePayTokenData.signedMessage = this.randomString()
+      this.googlePayTokenData.signature = this.randomString(
+        GOOGLE_PAY_AUTOGEN_TOKEN_LENGTH.signature
+      )
+      this.googlePayTokenData.signedMessage = this.randomString(
+        GOOGLE_PAY_AUTOGEN_TOKEN_LENGTH.signedMessage
+      )
       this.displayGoogleTokens = true
     } else if (this.formData.type === 'Apple Pay') {
+      this.displayGoogleTokens = false
       this.applePayTokenData.version = 'EC_v1'
-      this.applePayTokenData.data = this.randomString()
-      this.applePayTokenData.signature = this.randomString()
+      this.applePayTokenData.data = this.randomString(
+        APPLE_PAY_AUTOGEN_TOKEN_LENGTH.data
+      )
+      this.applePayTokenData.signature = this.randomString(
+        APPLE_PAY_AUTOGEN_TOKEN_LENGTH.signature
+      )
       this.applePayTokenData.header = {
-        ephemeralPublicKey: this.randomString(),
-        publicKeyHash: this.randomString(),
-        transactionId: this.randomString(),
+        ephemeralPublicKey: this.randomString(
+          APPLE_PAY_AUTOGEN_TOKEN_LENGTH.ephemeralPublicKey
+        ),
+        publicKeyHash: this.randomString(
+          APPLE_PAY_AUTOGEN_TOKEN_LENGTH.publicKeyHash
+        ),
+        transactionId: this.randomString(
+          APPLE_PAY_AUTOGEN_TOKEN_LENGTH.transactionId
+        ),
       }
       this.displayAppleTokens = true
     }

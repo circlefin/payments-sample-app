@@ -33,6 +33,14 @@ const DEFAULT_CONFIG = {
   },
 }
 
+const AUTOGEN_TOKEN_LENGTH = {
+  data: 40,
+  signature: 40,
+  ephemeralPublicKey: 40,
+  publicKeyHash: 40,
+  transactionId: 40,
+}
+
 interface PaymentToken {
   version: string
   data: string
@@ -256,4 +264,5 @@ export {
   DEFAULT_CONFIG,
   applePayAvailable,
   PaymentToken,
+  AUTOGEN_TOKEN_LENGTH,
 }
