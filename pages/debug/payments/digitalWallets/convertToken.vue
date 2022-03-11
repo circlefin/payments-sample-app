@@ -327,5 +327,5 @@ export default class ConvertToken extends Vue {
 </script>
 
 <style scoped>
-@import './assets/applePayButton.css';
+@import '~/assets/applePayButton.css';
 </style>
