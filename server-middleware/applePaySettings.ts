@@ -1,17 +1,31 @@
 const applePaySecretsAreSet = !(
-  process.env.APPLE_PAY_CERTIFICATE == null ||
-  process.env.APPLE_PAY_PRIVATE_KEY == null
+  process.env.APPLE_PAY_PAYFAC_CERTIFICATE == null ||
+  process.env.APPLE_PAY_PAYFAC_PRIVATE_KEY == null ||
+  process.env.APPLE_PAY_PARTNERSHIP_CERTIFICATE == null ||
+  process.env.APPLE_PAY_PARTNERSHIP_PRIVATE_KEY == null
 )
 
-const merchantIdentityCertificate: string = applePaySecretsAreSet
-  ? process.env.APPLE_PAY_CERTIFICATE!
+const payfacMerchantIdentityCertificate: string = applePaySecretsAreSet
+  ? process.env.APPLE_PAY_PAYFAC_CERTIFICATE!
   : ''
-const merchantIdentityKey: string = applePaySecretsAreSet
-  ? process.env.APPLE_PAY_PRIVATE_KEY!
+const payfacMerchantIdentityKey: string = applePaySecretsAreSet
+  ? process.env.APPLE_PAY_PAYFAC_PRIVATE_KEY!
+  : ''
+const partnershipMerchantIdentityCertificate: string = applePaySecretsAreSet
+  ? process.env.APPLE_PAY_PARTNERSHIP_CERTIFICATE!
+  : ''
+const partnershipMerchantIdentityKey: string = applePaySecretsAreSet
+  ? process.env.APPLE_PAY_PARTNERSHIP_PRIVATE_KEY!
   : ''
 
 const domainValidation: string = applePaySecretsAreSet
   ? process.env.APPLE_PAY_DOMAIN_VERIFICATION!
   : ''
 
-export { merchantIdentityCertificate, merchantIdentityKey, domainValidation }
+export {
+  payfacMerchantIdentityCertificate,
+  payfacMerchantIdentityKey,
+  domainValidation,
+  partnershipMerchantIdentityCertificate,
+  partnershipMerchantIdentityKey,
+}
