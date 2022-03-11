@@ -14,6 +14,16 @@
             :items="merchantType"
             label="Merchant Type"
           />
+          <v-text-field
+            v-if="displayApplePayForm"
+            v-model="applePayFormData.shopName"
+            label="Shop Name"
+          />
+          <v-text-field
+            v-if="displayApplePayForm"
+            v-model="applePayFormData.lineItemType"
+            label="Line Item Type"
+          />
           <v-text-field v-model="formData.amount" label="Amount" />
           <v-btn
             v-if="displayAutogenerateButton"
@@ -132,6 +142,7 @@ import {
   applePayAvailable,
   startApplePaySessionFrontendPay,
   PaymentToken as ApplePayTokenData,
+  PaymentDetails as ApplePayPaymentDetails,
 } from '~/lib/applePay'
 import {
   DEFAULT_CONFIG as DEFAULT_GOOGLE_PAY_CONFIG,
@@ -172,6 +183,7 @@ export default class ConvertToken extends Vue {
 
   googlePayTokenData = {} as GooglePayTokenData
   applePayTokenData = {} as ApplePayTokenData
+  applePayFormData = {} as ApplePayPaymentDetails
 
   paymentType = ['Google Pay', 'Apple Pay']
   merchantType = ['PayFac', 'Partnership']
@@ -184,6 +196,7 @@ export default class ConvertToken extends Vue {
   displayGooglePayButton = this.formData.type === 'Google Pay' && getLive()
   displayApplePayButton = this.formData.type === 'Apple Pay' && getLive()
   isApplePayAvailable = false
+  displayApplePayForm = this.formData.type === 'Apple Pay'
 
   buttonOptions: ButtonOptions = {
     onClick: this.onGooglePayButtonClicked,
@@ -210,18 +223,22 @@ export default class ConvertToken extends Vue {
   onPaymentTypeChange() {
     this.displayGoogleTokens = false
     this.displayAppleTokens = false
-    if (getLive()) {
-      switch (this.formData.type) {
-        case 'Google Pay':
+    switch (this.formData.type) {
+      case 'Google Pay':
+        this.displayApplePayForm = false
+        if (getLive()) {
           this.displayGooglePayButton = true
           this.displayApplePayButton = false
-          break
-        case 'Apple Pay':
+        }
+        break
+      case 'Apple Pay':
+        this.displayApplePayForm = true
+        if (getLive()) {
           this.displayGooglePayButton = false
           this.displayApplePayButton = true
           this.isApplePayAvailable = applePayAvailable()
-          break
-      }
+        }
+        break
     }
   }
 
@@ -274,10 +291,27 @@ export default class ConvertToken extends Vue {
 
   onApplePayButtonClicked() {
     startApplePaySessionFrontendPay(
-      DEFAULT_APPLE_PAY_CONFIG.payments,
+      {
+        currencyCode: DEFAULT_APPLE_PAY_CONFIG.payments.currencyCode,
+        countryCode: DEFAULT_APPLE_PAY_CONFIG.payments.countryCode,
+        merchantCapabilities:
+          DEFAULT_APPLE_PAY_CONFIG.payments.merchantCapabilities,
+        supportedNetworks: DEFAULT_APPLE_PAY_CONFIG.payments.supportedNetworks,
+        shippingType: DEFAULT_APPLE_PAY_CONFIG.payments.shippingType,
+        requiredBillingContactFields:
+          DEFAULT_APPLE_PAY_CONFIG.payments.requiredBillingContactFields,
+        requiredShippingContactFields:
+          DEFAULT_APPLE_PAY_CONFIG.payments.requiredShippingContactFields,
+        total: {
+          label: this.applePayFormData.shopName,
+          amount: this.formData.amount,
+          type: this.applePayFormData.lineItemType,
+        },
+      },
       this.applePayTokenData,
       this.formData.merchantType
     )
+    this.displayAppleTokens = true
   }
 
   onGooglePayButtonClicked() {

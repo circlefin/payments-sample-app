@@ -52,12 +52,23 @@ interface PaymentToken {
   }
 }
 
+interface PaymentDetails {
+  shopName: string
+  lineItemType: ApplePayJS.ApplePayLineItemType
+  amount: string
+}
+
+const inputConfig = {} as PaymentDetails
+
 // Starts the Apple Pay session to pay on backend, registers event handlers
 function startApplePaySessionBackendPay(
   config: any,
   apiKey: string,
   merchantType: string
 ): void {
+  inputConfig.shopName = config.total.label
+  inputConfig.lineItemType = config.total.type
+  inputConfig.amount = config.total.amount
   const applePaySession: ApplePaySession = new ApplePaySession(6, config)
   handleCommonApplePayEvents(applePaySession, merchantType)
   handleApplePayPaymentOnBackendEvent(applePaySession, apiKey)
@@ -111,18 +122,15 @@ function handleCommonApplePayEvents(
     )
     // Update total and line items based on the shipping methods
     const newTotal: ApplePayJS.ApplePayLineItem = {
-      type: 'final',
-      label: DEFAULT_CONFIG.payments.total.label,
-      amount: calculateTotal(
-        DEFAULT_CONFIG.payments.total.amount,
-        shipping.methods[0].amount
-      ),
+      type: inputConfig.lineItemType,
+      label: inputConfig.shopName,
+      amount: calculateTotal(inputConfig.amount, shipping.methods[0].amount),
     }
     const newLineItems: ApplePayJS.ApplePayLineItem[] = [
       {
-        type: 'final',
+        type: inputConfig.lineItemType,
         label: 'Subtotal',
-        amount: DEFAULT_CONFIG.payments.total.amount,
+        amount: inputConfig.amount,
       },
       {
         type: 'final',
@@ -141,21 +149,18 @@ function handleCommonApplePayEvents(
   // This method is triggered when a user select one of the shipping options. Update transaction ammounts on change.
   appleSession.onshippingmethodselected = function (event) {
     const newTotal: ApplePayJS.ApplePayLineItem = {
-      type: 'final',
-      label: DEFAULT_CONFIG.payments.total.label,
-      amount: calculateTotal(
-        DEFAULT_CONFIG.payments.total.amount,
-        event.shippingMethod.amount
-      ),
+      type: inputConfig.lineItemType,
+      label: inputConfig.shopName,
+      amount: calculateTotal(inputConfig.amount, event.shippingMethod.amount),
     }
     const newLineItems: ApplePayJS.ApplePayLineItem[] = [
       {
-        type: 'final',
+        type: inputConfig.lineItemType,
         label: 'Subtotal',
-        amount: DEFAULT_CONFIG.payments.total.amount,
+        amount: inputConfig.amount,
       },
       {
-        type: 'final',
+        type: inputConfig.lineItemType,
         label: event.shippingMethod.label,
         amount: event.shippingMethod.amount,
       },
@@ -268,9 +273,12 @@ function validateApplePaySession(
 }
 
 function applePayAvailable(): boolean {
-  return ApplePaySession && ApplePaySession.canMakePayments()
-  // alternatively, our merchant identifier should be `merchant.bigtimetestmerchant.com`
-  // canMakePaymentsWithActiveCard(merchantIdentifier: string):
+  try {
+    return ApplePaySession && ApplePaySession.canMakePayments();
+  } catch (error) {
+    console.log('Failed to get apple session validity ' + error)
+    return false
+  }
 }
 
 export {
@@ -279,5 +287,6 @@ export {
   DEFAULT_CONFIG,
   applePayAvailable,
   PaymentToken,
+  PaymentDetails,
   AUTOGEN_TOKEN_LENGTH,
 }
