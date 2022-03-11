@@ -3,8 +3,8 @@ import axios from 'axios'
 import express from 'express'
 import { v4 as uuidv4 } from 'uuid'
 import {
-  merchantIdentityCertificate,
-  merchantIdentityKey,
+  payfacMerchantIdentityCertificate,
+  payfacMerchantIdentityKey,
 } from './applePaySettings'
 import { apiHostname } from './serverEnv'
 
@@ -27,8 +27,8 @@ app.post('/validate', (req, res) => {
 
     const httpsAgent = new https.Agent({
       rejectUnauthorized: false,
-      cert: merchantIdentityCertificate, // pem apple cert
-      key: merchantIdentityKey, // key apple
+      cert: payfacMerchantIdentityCertificate, // pem apple cert
+      key: payfacMerchantIdentityKey, // key apple
     })
     axios
       .post(
