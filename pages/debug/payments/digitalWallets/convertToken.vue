@@ -9,6 +9,11 @@
             label="Payment Type"
             @change="onPaymentTypeChange()"
           />
+          <v-select
+            v-model="formData.merchantType"
+            :items="merchantType"
+            label="Merchant Type"
+          />
           <v-text-field v-model="formData.amount" label="Amount" />
           <v-btn
             v-if="displayAutogenerateButton"
@@ -161,6 +166,7 @@ import PaymentData = google.payments.api.PaymentData
 export default class ConvertToken extends Vue {
   formData = {
     type: 'Google Pay',
+    merchantType: 'PayFac',
     amount: '0.00',
   }
 
@@ -168,6 +174,7 @@ export default class ConvertToken extends Vue {
   applePayTokenData = {} as ApplePayTokenData
 
   paymentType = ['Google Pay', 'Apple Pay']
+  merchantType = ['PayFac', 'Partnership']
   error = {}
   loading = false
   showError = false
@@ -177,7 +184,6 @@ export default class ConvertToken extends Vue {
   displayGooglePayButton = this.formData.type === 'Google Pay' && getLive()
   displayApplePayButton = this.formData.type === 'Apple Pay' && getLive()
   isApplePayAvailable = false
-  tokenLength = 50
 
   buttonOptions: ButtonOptions = {
     onClick: this.onGooglePayButtonClicked,
@@ -269,13 +275,15 @@ export default class ConvertToken extends Vue {
   onApplePayButtonClicked() {
     startApplePaySessionFrontendPay(
       DEFAULT_APPLE_PAY_CONFIG.payments,
-      this.applePayTokenData
+      this.applePayTokenData,
+      this.formData.merchantType
     )
   }
 
   onGooglePayButtonClicked() {
     const environment = this.getGooglePayEnvironment()
     const paymentsClient = getGooglePaymentsClient(environment)
+    // TODO: implement merchantType for google pay
     const paymentDataConfig: PaymentRequestConfig = {
       amount: this.formData.amount,
       environment,

@@ -26,11 +26,16 @@ import {
 })
 export default class CreateApplePayVue extends Vue {
   apiKey!: string
+  merchantId = 'PayFac' // hardcoded for now, can parametrize in future PR if we want to implement UI to select merchant type for E2E applepay button
 
   isApplePayAvailable: boolean = applePayAvailable()
 
   doApplePay() {
-    startApplePaySessionBackendPay(DEFAULT_CONFIG.payments, this.apiKey)
+    startApplePaySessionBackendPay(
+      DEFAULT_CONFIG.payments,
+      this.apiKey,
+      this.merchantId
+    )
   }
 }
 </script>
