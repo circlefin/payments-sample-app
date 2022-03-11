@@ -14,4 +14,6 @@ const domainValidation: string = applePaySecretsAreSet
   ? process.env.APPLE_PAY_DOMAIN_VERIFICATION!
   : ''
 
-export { merchantIdentityCertificate, merchantIdentityKey, domainValidation }
+const apiUrl: string = process.env.WALLETS_API || 'https://api-staging.circle.com'
+
+export { apiUrl, merchantIdentityCertificate, merchantIdentityKey, domainValidation }
