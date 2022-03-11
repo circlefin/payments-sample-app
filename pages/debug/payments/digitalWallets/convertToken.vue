@@ -327,14 +327,5 @@ export default class ConvertToken extends Vue {
 </script>
 
 <style scoped>
-.apple-pay-button {
-  width: 250px;
-  height: 40px;
-  display: inline-block;
-  -webkit-appearance: -apple-pay-button;
-  cursor: pointer;
-}
-.apple-pay-button-text-pay {
-  -apple-pay-button-type: pay;
-}
+@import './assets/applePayButton.css';
 </style>
