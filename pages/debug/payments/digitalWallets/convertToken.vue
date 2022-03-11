@@ -11,7 +11,9 @@
           />
           <v-select
             v-model="formData.merchantType"
-            :items="merchantType"
+            :items="
+              displayApplePayForm ? merchantTypeApplePay : merchantTypeGooglePay
+            "
             label="Merchant Type"
           />
           <v-text-field
@@ -186,7 +188,8 @@ export default class ConvertToken extends Vue {
   applePayFormData = {} as ApplePayPaymentDetails
 
   paymentType = ['Google Pay', 'Apple Pay']
-  merchantType = ['PayFac', 'Partnership']
+  merchantTypeApplePay = ['PayFac', 'Partnership']
+  merchantTypeGooglePay = ['PayFac']
   error = {}
   loading = false
   showError = false
