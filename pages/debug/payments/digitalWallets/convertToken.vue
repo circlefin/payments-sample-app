@@ -124,7 +124,6 @@ import {
   DEFAULT_CONFIG as DEFAULT_APPLE_PAY_CONFIG,
   applePayAvailable,
   startApplePaySessionFrontendPay,
-  getApplePayTokens,
   PaymentToken as ApplePayTokenData,
 } from '~/lib/applePay'
 import {
@@ -241,31 +240,10 @@ export default class ConvertToken extends Vue {
   }
 
   onApplePayButtonClicked() {
-    startApplePaySessionFrontendPay({
-      currencyCode:
-        DEFAULT_APPLE_PAY_CONFIG.shop.shop_localisation.currencyCode,
-      countryCode: DEFAULT_APPLE_PAY_CONFIG.shop.shop_localisation.countryCode,
-      merchantCapabilities: ['supports3DS', 'supportsCredit', 'supportsDebit'],
-      supportedNetworks: DEFAULT_APPLE_PAY_CONFIG.payments.acceptedCardSchemes,
-      shippingType: 'shipping',
-      requiredBillingContactFields: ['postalAddress', 'name', 'phone', 'email'],
-      requiredShippingContactFields: [
-        'postalAddress',
-        'name',
-        'phone',
-        'email',
-      ],
-      total: {
-        label: DEFAULT_APPLE_PAY_CONFIG.shop.shop_name,
-        amount: DEFAULT_APPLE_PAY_CONFIG.shop.product_price,
-        type: 'final',
-      },
-    })
-    const token: ApplePayJS.ApplePayPaymentToken = getApplePayTokens()
-    this.applePayTokenData.version = token.paymentData.version
-    this.applePayTokenData.data = token.paymentData.data
-    this.applePayTokenData.signature = token.paymentData.signature
-    this.applePayTokenData.header = token.paymentData.header
+    startApplePaySessionFrontendPay(
+      DEFAULT_APPLE_PAY_CONFIG.payments,
+      this.applePayTokenData
+    )
   }
 
   onGooglePayButtonClicked() {
