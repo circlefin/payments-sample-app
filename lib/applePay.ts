@@ -66,9 +66,6 @@ function startApplePaySessionBackendPay(
   apiKey: string,
   merchantType: string
 ): void {
-  inputConfig.shopName = config.total.label
-  inputConfig.lineItemType = config.total.type
-  inputConfig.amount = config.total.amount
   const applePaySession: ApplePaySession = new ApplePaySession(6, config)
   handleCommonApplePayEvents(applePaySession, merchantType)
   handleApplePayPaymentOnBackendEvent(applePaySession, apiKey)
@@ -80,6 +77,9 @@ function startApplePaySessionFrontendPay(
   tokenObject: PaymentToken,
   merchantType: string
 ): void {
+  inputConfig.shopName = config.total.label
+  inputConfig.lineItemType = config.total.type
+  inputConfig.amount = config.total.amount
   const applePaySession: ApplePaySession = new ApplePaySession(6, config)
   handleCommonApplePayEvents(applePaySession, merchantType)
   handleApplePayPaymentOnFrontendEvent(applePaySession, tokenObject)
