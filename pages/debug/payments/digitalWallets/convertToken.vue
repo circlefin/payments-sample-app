@@ -9,6 +9,23 @@
             label="Payment Type"
             @change="onPaymentTypeChange()"
           />
+          <v-select
+            v-model="formData.merchantType"
+            :items="
+              displayApplePayForm ? merchantTypeApplePay : merchantTypeGooglePay
+            "
+            label="Merchant Type"
+          />
+          <v-text-field
+            v-if="displayApplePayForm"
+            v-model="applePayFormData.shopName"
+            label="Shop Name"
+          />
+          <v-text-field
+            v-if="displayApplePayForm"
+            v-model="applePayFormData.lineItemType"
+            label="Line Item Type"
+          />
           <v-text-field v-model="formData.amount" label="Amount" />
           <v-btn
             v-if="displayAutogenerateButton"
@@ -31,7 +48,8 @@
           >
           </v-btn>
           <v-p v-if="displayApplePayButton && !isApplePayAvailable">
-            Apple Pay not available.
+            Apple Pay not available on this browser, please make sure you are
+            using Safari.
           </v-p>
           <v-card
             v-if="displayGoogleTokens"
@@ -122,12 +140,15 @@ import ErrorSheet from '~/components/ErrorSheet.vue'
 import { getLive } from '~/lib/apiTarget'
 import {
   DEFAULT_CONFIG as DEFAULT_APPLE_PAY_CONFIG,
+  AUTOGEN_TOKEN_LENGTH as APPLE_PAY_AUTOGEN_TOKEN_LENGTH,
   applePayAvailable,
   startApplePaySessionFrontendPay,
   PaymentToken as ApplePayTokenData,
+  PaymentDetails as ApplePayPaymentDetails,
 } from '~/lib/applePay'
 import {
   DEFAULT_CONFIG as DEFAULT_GOOGLE_PAY_CONFIG,
+  AUTOGEN_TOKEN_LENGTH as GOOGLE_PAY_AUTOGEN_TOKEN_LENGTH,
   getGooglePaymentsClient,
   getPaymentDataRequest,
   onGooglePayLoaded,
@@ -158,13 +179,17 @@ import PaymentData = google.payments.api.PaymentData
 export default class ConvertToken extends Vue {
   formData = {
     type: 'Google Pay',
+    merchantType: 'PayFac',
     amount: '0.00',
   }
 
   googlePayTokenData = {} as GooglePayTokenData
   applePayTokenData = {} as ApplePayTokenData
+  applePayFormData = {} as ApplePayPaymentDetails
 
   paymentType = ['Google Pay', 'Apple Pay']
+  merchantTypeApplePay = ['PayFac', 'Partnership']
+  merchantTypeGooglePay = ['PayFac']
   error = {}
   loading = false
   showError = false
@@ -174,6 +199,7 @@ export default class ConvertToken extends Vue {
   displayGooglePayButton = this.formData.type === 'Google Pay' && getLive()
   displayApplePayButton = this.formData.type === 'Apple Pay' && getLive()
   isApplePayAvailable = false
+  displayApplePayForm = this.formData.type === 'Apple Pay'
 
   buttonOptions: ButtonOptions = {
     onClick: this.onGooglePayButtonClicked,
@@ -200,40 +226,67 @@ export default class ConvertToken extends Vue {
   onPaymentTypeChange() {
     this.displayGoogleTokens = false
     this.displayAppleTokens = false
-    if (getLive()) {
-      switch (this.formData.type) {
-        case 'Google Pay':
+    switch (this.formData.type) {
+      case 'Google Pay':
+        this.displayApplePayForm = false
+        if (getLive()) {
           this.displayGooglePayButton = true
           this.displayApplePayButton = false
-          break
-        case 'Apple Pay':
+        }
+        break
+      case 'Apple Pay':
+        this.displayApplePayForm = true
+        if (getLive()) {
           this.displayGooglePayButton = false
           this.displayApplePayButton = true
           this.isApplePayAvailable = applePayAvailable()
-          break
-      }
+        }
+        break
     }
   }
 
-  randomString() {
-    return Math.random().toString(36).substring(2, 12)
+  randomString(length: number) {
+    // return Math.random().toString(36).substring(2, 10)
+    const chars =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    let str = ''
+    for (let i = 0; i < length; i++) {
+      str += chars.charAt(Math.floor(Math.random() * chars.length))
+    }
+    return str
   }
 
   // autogenerate token info by assigning random strings to each field
   autogenerateTokens() {
     if (this.formData.type === 'Google Pay') {
+      this.displayGoogleTokens = false
       this.googlePayTokenData.protocolVersion = 'ECv1'
-      this.googlePayTokenData.signature = this.randomString()
-      this.googlePayTokenData.signedMessage = this.randomString()
+      this.googlePayTokenData.signature = this.randomString(
+        GOOGLE_PAY_AUTOGEN_TOKEN_LENGTH.signature
+      )
+      this.googlePayTokenData.signedMessage = this.randomString(
+        GOOGLE_PAY_AUTOGEN_TOKEN_LENGTH.signedMessage
+      )
       this.displayGoogleTokens = true
     } else if (this.formData.type === 'Apple Pay') {
+      this.displayGoogleTokens = false
       this.applePayTokenData.version = 'EC_v1'
-      this.applePayTokenData.data = this.randomString()
-      this.applePayTokenData.signature = this.randomString()
+      this.applePayTokenData.data = this.randomString(
+        APPLE_PAY_AUTOGEN_TOKEN_LENGTH.data
+      )
+      this.applePayTokenData.signature = this.randomString(
+        APPLE_PAY_AUTOGEN_TOKEN_LENGTH.signature
+      )
       this.applePayTokenData.header = {
-        ephemeralPublicKey: this.randomString(),
-        publicKeyHash: this.randomString(),
-        transactionId: this.randomString(),
+        ephemeralPublicKey: this.randomString(
+          APPLE_PAY_AUTOGEN_TOKEN_LENGTH.ephemeralPublicKey
+        ),
+        publicKeyHash: this.randomString(
+          APPLE_PAY_AUTOGEN_TOKEN_LENGTH.publicKeyHash
+        ),
+        transactionId: this.randomString(
+          APPLE_PAY_AUTOGEN_TOKEN_LENGTH.transactionId
+        ),
       }
       this.displayAppleTokens = true
     }
@@ -241,14 +294,33 @@ export default class ConvertToken extends Vue {
 
   onApplePayButtonClicked() {
     startApplePaySessionFrontendPay(
-      DEFAULT_APPLE_PAY_CONFIG.payments,
-      this.applePayTokenData
+      {
+        currencyCode: DEFAULT_APPLE_PAY_CONFIG.payments.currencyCode,
+        countryCode: DEFAULT_APPLE_PAY_CONFIG.payments.countryCode,
+        merchantCapabilities:
+          DEFAULT_APPLE_PAY_CONFIG.payments.merchantCapabilities,
+        supportedNetworks: DEFAULT_APPLE_PAY_CONFIG.payments.supportedNetworks,
+        shippingType: DEFAULT_APPLE_PAY_CONFIG.payments.shippingType,
+        requiredBillingContactFields:
+          DEFAULT_APPLE_PAY_CONFIG.payments.requiredBillingContactFields,
+        requiredShippingContactFields:
+          DEFAULT_APPLE_PAY_CONFIG.payments.requiredShippingContactFields,
+        total: {
+          label: this.applePayFormData.shopName,
+          amount: this.formData.amount,
+          type: this.applePayFormData.lineItemType,
+        },
+      },
+      this.applePayTokenData,
+      this.formData.merchantType
     )
+    this.displayAppleTokens = true
   }
 
   onGooglePayButtonClicked() {
     const environment = this.getGooglePayEnvironment()
     const paymentsClient = getGooglePaymentsClient(environment)
+    // TODO: implement merchantType for google pay
     const paymentDataConfig: PaymentRequestConfig = {
       amount: this.formData.amount,
       environment,

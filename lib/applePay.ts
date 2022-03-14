@@ -33,6 +33,14 @@ const DEFAULT_CONFIG = {
   },
 }
 
+const AUTOGEN_TOKEN_LENGTH = {
+  data: 40,
+  signature: 40,
+  ephemeralPublicKey: 40,
+  publicKeyHash: 40,
+  transactionId: 40,
+}
+
 interface PaymentToken {
   version: string
   data: string
@@ -44,27 +52,46 @@ interface PaymentToken {
   }
 }
 
+interface PaymentDetails {
+  shopName: string
+  lineItemType: ApplePayJS.ApplePayLineItemType
+  amount: string
+}
+
+const inputConfig = {} as PaymentDetails
+
 // Starts the Apple Pay session to pay on backend, registers event handlers
-function startApplePaySessionBackendPay(config: any, apiKey: string): void {
+function startApplePaySessionBackendPay(
+  config: any,
+  apiKey: string,
+  merchantType: string
+): void {
+  inputConfig.shopName = config.total.label
+  inputConfig.lineItemType = config.total.type
+  inputConfig.amount = config.total.amount
   const applePaySession: ApplePaySession = new ApplePaySession(6, config)
-  handleCommonApplePayEvents(applePaySession)
+  handleCommonApplePayEvents(applePaySession, merchantType)
   handleApplePayPaymentOnBackendEvent(applePaySession, apiKey)
   applePaySession.begin()
 }
 
 function startApplePaySessionFrontendPay(
   config: any,
-  tokenObject: PaymentToken
+  tokenObject: PaymentToken,
+  merchantType: string
 ): void {
   const applePaySession: ApplePaySession = new ApplePaySession(6, config)
-  handleCommonApplePayEvents(applePaySession)
+  handleCommonApplePayEvents(applePaySession, merchantType)
   handleApplePayPaymentOnFrontendEvent(applePaySession, tokenObject)
   applePaySession.begin()
 }
 
 // Registers event handlers. There are 5 steps associated with Apple Pay, transition between steps triggers event, these events are:
 // onvalidatemerchant, onshippingcontactselected, onshippingmethodselected, completeShippingMethodSelection and onpaymentauthorized.
-function handleCommonApplePayEvents(appleSession: ApplePaySession) {
+function handleCommonApplePayEvents(
+  appleSession: ApplePaySession,
+  merchantType: string
+) {
   // This is the first event that Apple triggers. Validate the Apple Pay Session from endpoint.
   appleSession.onvalidatemerchant = function (
     event: ApplePayJS.ApplePayValidateMerchantEvent
@@ -73,6 +100,7 @@ function handleCommonApplePayEvents(appleSession: ApplePaySession) {
     // complete validation by calling the appleSession.completeMerchantValidation(merchantSession), by passing the json response we got from Apple.
     validateApplePaySession(
       event.validationURL,
+      merchantType,
       (merchantSession: any): void => {
         console.log('received session validation response')
         console.log(merchantSession)
@@ -94,18 +122,15 @@ function handleCommonApplePayEvents(appleSession: ApplePaySession) {
     )
     // Update total and line items based on the shipping methods
     const newTotal: ApplePayJS.ApplePayLineItem = {
-      type: 'final',
-      label: DEFAULT_CONFIG.payments.total.label,
-      amount: calculateTotal(
-        DEFAULT_CONFIG.payments.total.amount,
-        shipping.methods[0].amount
-      ),
+      type: inputConfig.lineItemType,
+      label: inputConfig.shopName,
+      amount: calculateTotal(inputConfig.amount, shipping.methods[0].amount),
     }
     const newLineItems: ApplePayJS.ApplePayLineItem[] = [
       {
-        type: 'final',
+        type: inputConfig.lineItemType,
         label: 'Subtotal',
-        amount: DEFAULT_CONFIG.payments.total.amount,
+        amount: inputConfig.amount,
       },
       {
         type: 'final',
@@ -124,21 +149,18 @@ function handleCommonApplePayEvents(appleSession: ApplePaySession) {
   // This method is triggered when a user select one of the shipping options. Update transaction ammounts on change.
   appleSession.onshippingmethodselected = function (event) {
     const newTotal: ApplePayJS.ApplePayLineItem = {
-      type: 'final',
-      label: DEFAULT_CONFIG.payments.total.label,
-      amount: calculateTotal(
-        DEFAULT_CONFIG.payments.total.amount,
-        event.shippingMethod.amount
-      ),
+      type: inputConfig.lineItemType,
+      label: inputConfig.shopName,
+      amount: calculateTotal(inputConfig.amount, event.shippingMethod.amount),
     }
     const newLineItems: ApplePayJS.ApplePayLineItem[] = [
       {
-        type: 'final',
+        type: inputConfig.lineItemType,
         label: 'Subtotal',
-        amount: DEFAULT_CONFIG.payments.total.amount,
+        amount: inputConfig.amount,
       },
       {
-        type: 'final',
+        type: inputConfig.lineItemType,
         label: event.shippingMethod.label,
         amount: event.shippingMethod.amount,
       },
@@ -191,6 +213,7 @@ function handleApplePayPaymentOnFrontendEvent(
     tokenObject.data = tokens.paymentData.data
     tokenObject.signature = tokens.paymentData.signature
     tokenObject.header = tokens.paymentData.header
+    appleSession.completePayment(ApplePaySession.STATUS_SUCCESS)
   }
 }
 
@@ -228,12 +251,17 @@ function calculateTotal(subtotal: string, shipping: string) {
 // @param {string} appleUrl The Apple Pay validation URL generated by Apple
 // @param {function} callback Callback function used to return the server call outcome
 // @return {object} The session payload
-function validateApplePaySession(appleUrl: string, callback: any): void {
+function validateApplePaySession(
+  appleUrl: string,
+  merchantType: string,
+  callback: any
+): void {
   axios
     .post(
       BACKEND_URL_VALIDATE_SESSION,
       {
         appleUrl,
+        merchantType,
       },
       {
         headers: { 'Access-Control-Allow-Origin': '*' },
@@ -245,9 +273,12 @@ function validateApplePaySession(appleUrl: string, callback: any): void {
 }
 
 function applePayAvailable(): boolean {
-  return ApplePaySession && ApplePaySession.canMakePayments()
-  // alternatively, our merchant identifier should be `merchant.bigtimetestmerchant.com`
-  // canMakePaymentsWithActiveCard(merchantIdentifier: string):
+  try {
+    return ApplePaySession && ApplePaySession.canMakePayments()
+  } catch (error) {
+    console.log('Failed to get apple session validity ' + error)
+    return false
+  }
 }
 
 export {
@@ -256,4 +287,6 @@ export {
   DEFAULT_CONFIG,
   applePayAvailable,
   PaymentToken,
+  PaymentDetails,
+  AUTOGEN_TOKEN_LENGTH,
 }

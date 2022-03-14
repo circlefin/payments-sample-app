@@ -41,6 +41,11 @@ const DEFAULT_CONFIG = {
   },
 }
 
+const AUTOGEN_TOKEN_LENGTH = {
+  signature: 40,
+  signedMessage: 400,
+}
+
 interface PaymentToken {
   protocolVersion: string
   signature: string
@@ -135,4 +140,5 @@ export {
   PaymentToken,
   PaymentRequestConfig,
   DEFAULT_CONFIG,
+  AUTOGEN_TOKEN_LENGTH,
 }

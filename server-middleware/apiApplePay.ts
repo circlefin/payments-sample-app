@@ -3,6 +3,8 @@ import axios from 'axios'
 import express from 'express'
 import { v4 as uuidv4 } from 'uuid'
 import {
+  partnershipMerchantIdentityCertificate,
+  partnershipMerchantIdentityKey,
   payfacMerchantIdentityCertificate,
   payfacMerchantIdentityKey,
 } from './applePaySettings'
@@ -22,13 +24,19 @@ const DISPLAY_NAME = 'Circle Apple Pay'
 app.post('/validate', (req, res) => {
   req.on('data', (data) => {
     // data is in byte array so first transform it to string and then parse it to object, and then take it's property appleUrl
-    const { appleUrl } = JSON.parse(data.toString())
+    const { appleUrl, merchantType } = JSON.parse(data.toString())
     console.log(JSON.parse(data.toString()).appleUrl)
 
     const httpsAgent = new https.Agent({
       rejectUnauthorized: false,
-      cert: payfacMerchantIdentityCertificate, // pem apple cert
-      key: payfacMerchantIdentityKey, // key apple
+      cert:
+        merchantType === 'PayFac'
+          ? payfacMerchantIdentityCertificate
+          : partnershipMerchantIdentityCertificate, // pem apple cert
+      key:
+        merchantType === 'PayFac'
+          ? payfacMerchantIdentityKey
+          : partnershipMerchantIdentityKey, // key apple
     })
     axios
       .post(
@@ -125,7 +133,7 @@ export interface BasePaymentPayload {
 }
 
 function createPaymentPayload(sourceId: string): BasePaymentPayload {
-  const payload: BasePaymentPayload = {
+  return {
     idempotencyKey: uuidv4(),
     amount: {
       amount: '0.5',
@@ -143,7 +151,6 @@ function createPaymentPayload(sourceId: string): BasePaymentPayload {
       ipAddress: '172.33.222.1',
     },
   }
-  return payload
 }
 
 function createPayment(payload: BasePaymentPayload, apiKey: string) {
