@@ -202,7 +202,7 @@ function handleApplePayPaymentOnBackendEvent(
 function handleApplePayPaymentOnFrontendEvent(
   appleSession: ApplePaySession,
   tokenObject: PaymentToken,
-  callback: any
+  whenDone: any
 ) {
   appleSession.onpaymentauthorized = function (
     event: ApplePayJS.ApplePayPaymentAuthorizedEvent
@@ -216,7 +216,7 @@ function handleApplePayPaymentOnFrontendEvent(
     tokenObject.signature = tokens.paymentData.signature
     tokenObject.header = tokens.paymentData.header
     appleSession.completePayment(ApplePaySession.STATUS_SUCCESS)
-    callback()
+    whenDone()
   }
 }
 
