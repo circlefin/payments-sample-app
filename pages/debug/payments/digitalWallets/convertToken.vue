@@ -292,6 +292,10 @@ export default class ConvertToken extends Vue {
     }
   }
 
+  displayAppleTokensCallback() {
+    this.displayAppleTokens = true
+  }
+
   onApplePayButtonClicked() {
     startApplePaySessionFrontendPay(
       {
@@ -312,9 +316,9 @@ export default class ConvertToken extends Vue {
         },
       },
       this.applePayTokenData,
-      this.formData.merchantType
+      this.formData.merchantType,
+      this.displayAppleTokensCallback()
     )
-    this.displayAppleTokens = true
   }
 
   onGooglePayButtonClicked() {
