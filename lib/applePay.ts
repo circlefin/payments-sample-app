@@ -75,14 +75,15 @@ function startApplePaySessionBackendPay(
 function startApplePaySessionFrontendPay(
   config: any,
   tokenObject: PaymentToken,
-  merchantType: string
+  merchantType: string,
+  whenDone: any
 ): void {
   inputConfig.shopName = config.total.label
   inputConfig.lineItemType = config.total.type
   inputConfig.amount = config.total.amount
   const applePaySession: ApplePaySession = new ApplePaySession(6, config)
   handleCommonApplePayEvents(applePaySession, merchantType)
-  handleApplePayPaymentOnFrontendEvent(applePaySession, tokenObject)
+  handleApplePayPaymentOnFrontendEvent(applePaySession, tokenObject, whenDone)
   applePaySession.begin()
 }
 
@@ -200,7 +201,8 @@ function handleApplePayPaymentOnBackendEvent(
 
 function handleApplePayPaymentOnFrontendEvent(
   appleSession: ApplePaySession,
-  tokenObject: PaymentToken
+  tokenObject: PaymentToken,
+  whenDone: any
 ) {
   appleSession.onpaymentauthorized = function (
     event: ApplePayJS.ApplePayPaymentAuthorizedEvent
@@ -214,6 +216,7 @@ function handleApplePayPaymentOnFrontendEvent(
     tokenObject.signature = tokens.paymentData.signature
     tokenObject.header = tokens.paymentData.header
     appleSession.completePayment(ApplePaySession.STATUS_SUCCESS)
+    whenDone()
   }
 }
 
