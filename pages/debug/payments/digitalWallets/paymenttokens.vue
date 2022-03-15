@@ -21,9 +21,10 @@
             v-model="applePayFormData.shopName"
             label="Shop Name"
           />
-          <v-text-field
+          <v-select
             v-if="displayApplePayForm"
             v-model="applePayFormData.lineItemType"
+            :items="lineItemTypeApplePay"
             label="Line Item Type"
           />
           <v-text-field v-model="formData.amount" label="Amount" />
@@ -190,6 +191,7 @@ export default class ConvertToken extends Vue {
   paymentType = ['Google Pay', 'Apple Pay']
   merchantTypeApplePay = ['PayFac', 'Partnership']
   merchantTypeGooglePay = ['PayFac']
+  lineItemTypeApplePay = ['final', 'pending']
   error = {}
   loading = false
   showError = false
