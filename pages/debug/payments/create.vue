@@ -12,7 +12,7 @@
           <v-text-field v-model="formData.amount" label="Amount" />
 
           <v-checkbox
-            v-if="formData.sourceType == 'card'"
+            v-if="formData.sourceType != 'ach'"
             v-model="formData.autoCapture"
             label="Auto capture"
           />
