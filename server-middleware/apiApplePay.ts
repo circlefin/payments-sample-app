@@ -9,10 +9,13 @@ import {
   payfacMerchantIdentityKey,
 } from './applePaySettings'
 import { apiHostname } from './serverEnv'
+import { getIsStaging } from '~/lib/apiTarget'
 
 const app = express()
 const MERCHANT_IDENTIFIER = 'merchant.bigtimetestmerchant.com'
-const DOMAIN_NAME = 'sample-staging.circle.com'
+const DOMAIN_NAME = getIsStaging()
+  ? 'sample-staging.circle.com'
+  : 'sample.circle.com'
 const DISPLAY_NAME = 'Circle Apple Pay'
 
 // Steps:
@@ -82,7 +85,9 @@ export interface TokensPayload {
 }
 
 const instance = axios.create({
-  baseURL: 'https://api-staging.circle.com',
+  baseURL: getIsStaging()
+    ? 'https://api-staging.circle.com'
+    : 'https://api.circle.com',
 })
 
 function sendToken(token: ApplePayJS.ApplePayPaymentToken, apiKey: string) {
