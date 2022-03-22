@@ -59,7 +59,12 @@ app.post('/validate', (req, res) => {
         res.send(a.data)
       })
       .catch((a) => {
-        res.send({ data: null })
+        res.send({
+          message: a.message,
+          responseStatus: a.response.status,
+          responseData: a.response.data,
+          responseHeaders: a.response.headers,
+        })
         console.log('Error occured during session validation')
         console.log(a.message)
         console.log(a.response.status)
