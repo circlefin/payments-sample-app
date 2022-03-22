@@ -11,6 +11,8 @@ import {
   payfacMerchantId,
 } from './applePaySettings'
 import { apiHostname, domainName } from './serverEnv'
+import { encoding } from 'openpgp'
+import getCheckSum = encoding.armor.getCheckSum
 
 const app = express()
 const DISPLAY_NAME = 'Circle Apple Pay'
@@ -25,17 +27,19 @@ app.post('/validate', (req, res) => {
   req.on('data', (data) => {
     // data is in byte array so first transform it to string and then parse it to object, and then take it's property appleUrl
     const { appleUrl, merchantType } = JSON.parse(data.toString())
+    const cert =
+      merchantType === 'PayFac'
+        ? payfacMerchantIdentityCertificate
+        : partnershipMerchantIdentityCertificate // pem apple cert
+    const key =
+      merchantType === 'PayFac'
+        ? payfacMerchantIdentityKey
+        : partnershipMerchantIdentityKey
 
     const httpsAgent = new https.Agent({
       rejectUnauthorized: false,
-      cert:
-        merchantType === 'PayFac'
-          ? payfacMerchantIdentityCertificate
-          : partnershipMerchantIdentityCertificate, // pem apple cert
-      key:
-        merchantType === 'PayFac'
-          ? payfacMerchantIdentityKey
-          : partnershipMerchantIdentityKey, // key apple
+      cert,
+      key,
     })
     const requestData = {
       merchantIdentifier:
@@ -55,9 +59,14 @@ app.post('/validate', (req, res) => {
         res.send({
           errorMessage: a.message,
           request: requestData,
+          merchantType,
           responseStatus: a.response.status,
           responseData: a.response.data,
           responseHeaders: a.response.headers,
+          checksumCert: getCheckSum(cert),
+          checksumKey: getCheckSum(key),
+          appleUrl,
+          displayName: DISPLAY_NAME,
         })
       })
   })
