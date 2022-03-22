@@ -11,8 +11,6 @@ import {
   payfacMerchantId,
 } from './applePaySettings'
 import { apiHostname, domainName } from './serverEnv'
-import { encoding } from 'openpgp'
-import getCheckSum = encoding.armor.getCheckSum
 
 const app = express()
 const DISPLAY_NAME = 'Circle Apple Pay'
@@ -63,8 +61,6 @@ app.post('/validate', (req, res) => {
           responseStatus: a.response.status,
           responseData: a.response.data,
           responseHeaders: a.response.headers,
-          checksumCert: getCheckSum(cert),
-          checksumKey: getCheckSum(key),
           appleUrl,
           displayName: DISPLAY_NAME,
         })
