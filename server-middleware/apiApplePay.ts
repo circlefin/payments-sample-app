@@ -25,7 +25,6 @@ app.post('/validate', (req, res) => {
   req.on('data', (data) => {
     // data is in byte array so first transform it to string and then parse it to object, and then take it's property appleUrl
     const { appleUrl, merchantType } = JSON.parse(data.toString())
-    console.log(JSON.parse(data.toString()).appleUrl)
 
     const httpsAgent = new https.Agent({
       rejectUnauthorized: false,
@@ -54,7 +53,6 @@ app.post('/validate', (req, res) => {
         }
       )
       .then((a) => {
-        console.log('Successfully validated apple pay session')
         // return the json received from Apple Pay server unmodified
         res.send(a.data)
       })
@@ -65,11 +63,6 @@ app.post('/validate', (req, res) => {
           responseData: a.response.data,
           responseHeaders: a.response.headers,
         })
-        console.log('Error occured during session validation')
-        console.log(a.message)
-        console.log(a.response.status)
-        console.log(a.response.data)
-        console.log(a.response.headers)
       })
   })
 })
@@ -187,7 +180,6 @@ app.post('/pay', (req, res) => {
       details: details.token,
     }
 
-    console.log(JSON.stringify(details))
     sendToken(details.token, apiKey)
       .then((response) => {
         createPayment(createPaymentPayload(response.data.id), apiKey)
