@@ -25,43 +25,45 @@ app.post('/validate', (req, res) => {
   req.on('data', (data) => {
     // data is in byte array so first transform it to string and then parse it to object, and then take it's property appleUrl
     const { appleUrl, merchantType } = JSON.parse(data.toString())
+    const cert =
+      merchantType === 'PayFac'
+        ? payfacMerchantIdentityCertificate
+        : partnershipMerchantIdentityCertificate // pem apple cert
+    const key =
+      merchantType === 'PayFac'
+        ? payfacMerchantIdentityKey
+        : partnershipMerchantIdentityKey
 
     const httpsAgent = new https.Agent({
       rejectUnauthorized: false,
-      cert:
-        merchantType === 'PayFac'
-          ? payfacMerchantIdentityCertificate
-          : partnershipMerchantIdentityCertificate, // pem apple cert
-      key:
-        merchantType === 'PayFac'
-          ? payfacMerchantIdentityKey
-          : partnershipMerchantIdentityKey, // key apple
+      cert,
+      key,
     })
+    const requestData = {
+      merchantIdentifier:
+        merchantType === 'PayFac' ? payfacMerchantId : partnershipMerchantId,
+      domainName,
+      displayName: DISPLAY_NAME,
+    }
     axios
-      .post(
-        appleUrl,
-        {
-          merchantIdentifier:
-            merchantType === 'PayFac'
-              ? payfacMerchantId
-              : partnershipMerchantId,
-          domainName,
-          displayName: DISPLAY_NAME,
-        },
-        {
-          httpsAgent,
-        }
-      )
+      .post(appleUrl, requestData, {
+        httpsAgent,
+      })
       .then((a) => {
         // return the json received from Apple Pay server unmodified
         res.send(a.data)
       })
       .catch((a) => {
         res.send({
-          message: a.message,
+          errorMessage: a.message,
+          request: requestData,
+          merchantType,
           responseStatus: a.response.status,
           responseData: a.response.data,
           responseHeaders: a.response.headers,
+          appleUrl,
+          displayName: DISPLAY_NAME,
+          domainName,
         })
       })
   })
