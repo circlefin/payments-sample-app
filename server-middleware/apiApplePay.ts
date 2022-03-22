@@ -37,28 +37,24 @@ app.post('/validate', (req, res) => {
           ? payfacMerchantIdentityKey
           : partnershipMerchantIdentityKey, // key apple
     })
+    const requestData = {
+      merchantIdentifier:
+        merchantType === 'PayFac' ? payfacMerchantId : partnershipMerchantId,
+      domainName,
+      displayName: DISPLAY_NAME,
+    }
     axios
-      .post(
-        appleUrl,
-        {
-          merchantIdentifier:
-            merchantType === 'PayFac'
-              ? payfacMerchantId
-              : partnershipMerchantId,
-          domainName,
-          displayName: DISPLAY_NAME,
-        },
-        {
-          httpsAgent,
-        }
-      )
+      .post(appleUrl, requestData, {
+        httpsAgent,
+      })
       .then((a) => {
         // return the json received from Apple Pay server unmodified
         res.send(a.data)
       })
       .catch((a) => {
         res.send({
-          message: a.message,
+          errorMessage: a.message,
+          request: requestData,
           responseStatus: a.response.status,
           responseData: a.response.data,
           responseHeaders: a.response.headers,
