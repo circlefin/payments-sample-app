@@ -6,6 +6,9 @@ api-sandbox.circle.com
 api-smokebox.circle.com
 */
 const apiHostname: string =
-  process.env.WALLETS_API == null ? process.env.WALLETS_API! : ''
+  process.env.WALLETS_API != null ? process.env.WALLETS_API! : ''
 
-export { apiHostname }
+const domainName: string =
+  process.env.DOMAIN_NAME != null ? process.env.DOMAIN_NAME! : ''
+
+export { apiHostname, domainName }
