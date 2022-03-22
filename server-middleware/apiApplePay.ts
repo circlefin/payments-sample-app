@@ -63,6 +63,7 @@ app.post('/validate', (req, res) => {
           responseHeaders: a.response.headers,
           appleUrl,
           displayName: DISPLAY_NAME,
+          domainName,
         })
       })
   })
