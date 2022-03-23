@@ -24,7 +24,11 @@
             label="Verification Method"
           />
 
-          <v-text-field v-if="cvvRequired" v-model="formData.cvv" label="CVV" />
+          <v-text-field
+            v-if="showCvv"
+            v-model="formData.cvv"
+            :label="`${cvvLabel}`"
+          />
 
           <v-text-field
             v-if="formData.sourceType != 'token'"
@@ -110,7 +114,8 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 })
 export default class CreatePaymentClass extends Vue {
   isMarketplace!: boolean
-  cvvRequired = true
+  showCvv = true
+  cvvLabel = 'CVV'
   formData = {
     sourceId: '',
     sourceType: 'card', // Default to card
@@ -145,10 +150,15 @@ export default class CreatePaymentClass extends Vue {
   @Watch('formData.verification', { immediate: true })
   onChildChanged(val: string) {
     if (val === 'none') {
-      this.cvvRequired = false
+      this.showCvv = false
     }
     if (val === 'cvv') {
-      this.cvvRequired = true
+      this.showCvv = true
+      this.cvvLabel = 'CVV'
+    }
+    if (val === 'three_d_secure') {
+      this.showCvv = true
+      this.cvvLabel = 'CVV (Optional)'
     }
   }
 
@@ -198,7 +208,11 @@ export default class CreatePaymentClass extends Vue {
     }
 
     try {
-      if (this.cvvRequired) {
+      if (
+        this.formData.verification === 'cvv' ||
+        (this.formData.verification === 'three_d_secure' &&
+          this.formData.cvv !== '')
+      ) {
         const { cvv } = this.formData
         const cardDetails = { cvv }
 
