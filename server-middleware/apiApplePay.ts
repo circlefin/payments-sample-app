@@ -56,14 +56,9 @@ app.post('/validate', (req, res) => {
       .catch((a) => {
         res.send({
           errorMessage: a.message,
-          request: requestData,
-          merchantType,
           responseStatus: a.response.status,
           responseData: a.response.data,
           responseHeaders: a.response.headers,
-          appleUrl,
-          displayName: DISPLAY_NAME,
-          domainName,
         })
       })
   })
