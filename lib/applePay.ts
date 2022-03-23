@@ -108,7 +108,6 @@ function handleCommonApplePayEvents(
       merchantType,
       (merchantSession: any): void => {
         console.log('received session validation response')
-        console.log(merchantSession)
         if (merchantSession != null) {
           appleSession.completeMerchantValidation(merchantSession)
         }
