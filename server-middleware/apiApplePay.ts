@@ -57,8 +57,6 @@ app.post('/validate', (req, res) => {
         res.send({
           errorMessage: a.message,
           responseStatus: a.response.status,
-          responseData: a.response.data,
-          responseHeaders: a.response.headers,
         })
       })
   })
