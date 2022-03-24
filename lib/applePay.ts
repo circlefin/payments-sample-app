@@ -1,13 +1,10 @@
 import axios from 'axios'
-import { getIsStaging } from '~/lib/apiTarget'
+import { domainName } from '~/server-middleware/serverEnv'
 
 // endpoints are hardcoded as they are used only in staging
-const BACKEND_URL_VALIDATE_SESSION = getIsStaging()
-  ? 'https://sample-staging.circle.com/api/applepay/validate'
-  : 'https://sample.circle.com/api/applepay/validate'
-const BACKEND_URL_PAY = getIsStaging()
-  ? 'https://sample-staging.circle.com/api/applepay/pay'
-  : 'https://sample.circle.com/api/applepay/pay'
+const BACKEND_URL_VALIDATE_SESSION =
+  'https://' + domainName + '/api/applepay/validate'
+const BACKEND_URL_PAY = 'https://' + domainName + '/api/applepay/pay'
 
 // default configuration used in staging
 const DEFAULT_CONFIG = {
