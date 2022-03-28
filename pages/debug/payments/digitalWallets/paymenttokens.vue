@@ -10,6 +10,7 @@
             @change="onPaymentTypeChange()"
           />
           <v-select
+            v-if="notLiveEnv"
             v-model="formData.merchantType"
             :items="
               displayApplePayForm ? merchantTypeApplePay : merchantTypeGooglePay
@@ -29,7 +30,7 @@
           />
           <v-text-field v-model="formData.amount" label="Amount" />
           <v-btn
-            v-if="displayAutogenerateButton"
+            v-if="notLiveEnv"
             outlined
             small
             depressed
@@ -197,7 +198,7 @@ export default class ConvertToken extends Vue {
   showError = false
   displayGoogleTokens = false
   displayAppleTokens = false
-  displayAutogenerateButton = !getLive()
+  notLiveEnv = !getLive()
   displayGooglePayButton = this.formData.type === 'Google Pay' && getLive()
   displayApplePayButton = this.formData.type === 'Apple Pay' && getLive()
   isApplePayAvailable = false
