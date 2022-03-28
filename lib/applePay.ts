@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getIsStaging } from '~/lib/apiTarget'
+import { getAPIHostname, getIsStaging } from '~/lib/apiTarget'
 
 // endpoints are hardcoded as they are used only in staging
 const BACKEND_URL_VALIDATE_SESSION = getIsStaging()
@@ -82,6 +82,7 @@ function startApplePaySessionFrontendPay(
   merchantType: string,
   whenDone: any
 ): void {
+  console.log(getAPIHostname())
   inputConfig.shopName = config.total.label
   inputConfig.lineItemType = config.total.type
   inputConfig.amount = config.total.amount
