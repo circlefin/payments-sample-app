@@ -82,7 +82,7 @@ const instance = axios.create({
 })
 
 function sendToken(token: ApplePayJS.ApplePayPaymentToken, apiKey: string) {
-  const url = '/v1/paymenttokens'
+  const url = '/v1/paymentTokens'
 
   const config = {
     headers: {
