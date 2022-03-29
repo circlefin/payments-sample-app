@@ -10,7 +10,7 @@
             @change="onPaymentTypeChange()"
           />
           <v-select
-            v-if="getLive"
+            v-if="isLive"
             v-model="formData.merchantType"
             :items="
               displayApplePayForm ? merchantTypeApplePay : merchantTypeGooglePay
@@ -30,7 +30,7 @@
           />
           <v-text-field v-model="formData.amount" label="Amount" />
           <v-btn
-            v-if="!getLive"
+            v-if="!isLive"
             outlined
             small
             depressed
@@ -90,22 +90,6 @@
               Header: {{ applePayTokenData.header }}
             </p>
           </v-card>
-          <!-- 3 text fields below for debugging only - to be removed once resolved -->
-          <v-text-field
-            v-if="displayGoogleTokens"
-            v-model="googlePayTokenData.protocolVersion"
-            label="Protocol Version"
-          />
-          <v-text-field
-            v-if="displayGoogleTokens"
-            v-model="googlePayTokenData.signature"
-            label="Signature"
-          />
-          <v-text-field
-            v-if="displayGoogleTokens"
-            v-model="googlePayTokenData.signedMessage"
-            label="Signed Message"
-          />
           <v-btn
             v-if="displayGoogleTokens || displayAppleTokens"
             depressed
@@ -202,6 +186,7 @@ export default class ConvertToken extends Vue {
   displayApplePayButton = this.formData.type === 'Apple Pay' && getLive()
   isApplePayAvailable = false
   displayApplePayForm = this.formData.type === 'Apple Pay'
+  isLive = getLive()
 
   buttonOptions: ButtonOptions = {
     onClick: this.onGooglePayButtonClicked,
