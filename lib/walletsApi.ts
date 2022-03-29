@@ -110,7 +110,7 @@ function getMasterWallet() {
  * @param {UUID} idempotencyKey
  */
 function convertToken(type: string, tokenData: Object) {
-  const url = '/v1/paymenttokens'
+  const url = '/v1/paymentTokens'
   const payload = {
     type,
     tokenData,

@@ -426,8 +426,8 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/payments/balances/fetch',
     },
     {
-      title: 'POST /paymenttokens',
-      to: '/debug/payments/digitalWallets/paymenttokens',
+      title: 'POST /paymentTokens',
+      to: '/debug/payments/digitalWallets/paymentTokens',
     },
   ]
 
