@@ -5,6 +5,7 @@ import { getAPIHostname } from './apiTarget'
 
 export interface CreateMockPushPaymentPayload {
   trackingRef: string
+  accountNumber: string
   amount: {
     amount: string
     currency: string
@@ -67,6 +68,15 @@ function createMockWirePayment(payload: CreateMockPushPaymentPayload) {
 }
 
 /**
+ * Trigger a mock sen payment
+ * @param {*} payload
+ */
+function createMockSenPayment(payload: CreateMockPushPaymentPayload) {
+  const url = '/v1/mocks/payments/sen'
+  return instance.post(url, payload)
+}
+
+/**
  * Trigger a mock sepa payment
  * @param {*} payload
  */
@@ -96,6 +106,7 @@ function createMockACHBankAccount(payload: CreateMockACHBankAccount) {
 export default {
   getInstance,
   createMockWirePayment,
+  createMockSenPayment,
   createMockSEPAPayment,
   createMockChargeback,
   createMockACHBankAccount,

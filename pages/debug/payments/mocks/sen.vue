@@ -4,7 +4,16 @@
       <v-col cols="12" md="4">
         <v-form>
           <v-text-field v-model="formData.trackingRef" label="Tracking Ref" />
+          <v-text-field
+            v-model="formData.accountNumber"
+            label="Account Number"
+          />
           <v-text-field v-model="formData.amount" label="Amount" />
+          <v-select
+            v-model="formData.currency"
+            :items="currencyTypes"
+            label="Currency"
+          />
           <v-btn
             v-if="isSandbox"
             depressed
@@ -53,12 +62,15 @@ import { CreateMockPushPaymentPayload } from '@/lib/mocksApi'
     }),
   },
 })
-export default class CreateMockIncomingWireClass extends Vue {
+export default class CreateMockIncomingSenClass extends Vue {
   formData = {
     trackingRef: '',
+    accountNumber: '',
     amount: '0.00',
+    currency: '',
   }
 
+  currencyTypes = ['USD', 'EUR']
   isSandbox: Boolean = !getLive()
   required = [(v: string) => !!v || 'Field is required']
   error = {}
@@ -73,16 +85,16 @@ export default class CreateMockIncomingWireClass extends Vue {
     this.loading = true
     const amountDetail = {
       amount: this.formData.amount,
-      currency: 'USD',
+      currency: this.formData.currency,
     }
     const payload: CreateMockPushPaymentPayload = {
       trackingRef: this.formData.trackingRef,
-      accountNumber: '',
+      accountNumber: this.formData.accountNumber,
       amount: amountDetail,
     }
 
     try {
-      await this.$mocksApi.createMockWirePayment(payload)
+      await this.$mocksApi.createMockSenPayment(payload)
     } catch (error) {
       this.error = error
       this.showError = true
