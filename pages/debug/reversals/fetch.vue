@@ -70,14 +70,7 @@ export default class FetchReversalsClass extends Vue {
     pageAfter: '',
   }
 
-  status = [
-    'pending',
-    'action_required',
-    'confirmed',
-    'paid',
-    'failed',
-    'reversed',
-  ]
+  status = ['pending', 'action_required', 'confirmed', 'paid', 'failed']
 
   error = {}
   loading = false
