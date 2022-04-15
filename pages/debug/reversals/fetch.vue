@@ -4,11 +4,7 @@
       <v-col cols="12" md="4">
         <v-form>
           <header>Optional filter params:</header>
-          <v-select
-            v-model="formData.status"
-            :items="status"
-            label="Status"
-          />
+          <v-select v-model="formData.status" :items="status" label="Status" />
           <v-text-field v-model="formData.from" label="From" />
           <v-text-field v-model="formData.to" label="To" />
           <v-text-field v-model="formData.pageSize" label="PageSize" />
