@@ -5,6 +5,10 @@
         <v-form>
           <header>Optional filter params:</header>
           <v-text-field v-model="formData.settlementId" label="Settlement ID" />
+          <v-text-field
+            v-model="formData.paymentIntentId"
+            label="Payment Intent ID"
+          />
           <v-text-field v-model="formData.from" label="From" />
           <v-text-field v-model="formData.to" label="To" />
           <v-text-field v-model="formData.pageSize" label="PageSize" />
@@ -59,6 +63,7 @@ export default class FetchPaymentsClass extends Vue {
   // data
   formData = {
     settlementId: '',
+    paymentIntentId: '',
     from: '',
     to: '',
     pageSize: '',
@@ -87,6 +92,7 @@ export default class FetchPaymentsClass extends Vue {
     try {
       await this.$paymentsApi.getPayments(
         this.formData.settlementId,
+        this.formData.paymentIntentId,
         this.formData.from,
         this.formData.to,
         this.formData.pageBefore,
