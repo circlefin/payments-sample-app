@@ -14,11 +14,14 @@
           />
 
           <v-text-field
+            v-model="formData.blockchain"
+            label="Payment Intent Blockchain"
+          />
+
+          <v-text-field
             v-model="formData.settlementCurrency"
             label="Settlement Currency"
           />
-
-          <v-text-field v-model="formData.blockchain" label="Blockchain" />
 
           <v-text-field v-model="formData.expiresOn" label="Expires On" />
 
