@@ -123,7 +123,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import RequestInfo from '~/components/RequestInfo.vue'
 import ErrorSheet from '~/components/ErrorSheet.vue'
-import { getLive } from '~/lib/apiTarget'
+import { getLive, getIsStaging } from '~/lib/apiTarget'
 import {
   DEFAULT_CONFIG as DEFAULT_APPLE_PAY_CONFIG,
   AUTOGEN_TOKEN_LENGTH as APPLE_PAY_AUTOGEN_TOKEN_LENGTH,
@@ -193,12 +193,11 @@ export default class ConvertToken extends Vue {
     allowedPaymentMethods: [DEFAULT_GOOGLE_PAY_CONFIG.allowedPaymentMethods],
   }
 
-  // Production environment is not yet enabled for googlepay - will uncomment lines 129-131 when it is
+  // Sample app prod env has not been approved by google so need to return test for prod environment for now
   getGooglePayEnvironment() {
-    return DEFAULT_GOOGLE_PAY_CONFIG.environment.test
-    // return getLive() && !getIsStaging()
-    //   ? DEFAULT_GOOGLE_PAY_CONFIG.environment.prod
-    //   : DEFAULT_GOOGLE_PAY_CONFIG.environment.test
+    return getIsStaging()
+      ? DEFAULT_GOOGLE_PAY_CONFIG.environment.prod
+      : DEFAULT_GOOGLE_PAY_CONFIG.environment.test
   }
 
   mounted() {
