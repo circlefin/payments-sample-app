@@ -53,6 +53,7 @@ export default {
     '~/plugins/transfersApi',
     '~/plugins/addressesApi',
     '~/plugins/payoutsApi',
+    '~/plugins/paymentIntentsApi',
     '~/plugins/wiresApi',
     '~/plugins/sepaApi',
     '~/plugins/achApi',
