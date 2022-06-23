@@ -195,7 +195,7 @@ export default class ConvertToken extends Vue {
 
   // Sample app prod env has not been approved by google so need to return test for prod environment for now
   getGooglePayEnvironment() {
-    return getLive() && getIsStaging()
+    return getIsStaging()
       ? DEFAULT_GOOGLE_PAY_CONFIG.environment.prod
       : DEFAULT_GOOGLE_PAY_CONFIG.environment.test
   }
