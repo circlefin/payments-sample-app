@@ -137,6 +137,32 @@
           </v-list-item>
         </v-list-group>
 
+        <v-list-group v-if="!isMarketplace">
+          <template #activator>
+            <v-list-item-title>Payment Intents APIs</v-list-item-title>
+          </template>
+
+          <v-list-item to="/debug/paymentIntents" router exact>
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2">
+                Overview
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            v-for="(item, i) in paymentIntentsLinks"
+            :key="`paymentIntentsLinks-${i}`"
+            :to="item.to"
+            router
+            exact
+          >
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2" v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+
         <v-list-group>
           <template #activator>
             <v-list-item-title>Digital Dollar Accounts APIs</v-list-item-title>
@@ -590,6 +616,25 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /returns',
       to: '/debug/returns/fetch',
+    },
+  ]
+
+  paymentIntentsLinks = [
+    {
+      title: 'POST /paymentIntents',
+      to: '/debug/paymentIntents/create',
+    },
+    {
+      title: 'GET /paymentIntents',
+      to: '/debug/paymentIntents/fetch',
+    },
+    {
+      title: 'GET /paymentIntents/{id}',
+      to: '/debug/paymentIntents/details',
+    },
+    {
+      title: 'POST /paymentIntents/{id}/expire',
+      to: '/debug/paymentIntents/expire',
     },
   ]
 

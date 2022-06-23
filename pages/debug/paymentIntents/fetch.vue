@@ -4,10 +4,13 @@
       <v-col cols="12" md="4">
         <v-form>
           <header>Optional filter params:</header>
-          <v-text-field v-model="formData.settlementId" label="Settlement ID" />
           <v-text-field
-            v-model="formData.paymentIntentId"
-            label="Payment Intent ID"
+            v-model="formData.status"
+            label="Payment Intent Status"
+          />
+          <v-text-field
+            v-model="formData.context"
+            label="Payment Intent Context"
           />
           <v-text-field v-model="formData.from" label="From" />
           <v-text-field v-model="formData.to" label="To" />
@@ -45,7 +48,6 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
-
 @Component({
   components: {
     RequestInfo,
@@ -59,11 +61,11 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
     }),
   },
 })
-export default class FetchPaymentsClass extends Vue {
+export default class FetchPaymentIntentsClass extends Vue {
   // data
   formData = {
-    settlementId: '',
-    paymentIntentId: '',
+    status: '',
+    context: '',
     from: '',
     to: '',
     pageSize: '',
@@ -80,7 +82,6 @@ export default class FetchPaymentsClass extends Vue {
   error = {}
   loading = false
   showError = false
-
   // methods
   onErrorSheetClosed() {
     this.error = {}
@@ -90,9 +91,9 @@ export default class FetchPaymentsClass extends Vue {
   async makeApiCall() {
     this.loading = true
     try {
-      await this.$paymentsApi.getPayments(
-        this.formData.settlementId,
-        this.formData.paymentIntentId,
+      await this.$paymentIntentsApi.getPaymentIntents(
+        this.formData.status,
+        this.formData.context,
         this.formData.from,
         this.formData.to,
         this.formData.pageBefore,
@@ -100,6 +101,7 @@ export default class FetchPaymentsClass extends Vue {
         this.formData.pageSize
       )
     } catch (error) {
+      console.log(error)
       this.error = error
       this.showError = true
     } finally {
