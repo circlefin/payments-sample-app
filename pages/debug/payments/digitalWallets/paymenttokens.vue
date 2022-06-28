@@ -308,7 +308,6 @@ export default class ConvertToken extends Vue {
   onGooglePayButtonClicked() {
     const environment = this.getGooglePayEnvironment()
     const paymentsClient = getGooglePaymentsClient(environment)
-    // TODO: implement merchantType for google pay
     const paymentDataConfig: PaymentRequestConfig = {
       amount: this.formData.amount,
       environment,
@@ -316,6 +315,7 @@ export default class ConvertToken extends Vue {
       merchantName,
       checkoutKey,
     }
+    console.log(getPaymentDataRequest(paymentDataConfig))
     paymentsClient
       .loadPaymentData(getPaymentDataRequest(paymentDataConfig))
       .then((paymentData: PaymentData) => {
