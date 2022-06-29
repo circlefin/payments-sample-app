@@ -6,6 +6,12 @@ import IsReadyToPayPaymentMethodSpecification = google.payments.api.IsReadyToPay
 import Environment = google.payments.api.Environment
 import PaymentMethodTokenizationSpecification = google.payments.api.PaymentMethodTokenizationSpecification
 import TransactionInfo = google.payments.api.TransactionInfo
+import {
+  checkoutKey,
+  merchantId,
+  merchantName,
+} from '~/server-middleware/googlePaySecrets'
+import PaymentData = google.payments.api.PaymentData
 
 const DEFAULT_CONFIG = {
   apiVersion: 2,
@@ -133,6 +139,29 @@ function onGooglePayLoaded(buttonOptions: ButtonOptions, env: Environment) {
     })
 }
 
+function onGooglePayClicked(
+  amount: string,
+  callback: (paymentData: PaymentData) => void
+) {
+  const environment = DEFAULT_CONFIG.environment.prod
+  const paymentsClient = getGooglePaymentsClient(environment)
+  const paymentDataConfig: PaymentRequestConfig = {
+    amount,
+    environment,
+    merchantId,
+    merchantName,
+    checkoutKey,
+  }
+  paymentsClient
+    .loadPaymentData(getPaymentDataRequest(paymentDataConfig))
+    .then((paymentData: PaymentData) => {
+      callback(paymentData)
+    })
+    .catch(function (err: any) {
+      console.error(err)
+    })
+}
+
 export {
   onGooglePayLoaded,
   getGooglePaymentsClient,
@@ -141,4 +170,5 @@ export {
   PaymentRequestConfig,
   DEFAULT_CONFIG,
   AUTOGEN_TOKEN_LENGTH,
+  onGooglePayClicked,
 }
