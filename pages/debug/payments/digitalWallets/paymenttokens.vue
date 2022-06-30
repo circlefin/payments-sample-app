@@ -135,17 +135,10 @@ import {
 import {
   DEFAULT_CONFIG as DEFAULT_GOOGLE_PAY_CONFIG,
   AUTOGEN_TOKEN_LENGTH as GOOGLE_PAY_AUTOGEN_TOKEN_LENGTH,
-  getGooglePaymentsClient,
-  getPaymentDataRequest,
   onGooglePayLoaded,
-  PaymentRequestConfig,
+  onGooglePayClicked,
   PaymentToken as GooglePayTokenData,
 } from '~/lib/googlePay'
-import {
-  checkoutKey,
-  merchantId,
-  merchantName,
-} from '~/server-middleware/googlePaySecrets'
 import ButtonOptions = google.payments.api.ButtonOptions
 import PaymentData = google.payments.api.PaymentData
 
@@ -306,30 +299,16 @@ export default class ConvertToken extends Vue {
   }
 
   onGooglePayButtonClicked() {
-    const environment = this.getGooglePayEnvironment()
-    const paymentsClient = getGooglePaymentsClient(environment)
-    const paymentDataConfig: PaymentRequestConfig = {
-      amount: this.formData.amount,
-      environment,
-      merchantId,
-      merchantName,
-      checkoutKey,
+    const callback = (paymentData: PaymentData) => {
+      const paymentTokenString =
+        paymentData.paymentMethodData.tokenizationData.token // payment token as JSON string
+      const paymentToken: GooglePayTokenData = JSON.parse(paymentTokenString) // payment token as object with keys protocolVersion, signature, and signedMessage
+      this.googlePayTokenData.protocolVersion = paymentToken.protocolVersion
+      this.googlePayTokenData.signature = paymentToken.signature
+      this.googlePayTokenData.signedMessage = paymentToken.signedMessage
+      this.displayGoogleTokens = true
     }
-    console.log(getPaymentDataRequest(paymentDataConfig))
-    paymentsClient
-      .loadPaymentData(getPaymentDataRequest(paymentDataConfig))
-      .then((paymentData: PaymentData) => {
-        const paymentTokenString =
-          paymentData.paymentMethodData.tokenizationData.token // payment token as JSON string
-        const paymentToken: GooglePayTokenData = JSON.parse(paymentTokenString) // payment token as object with keys protocolVersion, signature, and signedMessage
-        this.googlePayTokenData.protocolVersion = paymentToken.protocolVersion
-        this.googlePayTokenData.signature = paymentToken.signature
-        this.googlePayTokenData.signedMessage = paymentToken.signedMessage
-        this.displayGoogleTokens = true
-      })
-      .catch(function (err: any) {
-        console.error(err)
-      })
+    onGooglePayClicked(this.formData.amount, callback)
   }
 
   async makeApiCall() {
