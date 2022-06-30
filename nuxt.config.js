@@ -125,5 +125,9 @@ export default {
       path: '/.well-known',
       handler: '~/server-middleware/domainVerification.ts',
     },
+    {
+      path: '/api/googlepay',
+      handler: '~/server-middleware/apiGooglePay.ts',
+    },
   ],
 }
