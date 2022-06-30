@@ -144,7 +144,9 @@ function onGooglePayClicked(
   amount: string,
   callback: (paymentData: PaymentData) => void
 ) {
-  const environment = DEFAULT_CONFIG.environment.prod
+  const environment = getIsStaging()
+    ? DEFAULT_CONFIG.environment.prod
+    : DEFAULT_CONFIG.environment.test
   const paymentsClient = getGooglePaymentsClient(environment)
   axios
     .get(BACKEND_URL_GET_VALUES, {
