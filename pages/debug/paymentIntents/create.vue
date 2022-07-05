@@ -8,18 +8,21 @@
             label="Payment Intent Amount"
           />
 
-          <v-text-field
+          <v-select
             v-model="formData.currency"
-            label="Payment Intent Currency"
+            :items="supportedCurrencies"
+            label="Payment Intent Deposit Currency"
           />
 
-          <v-text-field
+          <v-select
             v-model="formData.blockchain"
+            :items="supportedChains"
             label="Payment Intent Blockchain"
           />
 
-          <v-text-field
+          <v-select
             v-model="formData.settlementCurrency"
+            :items="supportedCurrencies"
             label="Settlement Currency"
           />
 
@@ -87,6 +90,8 @@ export default class CreatePaymentIntentClass extends Vue {
   error = {}
   loading = false
   showError = false
+  supportedCurrencies = ['BTC', 'ETH', 'USD']
+  supportedChains = ['BTC', 'ETH']
   onErrorSheetClosed() {
     this.error = {}
     this.showError = false
