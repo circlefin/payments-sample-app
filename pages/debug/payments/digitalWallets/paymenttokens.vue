@@ -302,12 +302,12 @@ export default class ConvertToken extends Vue {
     const callback = (paymentData: PaymentData) => {
       const paymentTokenString =
         paymentData.paymentMethodData.tokenizationData.token // payment token as JSON string
-      console.log('Token before it is parsed')
-      console.log(paymentTokenString)
       const paymentToken: GooglePayTokenData = JSON.parse(paymentTokenString) // payment token as object with keys protocolVersion, signature, and signedMessage
       this.googlePayTokenData.protocolVersion = paymentToken.protocolVersion
       this.googlePayTokenData.signature = paymentToken.signature
-      this.googlePayTokenData.signedMessage = paymentToken.signedMessage.trim()
+      // Due to the parse earlier, the escaped double quotes were changed. need to change them back.
+      this.googlePayTokenData.signedMessage =
+        paymentToken.signedMessage.replace(/"/g, '\\"')
       this.displayGoogleTokens = true
     }
     onGooglePayClicked(this.formData.amount, callback)
@@ -322,7 +322,7 @@ export default class ConvertToken extends Vue {
         tokenData = {
           protocolVersion: this.googlePayTokenData.protocolVersion,
           signature: this.googlePayTokenData.signature,
-          signedMessage: JSON.stringify(this.googlePayTokenData.signedMessage),
+          signedMessage: this.googlePayTokenData.signedMessage,
         }
         break
       case 'applepay':
