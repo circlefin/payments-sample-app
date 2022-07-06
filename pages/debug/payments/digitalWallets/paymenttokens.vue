@@ -302,6 +302,8 @@ export default class ConvertToken extends Vue {
     const callback = (paymentData: PaymentData) => {
       const paymentTokenString =
         paymentData.paymentMethodData.tokenizationData.token // payment token as JSON string
+      console.log('Token before it is parsed')
+      console.log(paymentTokenString)
       const paymentToken: GooglePayTokenData = JSON.parse(paymentTokenString) // payment token as object with keys protocolVersion, signature, and signedMessage
       this.googlePayTokenData.protocolVersion = paymentToken.protocolVersion
       this.googlePayTokenData.signature = paymentToken.signature
