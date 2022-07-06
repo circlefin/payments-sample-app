@@ -320,7 +320,7 @@ export default class ConvertToken extends Vue {
         tokenData = {
           protocolVersion: this.googlePayTokenData.protocolVersion,
           signature: this.googlePayTokenData.signature,
-          signedMessage: this.googlePayTokenData.signedMessage,
+          signedMessage: JSON.stringify(this.googlePayTokenData.signedMessage),
         }
         break
       case 'applepay':
