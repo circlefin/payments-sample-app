@@ -90,6 +90,22 @@
               Header: {{ applePayTokenData.header }}
             </p>
           </v-card>
+          <!-- 3 text fields below for debugging only - to be removed once resolved -->
+          <v-text-field
+            v-if="displayGoogleTokens"
+            v-model="googlePayTokenData.protocolVersion"
+            label="Protocol Version"
+          />
+          <v-text-field
+            v-if="displayGoogleTokens"
+            v-model="googlePayTokenData.signature"
+            label="Signature"
+          />
+          <v-text-field
+            v-if="displayGoogleTokens"
+            v-model="googlePayTokenData.signedMessage"
+            label="Signed Message"
+          />
           <v-btn
             v-if="displayGoogleTokens || displayAppleTokens"
             depressed
@@ -306,8 +322,9 @@ export default class ConvertToken extends Vue {
       this.googlePayTokenData.protocolVersion = paymentToken.protocolVersion
       this.googlePayTokenData.signature = paymentToken.signature
       // Due to the parse earlier, the escaped double quotes were changed. need to change them back.
-      this.googlePayTokenData.signedMessage =
-        paymentToken.signedMessage.replace(/"/g, '\\"')
+      this.googlePayTokenData.signedMessage = paymentToken.signedMessage
+        .replaceAll('\\', '\\\\')
+        .replace(/"/g, '\\"')
       this.displayGoogleTokens = true
     }
     onGooglePayClicked(this.formData.amount, callback)
