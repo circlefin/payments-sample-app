@@ -11,13 +11,13 @@
           <v-select
             v-model="formData.currency"
             :items="supportedCurrencies"
-            label="Payment Intent Deposit Currency"
+            label="Payment Currency"
           />
 
           <v-select
             v-model="formData.blockchain"
             :items="supportedChains"
-            label="Payment Intent Blockchain"
+            label="Blockchain"
           />
 
           <v-select
