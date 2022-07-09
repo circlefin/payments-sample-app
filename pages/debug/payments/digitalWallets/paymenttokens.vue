@@ -323,8 +323,6 @@ export default class ConvertToken extends Vue {
       this.googlePayTokenData.signature = paymentToken.signature
       // Due to the parse earlier, the escaped double quotes were changed. need to change them back.
       this.googlePayTokenData.signedMessage = paymentToken.signedMessage
-        .replaceAll('\\', '\\\\')
-        .replace(/"/g, '\\"')
       this.displayGoogleTokens = true
     }
     onGooglePayClicked(this.formData.amount, callback)
