@@ -77,6 +77,9 @@ export default class CreateMockIncomingWireClass extends Vue {
     }
     const payload: CreateMockPushPaymentPayload = {
       trackingRef: this.formData.trackingRef,
+      beneficiaryBank: {
+        accountNumber: '',
+      },
       amount: amountDetail,
     }
 
