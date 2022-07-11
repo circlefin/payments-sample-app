@@ -160,8 +160,6 @@ function onGooglePayClicked(
         merchantName: response.data.merchantName,
         checkoutKey: response.data.checkoutKey,
       }
-      // TODO: log is for debugging only. To be removed.
-      console.log(getPaymentDataRequest(paymentDataConfig))
       paymentsClient
         .loadPaymentData(getPaymentDataRequest(paymentDataConfig))
         .then((paymentData: PaymentData) => {
