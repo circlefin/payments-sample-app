@@ -77,7 +77,9 @@ export default class CreateMockSEPAClass extends Vue {
     }
     const payload: CreateMockPushPaymentPayload = {
       trackingRef: this.formData.trackingRef,
-      accountNumber: '',
+      beneficiaryBank: {
+        accountNumber: '',
+      },
       amount: amountDetail,
     }
 

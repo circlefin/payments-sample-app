@@ -5,7 +5,9 @@ import { getAPIHostname } from './apiTarget'
 
 export interface CreateMockPushPaymentPayload {
   trackingRef: string
-  accountNumber: string
+  beneficiaryBank: {
+    accountNumber: string
+  }
   amount: {
     amount: string
     currency: string
