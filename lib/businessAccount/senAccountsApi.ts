@@ -80,7 +80,9 @@ function getSenBusinessAccountInstructions(
   currency: string
 ) {
   const url = `v1/businessAccount/banks/sen/${accountId}/instructions`
-  const queryParams = { currency }
+  const queryParams = {
+    currency: nullIfEmpty(currency),
+  }
   return instance.get(url, { params: queryParams })
 }
 
