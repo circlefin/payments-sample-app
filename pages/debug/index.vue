@@ -238,6 +238,52 @@
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
+        <h2 class="title">Payouts endpoints</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>Api endpoints to manage payouts.</p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/payouts/create"> Add payout </a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/payouts/fetch">Get all payouts</a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/payouts/details">Get payout details by id</a>
+        </p>
+      </v-card>
+
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
+        <h2 class="title">Payment intents endpoints</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>Api endpoints to manage payment intents.</p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/paymentIntents/create"> Add payment intent</a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/paymentIntents/fetch">Get all payment intents</a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/paymentIntents/details">
+            Get payment intent details by id
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary">POST</v-chip>
+          <a href="/debug/paymentIntents/expire">
+            Expire a payment intent by id
+          </a>
+        </p>
+      </v-card>
+
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
         <h2 class="title">Chargebacks endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
@@ -269,12 +315,7 @@
         </p>
       </v-card>
 
-      <v-card
-        v-if="!isMarketplace"
-        class="body-1 px-6 py-8 mb-4"
-        max-width="800"
-        outlined
-      >
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
         <h2 class="title">Balances endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
@@ -282,30 +323,6 @@
         <p>
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/payments/balances/fetch"> Get all balances </a>
-        </p>
-      </v-card>
-
-      <v-card
-        v-if="isMarketplace"
-        class="body-1 px-6 py-8 mb-4"
-        max-width="800"
-        outlined
-      >
-        <h2 class="title">Payouts endpoints</h2>
-        <span class="caption">Requires: api key</span>
-        <br /><br />
-        <p>Api endpoints to manage payouts.</p>
-        <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/payouts/create"> Add payout </a>
-        </p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/payouts/fetch">Get all payouts</a>
-        </p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/payouts/details"> Get payout details by id </a>
         </p>
       </v-card>
     </v-flex>
