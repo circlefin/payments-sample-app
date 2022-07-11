@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getAPIHostname, getIsStaging } from '~/lib/apiTarget'
+import { getIsStaging } from '~/lib/apiTarget'
 
 // endpoints are hardcoded as they are used only in staging
 const BACKEND_URL_VALIDATE_SESSION = getIsStaging()
@@ -82,7 +82,6 @@ function startApplePaySessionFrontendPay(
   merchantType: string,
   whenDone: any
 ): void {
-  console.log(getAPIHostname())
   inputConfig.shopName = config.total.label
   inputConfig.lineItemType = config.total.type
   inputConfig.amount = config.total.amount
@@ -108,7 +107,6 @@ function handleCommonApplePayEvents(
       event.validationURL,
       merchantType,
       (merchantSession: any): void => {
-        console.log('received session validation response')
         if (merchantSession != null) {
           appleSession.completeMerchantValidation(merchantSession)
         }
@@ -187,13 +185,7 @@ function handleApplePayPaymentOnBackendEvent(
   appleSession.onpaymentauthorized = function (
     event: ApplePayJS.ApplePayPaymentAuthorizedEvent
   ) {
-    console.log('received authorization')
-    console.log(event.payment)
-    console.log(JSON.stringify(event.payment.token))
     performTransaction(event.payment, apiKey, (outcome: any) => {
-      console.log('received response from pay')
-      console.log(JSON.stringify(outcome))
-      console.log(outcome.logs)
       if (outcome.approved) {
         appleSession.completePayment(ApplePaySession.STATUS_SUCCESS)
       } else {
@@ -211,9 +203,6 @@ function handleApplePayPaymentOnFrontendEvent(
   appleSession.onpaymentauthorized = function (
     event: ApplePayJS.ApplePayPaymentAuthorizedEvent
   ) {
-    console.log('received authorization')
-    console.log(event.payment)
-    console.log(JSON.stringify(event.payment.token))
     const tokens = event.payment.token
     tokenObject.version = tokens.paymentData.version
     tokenObject.data = tokens.paymentData.data
