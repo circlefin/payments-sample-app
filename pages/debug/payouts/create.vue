@@ -4,6 +4,12 @@
       <v-col cols="12" md="4">
         <v-form>
           <v-text-field v-model="formData.amount" label="Amount" />
+          <v-select
+            v-if="formData.destinationType == 'sen'"
+            v-model="formData.currency"
+            :items="currencyTypes"
+            label="Currency"
+          />
 
           <v-text-field
             v-model="formData.sourceWalletId"
@@ -79,13 +85,15 @@ export default class CreatePayoutClass extends Vue {
     sourceWalletId: '',
     idempotencyKey: '',
     amount: '0.00',
+    currency: 'USD',
     destination: '',
     destinationType: 'wire', // Default to wire
     beneficiaryEmail: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']
-  destinationType = ['wire', 'ach', 'sepa']
+  destinationType = ['wire', 'ach', 'sepa', 'sen']
+  currencyTypes = ['USD', 'EUR']
   error = {}
   loading = false
   showError = false
@@ -98,7 +106,7 @@ export default class CreatePayoutClass extends Vue {
     this.loading = true
     const amountDetail = {
       amount: this.formData.amount,
-      currency: 'USD',
+      currency: this.formData.currency,
     }
     const payload: CreatePayoutPayload = {
       idempotencyKey: uuidv4(),
