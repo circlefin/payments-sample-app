@@ -1,3 +1,4 @@
+import axios from 'axios'
 import IsReadyToPayRequest = google.payments.api.IsReadyToPayRequest
 import PaymentDataRequest = google.payments.api.PaymentDataRequest
 import ButtonOptions = google.payments.api.ButtonOptions
@@ -6,6 +7,8 @@ import IsReadyToPayPaymentMethodSpecification = google.payments.api.IsReadyToPay
 import Environment = google.payments.api.Environment
 import PaymentMethodTokenizationSpecification = google.payments.api.PaymentMethodTokenizationSpecification
 import TransactionInfo = google.payments.api.TransactionInfo
+import PaymentData = google.payments.api.PaymentData
+import { getIsStaging } from '~/lib/apiTarget'
 
 const DEFAULT_CONFIG = {
   apiVersion: 2,
@@ -40,6 +43,10 @@ const DEFAULT_CONFIG = {
     prod: <Environment>'PRODUCTION',
   },
 }
+
+const BACKEND_URL_GET_VALUES = getIsStaging()
+  ? 'https://sample-staging.circle.com/api/googlepay/values'
+  : 'https://sample.circle.com/api/googlepay/values'
 
 const AUTOGEN_TOKEN_LENGTH = {
   signature: 40,
@@ -133,6 +140,39 @@ function onGooglePayLoaded(buttonOptions: ButtonOptions, env: Environment) {
     })
 }
 
+function onGooglePayClicked(
+  amount: string,
+  callback: (paymentData: PaymentData) => void
+) {
+  const environment = getIsStaging()
+    ? DEFAULT_CONFIG.environment.prod
+    : DEFAULT_CONFIG.environment.test
+  const paymentsClient = getGooglePaymentsClient(environment)
+  axios
+    .get(BACKEND_URL_GET_VALUES, {
+      headers: { 'Access-Control-Allow-Origin': '*' },
+    })
+    .then(function (response) {
+      const paymentDataConfig: PaymentRequestConfig = {
+        amount,
+        environment,
+        merchantId: response.data.merchantId,
+        merchantName: response.data.merchantName,
+        checkoutKey: response.data.checkoutKey,
+      }
+      // TODO: log is for debugging only. To be removed.
+      console.log(getPaymentDataRequest(paymentDataConfig))
+      paymentsClient
+        .loadPaymentData(getPaymentDataRequest(paymentDataConfig))
+        .then((paymentData: PaymentData) => {
+          callback(paymentData)
+        })
+        .catch(function (err: any) {
+          console.error(err)
+        })
+    })
+}
+
 export {
   onGooglePayLoaded,
   getGooglePaymentsClient,
@@ -141,4 +181,5 @@ export {
   PaymentRequestConfig,
   DEFAULT_CONFIG,
   AUTOGEN_TOKEN_LENGTH,
+  onGooglePayClicked,
 }

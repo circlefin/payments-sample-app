@@ -3,21 +3,15 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <header>Optional filter params:</header>
-          <v-text-field v-model="formData.settlementId" label="Settlement ID" />
           <v-text-field
             v-model="formData.paymentIntentId"
-            label="Payment Intent ID"
+            label="Payment Intent Id"
           />
-          <v-text-field v-model="formData.from" label="From" />
-          <v-text-field v-model="formData.to" label="To" />
-          <v-text-field v-model="formData.pageSize" label="PageSize" />
-          <v-text-field v-model="formData.pageBefore" label="PageBefore" />
-          <v-text-field v-model="formData.pageAfter" label="PageAfter" />
           <v-btn
             depressed
             class="mb-7"
             color="primary"
+            :loading="loading"
             @click.prevent="makeApiCall()"
           >
             Make api call
@@ -59,24 +53,13 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
     }),
   },
 })
-export default class FetchPaymentsClass extends Vue {
+export default class ExpirePaymentIntentClass extends Vue {
   // data
   formData = {
-    settlementId: '',
     paymentIntentId: '',
-    from: '',
-    to: '',
-    pageSize: '',
-    pageBefore: '',
-    pageAfter: '',
   }
 
-  rules = {
-    isNumber: (v: string) =>
-      v === '' || !isNaN(parseInt(v)) || 'Please enter valid number',
-    required: (v: string) => !!v || 'Field is required',
-  }
-
+  required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
   showError = false
@@ -90,14 +73,8 @@ export default class FetchPaymentsClass extends Vue {
   async makeApiCall() {
     this.loading = true
     try {
-      await this.$paymentsApi.getPayments(
-        this.formData.settlementId,
-        this.formData.paymentIntentId,
-        this.formData.from,
-        this.formData.to,
-        this.formData.pageBefore,
-        this.formData.pageAfter,
-        this.formData.pageSize
+      await this.$paymentIntentsApi.expirePaymentIntent(
+        this.formData.paymentIntentId
       )
     } catch (error) {
       this.error = error

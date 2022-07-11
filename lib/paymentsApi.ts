@@ -124,6 +124,7 @@ function createPayment(payload: BasePaymentPayload) {
 /**
  * Get payments
  * @param {String} settlementId
+ * @param {String} paymentIntentId
  * @param {String} from
  * @param {String} to
  * @param {String} pageBefore
@@ -132,6 +133,7 @@ function createPayment(payload: BasePaymentPayload) {
  */
 function getPayments(
   settlementId: string,
+  paymentIntentId: string,
   from: string,
   to: string,
   pageBefore: string,
@@ -140,6 +142,7 @@ function getPayments(
 ) {
   const queryParams = {
     settlementId: nullIfEmpty(settlementId),
+    paymentIntentId: nullIfEmpty(paymentIntentId),
     from: nullIfEmpty(from),
     to: nullIfEmpty(to),
     pageBefore: nullIfEmpty(pageBefore),
@@ -191,6 +194,7 @@ function getBalance() {
 
 /**
  * Get reversals
+ * @param {String} status
  * @param {String} from
  * @param {String} to
  * @param {String} pageBefore
@@ -198,6 +202,7 @@ function getBalance() {
  * @param {String} pageSize
  */
 function getReversals(
+  status: string,
   from: string,
   to: string,
   pageBefore: string,
@@ -205,6 +210,7 @@ function getReversals(
   pageSize: string
 ) {
   const queryParams = {
+    status: nullIfEmpty(status),
     from: nullIfEmpty(from),
     to: nullIfEmpty(to),
     pageBefore: nullIfEmpty(pageBefore),

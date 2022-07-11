@@ -4,6 +4,7 @@
       <v-col cols="12" md="4">
         <v-form>
           <header>Optional filter params:</header>
+          <v-select v-model="formData.status" :items="status" label="Status" />
           <v-text-field v-model="formData.from" label="From" />
           <v-text-field v-model="formData.to" label="To" />
           <v-text-field v-model="formData.pageSize" label="PageSize" />
@@ -57,12 +58,15 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 export default class FetchReversalsClass extends Vue {
   // data
   formData = {
+    status: '',
     from: '',
     to: '',
     pageSize: '',
     pageBefore: '',
     pageAfter: '',
   }
+
+  status = ['pending', 'action_required', 'confirmed', 'paid', 'failed']
 
   error = {}
   loading = false
@@ -78,6 +82,7 @@ export default class FetchReversalsClass extends Vue {
     this.loading = true
     try {
       await this.$paymentsApi.getReversals(
+        this.formData.status,
         this.formData.from,
         this.formData.to,
         this.formData.pageBefore,

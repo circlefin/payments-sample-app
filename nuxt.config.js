@@ -53,6 +53,7 @@ export default {
     '~/plugins/transfersApi',
     '~/plugins/addressesApi',
     '~/plugins/payoutsApi',
+    '~/plugins/paymentIntentsApi',
     '~/plugins/wiresApi',
     '~/plugins/sepaApi',
     '~/plugins/achApi',
@@ -123,6 +124,10 @@ export default {
     {
       path: '/.well-known',
       handler: '~/server-middleware/domainVerification.ts',
+    },
+    {
+      path: '/api/googlepay',
+      handler: '~/server-middleware/apiGooglePay.ts',
     },
   ],
 }

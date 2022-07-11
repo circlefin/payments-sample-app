@@ -90,6 +90,22 @@
               Header: {{ applePayTokenData.header }}
             </p>
           </v-card>
+          <!-- 3 text fields below for debugging only - to be removed once resolved -->
+          <v-text-field
+            v-if="displayGoogleTokens"
+            v-model="googlePayTokenData.protocolVersion"
+            label="Protocol Version"
+          />
+          <v-text-field
+            v-if="displayGoogleTokens"
+            v-model="googlePayTokenData.signature"
+            label="Signature"
+          />
+          <v-text-field
+            v-if="displayGoogleTokens"
+            v-model="googlePayTokenData.signedMessage"
+            label="Signed Message"
+          />
           <v-btn
             v-if="displayGoogleTokens || displayAppleTokens"
             depressed
@@ -123,7 +139,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import RequestInfo from '~/components/RequestInfo.vue'
 import ErrorSheet from '~/components/ErrorSheet.vue'
-import { getLive } from '~/lib/apiTarget'
+import { getLive, getIsStaging } from '~/lib/apiTarget'
 import {
   DEFAULT_CONFIG as DEFAULT_APPLE_PAY_CONFIG,
   AUTOGEN_TOKEN_LENGTH as APPLE_PAY_AUTOGEN_TOKEN_LENGTH,
@@ -135,17 +151,10 @@ import {
 import {
   DEFAULT_CONFIG as DEFAULT_GOOGLE_PAY_CONFIG,
   AUTOGEN_TOKEN_LENGTH as GOOGLE_PAY_AUTOGEN_TOKEN_LENGTH,
-  getGooglePaymentsClient,
-  getPaymentDataRequest,
   onGooglePayLoaded,
-  PaymentRequestConfig,
+  onGooglePayClicked,
   PaymentToken as GooglePayTokenData,
 } from '~/lib/googlePay'
-import {
-  checkoutKey,
-  merchantId,
-  merchantName,
-} from '~/server-middleware/googlePaySecrets'
 import ButtonOptions = google.payments.api.ButtonOptions
 import PaymentData = google.payments.api.PaymentData
 
@@ -193,12 +202,11 @@ export default class ConvertToken extends Vue {
     allowedPaymentMethods: [DEFAULT_GOOGLE_PAY_CONFIG.allowedPaymentMethods],
   }
 
-  // Production environment is not yet enabled for googlepay - will uncomment lines 129-131 when it is
+  // Sample app prod env has not been approved by google so need to return test for prod environment for now
   getGooglePayEnvironment() {
-    return DEFAULT_GOOGLE_PAY_CONFIG.environment.test
-    // return getLive() && !getIsStaging()
-    //   ? DEFAULT_GOOGLE_PAY_CONFIG.environment.prod
-    //   : DEFAULT_GOOGLE_PAY_CONFIG.environment.test
+    return getIsStaging()
+      ? DEFAULT_GOOGLE_PAY_CONFIG.environment.prod
+      : DEFAULT_GOOGLE_PAY_CONFIG.environment.test
   }
 
   mounted() {
@@ -307,30 +315,17 @@ export default class ConvertToken extends Vue {
   }
 
   onGooglePayButtonClicked() {
-    const environment = this.getGooglePayEnvironment()
-    const paymentsClient = getGooglePaymentsClient(environment)
-    // TODO: implement merchantType for google pay
-    const paymentDataConfig: PaymentRequestConfig = {
-      amount: this.formData.amount,
-      environment,
-      merchantId,
-      merchantName,
-      checkoutKey,
+    const callback = (paymentData: PaymentData) => {
+      const paymentTokenString =
+        paymentData.paymentMethodData.tokenizationData.token // payment token as JSON string
+      const paymentToken: GooglePayTokenData = JSON.parse(paymentTokenString) // payment token as object with keys protocolVersion, signature, and signedMessage
+      this.googlePayTokenData.protocolVersion = paymentToken.protocolVersion
+      this.googlePayTokenData.signature = paymentToken.signature
+      // Due to the parse earlier, the escaped double quotes were changed. need to change them back.
+      this.googlePayTokenData.signedMessage = paymentToken.signedMessage
+      this.displayGoogleTokens = true
     }
-    paymentsClient
-      .loadPaymentData(getPaymentDataRequest(paymentDataConfig))
-      .then((paymentData: PaymentData) => {
-        const paymentTokenString =
-          paymentData.paymentMethodData.tokenizationData.token // payment token as JSON string
-        const paymentToken: GooglePayTokenData = JSON.parse(paymentTokenString) // payment token as object with keys protocolVersion, signature, and signedMessage
-        this.googlePayTokenData.protocolVersion = paymentToken.protocolVersion
-        this.googlePayTokenData.signature = paymentToken.signature
-        this.googlePayTokenData.signedMessage = paymentToken.signedMessage
-        this.displayGoogleTokens = true
-      })
-      .catch(function (err: any) {
-        console.error(err)
-      })
+    onGooglePayClicked(this.formData.amount, callback)
   }
 
   async makeApiCall() {
