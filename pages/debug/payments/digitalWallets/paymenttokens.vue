@@ -123,7 +123,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import RequestInfo from '~/components/RequestInfo.vue'
 import ErrorSheet from '~/components/ErrorSheet.vue'
-import { getLive, getIsStaging } from '~/lib/apiTarget'
+import { getLive } from '~/lib/apiTarget'
 import {
   DEFAULT_CONFIG as DEFAULT_APPLE_PAY_CONFIG,
   AUTOGEN_TOKEN_LENGTH as APPLE_PAY_AUTOGEN_TOKEN_LENGTH,
