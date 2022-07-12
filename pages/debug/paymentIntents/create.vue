@@ -78,11 +78,6 @@ interface CurrencyBlockchainPair {
 
 interface CurrencyBlockchainPairs {
   data: CurrencyBlockchainPair[]
-  status: {
-    version: string
-    code: bigint
-    message: string
-  }
 }
 
 @Component({
@@ -117,17 +112,17 @@ export default class CreatePaymentIntentClass extends Vue {
   loading = false
   showError = false
   supportedCurrencies = ['BTC', 'ETH', 'USD']
-  supportedChains = ['BTC', 'ETH']
+  supportedChains = ['']
   currencySelected = false
   onErrorSheetClosed() {
     this.error = {}
     this.showError = false
   }
 
-  onCurrencyChange(selectedCurrency: string) {
+  onCurrencyChange() {
     this.supportedChains =
       this.currencyBlockchainPairs.data.find(
-        ({ currency }) => currency === selectedCurrency
+        ({ currency }) => currency === this.formData.currency
       )?.blockchains ?? []
     this.formData.blockchain = ''
     this.currencySelected = true
