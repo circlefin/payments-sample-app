@@ -12,23 +12,31 @@
             v-model="formData.currency"
             :items="supportedCurrencies"
             label="Payment Currency"
+            @change="onCurrencyChange"
           />
 
           <v-select
+            v-if="currencySelected"
             v-model="formData.blockchain"
             :items="supportedChains"
             label="Blockchain"
           />
 
           <v-select
+            v-if="currencySelected"
             v-model="formData.settlementCurrency"
             :items="supportedCurrencies"
             label="Settlement Currency"
           />
 
-          <v-text-field v-model="formData.expiresOn" label="Expires On" />
+          <v-text-field
+            v-if="currencySelected"
+            v-model="formData.expiresOn"
+            label="Expires On"
+          />
 
           <v-btn
+            v-if="currencySelected"
             depressed
             class="mb-7"
             color="primary"
@@ -62,6 +70,21 @@ import { v4 as uuidv4 } from 'uuid'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import { CreatePaymentIntentPayload } from '@/lib/paymentIntentsApi'
+
+interface CurrencyBlockchainPair {
+  currency: string
+  blockchains: string[]
+}
+
+interface CurrencyBlockchainPairs {
+  data: CurrencyBlockchainPair[]
+  status: {
+    version: string
+    code: bigint
+    message: string
+  }
+}
+
 @Component({
   components: {
     RequestInfo,
@@ -86,15 +109,28 @@ export default class CreatePaymentIntentClass extends Vue {
     expiresOn: '',
   }
 
+  currencyBlockchainPairs: CurrencyBlockchainPairs =
+    this.$addressPoolManagementApi.getSupportedCurrencyAndBlockchainCombinations()
+
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
   showError = false
   supportedCurrencies = ['BTC', 'ETH', 'USD']
   supportedChains = ['BTC', 'ETH']
+  currencySelected = false
   onErrorSheetClosed() {
     this.error = {}
     this.showError = false
+  }
+
+  onCurrencyChange(selectedCurrency: string) {
+    this.supportedChains =
+      this.currencyBlockchainPairs.data.find(
+        ({ currency }) => currency === selectedCurrency
+      )?.blockchains ?? []
+    this.formData.blockchain = ''
+    this.currencySelected = true
   }
 
   async makeApiCall() {
