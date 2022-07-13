@@ -105,7 +105,7 @@ export default class CreatePaymentIntentClass extends Vue {
   }
 
   currencyBlockchainPairs: CurrencyBlockchainPairs =
-    this.$addressPoolManagementApi.getSupportedCurrencyAndBlockchainCombinations()
+    this.$cryptoPaymentMetadataApi.getSupportedCurrencyAndBlockchainCombinations()
 
   required = [(v: string) => !!v || 'Field is required']
   error = {}

@@ -9,7 +9,7 @@ const instance = axios.create({
 
 /**
  * Global error handler:
- * Intercepts all axios reponses and maps
+ * Intercepts all axios responses and maps
  * to errorHandler object
  */
 instance.interceptors.response.use(
@@ -38,7 +38,7 @@ function getInstance() {
  */
 function getSupportedCurrencyAndBlockchainCombinations() {
   const url =
-    'v1/admin/internal/cryptoPayments/addressPool/supportedCurrencyAndBlockchainCombinations'
+    'v1/cryptoPaymentMetadata/supportedCurrencyAndBlockchainCombinations'
   return instance.get(url)
 }
 

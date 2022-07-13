@@ -1,15 +1,15 @@
-import addressPoolManagementApi from '@/lib/addressPoolManagementApi'
+import cryptoPaymentMetadataApi from '@/lib/cryptoPaymentMetadataApi'
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $addressPoolManagementApi: {
+    $cryptoPaymentMetadataApi: {
       getSupportedCurrencyAndBlockchainCombinations: any
     }
   }
 }
 
 export default ({ store }: any, inject: any) => {
-  const instance = addressPoolManagementApi.getInstance()
+  const instance = cryptoPaymentMetadataApi.getInstance()
 
   instance.interceptors.request.use(
     function (config) {
@@ -37,5 +37,5 @@ export default ({ store }: any, inject: any) => {
     }
   )
 
-  inject('addressPoolManagementApi', addressPoolManagementApi)
+  inject('cryptoPaymentMetadataApi', cryptoPaymentMetadataApi)
 }
