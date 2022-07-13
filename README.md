@@ -73,3 +73,11 @@ To watch the tests:
 ```bash
 $ yarn test:watch
 ```
+
+## Docker
+
+To run in docker:
+
+```bash
+$ docker-compose up -d
+```
