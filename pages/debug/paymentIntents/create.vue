@@ -111,7 +111,10 @@ export default class CreatePaymentIntentClass extends Vue {
   error = {}
   loading = false
   showError = false
-  supportedCurrencies = ['BTC', 'ETH', 'USD']
+  supportedCurrencies = this.currencyBlockchainPairs.data.map(function (obj) {
+    return obj.currency
+  })
+
   supportedChains = ['']
   currencySelected = false
   onErrorSheetClosed() {
