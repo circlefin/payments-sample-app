@@ -104,13 +104,17 @@ export default class CreatePaymentIntentClass extends Vue {
     expiresOn: '',
   }
 
-  currencyBlockchainPairs: CurrencyBlockchainPairs =
-    this.$cryptoPaymentMetadataApi.getSupportedCurrencyAndBlockchainCombinations()
-
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
   showError = false
+  currencyBlockchainPairs: CurrencyBlockchainPairs = { data: [] }
+
+  async mounted() {
+    this.currencyBlockchainPairs =
+      await this.$cryptoPaymentMetadataApi.getSupportedCurrencyAndBlockchainCombinations()
+  }
+
   supportedCurrencies = this.currencyBlockchainPairs.data.map(function (obj) {
     return obj.currency
   })
