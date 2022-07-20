@@ -76,10 +76,6 @@ interface CurrencyBlockchainPair {
   blockchains: string[]
 }
 
-interface CurrencyBlockchainPairs {
-  data: CurrencyBlockchainPair[]
-}
-
 @Component({
   components: {
     RequestInfo,
@@ -104,19 +100,23 @@ export default class CreatePaymentIntentClass extends Vue {
     expiresOn: '',
   }
 
-  currencyBlockchainPairs: CurrencyBlockchainPairs =
-    this.$cryptoPaymentMetadataApi.getSupportedCurrencyAndBlockchainCombinations()
-
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
   showError = false
-  supportedCurrencies = this.currencyBlockchainPairs.data.map(function (obj) {
-    return obj.currency
-  })
-
+  currencyBlockchainPairs: CurrencyBlockchainPair[] = []
+  supportedCurrencies = ['']
   supportedChains = ['']
   currencySelected = false
+
+  async mounted() {
+    this.currencyBlockchainPairs =
+      await this.$cryptoPaymentMetadataApi.getSupportedCurrencyAndBlockchainCombinations()
+    this.supportedCurrencies = this.currencyBlockchainPairs.map(function (obj) {
+      return obj.currency
+    })
+  }
+
   onErrorSheetClosed() {
     this.error = {}
     this.showError = false
@@ -124,7 +124,7 @@ export default class CreatePaymentIntentClass extends Vue {
 
   onCurrencyChange() {
     this.supportedChains =
-      this.currencyBlockchainPairs.data.find(
+      this.currencyBlockchainPairs.find(
         ({ currency }) => currency === this.formData.currency
       )?.blockchains ?? []
     this.formData.blockchain = ''

@@ -37,7 +37,7 @@ function getInstance() {
  * Get supported currency and blockchain combinations
  */
 function getSupportedCurrencyAndBlockchainCombinations() {
-  const url = 'v1/paymentIntents/metadata/supportedCurrencies'
+  const url = '/v1/paymentIntents/metadata/supportedCurrencies'
   return instance.get(url)
 }
 
