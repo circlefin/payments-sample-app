@@ -7,6 +7,11 @@
             v-model="formData.accountNumber"
             label="Account Number"
           />
+          <v-select
+            v-model="formData.currency"
+            :items="currencyTypes"
+            label="Currency"
+          />
           <v-btn
             depressed
             class="mb-7"
@@ -58,8 +63,10 @@ export default class CreateSenBusinessAccountClass extends Vue {
   // data
   formData = {
     accountNumber: '',
+    currency: '',
   }
 
+  currencyTypes = ['USD', 'EUR']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
@@ -76,6 +83,7 @@ export default class CreateSenBusinessAccountClass extends Vue {
     const payload: CreateSenAccountPayload = {
       idempotencyKey: uuidv4(),
       accountNumber: this.formData.accountNumber,
+      currency: this.formData.currency,
     }
 
     try {
