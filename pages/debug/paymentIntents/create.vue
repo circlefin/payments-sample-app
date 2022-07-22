@@ -112,7 +112,7 @@ export default class CreatePaymentIntentClass extends Vue {
   async mounted() {
     this.currencyBlockchainPairs =
       await this.$cryptoPaymentMetadataApi.getSupportedCurrencyAndBlockchainCombinations()
-    this.supportedCurrencies = this.currencyBlockchainPairs.map(function (obj) {
+    this.supportedCurrencies = this.currencyBlockchainPairs.map((obj) => {
       return obj.currency
     })
   }
