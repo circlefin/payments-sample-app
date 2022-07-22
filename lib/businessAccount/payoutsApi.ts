@@ -79,6 +79,8 @@ function getPayoutById(payoutId: string) {
  * @param {String} pageBefore
  * @param {String} pageAfter
  * @param {String} pageSize
+ * @param {String} type
+ * @param {String} status
  */
 function getPayouts(
   destination: string,
@@ -86,7 +88,9 @@ function getPayouts(
   to: string,
   pageBefore: string,
   pageAfter: string,
-  pageSize: string
+  pageSize: string,
+  type: string,
+  status: string
 ) {
   const queryParams = {
     destination: nullIfEmpty(destination),
@@ -95,6 +99,8 @@ function getPayouts(
     pageBefore: nullIfEmpty(pageBefore),
     pageAfter: nullIfEmpty(pageAfter),
     pageSize: nullIfEmpty(pageSize),
+    type: nullIfEmpty(type),
+    state: nullIfEmpty(status),
   }
   const url = '/v1/businessAccount/payouts'
   return instance.get(url, { params: queryParams })
