@@ -4,11 +4,6 @@
       <v-col cols="12" md="4">
         <v-form>
           <v-text-field v-model="formData.accountId" label="Account Id" />
-          <v-select
-            v-model="formData.currency"
-            :items="currencyTypes"
-            label="Currency"
-          />
           <v-btn
             depressed
             class="mb-7"
@@ -59,10 +54,8 @@ export default class FetchSenBusinessAccountInstructionsClass extends Vue {
   // data
   formData = {
     accountId: '',
-    currency: '',
   }
 
-  currencyTypes = ['USD', 'EUR']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
@@ -79,8 +72,7 @@ export default class FetchSenBusinessAccountInstructionsClass extends Vue {
 
     try {
       await this.$senAccountsApi.getSenBusinessAccountInstructions(
-        this.formData.accountId,
-        this.formData.currency
+        this.formData.accountId
       )
     } catch (error) {
       this.error = error

@@ -76,7 +76,7 @@ export default class CreatePayoutClass extends Vue {
     amount: '0.00',
     destination: '',
     destinationType: 'wire', // Default to wire
-    currency: 'USD', // Default to USD
+    currency: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']

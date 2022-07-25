@@ -6,6 +6,7 @@ import { getAPIHostname } from '../apiTarget'
 export interface CreateSenAccountPayload {
   idempotencyKey: string
   accountNumber: string
+  currency: string
 }
 
 const instance = axios.create({
@@ -32,13 +33,6 @@ instance.interceptors.response.use(
     return Promise.reject(response)
   }
 )
-
-const nullIfEmpty = (prop: string | undefined) => {
-  if (prop !== undefined && prop.trim() === '') {
-    return undefined
-  }
-  return prop
-}
 
 /** Returns the axios instance */
 function getInstance() {
@@ -75,15 +69,9 @@ function getSenBusinessAccountById(accountId: string) {
  * Get sen business account instructions
  * @param {String} accountId
  */
-function getSenBusinessAccountInstructions(
-  accountId: string,
-  currency: string
-) {
+function getSenBusinessAccountInstructions(accountId: string) {
   const url = `v1/businessAccount/banks/sen/${accountId}/instructions`
-  const queryParams = {
-    currency: nullIfEmpty(currency),
-  }
-  return instance.get(url, { params: queryParams })
+  return instance.get(url)
 }
 
 export default {
