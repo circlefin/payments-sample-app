@@ -6,6 +6,7 @@
           <v-text-field v-model="formData.amount" label="Amount" />
 
           <v-select
+            v-if="formData.destinationType == 'sen'"
             v-model="formData.currency"
             :items="currencyTypes"
             label="Currency"
