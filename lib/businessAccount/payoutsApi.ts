@@ -88,9 +88,7 @@ function getPayouts(
   to: string,
   pageBefore: string,
   pageAfter: string,
-  pageSize: string,
-  type: string,
-  status: string
+  pageSize: string
 ) {
   const queryParams = {
     destination: nullIfEmpty(destination),
@@ -99,8 +97,6 @@ function getPayouts(
     pageBefore: nullIfEmpty(pageBefore),
     pageAfter: nullIfEmpty(pageAfter),
     pageSize: nullIfEmpty(pageSize),
-    type: nullIfEmpty(type),
-    state: nullIfEmpty(status),
   }
   const url = '/v1/businessAccount/payouts'
   return instance.get(url, { params: queryParams })

@@ -10,16 +10,6 @@
           <v-text-field v-model="formData.pageSize" label="PageSize" />
           <v-text-field v-model="formData.pageBefore" label="PageBefore" />
           <v-text-field v-model="formData.pageAfter" label="PageAfter" />
-          <v-select
-            v-model="formData.type"
-            :items="types"
-            label="Type"
-          />
-          <v-select
-            v-model="formData.status"
-            :items="statusTypes"
-            label="Status"
-          />
           <v-btn
             depressed
             class="mb-7"
@@ -74,12 +64,8 @@ export default class FetchPayoutClass extends Vue {
     pageSize: '',
     pageBefore: '',
     pageAfter: '',
-    type: '',
-    status: '',
   }
 
-  statusTypes = ['pending', 'complete', 'failed']
-  types = ['wire', 'ach', 'sepa']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
@@ -99,9 +85,7 @@ export default class FetchPayoutClass extends Vue {
         this.formData.to,
         this.formData.pageBefore,
         this.formData.pageAfter,
-        this.formData.pageSize,
-        this.formData.type,
-        this.formData.status
+        this.formData.pageSize
       )
     } catch (error) {
       this.error = error
