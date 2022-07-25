@@ -79,8 +79,6 @@ function getPayoutById(payoutId: string) {
  * @param {String} pageBefore
  * @param {String} pageAfter
  * @param {String} pageSize
- * @param {String} type
- * @param {String} status
  */
 function getPayouts(
   destination: string,
