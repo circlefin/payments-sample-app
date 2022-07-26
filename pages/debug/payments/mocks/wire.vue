@@ -5,6 +5,11 @@
         <v-form>
           <v-text-field v-model="formData.trackingRef" label="Tracking Ref" />
           <v-text-field v-model="formData.amount" label="Amount" />
+          <v-select
+            v-model="formData.currency"
+            :items="currencyTypes"
+            label="Currency"
+          />
           <v-btn
             v-if="isSandbox"
             depressed
@@ -57,8 +62,10 @@ export default class CreateMockIncomingWireClass extends Vue {
   formData = {
     trackingRef: '',
     amount: '0.00',
+    currency: '',
   }
 
+  currencyTypes = ['USD', 'EUR']
   isSandbox: Boolean = !getLive()
   required = [(v: string) => !!v || 'Field is required']
   error = {}
@@ -73,7 +80,7 @@ export default class CreateMockIncomingWireClass extends Vue {
     this.loading = true
     const amountDetail = {
       amount: this.formData.amount,
-      currency: 'USD',
+      currency: this.formData.currency,
     }
     const payload: CreateMockPushPaymentPayload = {
       trackingRef: this.formData.trackingRef,
