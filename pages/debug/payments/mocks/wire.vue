@@ -4,6 +4,7 @@
       <v-col cols="12" md="4">
         <v-form>
           <v-text-field v-model="formData.trackingRef" label="Tracking Ref" />
+          <v-text-field v-model="formData.accountNumber" label="Account Number" />
           <v-text-field v-model="formData.amount" label="Amount" />
           <v-select
             v-model="formData.currency"
@@ -63,6 +64,7 @@ export default class CreateMockIncomingWireClass extends Vue {
     trackingRef: '',
     amount: '0.00',
     currency: '',
+    accountNumber: '',
   }
 
   currencyTypes = ['USD', 'EUR']
@@ -85,7 +87,7 @@ export default class CreateMockIncomingWireClass extends Vue {
     const payload: CreateMockPushPaymentPayload = {
       trackingRef: this.formData.trackingRef,
       beneficiaryBank: {
-        accountNumber: '',
+        accountNumber: this.formData.accountNumber,
       },
       amount: amountDetail,
     }
