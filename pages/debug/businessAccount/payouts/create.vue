@@ -6,7 +6,6 @@
           <v-text-field v-model="formData.amount" label="Amount" />
 
           <v-select
-            v-if="formData.destinationType == 'sen'"
             v-model="formData.currency"
             :items="currencyTypes"
             label="Currency"
@@ -76,12 +75,12 @@ export default class CreatePayoutClass extends Vue {
     amount: '0.00',
     destination: '',
     destinationType: 'wire', // Default to wire
-    currency: '',
+    currency: 'USD', // Default to USD
   }
 
   required = [(v: string) => !!v || 'Field is required']
   destinationType = ['wire', 'sen']
-  currencyTypes = ['USD', 'EUR']
+  currencyTypes = ['USD']
   error = {}
   loading = false
   showError = false
