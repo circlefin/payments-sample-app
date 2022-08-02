@@ -7,7 +7,7 @@
 
           <v-select
             v-model="formData.currency"
-            :items="currencyTypes"
+            :items="currencyTypes.get(formData.destinationType)"
             label="Currency"
           />
 
@@ -80,7 +80,13 @@ export default class CreatePayoutClass extends Vue {
 
   required = [(v: string) => !!v || 'Field is required']
   destinationType = ['wire', 'sen']
-  currencyTypes = ['USD']
+  wireCurrencyTypes = ['USD']
+  senCurrencyTypes = ['USD', 'EUR']
+  currencyTypes = new Map([
+    ['wire', this.wireCurrencyTypes],
+    ['sen', this.senCurrencyTypes],
+  ])
+
   error = {}
   loading = false
   showError = false
