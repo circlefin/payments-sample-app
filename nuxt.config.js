@@ -58,6 +58,7 @@ export default {
     '~/plugins/sepaApi',
     '~/plugins/achApi',
     '~/plugins/mocksApi',
+    '~/plugins/beta/payoutsApi',
     '~/plugins/businessAccount/addressesApi',
     '~/plugins/businessAccount/balancesApi',
     '~/plugins/businessAccount/bankAccountsApi',
