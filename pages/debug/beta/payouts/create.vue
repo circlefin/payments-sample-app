@@ -5,19 +5,27 @@
         <v-form>
           <v-text-field v-model="formData.amount" label="Amount" />
 
-          <!-- TODO: use a dropdown for currency -->
-          <v-text-field v-model="formData.currency" label="Currency" />
+          <v-select
+            v-model="formData.currency"
+            :items="
+              isCryptoPayout()
+                ? Array.from(supportedCryptoPayoutCurrencyPairs.keys())
+                : supportedFiatPayoutCurrencies
+            "
+            label="Currency"
+            @change="onCurrencyChange"
+          />
 
-          <!-- TODO: use a dropdown for currency -->
-          <v-text-field
-            v-if="blockchainDestinationTypes.has(formData.destinationType)"
+          <v-select
+            v-if="isCryptoPayout()"
+            :items="supportedCryptoPayoutCurrencyPairs.get(formData.currency)"
             v-model="formData.toCurrency"
             label="To Currency"
           />
 
           <v-text-field
             v-model="formData.sourceWalletId"
-            label="Optional source Wallet Id"
+            label="Optional Source Wallet Id"
           />
 
           <v-text-field v-model="formData.destination" label="Destination" />
@@ -26,13 +34,62 @@
             v-model="formData.destinationType"
             :items="destinationType"
             label="Destination Type"
+            @change="onDestinationTypeChange"
           />
 
           <v-text-field
-            v-if="fiatDestinationTypes.has(formData.destinationType)"
+            v-if="!isCryptoPayout()"
             v-model="formData.beneficiaryEmail"
             label="Beneficiary Email"
           />
+
+          <br />
+
+          <div v-if="isCryptoPayout()">
+            <header>Optional Identity:</header>
+            <br />
+
+            <v-select
+              v-model="formData.identityType"
+              :items="identityTypes"
+              label="Identity Type"
+            />
+
+            <v-text-field
+              v-model="formData.identityName"
+              label="Identity Name"
+            />
+
+            <v-text-field
+              v-model="formData.identityAddressLine1"
+              label="Identity Address Line 1"
+            />
+
+            <v-text-field
+              v-model="formData.identityAddressLine2"
+              label="Identity Address Line 2"
+            />
+
+            <v-text-field
+              v-model="formData.identityAddressCity"
+              label="Identity Address City"
+            />
+
+            <v-text-field
+              v-model="formData.identityAddressDistrict"
+              label="Identity Address District"
+            />
+
+            <v-text-field
+              v-model="formData.identityAddressPostalCode"
+              label="Identity Address Postal Code"
+            />
+
+            <v-text-field
+              v-model="formData.identityAddressCountry"
+              label="Identity Address Country"
+            />
+          </div>
 
           <v-btn
             depressed
@@ -92,15 +149,63 @@ export default class CreatePayoutClass extends Vue {
     destination: '',
     destinationType: 'address_book', // Default to address book (crypto payout) for the beta endpoint
     beneficiaryEmail: '',
+    identityType: 'individual', // Default to individual for identity type
+    identityName: '',
+    identityAddressLine1: '',
+    identityAddressLine2: '',
+    identityAddressCity: '',
+    identityAddressDistrict: '',
+    identityAddressPostalCode: '',
+    identityAddressCountry: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']
   destinationType = ['address_book', 'wire', 'ach', 'sepa']
   fiatDestinationTypes = new Set(['wire', 'ach', 'sepa'])
   blockchainDestinationTypes = new Set(['address_book'])
+  identityTypes = ['individual', 'business']
+  supportedFiatPayoutCurrencies = ['USD']
+  // TODO: we can probably implement an internal endpoint to get the supported currency pairs
+  supportedCryptoPayoutCurrencyPairs = new Map([
+    ['USD', ['USD', 'BTC', 'ETH', 'MTC']],
+    ['BTC', ['USD', 'BTC']],
+    ['ETH', ['USD', 'ETH']],
+    ['MTC', ['USD', 'MTC']],
+    ['FLW', ['FLW']],
+    ['MAN', ['MAN']],
+    ['EUR', ['EUR']],
+  ])
+
   error = {}
   loading = false
   showError = false
+
+  isCryptoPayout() {
+    return this.blockchainDestinationTypes.has(this.formData.destinationType)
+  }
+
+  onCurrencyChange() {
+    // do nothing if it's not crypto payout
+    if (!this.isCryptoPayout()) {
+      return
+    }
+    // else update default toCurrency
+    const supportedToCurrencies = this.supportedCryptoPayoutCurrencyPairs.get(
+      this.formData.currency
+    )
+    this.formData.toCurrency = supportedToCurrencies
+      ? supportedToCurrencies[0]
+      : ''
+  }
+
+  onDestinationTypeChange() {
+    // update currency to default
+    this.formData.currency = this.isCryptoPayout()
+      ? Array.from(this.supportedCryptoPayoutCurrencyPairs.keys())[0]
+      : this.supportedFiatPayoutCurrencies[0]
+    this.onCurrencyChange()
+  }
+
   onErrorSheetClosed() {
     this.error = {}
     this.showError = false
@@ -115,19 +220,32 @@ export default class CreatePayoutClass extends Vue {
     const toAmountDetail = {
       currency: this.formData.toCurrency,
     }
+    const identityAddressObject = {
+      line1: this.formData.identityAddressLine1,
+      line2: this.formData.identityAddressLine2,
+      city: this.formData.identityAddressCity,
+      district: this.formData.identityAddressDistrict,
+      postalCode: this.formData.identityAddressPostalCode,
+      country: this.formData.identityAddressCountry,
+    }
+    const identityObject = {
+      type: this.formData.identityType,
+      name: this.formData.identityName,
+      addresses: [identityAddressObject],
+    }
+    const sourceObject = {
+      id: this.formData.sourceWalletId,
+      type: 'wallet',
+      identities: [identityObject],
+    }
     const payload: CreatePayoutPayload = {
       idempotencyKey: uuidv4(),
+      source: sourceObject,
       amount: amountDetail,
       destination: {
         id: this.formData.destination,
         type: this.formData.destinationType,
       },
-    }
-    if (this.formData.sourceWalletId) {
-      payload.source = {
-        id: this.formData.sourceWalletId,
-        type: 'wallet',
-      }
     }
     if (this.blockchainDestinationTypes.has(this.formData.destinationType)) {
       payload.toAmount = toAmountDetail
