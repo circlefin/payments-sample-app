@@ -88,7 +88,7 @@ function getPayouts(
   pageSize: string
 ) {
   const queryParams = {
-    sourceWalletId: nullIfEmpty(sourceWalletId),
+    source: nullIfEmpty(sourceWalletId),
     destination: nullIfEmpty(destination),
     type: nullIfEmpty(destinationType),
     status: nullIfEmpty(status),
