@@ -77,6 +77,7 @@ function getPayouts(
   sourceWalletId: string,
   destination: string,
   destinationType: string,
+  status: string,
   from: string,
   to: string,
   pageBefore: string,
@@ -86,7 +87,8 @@ function getPayouts(
   const queryParams = {
     sourceWalletId: nullIfEmpty(sourceWalletId),
     destination: nullIfEmpty(destination),
-    destinationType: nullIfEmpty(destinationType),
+    type: nullIfEmpty(destinationType),
+    status: nullIfEmpty(status),
     from: nullIfEmpty(from),
     to: nullIfEmpty(to),
     pageBefore: nullIfEmpty(pageBefore),
