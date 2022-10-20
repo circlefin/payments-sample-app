@@ -77,6 +77,10 @@ function getPayouts(
   sourceWalletId: string,
   destination: string,
   destinationType: string,
+  status: string,
+  sourceCurrency: string,
+  destinationCurrency: string,
+  chain: string,
   from: string,
   to: string,
   pageBefore: string,
@@ -84,9 +88,13 @@ function getPayouts(
   pageSize: string
 ) {
   const queryParams = {
-    sourceWalletId: nullIfEmpty(sourceWalletId),
+    source: nullIfEmpty(sourceWalletId),
     destination: nullIfEmpty(destination),
-    destinationType: nullIfEmpty(destinationType),
+    type: nullIfEmpty(destinationType),
+    status: nullIfEmpty(status),
+    sourceCurrency: nullIfEmpty(sourceCurrency),
+    destinationCurrency: nullIfEmpty(destinationCurrency),
+    chain: nullIfEmpty(chain),
     from: nullIfEmpty(from),
     to: nullIfEmpty(to),
     pageBefore: nullIfEmpty(pageBefore),

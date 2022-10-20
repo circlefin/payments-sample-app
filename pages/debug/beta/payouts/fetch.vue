@@ -3,20 +3,33 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <header>Required filter param:</header>
-          <br />
-          <v-select
-            v-model="formData.destinationType"
-            :items="destinationType"
-            label="Destination Type"
-          />
-          <br />
           <header>Optional filter params:</header>
           <v-text-field
             v-model="formData.sourceWalletId"
             label="Source Wallet ID"
           />
           <v-text-field v-model="formData.destination" label="Destination" />
+          <v-select
+            v-model="formData.destinationType"
+            :items="destinationType"
+            label="Destination Type"
+          />
+          <v-select
+            v-model="formData.status"
+            :items="payoutStatuses"
+            label="Status"
+          />
+          <div v-if="isCryptoPayout()">
+            <v-text-field
+              v-model="formData.sourceCurrency"
+              label="Source Currency"
+            />
+            <v-text-field
+              v-model="formData.destinationCurrency"
+              label="Destination Currency"
+            />
+            <v-text-field v-model="formData.chain" label="Chain" />
+          </div>
           <v-text-field v-model="formData.from" label="From" />
           <v-text-field v-model="formData.to" label="To" />
           <v-text-field v-model="formData.pageSize" label="PageSize" />
@@ -71,7 +84,11 @@ export default class FetchPayoutsClass extends Vue {
   formData = {
     sourceWalletId: '',
     destination: '',
-    destinationType: 'address_book', // Default to address book (crypto payout) for the beta endpoint
+    destinationType: '',
+    sourceCurrency: '',
+    destinationCurrency: '',
+    chain: '',
+    status: '',
     from: '',
     to: '',
     pageSize: '',
@@ -85,11 +102,18 @@ export default class FetchPayoutsClass extends Vue {
     required: (v: string) => !!v || 'Field is required',
   }
 
-  destinationType = ['address_book', 'fiat']
+  destinationType = ['', 'address_book', 'wire', 'ach', 'sepa']
+  fiatDestinationTypes = new Set(['wire', 'ach', 'sepa'])
+  blockchainDestinationTypes = new Set(['address_book'])
+  payoutStatuses = ['', 'pending', 'complete', 'failed']
   error = {}
   loading = false
   showError = false
   // methods
+  isCryptoPayout() {
+    return this.blockchainDestinationTypes.has(this.formData.destinationType)
+  }
+
   onErrorSheetClosed() {
     this.error = {}
     this.showError = false
@@ -97,11 +121,16 @@ export default class FetchPayoutsClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
+    const isCryptoPayout = this.isCryptoPayout()
     try {
       await this.$payoutsApiBeta.getPayouts(
         this.formData.sourceWalletId,
         this.formData.destination,
         this.formData.destinationType,
+        this.formData.status,
+        isCryptoPayout ? this.formData.sourceCurrency : '',
+        isCryptoPayout ? this.formData.destinationCurrency : '',
+        isCryptoPayout ? this.formData.chain : '',
         this.formData.from,
         this.formData.to,
         this.formData.pageBefore,
