@@ -9,7 +9,10 @@
             label="Payment Intent Id"
           />
 
-          <v-text-field v-model="formData.amount" label="Amount" />
+          <v-text-field
+            v-model="formData.amount"
+            label="Amount"
+          />
           <v-select
             v-model="formData.currency"
             :items="currency"
