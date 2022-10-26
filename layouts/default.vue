@@ -344,6 +344,10 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/payments/create',
     },
     {
+      title: 'POST /beta/payments',
+      to: '/debug/beta/payments/create',
+    },
+    {
       title: 'GET /payments/{id}',
       to: '/debug/payments/details',
     },
