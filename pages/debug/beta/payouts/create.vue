@@ -184,14 +184,15 @@ export default class CreatePayoutClass extends Vue {
     return this.blockchainDestinationTypes.has(this.formData.destinationType)
   }
 
-  hasValidIdentities() {
+  hasIdentity() {
     return (
-      this.formData.identityAddressLine1 &&
-      this.formData.identityAddressCity &&
-      this.formData.identityAddressDistrict &&
-      this.formData.identityAddressPostalCode &&
-      this.formData.identityAddressCountry &&
-      this.formData.identityType &&
+      this.formData.identityAddressLine1 ||
+      this.formData.identityAddressLine2 ||
+      this.formData.identityAddressCity ||
+      this.formData.identityAddressDistrict ||
+      this.formData.identityAddressPostalCode ||
+      this.formData.identityAddressCountry ||
+      this.formData.identityType ||
       this.formData.identityName
     )
   }
@@ -246,7 +247,7 @@ export default class CreatePayoutClass extends Vue {
       addresses: [identityAddressObject],
     }
 
-    const identities = this.hasValidIdentities() && {
+    const identities = this.hasIdentity() && {
       identities: [identityObject],
     }
 
