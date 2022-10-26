@@ -67,6 +67,7 @@ export default {
     '~/plugins/businessAccount/payoutsApi',
     '~/plugins/businessAccount/transfersApi',
     '~/plugins/cryptoPaymentMetadataApi',
+    '~/plugins/beta/paymentsApi',
   ],
   /*
    ** Nuxt.js dev-modules
