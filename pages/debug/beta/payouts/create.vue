@@ -192,7 +192,6 @@ export default class CreatePayoutClass extends Vue {
       this.formData.identityAddressDistrict ||
       this.formData.identityAddressPostalCode ||
       this.formData.identityAddressCountry ||
-      this.formData.identityType ||
       this.formData.identityName
     )
   }
@@ -217,6 +216,18 @@ export default class CreatePayoutClass extends Vue {
       ? Array.from(this.supportedCryptoPayoutCurrencyPairs.keys())[0]
       : this.supportedFiatPayoutCurrencies[0]
     this.onCurrencyChange()
+    this.resetIdentities()
+  }
+
+  resetIdentities() {
+    // reset all identity fields
+    this.formData.identityAddressLine1 = ''
+    this.formData.identityAddressLine2 = ''
+    this.formData.identityAddressCountry = ''
+    this.formData.identityAddressCity = ''
+    this.formData.identityAddressDistrict = ''
+    this.formData.identityName = ''
+    this.formData.identityAddressPostalCode = ''
   }
 
   onErrorSheetClosed() {
