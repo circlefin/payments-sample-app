@@ -18,8 +18,8 @@
 
           <v-select
             v-if="isCryptoPayout()"
-            :items="supportedCryptoPayoutCurrencyPairs.get(formData.currency)"
             v-model="formData.toCurrency"
+            :items="supportedCryptoPayoutCurrencyPairs.get(formData.currency)"
             label="To Currency"
           />
 
@@ -184,6 +184,18 @@ export default class CreatePayoutClass extends Vue {
     return this.blockchainDestinationTypes.has(this.formData.destinationType)
   }
 
+  hasValidIdentities() {
+    return (
+      this.formData.identityAddressLine1 &&
+      this.formData.identityAddressCity &&
+      this.formData.identityAddressDistrict &&
+      this.formData.identityAddressPostalCode &&
+      this.formData.identityAddressCountry &&
+      this.formData.identityType &&
+      this.formData.identityName
+    )
+  }
+
   onCurrencyChange() {
     // do nothing if it's not crypto payout
     if (!this.isCryptoPayout()) {
@@ -233,28 +245,40 @@ export default class CreatePayoutClass extends Vue {
       name: this.formData.identityName,
       addresses: [identityAddressObject],
     }
+
+    const identities = this.hasValidIdentities() && {
+      identities: [identityObject],
+    }
+
     const sourceObject = {
       id: this.formData.sourceWalletId,
       type: 'wallet',
-      identities: [identityObject],
+      ...identities,
     }
+
     const payload: CreatePayoutPayload = {
       idempotencyKey: uuidv4(),
-      source: sourceObject,
       amount: amountDetail,
       destination: {
         id: this.formData.destination,
         type: this.formData.destinationType,
       },
     }
+
+    if (this.formData.sourceWalletId) {
+      payload.source = sourceObject
+    }
+
     if (this.blockchainDestinationTypes.has(this.formData.destinationType)) {
       payload.toAmount = toAmountDetail
     }
+
     if (this.formData.beneficiaryEmail) {
       payload.metadata = {
         beneficiaryEmail: this.formData.beneficiaryEmail,
       }
     }
+
     try {
       await this.$payoutsApiBeta.createPayout(payload)
     } catch (error) {
