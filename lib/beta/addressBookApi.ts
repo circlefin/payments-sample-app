@@ -65,7 +65,7 @@ function createRecipient(payload: CreateRecipientPayload) {
  * @param {String} recipientId
  */
 function getRecipientById(recipientId: string) {
-  const url = `/v1/beta/addressBook/recipient/${recipientId}`
+  const url = `/v1/addressBook/recipients/${recipientId}`
 
   return instance.get(url)
 }
