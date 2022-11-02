@@ -68,6 +68,7 @@ export default {
     '~/plugins/businessAccount/transfersApi',
     '~/plugins/cryptoPaymentMetadataApi',
     '~/plugins/beta/paymentsApi',
+    '~/plugins/beta/addressBookApi',
   ],
   /*
    ** Nuxt.js dev-modules
