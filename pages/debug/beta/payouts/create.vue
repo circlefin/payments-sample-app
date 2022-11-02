@@ -167,12 +167,12 @@ export default class CreatePayoutClass extends Vue {
   supportedFiatPayoutCurrencies = ['USD']
   // TODO: we can probably implement an internal endpoint to get the supported currency pairs
   supportedCryptoPayoutCurrencyPairs = new Map([
-    ['USD', ['USD', 'BTC', 'ETH', 'MTC']],
+    ['USD', ['USD', 'BTC', 'ETH', 'MATIC']],
     ['BTC', ['USD', 'BTC']],
     ['ETH', ['USD', 'ETH']],
-    ['MTC', ['USD', 'MTC']],
-    ['FLW', ['FLW']],
-    ['MAN', ['MAN']],
+    ['MATIC', ['USD', 'MATIC']],
+    ['FLOW', ['FLOW']],
+    ['MANA', ['MANA']],
     ['EUR', ['EUR']],
   ])
 
