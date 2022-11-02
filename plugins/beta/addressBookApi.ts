@@ -1,4 +1,6 @@
-import addressBookApiBeta, { CreateRecipientPayload } from '@/lib/beta/addressBookApi';
+import addressBookApiBeta, {
+  CreateRecipientPayload,
+} from '@/lib/beta/addressBookApi'
 
 declare module 'vue/types/vue' {
   interface Vue {
