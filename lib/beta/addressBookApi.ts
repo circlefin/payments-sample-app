@@ -36,6 +36,9 @@ instance.interceptors.response.use(
     if (get(response, 'data.data')) {
       return response.data.data
     }
+    if (response.data !== undefined) {
+      return response.data
+    }
     return response
   },
   function (error) {
@@ -79,7 +82,10 @@ function getRecipientById(recipientId: string) {
 
 function patchRecipient(recipientId: string, payload: PatchRecipientPayload) {
   const url = `/v1/addressBook/recipients/${recipientId}`
-  return instance.patch(url, payload)
+  const config = {
+    headers: { 'Access-Control-Allow-Origin': '*' },
+  }
+  return instance.patch(url, payload, config)
 }
 
 function deleteRecipient(recipientId: string) {
