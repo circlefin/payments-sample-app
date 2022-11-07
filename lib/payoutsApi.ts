@@ -17,7 +17,10 @@ export interface CreatePayoutPayload {
     amount: string
     currency: string
   }
-  metadata: {
+  toAmount?: {
+    currency: string
+  }
+  metadata?: {
     beneficiaryEmail: string
   }
 }
@@ -61,8 +64,13 @@ function getInstance() {
 
 /**
  * Get payouts
- * @param {String} source
+ * @param {String} sourceWalletId
  * @param {String} destination
+ * @param {String} destinationType
+ * @param {String} status
+ * @param {String} sourceCurrency
+ * @param {String} destinationCurrency
+ * @param {String} chain
  * @param {String} from
  * @param {String} to
  * @param {String} pageBefore
@@ -70,8 +78,13 @@ function getInstance() {
  * @param {String} pageSize
  */
 function getPayouts(
-  source: string,
+  sourceWalletId: string,
   destination: string,
+  destinationType: string,
+  status: string,
+  sourceCurrency: string,
+  destinationCurrency: string,
+  chain: string,
   from: string,
   to: string,
   pageBefore: string,
@@ -79,8 +92,13 @@ function getPayouts(
   pageSize: string
 ) {
   const queryParams = {
-    source: nullIfEmpty(source),
+    source: nullIfEmpty(sourceWalletId),
     destination: nullIfEmpty(destination),
+    type: nullIfEmpty(destinationType),
+    status: nullIfEmpty(status),
+    sourceCurrency: nullIfEmpty(sourceCurrency),
+    destinationCurrency: nullIfEmpty(destinationCurrency),
+    chain: nullIfEmpty(chain),
     from: nullIfEmpty(from),
     to: nullIfEmpty(to),
     pageBefore: nullIfEmpty(pageBefore),
