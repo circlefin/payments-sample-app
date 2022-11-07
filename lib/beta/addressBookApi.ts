@@ -77,7 +77,7 @@ function getRecipientById(recipientId: string) {
   return instance.get(url)
 }
 
-function patchRecipient(recipientId: string, payload: CreateRecipientPayload) {
+function patchRecipient(recipientId: string, payload: PatchRecipientPayload) {
   const url = `/v1/addressBook/recipients/${recipientId}`
   return instance.patch(url, payload)
 }
