@@ -9,6 +9,8 @@ declare module 'vue/types/vue' {
       getRecipientById: any
       createRecipient: (payload: CreateRecipientPayload) => any
       getInstance: any
+      deleteRecipient: any
+      patchRecipient: any
     }
   }
 }
