@@ -82,10 +82,7 @@ function getRecipientById(recipientId: string) {
 
 function patchRecipient(recipientId: string, payload: PatchRecipientPayload) {
   const url = `/v1/addressBook/recipients/${recipientId}`
-  const config = {
-    headers: { 'Access-Control-Allow-Origin': '*' },
-  }
-  return instance.patch(url, payload, config)
+  return instance.patch(url, payload)
 }
 
 function deleteRecipient(recipientId: string) {

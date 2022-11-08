@@ -54,7 +54,7 @@ import { PatchRecipientPayload } from '~/lib/beta/addressBookApi'
     }),
   },
 })
-export default class CreateRecipientClass extends Vue {
+export default class PatchRecipientClass extends Vue {
   formData = {
     email: '',
     bns: '',
