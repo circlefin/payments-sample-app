@@ -590,6 +590,14 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/beta/addressBook/details',
     },
     {
+      title: 'PATCH /addressBook/recipients/{id}',
+      to: '/debug/beta/addressBook/patch',
+    },
+    {
+      title: 'DELETE /addressBook/recipients/{id}',
+      to: '/debug/beta/addressBook/delete',
+    },
+    {
       title: 'POST /payouts',
       to: '/debug/payouts/create',
     },

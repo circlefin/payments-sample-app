@@ -14,6 +14,14 @@ export interface CreateRecipientPayload {
   }
 }
 
+export interface PatchRecipientPayload {
+  metadata: {
+    email: string
+    bns: string
+    nickname: string
+  }
+}
+
 /**
  * Global error handler:
  * Intercepts all axios reponses and maps
@@ -27,6 +35,9 @@ instance.interceptors.response.use(
   function (response) {
     if (get(response, 'data.data')) {
       return response.data.data
+    }
+    if (response.data !== undefined) {
+      return response.data
     }
     return response
   },
@@ -66,8 +77,17 @@ function createRecipient(payload: CreateRecipientPayload) {
  */
 function getRecipientById(recipientId: string) {
   const url = `/v1/addressBook/recipients/${recipientId}`
-
   return instance.get(url)
+}
+
+function patchRecipient(recipientId: string, payload: PatchRecipientPayload) {
+  const url = `/v1/addressBook/recipients/${recipientId}`
+  return instance.patch(url, payload)
+}
+
+function deleteRecipient(recipientId: string) {
+  const url = `/v1/addressBook/recipients/${recipientId}`
+  return instance.delete(url)
 }
 
 /**
@@ -115,4 +135,6 @@ export default {
   getRecipients,
   getRecipientById,
   createRecipient,
+  patchRecipient,
+  deleteRecipient,
 }
