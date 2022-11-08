@@ -74,7 +74,7 @@ export default class CreateAddressClass extends Vue {
     chain: '',
   }
 
-  currencyTypes = ['USD']
+  currencyTypes = ['USD', 'EUR', 'BTC', 'ETH']
 
   // methods
   onErrorSheetClosed() {

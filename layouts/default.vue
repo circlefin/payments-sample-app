@@ -610,18 +610,6 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/payouts/details',
     },
     {
-      title: 'POST /beta/payouts',
-      to: '/debug/beta/payouts/create',
-    },
-    {
-      title: 'GET /beta/payouts',
-      to: '/debug/beta/payouts/fetch',
-    },
-    {
-      title: 'GET /beta/payouts/{id}',
-      to: '/debug/beta/payouts/details',
-    },
-    {
       title: 'POST /banks/wires',
       to: '/debug/wires/create',
     },
