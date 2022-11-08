@@ -1,6 +1,12 @@
 [
-  { "value": "ETH", "text": "ETH", "addressTagSupport": false },
   { "value": "ALGO", "text": "ALGO", "addressTagSupport": false },
+  { "value": "AVAX", "text": "AVAX", "addressTagSupport": false },
+  { "value": "BTC", "text": "BTC", "addressTagSupport": false },
+  { "value": "ETH", "text": "ETH", "addressTagSupport": false },
+  { "value": "FLOW", "text": "FLOW", "addressTagSupport": false },
+  { "value": "HBAR", "text": "HBAR", "addressTagSupport": false },
+  { "value": "MATIC", "text": "MATIC", "addressTagSupport": false },
   { "value": "SOL", "text": "SOL", "addressTagSupport": false },
+  { "value": "TRX", "text": "TRX", "addressTagSupport": false },
   { "value": "XLM", "text": "XLM", "addressTagSupport": true }
 ]

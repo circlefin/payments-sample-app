@@ -34,8 +34,8 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
+import RequestInfo from '~/components/RequestInfo.vue'
+import ErrorSheet from '~/components/ErrorSheet.vue'
 @Component({
   components: {
     RequestInfo,
