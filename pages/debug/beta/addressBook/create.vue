@@ -74,12 +74,9 @@ export default class CreateRecipientClass extends Vue {
   supportedChains = [
     'BTC',
     'ETH',
-    'USDC',
     'FLOW',
-    'USDCFLOW',
     'MANA',
     'MATIC',
-    'USDCMATIC',
   ]
 
   error = {}
