@@ -3,13 +3,16 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <v-text-field v-model="formData.payoutId" label="Payout Id" />
+          <v-text-field v-model="formData.recipientId" label="Recipient Id" />
+          <v-text-field v-model="formData.email" label="Email" />
+          <v-text-field v-model="formData.bns" label="bns" />
+          <v-text-field v-model="formData.nickname" label="Nickname" />
           <v-btn
             depressed
             class="mb-7"
             color="primary"
             :loading="loading"
-            @click.prevent="makeApiCall()"
+            @click.prevent="makeApiCall"
           >
             Make api call
           </v-btn>
@@ -36,6 +39,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import RequestInfo from '~/components/RequestInfo.vue'
 import ErrorSheet from '~/components/ErrorSheet.vue'
+import { PatchRecipientPayload } from '~/lib/beta/addressBookApi'
 @Component({
   components: {
     RequestInfo,
@@ -46,20 +50,24 @@ import ErrorSheet from '~/components/ErrorSheet.vue'
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
       requestUrl: 'getRequestUrl',
+      isMarketplace: 'isMarketplace',
     }),
   },
 })
-export default class FetchPayoutDetailsClass extends Vue {
-  // data
+export default class PatchRecipientClass extends Vue {
   formData = {
-    payoutId: '',
+    email: '',
+    bns: '',
+    nickname: '',
+    recipientId: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']
+
   error = {}
   loading = false
   showError = false
-  // methods
+
   onErrorSheetClosed() {
     this.error = {}
     this.showError = false
@@ -67,8 +75,18 @@ export default class FetchPayoutDetailsClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
+    const payload: PatchRecipientPayload = {
+      metadata: {
+        email: this.formData.email,
+        bns: this.formData.bns,
+        nickname: this.formData.nickname,
+      },
+    }
     try {
-      await this.$payoutsApi.getPayoutById(this.formData.payoutId)
+      await this.$addressBookApiBeta.patchRecipient(
+        this.formData.recipientId,
+        payload
+      )
     } catch (error) {
       this.error = error
       this.showError = true
@@ -78,3 +96,5 @@ export default class FetchPayoutDetailsClass extends Vue {
   }
 }
 </script>
+
+<style scoped></style>

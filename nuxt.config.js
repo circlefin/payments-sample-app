@@ -66,6 +66,8 @@ export default {
     '~/plugins/businessAccount/payoutsApi',
     '~/plugins/businessAccount/transfersApi',
     '~/plugins/cryptoPaymentMetadataApi',
+    '~/plugins/beta/paymentsApi',
+    '~/plugins/beta/addressBookApi',
     '~/plugins/checkoutSessionsApi',
   ],
   /*

@@ -370,6 +370,10 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/payments/create',
     },
     {
+      title: 'POST /beta/payments',
+      to: '/debug/beta/payments/create',
+    },
+    {
       title: 'GET /payments/{id}',
       to: '/debug/payments/details',
     },
@@ -599,6 +603,26 @@ export default class DefaultLayoutsClass extends Vue {
   ]
 
   payoutsLinks = [
+    {
+      title: 'POST /addressBook/recipients',
+      to: '/debug/beta/addressBook/create',
+    },
+    {
+      title: 'GET /addressBook/recipients',
+      to: '/debug/beta/addressBook/fetch',
+    },
+    {
+      title: 'GET /addressBook/recipients/{id}',
+      to: '/debug/beta/addressBook/details',
+    },
+    {
+      title: 'PATCH /addressBook/recipients/{id}',
+      to: '/debug/beta/addressBook/patch',
+    },
+    {
+      title: 'DELETE /addressBook/recipients/{id}',
+      to: '/debug/beta/addressBook/delete',
+    },
     {
       title: 'POST /payouts',
       to: '/debug/payouts/create',
