@@ -77,9 +77,9 @@ export default class ExtendCheckoutSessionClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
-    const extendTime = this.formData.extendTime
+    const extendTime = Number(this.formData.extendTime)
     const payload: ExtendCheckoutSessionPayload = {
-      extendTime: Number(),
+      extendTime,
     }
     try {
       await this.$checkoutSessionsApi.extendCheckoutSession(
