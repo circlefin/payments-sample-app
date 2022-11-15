@@ -76,7 +76,7 @@ export default class FetchRecipientClass extends Vue {
     pageAfter: '',
   }
 
-  supportedChains = ['BTC', 'ETH', 'FLOW', 'MANA', 'MATIC']
+  supportedChains = ['BTC', 'ETH', 'FLOW', 'MATIC']
 
   error = {}
   loading = false
