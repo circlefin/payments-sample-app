@@ -53,7 +53,7 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
     }),
   },
 })
-export default class FetchPaymentIntentDetailsClass extends Vue {
+export default class FetchCheckoutSessionDetailsClass extends Vue {
   // data
   formData = {
     checkoutSessionId: '',
