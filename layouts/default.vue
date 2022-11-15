@@ -188,6 +188,32 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
+
+        <v-list-group>
+          <template #activator>
+            <v-list-item-title>Checkout Sessions APIs</v-list-item-title>
+          </template>
+
+          <v-list-item to="/debug/checkoutSessions" router exact>
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2">
+                Overview
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            v-for="(item, i) in checkoutSessionsLinks"
+            :key="`checkoutSessionsLinks-${i}`"
+            :to="item.to"
+            router
+            exact
+          >
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2" v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar clipped-left fixed app dark color="primary" dense>
@@ -690,6 +716,21 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /transfers/{id}',
       to: '/debug/wallets/transfers/details',
+    },
+  ]
+
+  checkoutSessionsLinks = [
+    {
+      title: 'POST /checkoutSessions',
+      to: '/debug/checkoutSessions/create',
+    },
+    {
+      title: 'GET /checkoutSessions/{id}',
+      to: '/debug/checkoutSessions/details',
+    },
+    {
+      title: 'POST /checkoutSessions/{id}/extend',
+      to: '/debug/checkoutSessions/extend',
     },
   ]
 
