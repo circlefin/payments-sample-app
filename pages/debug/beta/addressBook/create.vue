@@ -71,7 +71,7 @@ export default class CreateRecipientClass extends Vue {
   }
 
   required = [(v: string) => !!v || 'Field is required']
-  supportedChains = ['BTC', 'ETH', 'FLOW', 'MANA', 'MATIC']
+  supportedChains = ['BTC', 'ETH', 'FLOW', 'MATIC']
 
   error = {}
   loading = false
