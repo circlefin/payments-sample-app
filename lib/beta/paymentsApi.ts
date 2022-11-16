@@ -11,9 +11,7 @@ interface ProtocolMetadata {
 export interface TransferWithAuthorizationMetadata extends ProtocolMetadata {
   signatureValidAfter: string
   signatureValidBefore: string
-  recoverIdV: string
-  pointR: string
-  proofS: string
+  rawSignature: string
 }
 
 export interface CreateCryptoPaymentPayload {

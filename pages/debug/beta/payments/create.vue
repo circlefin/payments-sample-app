@@ -61,21 +61,9 @@
           />
 
           <v-text-field
-            v-model="formData.recoverIdV"
-            hint="ECDSA recoverIdV"
-            label="ECDSA recoverIdV"
-          />
-
-          <v-text-field
-            v-model="formData.pointR"
-            hint="ECDSA pointR"
-            label="ECDSA pointR"
-          />
-
-          <v-text-field
-            v-model="formData.proofS"
-            hint="ECDSA proofS"
-            label="ECDSA proofS"
+            v-model="formData.rawSignature"
+            hint="ECDSA rawSignature"
+            label="ECDSA rawSignature"
           />
 
           <v-btn
@@ -140,9 +128,7 @@ export default class CreatePaymentClass extends Vue {
     validAfter: '0',
     validBefore: '',
     metaTxNonce: '',
-    recoverIdV: '',
-    pointR: '',
-    proofS: '',
+    rawSignature: '',
   }
 
   sourceType = ['blockchain']
@@ -178,9 +164,7 @@ export default class CreatePaymentClass extends Vue {
       metaTxNonce: this.formData.metaTxNonce,
       signatureValidAfter: this.formData.validAfter,
       signatureValidBefore: this.formData.validBefore,
-      recoverIdV: this.formData.recoverIdV,
-      pointR: this.formData.pointR,
-      proofS: this.formData.proofS,
+      rawSignature: this.formData.rawSignature,
     }
     const payload: CreateCryptoPaymentPayload = {
       idempotencyKey: uuidv4(),
