@@ -36,10 +36,7 @@
             label="Identity Type"
           />
 
-          <v-text-field
-            v-model="formData.identityName"
-            label="Identity Name"
-          />
+          <v-text-field v-model="formData.identityName" label="Identity Name" />
 
           <v-text-field
             v-model="formData.identityAddressLine1"
