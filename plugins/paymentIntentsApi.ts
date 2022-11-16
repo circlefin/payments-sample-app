@@ -9,6 +9,7 @@ declare module 'vue/types/vue' {
       getPaymentIntentById: any
       createPaymentIntent: (payload: CreatePaymentIntentPayload) => any
       expirePaymentIntent: any
+      createCryptoRefund: any
       getInstance: any
     }
   }

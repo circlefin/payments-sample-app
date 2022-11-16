@@ -37,6 +37,12 @@
             Get payment intent details by id
           </a>
         </p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/paymentIntents/createCryptoRefund">
+            Create crypto refund
+          </a>
+        </p>
       </v-card>
     </v-flex>
   </v-layout>
