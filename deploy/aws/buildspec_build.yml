@@ -7,5 +7,5 @@ phases:
   build:
     commands:
       # Just do enough to clone and jump to the private repository
-      - git clone https://github.com/circlefin/payments-sample-app-private.git
+      - git clone git@github.com:circlefin/payments-sample-app-private.git
       - payments-sample-app-private/bin/buildspec_build.sh
