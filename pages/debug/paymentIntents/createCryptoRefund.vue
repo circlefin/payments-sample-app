@@ -27,47 +27,6 @@
             label="Destination Blockchain"
           />
 
-          <header>Optional Identity:</header>
-          <br />
-
-          <v-select
-            v-model="formData.identityType"
-            :items="identityTypes"
-            label="Identity Type"
-          />
-
-          <v-text-field v-model="formData.identityName" label="Identity Name" />
-
-          <v-text-field
-            v-model="formData.identityAddressLine1"
-            label="Identity Address Line 1"
-          />
-
-          <v-text-field
-            v-model="formData.identityAddressLine2"
-            label="Identity Address Line 2"
-          />
-
-          <v-text-field
-            v-model="formData.identityAddressCity"
-            label="Identity Address City"
-          />
-
-          <v-text-field
-            v-model="formData.identityAddressDistrict"
-            label="Identity Address District"
-          />
-
-          <v-text-field
-            v-model="formData.identityAddressPostalCode"
-            label="Identity Address Postal Code"
-          />
-
-          <v-text-field
-            v-model="formData.identityAddressCountry"
-            label="Identity Address Country"
-          />
-
           <v-btn
             v-if="!!formData.paymentIntentId"
             depressed
@@ -127,33 +86,12 @@ export default class CreatePaymentIntentClass extends Vue {
     toCurrency: '',
     blockchain: '',
     address: '',
-    identityType: 'individual', // Default to individual for identity type
-    identityName: '',
-    identityAddressLine1: '',
-    identityAddressLine2: '',
-    identityAddressCity: '',
-    identityAddressDistrict: '',
-    identityAddressPostalCode: '',
-    identityAddressCountry: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
   showError = false
-  identityTypes = ['individual', 'business']
-
-  hasIdentity() {
-    return (
-      this.formData.identityAddressLine1 ||
-      this.formData.identityAddressLine2 ||
-      this.formData.identityAddressCity ||
-      this.formData.identityAddressDistrict ||
-      this.formData.identityAddressPostalCode ||
-      this.formData.identityAddressCountry ||
-      this.formData.identityName
-    )
-  }
 
   onErrorSheetClosed() {
     this.error = {}
@@ -169,22 +107,6 @@ export default class CreatePaymentIntentClass extends Vue {
       amount: this.formData.toAmount,
       currency: this.formData.toCurrency,
     }
-    const identityAddressObject = {
-      line1: this.formData.identityAddressLine1,
-      line2: this.formData.identityAddressLine2,
-      city: this.formData.identityAddressCity,
-      district: this.formData.identityAddressDistrict,
-      postalCode: this.formData.identityAddressPostalCode,
-      country: this.formData.identityAddressCountry,
-    }
-    const identityObject = {
-      type: this.formData.identityType,
-      name: this.formData.identityName,
-      addresses: [identityAddressObject],
-    }
-    const identities = this.hasIdentity() && {
-      identities: [identityObject],
-    }
 
     const payload: CreateCryptoRefundPayload = {
       idempotencyKey: uuidv4(),
@@ -194,7 +116,6 @@ export default class CreatePaymentIntentClass extends Vue {
       },
       amount: fromAmountDetail,
       toAmount: toAmountDetail,
-      ...identities,
     }
     try {
       await this.$paymentIntentsApi.createCryptoRefund(
