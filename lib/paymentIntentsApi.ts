@@ -19,6 +19,21 @@ export interface CreatePaymentIntentPayload {
   expiresOn: string
 }
 
+export interface CreateCryptoRefundPayload {
+  idempotencyKey: string
+  destination: {
+    address: string
+    chain: string
+  }
+  amount: {
+    currency: string
+  }
+  toAmount: {
+    amount: string
+    currency: string
+  }
+}
+
 const instance = axios.create({
   baseURL: getAPIHostname(),
 })
@@ -84,6 +99,19 @@ function getPaymentIntentById(paymentIntentId: string) {
 }
 
 /**
+ * Create crypto refund
+ * @param {String} paymentIntentId
+ * @param {*} payload
+ */
+function createCryptoRefund(
+  paymentIntentId: string,
+  payload: CreateCryptoRefundPayload
+) {
+  const url = `/v1/paymentIntents/${paymentIntentId}/refund`
+  return instance.post(url, payload)
+}
+
+/**
  * Get payment intents
  * @param {String} status
  * @param {String} context
@@ -121,4 +149,5 @@ export default {
   getPaymentIntentById,
   createPaymentIntent,
   expirePaymentIntent,
+  createCryptoRefund,
 }

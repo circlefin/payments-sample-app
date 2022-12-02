@@ -706,6 +706,10 @@ export default class DefaultLayoutsClass extends Vue {
       title: 'POST /paymentIntents/{id}/expire',
       to: '/debug/paymentIntents/expire',
     },
+    {
+      title: 'POST /paymentIntents/{id}/refund',
+      to: '/debug/paymentIntents/createCryptoRefund',
+    },
   ]
 
   digitalDollarAccountsLinks = [
