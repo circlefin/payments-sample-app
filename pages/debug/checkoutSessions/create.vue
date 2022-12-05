@@ -71,7 +71,7 @@ import { CreateCheckoutSessionPayload } from '~/lib/checkoutSessionsApi'
 })
 export default class CreateCheckoutSessionClass extends Vue {
   formData = {
-    successUrl: '',
+    successUrl: null,
     amount: '0.00',
     currency: '',
   }
@@ -102,8 +102,11 @@ export default class CreateCheckoutSessionClass extends Vue {
 
     const payload: CreateCheckoutSessionPayload = {
       amount: amountDetail,
-      successUrl,
     }
+    if (successUrl) {
+      payload.successUrl = successUrl
+    }
+
     try {
       await this.$checkoutSessionsApi.createCheckoutSession(payload)
     } catch (error) {
