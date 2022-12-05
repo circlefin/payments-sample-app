@@ -8,7 +8,7 @@ export interface CreateCheckoutSessionPayload {
     amount: string
     currency: string
   }
-  successUrl: string
+  successUrl?: string
 }
 
 export interface ExtendCheckoutSessionPayload {
