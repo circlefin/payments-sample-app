@@ -1,7 +1,7 @@
 import get from 'lodash/get'
 import axios from 'axios'
 
-import { getAPIHostname } from '../apiTarget'
+import { getAPIHostname } from './apiTarget'
 
 interface ProtocolMetadata {
   type: string
@@ -67,7 +67,7 @@ function getInstance() {
  * @param {*} payload
  */
 function createCryptoPayment(payload: CreateCryptoPaymentPayload) {
-  const url = '/v1/payments/beta'
+  const url = '/v1/payments/crypto'
   return instance.post(url, payload)
 }
 

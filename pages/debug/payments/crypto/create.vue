@@ -99,7 +99,7 @@ import { mapGetters } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
-import { CreateCryptoPaymentPayload } from '~/lib/beta/paymentsApi'
+import { CreateCryptoPaymentPayload } from '~/lib/cryptoPaymentsApi'
 
 @Component({
   components: {
