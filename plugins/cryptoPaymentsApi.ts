@@ -1,6 +1,6 @@
 import paymentsApiBeta, {
   CreateCryptoPaymentPayload,
-} from '@/lib/beta/paymentsApi'
+} from '@/lib/cryptoPaymentsApi'
 
 declare module 'vue/types/vue' {
   interface Vue {
