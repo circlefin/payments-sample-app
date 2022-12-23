@@ -507,7 +507,7 @@ export default class DefaultLayoutsClass extends Vue {
     },
     {
       title: 'GET /presign',
-      to: '/debug/payments/presign',
+      to: '/debug/payments/crypto/presign',
     },
   ]
 
