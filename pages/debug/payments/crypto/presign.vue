@@ -62,7 +62,7 @@ export default class FetchBalancesClass extends Vue {
   async makeApiCall() {
     this.loading = true
     try {
-      await this.$paymentsApi.getBalance()
+      await this.$paymentsApi.getPresignData()
     } catch (error) {
       this.error = error
       this.showError = true
