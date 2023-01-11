@@ -226,9 +226,21 @@ function getReversals(
 /**
  * Get typed data for signing
  */
-function getPresignData() {
+function getPresignData(
+  paymentIntentId: string,
+  endUserAddress: string,
+  amount: string,
+  currency: string
+) {
+  const queryParams = {
+    paymentIntentId,
+    endUserAddress,
+    amount: nullIfEmpty(amount),
+    currency: nullIfEmpty(currency),
+  }
+
   const url = '/v1/payments/presign'
-  return instance.get(url)
+  return instance.get(url, { params: queryParams })
 }
 
 export default {

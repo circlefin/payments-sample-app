@@ -3,6 +3,11 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
+          <v-text-field v-model="formData.paymentIntentId" label="Payment Intent Id" />
+          <v-text-field v-model="formData.endUserAddress" label="End User Address" />
+          <header>Optional filter params:</header>
+          <v-text-field v-model="formData.amount" label="Amount" />
+          <v-text-field v-model="formData.currency" label="Currency" />
           <v-btn
             depressed
             class="mb-7"
@@ -48,10 +53,17 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
     }),
   },
 })
-export default class FetchBalancesClass extends Vue {
+export default class FetchPresignData extends Vue {
   error = {}
   loading = false
   showError = false
+
+  formData = {
+    paymentIntentId: '',
+    endUserAddress: '',
+    amount: '',
+    currency: '',
+  }
 
   // methods
   onErrorSheetClosed() {
@@ -62,7 +74,12 @@ export default class FetchBalancesClass extends Vue {
   async makeApiCall() {
     this.loading = true
     try {
-      await this.$paymentsApi.getPresignData()
+      await this.$paymentsApi.getPresignData(
+      this.formData.paymentIntentId,
+      this.formData.endUserAddress,
+      this.formData.amount,
+      this.formData.currency,
+      )
     } catch (error) {
       this.error = error
       this.showError = true
