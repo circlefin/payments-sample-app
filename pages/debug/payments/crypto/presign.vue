@@ -5,7 +5,7 @@
         <v-form>
           <v-text-field v-model="formData.paymentIntentId" label="Payment Intent Id" />
           <v-text-field v-model="formData.endUserAddress" label="End User Address" />
-          <header>Optional filter params:</header>
+          <header>Optional params:</header>
           <v-text-field v-model="formData.amount" label="Amount" />
           <v-text-field v-model="formData.currency" label="Currency" />
           <v-btn
