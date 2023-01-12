@@ -8,7 +8,7 @@ interface PaymentMethod {
   chain: string
 }
 
-export interface CreatePaymentIntentPayload {
+export interface CreateTransientPaymentIntentPayload {
   idempotencyKey: string
   amount: {
     amount: string
@@ -17,6 +17,14 @@ export interface CreatePaymentIntentPayload {
   settlementCurrency: string
   paymentMethods: Array<PaymentMethod>
   expiresOn: string
+}
+
+export interface CreateContinuousPaymentIntentPayload {
+  idempotencyKey: string
+  currency: string
+  settlementCurrency: string
+  paymentMethods: Array<PaymentMethod>
+  type: string
 }
 
 export interface CreateCryptoRefundPayload {
@@ -72,10 +80,23 @@ function getInstance() {
 }
 
 /**
- * Create payment intent
+ * Create transient payment intent
  * @param {*} payload
  */
-function createPaymentIntent(payload: CreatePaymentIntentPayload) {
+function createTransientPaymentIntent(
+  payload: CreateTransientPaymentIntentPayload
+) {
+  const url = '/v1/paymentIntents'
+  return instance.post(url, payload)
+}
+
+/**
+ * Create continuous payment intent
+ * @param {*} payload
+ */
+function createContinuousPaymentIntent(
+  payload: CreateContinuousPaymentIntentPayload
+) {
   const url = '/v1/paymentIntents'
   return instance.post(url, payload)
 }
@@ -147,7 +168,8 @@ export default {
   getInstance,
   getPaymentIntents,
   getPaymentIntentById,
-  createPaymentIntent,
+  createTransientPaymentIntent,
+  createContinuousPaymentIntent,
   expirePaymentIntent,
   createCryptoRefund,
 }
