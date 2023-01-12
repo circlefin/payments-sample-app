@@ -13,6 +13,7 @@ declare module 'vue/types/vue' {
       getBalance: any
       getInstance: any
       getReversals: any
+      getPresignData: any
     }
   }
 }
