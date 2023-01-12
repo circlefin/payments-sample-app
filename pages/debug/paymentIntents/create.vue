@@ -4,13 +4,6 @@
       <v-col cols="12" md="4">
         <v-form>
 
-          <v-select
-            v-model="formData.type"
-            :items="intentTypes"
-            label="Payment Intent Type"
-            @change="onIntentTypeChange"
-          />
-
           <v-text-field
             v-if="transientIntentSelected"
             v-model="formData.amount"
@@ -42,6 +35,15 @@
             v-if="currencySelected && transientIntentSelected"
             v-model="formData.expiresOn"
             label="Expires On"
+          />
+
+          <header>Optional params:</header>
+
+          <v-select
+            v-model="formData.type"
+            :items="intentTypes"
+            label="Payment Intent Type"
+            @change="onIntentTypeChange"
           />
 
           <v-btn
@@ -121,7 +123,7 @@ export default class CreatePaymentIntentClass extends Vue {
   supportedCurrencies = ['']
   supportedChains = ['']
   currencySelected = false
-  transientIntentSelected = false
+  transientIntentSelected = true
   continuousIntentSelected = false
   intentTypes = ['continuous', 'transient']
 
@@ -148,12 +150,12 @@ export default class CreatePaymentIntentClass extends Vue {
   }
 
   onIntentTypeChange() {
-    if (this.formData.type === 'transient') {
-      this.transientIntentSelected = true
-      this.continuousIntentSelected = false
-    } else if (this.formData.type === 'continuous') {
+    if (this.formData.type === 'continuous') {
       this.continuousIntentSelected = true
       this.transientIntentSelected = false
+    } else if (this.formData.type === 'transient') {
+      this.continuousIntentSelected = false
+      this.transientIntentSelected = true
     }
   }
 
