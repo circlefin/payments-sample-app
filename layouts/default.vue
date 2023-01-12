@@ -505,6 +505,10 @@ export default class DefaultLayoutsClass extends Vue {
       title: 'POST /paymentTokens',
       to: '/debug/payments/digitalWallets/paymentTokens',
     },
+    {
+      title: 'GET /presign',
+      to: '/debug/payments/crypto/presign',
+    },
   ]
 
   marketplaceLinks = [
