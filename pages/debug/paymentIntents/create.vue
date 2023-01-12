@@ -3,7 +3,16 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
+
+          <v-select
+            v-model="formData.type"
+            :items="intentTypes"
+            label="Payment Intent Type"
+            @change="onIntentTypeChange"
+          />
+
           <v-text-field
+            v-if="transientIntentSelected"
             v-model="formData.amount"
             label="Payment Intent Amount"
           />
@@ -30,7 +39,7 @@
           />
 
           <v-text-field
-            v-if="currencySelected"
+            v-if="currencySelected && transientIntentSelected"
             v-model="formData.expiresOn"
             label="Expires On"
           />
@@ -69,7 +78,10 @@ import { mapGetters } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
-import { CreatePaymentIntentPayload } from '@/lib/paymentIntentsApi'
+import {
+  CreateContinuousPaymentIntentPayload,
+  CreateTransientPaymentIntentPayload,
+} from '@/lib/paymentIntentsApi'
 
 interface CurrencyBlockchainPair {
   currency: string
@@ -98,6 +110,7 @@ export default class CreatePaymentIntentClass extends Vue {
     settlementCurrency: '',
     blockchain: '',
     expiresOn: '',
+    type: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']
@@ -108,6 +121,9 @@ export default class CreatePaymentIntentClass extends Vue {
   supportedCurrencies = ['']
   supportedChains = ['']
   currencySelected = false
+  transientIntentSelected = false
+  continuousIntentSelected = false
+  intentTypes = ['continuous', 'transient']
 
   async mounted() {
     this.currencyBlockchainPairs =
@@ -131,30 +147,59 @@ export default class CreatePaymentIntentClass extends Vue {
     this.currencySelected = true
   }
 
+  onIntentTypeChange() {
+    if (this.formData.type === 'transient') {
+      this.transientIntentSelected = true
+      this.continuousIntentSelected = false
+    } else if (this.formData.type === 'continuous') {
+      this.continuousIntentSelected = true
+      this.transientIntentSelected = false
+    }
+  }
+
   async makeApiCall() {
     this.loading = true
-    const amountDetail = {
-      amount: this.formData.amount,
-      currency: this.formData.currency,
-    }
     const blockchainPaymentMethod = {
       type: 'blockchain',
       chain: this.formData.blockchain,
     }
-    const payload: CreatePaymentIntentPayload = {
-      idempotencyKey: uuidv4(),
-      amount: amountDetail,
-      settlementCurrency: this.formData.settlementCurrency,
-      paymentMethods: [blockchainPaymentMethod],
-      expiresOn: this.formData.expiresOn,
-    }
-    try {
-      await this.$paymentIntentsApi.createPaymentIntent(payload)
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
+    if (this.transientIntentSelected) {
+      const amountDetail = {
+        amount: this.formData.amount,
+        currency: this.formData.currency,
+      }
+
+      const payload: CreateTransientPaymentIntentPayload = {
+        idempotencyKey: uuidv4(),
+        amount: amountDetail,
+        settlementCurrency: this.formData.settlementCurrency,
+        paymentMethods: [blockchainPaymentMethod],
+        expiresOn: this.formData.expiresOn,
+      }
+      try {
+        await this.$paymentIntentsApi.createTransientPaymentIntent(payload)
+      } catch (error) {
+        this.error = error
+        this.showError = true
+      } finally {
+        this.loading = false
+      }
+    } else if (this.continuousIntentSelected) {
+      const payload: CreateContinuousPaymentIntentPayload = {
+        idempotencyKey: uuidv4(),
+        currency: this.formData.currency,
+        settlementCurrency: this.formData.settlementCurrency,
+        paymentMethods: [blockchainPaymentMethod],
+        type: this.formData.type
+      }
+      try {
+        await this.$paymentIntentsApi.createContinuousPaymentIntent(payload)
+      } catch (error) {
+        this.error = error
+        this.showError = true
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
