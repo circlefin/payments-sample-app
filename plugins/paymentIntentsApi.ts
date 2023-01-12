@@ -1,6 +1,6 @@
 import paymentIntentsAPI, {
   CreateTransientPaymentIntentPayload,
-  CreateContinuousPaymentIntentPayload
+  CreateContinuousPaymentIntentPayload,
 } from '@/lib/paymentIntentsApi'
 
 declare module 'vue/types/vue' {
@@ -8,8 +8,12 @@ declare module 'vue/types/vue' {
     $paymentIntentsApi: {
       getPaymentIntents: any
       getPaymentIntentById: any
-      createTransientPaymentIntent: (payload: CreateTransientPaymentIntentPayload) => any
-      createContinuousPaymentIntent: (payload: CreateContinuousPaymentIntentPayload) => any
+      createTransientPaymentIntent: (
+        payload: CreateTransientPaymentIntentPayload
+      ) => any
+      createContinuousPaymentIntent: (
+        payload: CreateContinuousPaymentIntentPayload
+      ) => any
       expirePaymentIntent: any
       createCryptoRefund: any
       getInstance: any

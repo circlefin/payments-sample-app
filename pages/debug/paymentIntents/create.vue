@@ -3,7 +3,6 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-
           <v-text-field
             v-if="transientIntentSelected"
             v-model="formData.amount"
@@ -192,7 +191,7 @@ export default class CreatePaymentIntentClass extends Vue {
         currency: this.formData.currency,
         settlementCurrency: this.formData.settlementCurrency,
         paymentMethods: [blockchainPaymentMethod],
-        type: this.formData.type
+        type: this.formData.type,
       }
       try {
         await this.$paymentIntentsApi.createContinuousPaymentIntent(payload)
