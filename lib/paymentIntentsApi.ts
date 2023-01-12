@@ -83,7 +83,9 @@ function getInstance() {
  * Create transient payment intent
  * @param {*} payload
  */
-function createTransientPaymentIntent(payload: CreateTransientPaymentIntentPayload) {
+function createTransientPaymentIntent(
+  payload: CreateTransientPaymentIntentPayload
+) {
   const url = '/v1/paymentIntents'
   return instance.post(url, payload)
 }
@@ -92,7 +94,9 @@ function createTransientPaymentIntent(payload: CreateTransientPaymentIntentPaylo
  * Create continuous payment intent
  * @param {*} payload
  */
-function createContinuousPaymentIntent(payload: CreateContinuousPaymentIntentPayload) {
+function createContinuousPaymentIntent(
+  payload: CreateContinuousPaymentIntentPayload
+) {
   const url = '/v1/paymentIntents'
   return instance.post(url, payload)
 }
