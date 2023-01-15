@@ -55,6 +55,34 @@ function createCheckoutSession(payload: CreateCheckoutSessionPayload) {
 }
 
 /**
+ * Get checkout sessions
+ * @param {String} from
+ * @param {String} to
+ * @param {String} pageBefore
+ * @param {String} pageAfter
+ * @param {String} pageSize
+ */
+function getCheckoutSessions(
+  from: string,
+  to: string,
+  pageBefore: string,
+  pageAfter: string,
+  pageSize: string
+) {
+  const queryParams = {
+    from: nullIfEmpty(from),
+    to: nullIfEmpty(to),
+    pageBefore: nullIfEmpty(pageBefore),
+    pageAfter: nullIfEmpty(pageAfter),
+    pageSize: nullIfEmpty(pageSize),
+  }
+
+  const url = '/v1/checkoutSessions'
+
+  return instance.get(url, { params: queryParams })
+}
+
+/**
  * Expire a checkout session
  * @param checkoutSessionId checkout session id
  * @param payload payload
@@ -76,8 +104,16 @@ function getCheckoutSessionById(checkoutSessionId: string) {
   return instance.get(url)
 }
 
+const nullIfEmpty = (prop: string | undefined) => {
+  if (prop === '') {
+    return undefined
+  }
+  return prop
+}
+
 export default {
   getInstance,
+  getCheckoutSessions,
   getCheckoutSessionById,
   createCheckoutSession,
   extendCheckoutSession,

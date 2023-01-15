@@ -6,6 +6,7 @@ declare module 'vue/types/vue' {
   interface Vue {
     $checkoutSessionsApi: {
       getCheckoutSessionById: any
+      getCheckoutSessions: any
       createCheckoutSession: (payload: CreateCheckoutSessionPayload) => any
       extendCheckoutSession: (checkoutSessionId: string, payload: any) => any
     }
