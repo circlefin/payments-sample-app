@@ -26,6 +26,10 @@
           </a>
         </p>
         <p>
+          <v-chip small color="primary warning">GET</v-chip>
+          <a href="/debug/checkoutSessions/fetch">Get all checkout sessions </a>
+        </p>
+        <p>
           <v-chip small color="primary warning">POST</v-chip>
           <a href="/debug/checkoutSessions/extend">
             Extend a checkout session

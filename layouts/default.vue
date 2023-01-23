@@ -757,6 +757,10 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/checkoutSessions/create',
     },
     {
+      title: 'GET /checkoutSessions',
+      to: '/debug/checkoutSessions/fetch',
+    },
+    {
       title: 'GET /checkoutSessions/{id}',
       to: '/debug/checkoutSessions/details',
     },
