@@ -22,6 +22,14 @@
           >
             Make api call
           </v-btn>
+          <v-btn v-if="showMetaMaskButton"
+            depressed
+            class="mb-7"
+            color="primary"
+            @click.prevent="sendPresignedDataToMetaMask()"
+          >
+            Send presigned data to Metamask
+          </v-btn>
         </v-form>
       </v-col>
       <v-col cols="12" md="8">
@@ -45,6 +53,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
+import { sendPresignedDataToMetaMask } from '~/lib/walletConnect'
 
 @Component({
   components: {
@@ -63,6 +72,7 @@ export default class FetchPresignData extends Vue {
   error = {}
   loading = false
   showError = false
+  showMetaMaskButton = false
 
   formData = {
     paymentIntentId: '',
@@ -85,6 +95,20 @@ export default class FetchPresignData extends Vue {
         this.formData.endUserAddress,
         this.formData.amount,
         this.formData.currency
+      )
+    } catch (error) {
+      this.error = error
+      this.showError = true
+    } finally {
+      this.loading = false
+      this.showMetaMaskButton = Object.keys(this.$store.getters.getRequestResponse).length
+  }
+  }
+
+  async sendPresignedDataToMetaMask() {
+    try {
+      sendPresignedDataToMetaMask(
+        this.$store.getters.getRequestResponse
       )
     } catch (error) {
       this.error = error
