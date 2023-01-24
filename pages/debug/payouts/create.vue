@@ -185,7 +185,7 @@ export default class CreatePayoutClass extends Vue {
   }
 
   sourceWalletIdNotEmpty() {
-    return this.formData.sourceWalletId.length > 0;
+    return this.formData.sourceWalletId.length > 0
   }
 
   hasIdentity() {
