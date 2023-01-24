@@ -30,6 +30,7 @@ export interface CreateCryptoPaymentPayload {
     chain: string
   }
   protocolMetadata: TransferWithAuthorizationMetadata
+  quoteId: string
 }
 
 const instance = axios.create({
