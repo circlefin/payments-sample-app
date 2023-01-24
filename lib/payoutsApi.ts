@@ -3,11 +3,27 @@ import axios from 'axios'
 
 import { getAPIHostname } from './apiTarget'
 
+export interface SourceIdentityAddressObject {
+  line1: string
+  line2: string
+  city: string
+  district: string
+  postalCode: string
+  country: string
+}
+
+export interface SourceIdentityObject {
+  type: string
+  name: string
+  addresses: SourceIdentityAddressObject[]
+}
+
 export interface CreatePayoutPayload {
   idempotencyKey: string
   source?: {
     id: string
     type: string
+    identities?: SourceIdentityObject[]
   }
   destination: {
     id: string
