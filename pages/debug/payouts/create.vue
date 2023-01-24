@@ -45,7 +45,7 @@
 
           <br />
 
-          <div v-if="isCryptoPayout()">
+          <div v-if="isCryptoPayout() && sourceWalletIdNotEmpty()">
             <header>Optional Identity:</header>
             <br />
 
@@ -182,6 +182,10 @@ export default class CreatePayoutClass extends Vue {
 
   isCryptoPayout() {
     return this.blockchainDestinationTypes.has(this.formData.destinationType)
+  }
+
+  sourceWalletIdNotEmpty() {
+    return this.formData.sourceWalletId.length > 0;
   }
 
   hasIdentity() {
