@@ -26,9 +26,9 @@
             depressed
             class="mb-7"
             color="primary"
-            @click.prevent="sendPresignedDataToMetaMask()"
+            @click.prevent="sendResponseToMetaMask()"
           >
-            Send presigned data to Metamask
+            Send response to MetaMask
           </v-btn>
         </v-form>
       </v-col>
@@ -105,17 +105,15 @@ export default class FetchPresignData extends Vue {
   }
   }
 
-  async sendPresignedDataToMetaMask() {
+  async sendResponseToMetaMask() {
     try {
-      sendPresignedDataToMetaMask(
+      await sendPresignedDataToMetaMask(
         this.$store.getters.getRequestResponse
       )
     } catch (error) {
       this.error = error
       this.showError = true
-    } finally {
-      this.loading = false
-    }
   }
+}
 }
 </script>
