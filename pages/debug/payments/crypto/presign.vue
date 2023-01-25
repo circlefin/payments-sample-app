@@ -22,7 +22,8 @@
           >
             Make api call
           </v-btn>
-          <v-btn v-if="showMetaMaskButton"
+          <v-btn
+            v-if="showMetaMaskButton"
             depressed
             class="mb-7"
             color="primary"
@@ -38,14 +39,18 @@
           >
             <router-link
               slot="append"
-              :to="{path: '/debug/payments/crypto/create', query: {
-              signature: formData.rawSignature,
-              validAfter: getTypedData().message.validAfter,
-              metaTxNonce: getTypedData().message.nonce,
-              validBefore: getTypedData().message.validBefore}}"
+              :to="{
+                path: '/debug/payments/crypto/create',
+                query: {
+                  signature: formData.rawSignature,
+                  validAfter: getTypedData().message.validAfter,
+                  metaTxNonce: getTypedData().message.nonce,
+                  validBefore: getTypedData().message.validBefore,
+                },
+              }"
               class="subtitle-2 text-right"
             >
-              Create crypto payment 
+              Create crypto payment
             </router-link>
           </v-text-field>
         </v-form>
@@ -124,8 +129,9 @@ export default class FetchPresignData extends Vue {
       this.showError = true
     } finally {
       this.loading = false
-      this.showMetaMaskButton = Object.keys(this.$store.getters.getRequestResponse).length > 0
-  }
+      this.showMetaMaskButton =
+        Object.keys(this.$store.getters.getRequestResponse).length > 0
+    }
   }
 
   async sendResponseToMetaMask() {
@@ -136,7 +142,7 @@ export default class FetchPresignData extends Vue {
     } catch (error) {
       this.error = error
       this.showError = true
+    }
   }
-}
 }
 </script>

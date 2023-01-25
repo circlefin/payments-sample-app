@@ -131,10 +131,11 @@ export default class CreatePaymentClass extends Vue {
     destinationChain: '',
     feeQuoteId: '',
     protocolType: 'TransferWithAuthorization',
-    validAfter: this.$route.query.validAfter as string || '0',      
-    validBefore: this.$route.query.validBefore as string || '',      
-    metaTxNonce: this.$route.query.metaTxNonce as string || '',          
-    rawSignature: this.$route.query.signature as string || ''  }
+    validAfter: (this.$route.query.validAfter as string) || '0',
+    validBefore: (this.$route.query.validBefore as string) || '',
+    metaTxNonce: (this.$route.query.metaTxNonce as string) || '',
+    rawSignature: (this.$route.query.signature as string) || '',
+  }
 
   sourceType = ['blockchain']
   currency = ['USD']

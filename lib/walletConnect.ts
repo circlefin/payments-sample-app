@@ -1,9 +1,5 @@
-import get from 'lodash/get'
-import axios from 'axios'
-
 import { mainnet, goerli } from '@wagmi/core/chains'
 import { MetaMaskConnector } from '@wagmi/core/connectors/metaMask'
-import { InjectedConnector } from '@wagmi/core/connectors/injected'
 
 import {
   connect,
@@ -12,7 +8,6 @@ import {
   signTypedData,
 } from '@wagmi/core'
 import { publicProvider } from '@wagmi/core/providers/public'
-import { getAPIHostname } from './apiTarget'
 
 function startWagmiClient() {
   const { provider, webSocketProvider } = configureChains(
@@ -20,7 +15,7 @@ function startWagmiClient() {
     [publicProvider()]
   )
 
-  const client = createClient({
+  createClient({
     provider,
     webSocketProvider,
     connectors: [],
