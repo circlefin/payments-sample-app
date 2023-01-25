@@ -31,7 +31,11 @@ function startWagmiClient() {
  * Send presign data to Metamask
  * @param presignedData
  */
-async function sendPresignedDataToMetaMask({ typedData }: any) {
+async function sendPresignedDataToMetaMask({
+  domain,
+  types,
+  message: value,
+}: any) {
   startWagmiClient()
   await connect({
     connector: new MetaMaskConnector({
@@ -42,8 +46,7 @@ async function sendPresignedDataToMetaMask({ typedData }: any) {
       },
     }),
   })
-  const { domain, types, message: value } = typedData
-  const signature = await signTypedData({ domain, types, value })
+  return await signTypedData({ domain, types, value })
 }
 
 export { sendPresignedDataToMetaMask }
