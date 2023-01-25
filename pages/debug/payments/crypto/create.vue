@@ -36,6 +36,11 @@
             label="Destination Chain"
           />
 
+          <v-text-field
+            v-model="formData.feeQuoteId"
+            label="Fee Quote Id (Only for End User Pay)"
+          />
+
           <v-select
             v-model="formData.protocolType"
             :items="protocolType"
@@ -124,6 +129,7 @@ export default class CreatePaymentClass extends Vue {
     sourceType: 'blockchain',
     destinationAddress: '',
     destinationChain: '',
+    feeQuoteId: '',
     protocolType: 'TransferWithAuthorization',
     validAfter: this.$route.query.validAfter as string || '0',      
     validBefore: this.$route.query.validBefore as string || '',      
@@ -172,6 +178,7 @@ export default class CreatePaymentClass extends Vue {
       source: sourceDetails,
       destination: destinationDetails,
       protocolMetadata: protocolMetadataDetails,
+      quoteId: this.formData.feeQuoteId,
     }
 
     try {
