@@ -30,6 +30,24 @@
           >
             Send response to MetaMask
           </v-btn>
+          <v-text-field
+            v-if="formData.rawSignature.length"
+            v-model="formData.rawSignature"
+            label="ECDSA rawSignature"
+            readonly
+          >
+            <router-link
+              slot="append"
+              :to="{path: '/debug/payments/crypto/create', query: {
+              signature: formData.rawSignature,
+              validAfter: getTypedData().message.validAfter,
+              metaTxNonce: getTypedData().message.nonce,
+              validBefore: getTypedData().message.validBefore}}"
+              class="subtitle-2 text-right"
+            >
+              Create crypto payment 
+            </router-link>
+          </v-text-field>
         </v-form>
       </v-col>
       <v-col cols="12" md="8">
@@ -79,12 +97,17 @@ export default class FetchPresignData extends Vue {
     endUserAddress: '',
     amount: '',
     currency: '',
+    rawSignature: '',
   }
 
   // methods
   onErrorSheetClosed() {
     this.error = {}
     this.showError = false
+  }
+
+  getTypedData() {
+    return this.$store.getters.getRequestResponse.typedData
   }
 
   async makeApiCall() {
@@ -107,8 +130,8 @@ export default class FetchPresignData extends Vue {
 
   async sendResponseToMetaMask() {
     try {
-      await sendPresignedDataToMetaMask(
-        this.$store.getters.getRequestResponse
+      this.formData.rawSignature = await sendPresignedDataToMetaMask(
+        this.getTypedData()
       )
     } catch (error) {
       this.error = error
