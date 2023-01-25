@@ -101,7 +101,7 @@ export default class FetchPresignData extends Vue {
       this.showError = true
     } finally {
       this.loading = false
-      this.showMetaMaskButton = Object.keys(this.$store.getters.getRequestResponse).length
+      this.showMetaMaskButton = Object.keys(this.$store.getters.getRequestResponse).length > 0
   }
   }
 
