@@ -22,6 +22,41 @@
           >
             Make api call
           </v-btn>
+          <v-btn
+            v-if="showMetaMaskButton"
+            depressed
+            class="mb-7"
+            color="primary"
+            @click.prevent="sendResponseToMetaMask()"
+          >
+            Send response to MetaMask
+          </v-btn>
+          <v-text-field
+            v-if="formData.rawSignature.length"
+            v-model="formData.rawSignature"
+            label="ECDSA rawSignature"
+            readonly
+          >
+            <router-link
+              slot="append"
+              :to="{
+                path: '/debug/payments/crypto/create',
+                query: {
+                  destinationAddress: getTypedData().message.to,
+                  amount: getTypedData().totalAmount.amount,
+                  currency: getTypedData().totalAmount.currency,
+                  protocolType: getTypedData().totalAmount.primaryType,
+                  signature: formData.rawSignature,
+                  validAfter: getTypedData().message.validAfter,
+                  metaTxNonce: getTypedData().message.nonce,
+                  validBefore: getTypedData().message.validBefore,
+                },
+              }"
+              class="subtitle-2 text-right"
+            >
+              Create crypto payment
+            </router-link>
+          </v-text-field>
         </v-form>
       </v-col>
       <v-col cols="12" md="8">
@@ -45,6 +80,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
+import { sendPresignedDataToMetaMask } from '~/lib/walletConnect'
 
 @Component({
   components: {
@@ -63,18 +99,24 @@ export default class FetchPresignData extends Vue {
   error = {}
   loading = false
   showError = false
+  showMetaMaskButton = false
 
   formData = {
     paymentIntentId: '',
     endUserAddress: '',
     amount: '',
     currency: '',
+    rawSignature: '',
   }
 
   // methods
   onErrorSheetClosed() {
     this.error = {}
     this.showError = false
+  }
+
+  getTypedData() {
+    return this.$store.getters.getRequestResponse.typedData
   }
 
   async makeApiCall() {
@@ -91,6 +133,19 @@ export default class FetchPresignData extends Vue {
       this.showError = true
     } finally {
       this.loading = false
+      this.showMetaMaskButton =
+        Object.keys(this.$store.getters.getRequestResponse).length > 0
+    }
+  }
+
+  async sendResponseToMetaMask() {
+    try {
+      this.formData.rawSignature = await sendPresignedDataToMetaMask(
+        this.getTypedData()
+      )
+    } catch (error) {
+      this.error = error
+      this.showError = true
     }
   }
 }
