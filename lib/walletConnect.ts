@@ -7,7 +7,7 @@ import {
   createClient,
   configureChains,
   signTypedData,
-} from '@wagmi/core' // TODO: Throws error, fix eslint configuration. See: https://circlefin.slack.com/archives/C043ETDAAJC/p1674678738355329?thread_ts=1674514103.077649&cid=C043ETDAAJC
+} from '@wagmi/core' // TODO: Throws parser error, fix eslint configuration
 /* eslint-enable */
 
 import { publicProvider } from '@wagmi/core/providers/public'
