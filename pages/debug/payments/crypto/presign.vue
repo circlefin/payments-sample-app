@@ -42,10 +42,10 @@
               :to="{
                 path: '/debug/payments/crypto/create',
                 query: {
-                  destinationAddress: getTypedData().message.to,                  
-                  amount: getTypedData().totalAmount.amount,                  
-                  currency: getTypedData().totalAmount.currency,                  
-                  protocolType: getTypedData().totalAmount.primaryType,                  
+                  destinationAddress: getTypedData().message.to,
+                  amount: getTypedData().totalAmount.amount,
+                  currency: getTypedData().totalAmount.currency,
+                  protocolType: getTypedData().totalAmount.primaryType,
                   signature: formData.rawSignature,
                   validAfter: getTypedData().message.validAfter,
                   metaTxNonce: getTypedData().message.nonce,
