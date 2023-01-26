@@ -122,15 +122,15 @@ import { CreateCryptoPaymentPayload } from '~/lib/cryptoPaymentsApi'
 })
 export default class CreatePaymentClass extends Vue {
   formData = {
-    paymentIntentId: '',
-    amount: '0.00',
-    currency: 'USD',
+    paymentIntentId: (this.$route.query.paymentIntentId as string) || '',
+    amount: (this.$route.query.amount as string) || '0.00',
+    currency: (this.$route.query.currency as string) || 'USD',
     sourceAddress: '',
     sourceType: 'blockchain',
-    destinationAddress: '',
-    destinationChain: '',
+    destinationAddress: (this.$route.query.destinationAddress as string) || '0',
+    destinationChain: 'ETH',
     feeQuoteId: '',
-    protocolType: 'TransferWithAuthorization',
+    protocolType: (this.$route.query.protocolType as string) || 'TransferWithAuthorization',
     validAfter: (this.$route.query.validAfter as string) || '0',
     validBefore: (this.$route.query.validBefore as string) || '',
     metaTxNonce: (this.$route.query.metaTxNonce as string) || '',
