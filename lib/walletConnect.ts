@@ -1,12 +1,15 @@
 import { mainnet, goerli } from '@wagmi/core/chains'
 import { MetaMaskConnector } from '@wagmi/core/connectors/metaMask'
 
+/*eslint-disable */
 import {
   connect,
   createClient,
   configureChains,
   signTypedData,
 } from '@wagmi/core'
+/* eslint-enable */
+
 import { publicProvider } from '@wagmi/core/providers/public'
 
 function startWagmiClient() {
