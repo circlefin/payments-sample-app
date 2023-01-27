@@ -38,7 +38,7 @@
 
           <v-text-field
             v-model="formData.feeQuoteId"
-            label="Fee Quote Id (Only for End User Pay)"
+            label="Fee Quote UUID (Required if network fees paid by end user)"
           />
 
           <v-select
