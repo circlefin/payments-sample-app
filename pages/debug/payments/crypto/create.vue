@@ -120,7 +120,6 @@ import { CreateCryptoPaymentPayload } from '~/lib/cryptoPaymentsApi'
     }),
   },
 })
-
 export default class CreatePaymentClass extends Vue {
   formData = {
     paymentIntentId: (this.$route.query.paymentIntentId as string) || '',

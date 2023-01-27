@@ -111,8 +111,13 @@ export default class FetchPresignData extends Vue {
   }
 
   getCreatePaymentQueryParams() {
-    const { paymentIntentId, rawSignature } = this.formData;
-    const {message, totalAmount, networkFee, primaryType: protocolType } = this.getTypedData();
+    const { paymentIntentId, rawSignature } = this.formData
+    const {
+      message,
+      totalAmount,
+      networkFee,
+      primaryType: protocolType,
+    } = this.getTypedData()
     return {
       paymentIntentId,
       amount: totalAmount.amount,
@@ -124,7 +129,7 @@ export default class FetchPresignData extends Vue {
       validAfter: message.validAfter,
       validBefore: message.validBefore,
       metaTxNonce: message.nonce,
-      rawSignature
+      rawSignature,
     }
   }
 
