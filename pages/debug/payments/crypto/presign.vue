@@ -111,18 +111,20 @@ export default class FetchPresignData extends Vue {
   }
 
   getCreatePaymentQueryParams() {
+    const { paymentIntentId, rawSignature } = this.formData;
+    const {message, totalAmount, networkFee, primaryType: protocolType } = this.getTypedData();
     return {
-      sourceAddress: this.getTypedData().message.from,
-      paymentIntentId: this.formData.paymentIntentId,
-      destinationAddress: this.getTypedData().message.to,
-      amount: this.getTypedData().totalAmount.amount,
-      currency: this.getTypedData().totalAmount.currency,
-      protocolType: this.getTypedData().totalAmount.primaryType,
-      signature: this.formData.rawSignature,
-      feeQuoteId: this.getTypedData().networkFee?.quoteId,
-      validAfter: this.getTypedData().message.validAfter,
-      metaTxNonce: this.getTypedData().message.nonce,
-      validBefore: this.getTypedData().message.validBefore,
+      paymentIntentId,
+      amount: totalAmount.amount,
+      currency: totalAmount.currency,
+      sourceAddress: message.from,
+      destinationAddress: message.to,
+      feeQuoteId: networkFee?.quoteId,
+      protocolType,
+      validAfter: message.validAfter,
+      validBefore: message.validBefore,
+      metaTxNonce: message.nonce,
+      rawSignature
     }
   }
 

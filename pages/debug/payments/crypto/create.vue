@@ -120,6 +120,7 @@ import { CreateCryptoPaymentPayload } from '~/lib/cryptoPaymentsApi'
     }),
   },
 })
+
 export default class CreatePaymentClass extends Vue {
   formData = {
     paymentIntentId: (this.$route.query.paymentIntentId as string) || '',
@@ -135,7 +136,7 @@ export default class CreatePaymentClass extends Vue {
     validAfter: (this.$route.query.validAfter as string) || '0',
     validBefore: (this.$route.query.validBefore as string) || '',
     metaTxNonce: (this.$route.query.metaTxNonce as string) || '',
-    rawSignature: (this.$route.query.signature as string) || '',
+    rawSignature: (this.$route.query.rawSignature as string) || '',
   }
 
   sourceType = ['blockchain']
