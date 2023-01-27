@@ -42,6 +42,7 @@
               :to="{
                 path: '/debug/payments/crypto/create',
                 query: {
+                  paymentIntentId: formData.paymentIntentId,
                   destinationAddress: getTypedData().message.to,
                   amount: getTypedData().totalAmount.amount,
                   currency: getTypedData().totalAmount.currency,
