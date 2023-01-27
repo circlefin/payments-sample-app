@@ -38,7 +38,7 @@
 
           <v-text-field
             v-model="formData.feeQuoteId"
-            label="Fee Quote Id (Only for End User Pay)"
+            label="Fee Quote UUID (Required if network fees paid by end user)"
           />
 
           <v-select
@@ -125,17 +125,17 @@ export default class CreatePaymentClass extends Vue {
     paymentIntentId: (this.$route.query.paymentIntentId as string) || '',
     amount: (this.$route.query.amount as string) || '0.00',
     currency: (this.$route.query.currency as string) || 'USD',
-    sourceAddress: '',
+    sourceAddress: (this.$route.query.sourceAddress as string) || '',
     sourceType: 'blockchain',
     destinationAddress: (this.$route.query.destinationAddress as string) || '',
     destinationChain: 'ETH',
-    feeQuoteId: '',
+    feeQuoteId: (this.$route.query.feeQuoteId as string) || '',
     protocolType:
       (this.$route.query.protocolType as string) || 'TransferWithAuthorization',
     validAfter: (this.$route.query.validAfter as string) || '0',
     validBefore: (this.$route.query.validBefore as string) || '',
     metaTxNonce: (this.$route.query.metaTxNonce as string) || '',
-    rawSignature: (this.$route.query.signature as string) || '',
+    rawSignature: (this.$route.query.rawSignature as string) || '',
   }
 
   sourceType = ['blockchain']

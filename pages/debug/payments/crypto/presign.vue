@@ -41,16 +41,7 @@
               slot="append"
               :to="{
                 path: '/debug/payments/crypto/create',
-                query: {
-                  destinationAddress: getTypedData().message.to,
-                  amount: getTypedData().totalAmount.amount,
-                  currency: getTypedData().totalAmount.currency,
-                  protocolType: getTypedData().totalAmount.primaryType,
-                  signature: formData.rawSignature,
-                  validAfter: getTypedData().message.validAfter,
-                  metaTxNonce: getTypedData().message.nonce,
-                  validBefore: getTypedData().message.validBefore,
-                },
+                query: getCreatePaymentQueryParams(),
               }"
               class="subtitle-2 text-right"
             >
@@ -117,6 +108,29 @@ export default class FetchPresignData extends Vue {
 
   getTypedData() {
     return this.$store.getters.getRequestResponse.typedData
+  }
+
+  getCreatePaymentQueryParams() {
+    const { paymentIntentId, rawSignature } = this.formData
+    const {
+      message,
+      totalAmount,
+      networkFee,
+      primaryType: protocolType,
+    } = this.getTypedData()
+    return {
+      paymentIntentId,
+      amount: totalAmount.amount,
+      currency: totalAmount.currency,
+      sourceAddress: message.from,
+      destinationAddress: message.to,
+      feeQuoteId: networkFee?.quoteId,
+      protocolType,
+      validAfter: message.validAfter,
+      validBefore: message.validBefore,
+      metaTxNonce: message.nonce,
+      rawSignature,
+    }
   }
 
   async makeApiCall() {
