@@ -2,22 +2,29 @@
   <v-layout>
     <v-row>
       <v-col cols="12" md="4">
-        <v-form>
+        <v-form v-model="isFormValid">
           <v-text-field
             v-model="formData.paymentIntentId"
+            :rules="[rules.required, rules.isUUID]"
             label="Payment Intent Id"
           />
           <v-text-field
             v-model="formData.endUserAddress"
+            :rules="[rules.required]"
             label="End User Address"
           />
           <header>Optional params:</header>
-          <v-text-field v-model="formData.amount" label="Amount" />
+          <v-text-field
+            v-model="formData.amount"
+            label="Amount"
+            :rules="[rules.isNumber, rules.validDecimal]"
+          />
           <v-text-field v-model="formData.currency" label="Currency" />
           <v-btn
             depressed
             class="mb-7"
             color="primary"
+            :disabled="!isFormValid"
             @click.prevent="makeApiCall()"
           >
             Make api call
@@ -72,6 +79,7 @@ import { mapGetters } from 'vuex'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import { sendPresignedDataToMetaMask } from '~/lib/walletConnect'
+import { isNumber, required, validDecimal, isUUID } from '@/helpers/validation'
 
 @Component({
   components: {
@@ -85,6 +93,9 @@ import { sendPresignedDataToMetaMask } from '~/lib/walletConnect'
       requestUrl: 'getRequestUrl',
     }),
   },
+  data: () => ({
+    isFormValid: false,
+  }),
 })
 export default class FetchPresignData extends Vue {
   error = {}
@@ -98,6 +109,14 @@ export default class FetchPresignData extends Vue {
     amount: '',
     currency: '',
     rawSignature: '',
+  }
+
+  // validation rules
+  rules = {
+    isNumber,
+    required,
+    validDecimal,
+    isUUID,
   }
 
   // methods
