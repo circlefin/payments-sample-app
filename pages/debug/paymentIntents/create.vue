@@ -7,7 +7,7 @@
             v-if="transientIntentSelected"
             v-model="formData.amount"
             label="Payment Intent Amount"
-            :rules="[rules.isNumber, rules.validDecimal]"
+            :rules="[rules.isNumber, rules.validDecimal, rules.required]"
           />
 
           <v-select
@@ -113,12 +113,12 @@ interface CurrencyBlockchainPair {
 export default class CreatePaymentIntentClass extends Vue {
   formData = {
     idempotencyKey: '',
-    amount: '0.00',
+    amount: '',
     currency: '',
     settlementCurrency: '',
     blockchain: '',
     expiresOn: '',
-    type: '',
+    type: 'transient',
   }
 
   // validation rules
