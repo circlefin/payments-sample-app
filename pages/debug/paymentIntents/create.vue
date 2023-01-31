@@ -47,15 +47,14 @@
             label="Expires On"
           />
 
-
           <v-btn
             v-if="currencySelected"
             depressed
             class="mb-7"
             color="primary"
             :loading="loading"
-            @click.prevent="makeApiCall"
             :disabled="!isFormValid"
+            @click.prevent="makeApiCall"
           >
             Make api call
           </v-btn>
@@ -87,7 +86,7 @@ import {
   CreateContinuousPaymentIntentPayload,
   CreateTransientPaymentIntentPayload,
 } from '@/lib/paymentIntentsApi'
-import { isNumber, required, validDecimal} from '@/helpers/validation'
+import { isNumber, required, validDecimal } from '@/helpers/validation'
 
 interface CurrencyBlockchainPair {
   currency: string
