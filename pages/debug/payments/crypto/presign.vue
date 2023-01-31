@@ -2,8 +2,7 @@
   <v-layout>
     <v-row>
       <v-col cols="12" md="4">
-        <v-form v-model="isFormValid"
-          >
+        <v-form v-model="isFormValid">
           <v-text-field
             v-model="formData.paymentIntentId"
             :rules="[rules.required, rules.isUUID]"
@@ -18,15 +17,15 @@
           <v-text-field
             v-model="formData.amount"
             label="Amount"
-            :rules="[rules.isNumber, rules.onlyTwoDecimals]"
+            :rules="[rules.isNumber, rules.validDecimal]"
           />
           <v-text-field v-model="formData.currency" label="Currency" />
           <v-btn
             depressed
             class="mb-7"
             color="primary"
+            :disabled="!isFormValid"
             @click.prevent="makeApiCall()"
-:disabled="!isFormValid"
           >
             Make api call
           </v-btn>
@@ -80,7 +79,7 @@ import { mapGetters } from 'vuex'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import { sendPresignedDataToMetaMask } from '~/lib/walletConnect'
-import { isNumber, required, onlyTwoDecimals, isUUID } from '@/helpers/validation'
+import { isNumber, required, validDecimal, isUUID } from '@/helpers/validation'
 
 @Component({
   components: {
@@ -94,9 +93,9 @@ import { isNumber, required, onlyTwoDecimals, isUUID } from '@/helpers/validatio
       requestUrl: 'getRequestUrl',
     }),
   },
-data: () => ({
-  isFormValid: false,
-})
+  data: () => ({
+    isFormValid: false,
+  }),
 })
 export default class FetchPresignData extends Vue {
   error = {}
@@ -116,7 +115,7 @@ export default class FetchPresignData extends Vue {
   rules = {
     isNumber,
     required,
-    onlyTwoDecimals,   
+    validDecimal,
     isUUID,
   }
 
