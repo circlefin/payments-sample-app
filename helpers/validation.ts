@@ -1,3 +1,4 @@
+import { validate } from 'uuid'
 const isNumber = (v: string) =>
   v === '' || !isNaN(parseInt(v)) || 'Please enter valid number'
 
@@ -11,10 +12,7 @@ const validDecimal = (v: string) => {
     return 'Decimal must be two digits'
   }
 }
-const uuidRegex =
-  '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
-
 const isUUID = (v: string) =>
-  v === '' || new RegExp(uuidRegex).test(v) || 'Please enter a valid UUID'
+  v === '' || validate(v) || 'Please enter a valid UUID'
 
 export { isNumber, required, validDecimal, isUUID }
