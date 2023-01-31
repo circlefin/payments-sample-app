@@ -2,11 +2,12 @@
   <v-layout>
     <v-row>
       <v-col cols="12" md="4">
-        <v-form>
+        <v-form v-model="isFormValid">
           <v-text-field
             v-if="transientIntentSelected"
             v-model="formData.amount"
             label="Payment Intent Amount"
+            :rules="[rules.isNumber, rules.validDecimal]"
           />
 
           <v-select
@@ -20,6 +21,7 @@
             v-if="currencySelected"
             v-model="formData.blockchain"
             :items="supportedChains"
+            :rules="[rules.required]"
             label="Blockchain"
           />
 
@@ -27,13 +29,8 @@
             v-if="currencySelected"
             v-model="formData.settlementCurrency"
             :items="supportedCurrencies"
+            :rules="[rules.required]"
             label="Settlement Currency"
-          />
-
-          <v-text-field
-            v-if="currencySelected && transientIntentSelected"
-            v-model="formData.expiresOn"
-            label="Expires On"
           />
 
           <header>Optional params:</header>
@@ -44,6 +41,12 @@
             label="Payment Intent Type"
             @change="onIntentTypeChange"
           />
+          <v-text-field
+            v-if="currencySelected && transientIntentSelected"
+            v-model="formData.expiresOn"
+            label="Expires On"
+          />
+
 
           <v-btn
             v-if="currencySelected"
@@ -52,6 +55,7 @@
             color="primary"
             :loading="loading"
             @click.prevent="makeApiCall"
+            :disabled="!isFormValid"
           >
             Make api call
           </v-btn>
@@ -83,6 +87,7 @@ import {
   CreateContinuousPaymentIntentPayload,
   CreateTransientPaymentIntentPayload,
 } from '@/lib/paymentIntentsApi'
+import { isNumber, required, validDecimal} from '@/helpers/validation'
 
 interface CurrencyBlockchainPair {
   currency: string
@@ -102,6 +107,9 @@ interface CurrencyBlockchainPair {
       isMarketplace: 'isMarketplace',
     }),
   },
+  data: () => ({
+    isFormValid: false,
+  }),
 })
 export default class CreatePaymentIntentClass extends Vue {
   formData = {
@@ -114,7 +122,13 @@ export default class CreatePaymentIntentClass extends Vue {
     type: '',
   }
 
-  required = [(v: string) => !!v || 'Field is required']
+  // validation rules
+  rules = {
+    isNumber,
+    required,
+    validDecimal,
+  }
+
   error = {}
   loading = false
   showError = false
