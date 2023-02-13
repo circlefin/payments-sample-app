@@ -47,6 +47,11 @@
             label="Expires On"
           />
 
+          <v-text-field
+            v-model="formData.merchantWalletId"
+            label="Merchant Wallet Id"
+          />
+
           <v-btn
             v-if="currencySelected"
             depressed
@@ -115,6 +120,7 @@ export default class CreatePaymentIntentClass extends Vue {
     idempotencyKey: '',
     amount: '',
     currency: '',
+    merchantWalletId: '',
     settlementCurrency: '',
     blockchain: '',
     expiresOn: '',
@@ -188,6 +194,7 @@ export default class CreatePaymentIntentClass extends Vue {
         amount: amountDetail,
         settlementCurrency: this.formData.settlementCurrency,
         paymentMethods: [blockchainPaymentMethod],
+        merchantWalletId: this.formData.merchantWalletId,
         expiresOn: this.formData.expiresOn,
       }
       try {
@@ -204,6 +211,7 @@ export default class CreatePaymentIntentClass extends Vue {
         currency: this.formData.currency,
         settlementCurrency: this.formData.settlementCurrency,
         paymentMethods: [blockchainPaymentMethod],
+        merchantWalletId: this.formData.merchantWalletId,
         type: this.formData.type,
       }
       try {

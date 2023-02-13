@@ -16,6 +16,7 @@ export interface CreateTransientPaymentIntentPayload {
   }
   settlementCurrency: string
   paymentMethods: Array<PaymentMethod>
+  merchantWalletId: string
   expiresOn: string
 }
 
@@ -24,6 +25,7 @@ export interface CreateContinuousPaymentIntentPayload {
   currency: string
   settlementCurrency: string
   paymentMethods: Array<PaymentMethod>
+  merchantWalletId: string
   type: string
 }
 
