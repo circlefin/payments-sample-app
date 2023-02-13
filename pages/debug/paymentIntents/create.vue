@@ -194,9 +194,13 @@ export default class CreatePaymentIntentClass extends Vue {
         amount: amountDetail,
         settlementCurrency: this.formData.settlementCurrency,
         paymentMethods: [blockchainPaymentMethod],
-        merchantWalletId: this.formData.merchantWalletId,
         expiresOn: this.formData.expiresOn,
       }
+
+      if (this.formData.merchantWalletId !== '') {
+        payload.merchantWalletId = this.formData.merchantWalletId
+      }
+
       try {
         await this.$paymentIntentsApi.createTransientPaymentIntent(payload)
       } catch (error) {
@@ -211,9 +215,13 @@ export default class CreatePaymentIntentClass extends Vue {
         currency: this.formData.currency,
         settlementCurrency: this.formData.settlementCurrency,
         paymentMethods: [blockchainPaymentMethod],
-        merchantWalletId: this.formData.merchantWalletId,
         type: this.formData.type,
       }
+
+      if (this.formData.merchantWalletId !== '') {
+        payload.merchantWalletId = this.formData.merchantWalletId
+      }
+
       try {
         await this.$paymentIntentsApi.createContinuousPaymentIntent(payload)
       } catch (error) {
