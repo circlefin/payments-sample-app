@@ -134,7 +134,8 @@ export default class FetchPresignData extends Vue {
     const {
       message,
       totalAmount,
-      networkFee,
+      networkFeeQuote,
+      feeChargeModel,
       primaryType: protocolType,
     } = this.getTypedData()
     return {
@@ -143,7 +144,7 @@ export default class FetchPresignData extends Vue {
       currency: totalAmount.currency,
       sourceAddress: message.from,
       destinationAddress: message.to,
-      feeQuoteId: networkFee?.quoteId,
+      feeQuoteId: feeChargeModel === 'endUser' ? networkFeeQuote?.quoteId : '',
       protocolType,
       validAfter: message.validAfter,
       validBefore: message.validBefore,
