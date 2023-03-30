@@ -57,11 +57,9 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
 export default class CreateCbitBusinessAccountClass extends Vue {
   // data
   formData = {
-    accountNumber: '',
-    currency: '',
+    walletAddress: '',
   }
 
-  currencyTypes = ['USD', 'EUR']
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
