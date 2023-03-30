@@ -74,6 +74,37 @@
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
+        <h2 class="title">Business Account CBIT endpoints</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>Api endpoints to manage cbit business accounts.</p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/businessAccount/cbitAccounts/create">
+            Create cbit business account
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/businessAccount/cbitAccounts/fetch">
+            Get all cbit business accounts
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/businessAccount/cbitAccounts/details">
+            Get cbit business account details by id
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/businessAccount/cbitAccounts/instructions">
+            Get cbit business account instructions for id
+          </a>
+        </p>
+      </v-card>
+
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
         <h2 class="title">Business Account SEN endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
