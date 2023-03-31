@@ -62,6 +62,7 @@ export default {
     '~/plugins/businessAccount/balancesApi',
     '~/plugins/businessAccount/bankAccountsApi',
     '~/plugins/businessAccount/senAccountsApi',
+    '~/plugins/businessAccount/cbitAccountsApi',
     '~/plugins/businessAccount/depositsApi',
     '~/plugins/businessAccount/payoutsApi',
     '~/plugins/businessAccount/transfersApi',

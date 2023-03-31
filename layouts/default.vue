@@ -311,6 +311,22 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/businessAccount/bankAccounts/instructions',
     },
     {
+      title: 'POST /businessAccount/banks/cbit',
+      to: '/debug/businessAccount/cbitAccounts/create',
+    },
+    {
+      title: 'GET /businessAccount/banks/cbit',
+      to: '/debug/businessAccount/cbitAccounts/fetch',
+    },
+    {
+      title: 'GET /businessAccount/banks/cbit/{id}',
+      to: '/debug/businessAccount/cbitAccounts/details',
+    },
+    {
+      title: 'GET /businessAccount/banks/cbit/{id}/instructions',
+      to: '/debug/businessAccount/cbitAccounts/instructions',
+    },
+    {
       title: 'POST /businessAccount/banks/sen',
       to: '/debug/businessAccount/senAccounts/create',
     },
