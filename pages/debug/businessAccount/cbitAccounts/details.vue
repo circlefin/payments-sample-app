@@ -78,8 +78,8 @@ export default class FetchCbitBusinessAccountDetailsClass extends Vue {
         await this.$cbitAccountsApi.getCbitBusinessAccountById(
           this.formData.accountId
         )
-      } catch (error) {
-        this.error = error as {}
+      } catch (error: any) {
+        this.error = error
         this.showError = true
       } finally {
         this.loading = false

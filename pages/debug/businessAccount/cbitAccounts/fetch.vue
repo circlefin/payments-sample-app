@@ -61,8 +61,8 @@ export default class FetchCbitBusinessAccountsClass extends Vue {
     this.loading = true
     try {
       await this.$cbitAccountsApi.getCbitBusinessAccounts()
-    } catch (error) {
-      this.error = error as {}
+    } catch (error: any) {
+      this.error = error
       this.showError = true
     } finally {
       this.loading = false

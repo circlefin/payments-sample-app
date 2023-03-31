@@ -84,8 +84,8 @@ export default class CreateCbitBusinessAccountClass extends Vue {
 
       try {
         await this.$cbitAccountsApi.createCbitBusinessAccount(payload)
-      } catch (error) {
-        this.error = error as {}
+      } catch (error: any) {
+        this.error = error
         this.showError = true
       } finally {
         this.loading = false
