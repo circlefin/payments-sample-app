@@ -13,7 +13,7 @@ const instance = axios.create({
 
 /**
  * Global error handler:
- * Intercepts all axios reponses and maps
+ * Intercepts all axios responses and maps
  * to errorHandler object
  */
 instance.interceptors.response.use(

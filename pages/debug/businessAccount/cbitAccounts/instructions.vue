@@ -62,7 +62,7 @@ export default class FetchCbitBusinessAccountInstructionsClass extends Vue {
   }
 
   requiredRules = [(v: string) => !!v || 'Field is required']
-  error = {} as any
+  error = {}
   loading = false
   showError = false
 
@@ -81,7 +81,7 @@ export default class FetchCbitBusinessAccountInstructionsClass extends Vue {
           this.formData.accountId
         )
       } catch (error) {
-        this.error = error
+        this.error = error as {}
         this.showError = true
       } finally {
         this.loading = false
