@@ -2,10 +2,12 @@
   <v-layout>
     <v-row>
       <v-col cols="12" md="4">
-        <v-form>
+        <v-form ref="form" lazy-validation>
           <v-text-field
             v-model="formData.walletAddress"
             label="Wallet Address"
+            :rules="requiredRules"
+            required
           />
           <v-btn
             depressed
@@ -60,8 +62,8 @@ export default class CreateCbitBusinessAccountClass extends Vue {
     walletAddress: '',
   }
 
-  required = [(v: string) => !!v || 'Field is required']
-  error = {}
+  requiredRules = [(v: string) => !!v || 'Field is required']
+  error = {} as any
   loading = false
   showError = false
   // methods
@@ -71,20 +73,23 @@ export default class CreateCbitBusinessAccountClass extends Vue {
   }
 
   async makeApiCall() {
-    this.loading = true
+    const form = this.$refs.form as any
+    if (form.validate()) {
+      this.loading = true
 
-    const payload: CreateCbitAccountPayload = {
-      idempotencyKey: uuidv4(),
-      walletAddress: this.formData.walletAddress,
-    }
+      const payload: CreateCbitAccountPayload = {
+        idempotencyKey: uuidv4(),
+        walletAddress: this.formData.walletAddress,
+      }
 
-    try {
-      await this.$cbitAccountsApi.createCbitBusinessAccount(payload)
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
+      try {
+        await this.$cbitAccountsApi.createCbitBusinessAccount(payload)
+      } catch (error) {
+        this.error = error
+        this.showError = true
+      } finally {
+        this.loading = false
+      }
     }
   }
 }

@@ -48,12 +48,6 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
   },
 })
 export default class FetchCbitBusinessAccountsClass extends Vue {
-  rules = {
-    isNumber: (v: string) =>
-      v === '' || !isNaN(parseInt(v)) || 'Please enter valid number',
-    required: (v: string) => !!v || 'Field is required',
-  }
-
   error = {}
   loading = false
   showError = false

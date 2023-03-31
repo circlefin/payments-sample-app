@@ -2,8 +2,13 @@
   <v-layout>
     <v-row>
       <v-col cols="12" md="4">
-        <v-form>
-          <v-text-field v-model="formData.accountId" label="Account Id" />
+        <v-form ref="form" lazy-validation>
+          <v-text-field
+            v-model="formData.accountId"
+            label="Account Id"
+            :rules="requiredRules"
+            required
+          />
           <v-btn
             depressed
             class="mb-7"
@@ -56,8 +61,8 @@ export default class FetchCbitBusinessAccountInstructionsClass extends Vue {
     accountId: '',
   }
 
-  required = [(v: string) => !!v || 'Field is required']
-  error = {}
+  requiredRules = [(v: string) => !!v || 'Field is required']
+  error = {} as any
   loading = false
   showError = false
 
@@ -68,17 +73,19 @@ export default class FetchCbitBusinessAccountInstructionsClass extends Vue {
   }
 
   async makeApiCall() {
-    this.loading = true
-
-    try {
-      await this.$cbitAccountsApi.getCbitBusinessAccountInstructions(
-        this.formData.accountId
-      )
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
+    const form = this.$refs.form as any
+    if (form.validate()) {
+      this.loading = true
+      try {
+        await this.$cbitAccountsApi.getCbitBusinessAccountInstructions(
+          this.formData.accountId
+        )
+      } catch (error) {
+        this.error = error
+        this.showError = true
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
