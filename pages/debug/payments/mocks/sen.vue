@@ -48,7 +48,7 @@ import { mapGetters } from 'vuex'
 import { getLive } from '../../../../lib/apiTarget'
 import RequestInfo from '../../../../components/RequestInfo.vue'
 import ErrorSheet from '../../../../components/ErrorSheet.vue'
-import { CreateMockPushPaymentPayload } from '@/lib/mocksApi'
+import { CreateMockPushPaymentPayload } from '~/lib/mocksApi'
 @Component({
   components: {
     RequestInfo,
