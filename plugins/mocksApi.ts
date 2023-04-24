@@ -9,7 +9,6 @@ declare module 'vue/types/vue' {
       getInstance: any
       createMockChargeback: (payload: CreateMockChargebackPayload) => any
       createMockWirePayment: (payload: CreateMockPushPaymentPayload) => any
-      createMockSenPayment: (payload: CreateMockPushPaymentPayload) => any
     }
   }
 }

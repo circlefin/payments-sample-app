@@ -58,14 +58,6 @@ function createMockWirePayment(payload: CreateMockPushPaymentPayload) {
 }
 
 /**
- * Trigger a mock sen payment
- * @param {*} payload
- */
-function createMockSenPayment(payload: CreateMockPushPaymentPayload) {
-  const url = '/v1/mocks/payments/sen'
-  return instance.post(url, payload)
-}
-/**
  * Create a mock chargeback
  * @param {*} payload
  */
@@ -77,6 +69,5 @@ function createMockChargeback(payload: CreateMockChargebackPayload) {
 export default {
   getInstance,
   createMockWirePayment,
-  createMockSenPayment,
   createMockChargeback,
 }
