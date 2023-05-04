@@ -64,6 +64,7 @@ export default {
     '~/plugins/cryptoPaymentMetadataApi',
     '~/plugins/cryptoPaymentsApi',
     '~/plugins/beta/addressBookApi',
+    '~/plugins/payoutsApi',
     '~/plugins/checkoutSessionsApi',
   ],
   /*

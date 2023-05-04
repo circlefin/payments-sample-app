@@ -111,6 +111,32 @@
           </v-list-item>
         </v-list-group>
 
+        <v-list-group>
+          <template #activator>
+            <v-list-item-title>Payouts APIs</v-list-item-title>
+          </template>
+
+          <v-list-item to="/debug/payouts" router exact>
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2">
+                Overview
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            v-for="(item, i) in payoutsLinks"
+            :key="`payoutsLinks-${i}`"
+            :to="item.to"
+            router
+            exact
+          >
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2" v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+
         <v-list-group v-if="!isMarketplace">
           <template #activator>
             <v-list-item-title>Payment Intents APIs</v-list-item-title>
