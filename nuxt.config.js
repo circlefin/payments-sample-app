@@ -64,6 +64,7 @@ export default {
     '~/plugins/cryptoPaymentMetadataApi',
     '~/plugins/cryptoPaymentsApi',
     '~/plugins/beta/addressBookApi',
+    '~/plugins/payoutsApi',
     '~/plugins/checkoutSessionsApi',
   ],
   /*
@@ -115,7 +116,7 @@ export default {
     },
   },
   env: {
-    baseUrl: process.env.BASE_URL || 'https://api-sandbox.circle.com',
+    baseUrl: 'https://api-sandbox.circle.com',
   },
   serverMiddleware: [
     {
