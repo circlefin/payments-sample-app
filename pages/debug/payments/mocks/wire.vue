@@ -8,6 +8,11 @@
             v-model="formData.accountNumber"
             label="Account Number"
           />
+          <v-select
+            v-model="formData.currency"
+            :items="currencyTypes"
+            label="Currency"
+          />
           <v-text-field v-model="formData.amount" label="Amount" />
           <v-btn
             v-if="isSandbox"
@@ -62,7 +67,10 @@ export default class CreateMockIncomingWireClass extends Vue {
     trackingRef: '',
     accountNumber: '',
     amount: '0.00',
+    currency: 'USD', // Default to USD
   }
+
+  currencyTypes = ['USD', 'EUR']
 
   isSandbox: Boolean = !getLive()
   required = [(v: string) => !!v || 'Field is required']
@@ -78,7 +86,7 @@ export default class CreateMockIncomingWireClass extends Vue {
     this.loading = true
     const amountDetail = {
       amount: this.formData.amount,
-      currency: 'USD',
+      currency: this.formData.currency,
     }
     const payload: CreateMockPushPaymentPayload = {
       trackingRef: this.formData.trackingRef,
