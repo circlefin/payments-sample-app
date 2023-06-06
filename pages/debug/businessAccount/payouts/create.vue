@@ -56,6 +56,8 @@ import { v4 as uuidv4 } from 'uuid'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import { CreatePayoutPayload } from '@/lib/businessAccount/payoutsApi'
+import { getAPIHostname } from '@/lib/apiTarget'
+
 @Component({
   components: {
     RequestInfo,
@@ -79,7 +81,12 @@ export default class CreatePayoutClass extends Vue {
   }
 
   required = [(v: string) => !!v || 'Field is required']
-  destinationType = ['wire', 'cbit', 'xpay', 'rtp']
+  destinationType =
+    getAPIHostname()!.includes('smokebox') ||
+    getAPIHostname()!.includes(':3011')
+      ? ['wire', 'cbit', 'xpay', 'rtp']
+      : ['wire', 'cbit']
+
   wireCurrencyTypes = ['USD', 'EUR']
   cbitCurrencyTypes = ['USD']
   currencyTypes = new Map([
