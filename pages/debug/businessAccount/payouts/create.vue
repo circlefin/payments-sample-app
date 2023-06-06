@@ -81,6 +81,7 @@ export default class CreatePayoutClass extends Vue {
   }
 
   required = [(v: string) => !!v || 'Field is required']
+  // only include xpay and rtp in local dev and smokebox
   destinationType =
     getAPIHostname()!.includes('smokebox') ||
     getAPIHostname()!.includes(':3011')
