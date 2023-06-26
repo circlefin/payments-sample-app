@@ -81,16 +81,16 @@ export default class CreatePayoutClass extends Vue {
   }
 
   required = [(v: string) => !!v || 'Field is required']
-  // only include xpay and rtp in local dev and smokebox
   destinationType = ['wire', 'cbit', 'xpay', 'rtp']
-
   wireCurrencyTypes = ['USD', 'EUR']
   cbitCurrencyTypes = ['USD']
+  xpayCurrencyTypes = ['USD']
+  rtpCurrencyTypes = ['USD']
   currencyTypes = new Map([
     ['wire', this.wireCurrencyTypes],
     ['cbit', this.cbitCurrencyTypes],
-    ['xpay', ['USD']],
-    ['rtp', ['USD']],
+    ['xpay', this.xpayCurrencyTypes],
+    ['rtp', this.rtpCurrencyTypes],
   ])
 
   error = {}
