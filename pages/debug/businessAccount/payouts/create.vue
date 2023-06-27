@@ -56,8 +56,6 @@ import { v4 as uuidv4 } from 'uuid'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import { CreatePayoutPayload } from '@/lib/businessAccount/payoutsApi'
-import { getAPIHostname } from '@/lib/apiTarget'
-
 @Component({
   components: {
     RequestInfo,
