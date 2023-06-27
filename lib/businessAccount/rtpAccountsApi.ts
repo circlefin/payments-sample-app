@@ -68,7 +68,9 @@ function createRTPAccount(payload: CreateRTPAccountPayload) {
   payload.billingDetails.line1 = nullIfEmpty(payload.billingDetails.line1)
   payload.billingDetails.line2 = nullIfEmpty(payload.billingDetails.line2)
   payload.billingDetails.district = nullIfEmpty(payload.billingDetails.district)
-  payload.billingDetails.postalCode = nullIfEmpty(payload.billingDetails.postalCode)
+  payload.billingDetails.postalCode = nullIfEmpty(
+    payload.billingDetails.postalCode
+  )
   return instance.post(url, payload)
 }
 

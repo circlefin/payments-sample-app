@@ -75,9 +75,7 @@ export default class FetchRTPBusinessAccountDetailsClass extends Vue {
     if (form.validate()) {
       this.loading = true
       try {
-        await this.$rtpAccountsApi.getRTPAccountById(
-          this.formData.accountId
-        )
+        await this.$rtpAccountsApi.getRTPAccountById(this.formData.accountId)
       } catch (error: any) {
         this.error = error
         this.showError = true
