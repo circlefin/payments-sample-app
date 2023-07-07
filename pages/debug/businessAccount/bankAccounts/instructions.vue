@@ -4,7 +4,10 @@
       <v-col cols="12" md="4">
         <v-form>
           <v-text-field v-model="formData.accountId" label="Account Id" />
-          <v-text-field v-model="formData.currency" label="Currency (Optional)" />
+          <v-text-field
+            v-model="formData.currency"
+            label="Currency (Optional)"
+          />
           <v-btn
             depressed
             class="mb-7"
