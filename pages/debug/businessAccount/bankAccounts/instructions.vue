@@ -4,6 +4,7 @@
       <v-col cols="12" md="4">
         <v-form>
           <v-text-field v-model="formData.accountId" label="Account Id" />
+          <v-text-field v-model="formData.currency" label="Currency (Optional)" />
           <v-btn
             depressed
             class="mb-7"
@@ -54,6 +55,7 @@ export default class FetchBankAccountInstructionsClass extends Vue {
   // data
   formData = {
     accountId: '',
+    currency: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']
@@ -72,7 +74,8 @@ export default class FetchBankAccountInstructionsClass extends Vue {
 
     try {
       await this.$bankAccountsApi.getBankAccountInstructions(
-        this.formData.accountId
+        this.formData.accountId,
+        this.formData.currency
       )
     } catch (error) {
       this.error = error
