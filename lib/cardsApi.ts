@@ -11,10 +11,22 @@ interface MetaData {
 }
 
 export interface UpdateCardPayload {
-  keyId: string
-  encryptedData: string
-  expMonth: number
-  expYear: number
+  keyId?: string
+  encryptedData?: string
+  expMonth?: number | null
+  expYear?: number | null
+  billingDetails: {
+    firstName?: string
+    lastName?: string
+    line1?: string
+    line2?: string
+    city?: string
+    postalCode?: string
+    district?: string
+    country?: string
+    phone?: string
+    email?: string
+  }
 }
 
 export interface CreateCardPayload {
