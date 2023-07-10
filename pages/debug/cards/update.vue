@@ -5,23 +5,55 @@
         <v-form>
           <v-text-field v-model="formData.cardId" label="Card Id" />
 
-          <v-text-field v-model="formData.cvv" label="CVV (Only required for updating expiry)" />
+          <v-text-field
+            v-model="formData.cvv"
+            label="CVV (Only required for updating expiry)"
+          />
 
           <v-text-field v-model="formData.expiry.month" label="Expiry Month" />
 
           <v-text-field v-model="formData.expiry.year" label="Expiry Year" />
 
-          <v-text-field v-model="formData.billingDetails.firstName" label="Billing Details: First Name" />
-          <v-text-field v-model="formData.billingDetails.lastName" label="Billing Details: Last Name" />
-          <v-text-field v-model="formData.billingDetails.line1" label="Billing Details: Address Line 1" />
-          <v-text-field v-model="formData.billingDetails.line2" label="Billing Details: Address Line 2" />
-          <v-text-field v-model="formData.billingDetails.city" label="Billing Details: City" />
-          <v-text-field v-model="formData.billingDetails.postalCode" label="Billing Details: Postal Code" />
-          <v-text-field v-model="formData.billingDetails.district" label="Billing Details: District" />
-          <v-text-field v-model="formData.billingDetails.country" label="Billing Details: Country" />
-          <v-text-field v-model="formData.billingDetails.phone" label="Billing Details: Phone" />
-          <v-text-field v-model="formData.billingDetails.email" label="Billing Details: Email" />
-
+          <v-text-field
+            v-model="formData.billingDetails.firstName"
+            label="Billing Details: First Name"
+          />
+          <v-text-field
+            v-model="formData.billingDetails.lastName"
+            label="Billing Details: Last Name"
+          />
+          <v-text-field
+            v-model="formData.billingDetails.line1"
+            label="Billing Details: Address Line 1"
+          />
+          <v-text-field
+            v-model="formData.billingDetails.line2"
+            label="Billing Details: Address Line 2"
+          />
+          <v-text-field
+            v-model="formData.billingDetails.city"
+            label="Billing Details: City"
+          />
+          <v-text-field
+            v-model="formData.billingDetails.postalCode"
+            label="Billing Details: Postal Code"
+          />
+          <v-text-field
+            v-model="formData.billingDetails.district"
+            label="Billing Details: District"
+          />
+          <v-text-field
+            v-model="formData.billingDetails.country"
+            label="Billing Details: Country"
+          />
+          <v-text-field
+            v-model="formData.billingDetails.phone"
+            label="Billing Details: Phone"
+          />
+          <v-text-field
+            v-model="formData.billingDetails.email"
+            label="Billing Details: Email"
+          />
 
           <v-btn
             depressed
@@ -56,9 +88,7 @@ import openPGP from '@/lib/openpgp'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import { getLive } from '@/lib/apiTarget'
-import {
-  UpdateCardPayload,
-} from '@/lib/cardsApi'
+import { UpdateCardPayload } from '@/lib/cardsApi'
 
 @Component({
   components: {
@@ -88,12 +118,12 @@ export default class UpdateCardsClass extends Vue {
       line1: '',
       line2: '',
       city: '',
-      postalCode: '', 
+      postalCode: '',
       district: '',
       country: '',
       phone: '',
       email: '',
-    }
+    },
   }
 
   rules = {
@@ -126,39 +156,39 @@ export default class UpdateCardsClass extends Vue {
       cvv,
     }
 
-const nullIfEmpty = (prop: string | undefined) => {
-  if (prop !== undefined && prop.trim() === '') {
-    return undefined
-  }
-  return prop
-}
+    const nullIfEmpty = (prop: string | undefined) => {
+      if (prop !== undefined && prop.trim() === '') {
+        return undefined
+      }
+      return prop
+    }
 
     const payload: UpdateCardPayload = {
       expMonth: nullIfEmpty(expiry.month) ? parseInt(expiry.month) : undefined,
-      expYear: nullIfEmpty(expiry.year) ? parseInt(expiry.year): undefined,
+      expYear: nullIfEmpty(expiry.year) ? parseInt(expiry.year) : undefined,
       billingDetails: {
-      firstName: nullIfEmpty(billingDetails.firstName),
-      lastName: nullIfEmpty(billingDetails.lastName),
-      line1: nullIfEmpty(billingDetails.line1),
-      line2: nullIfEmpty(billingDetails.line2),
-      city: nullIfEmpty(billingDetails.city),
-      postalCode: nullIfEmpty(billingDetails.postalCode), 
-      district: nullIfEmpty(billingDetails.district),
-      country: nullIfEmpty(billingDetails.country),
-      phone: nullIfEmpty(billingDetails.phone),
-      email: nullIfEmpty(billingDetails.email),
-    }
+        firstName: nullIfEmpty(billingDetails.firstName),
+        lastName: nullIfEmpty(billingDetails.lastName),
+        line1: nullIfEmpty(billingDetails.line1),
+        line2: nullIfEmpty(billingDetails.line2),
+        city: nullIfEmpty(billingDetails.city),
+        postalCode: nullIfEmpty(billingDetails.postalCode),
+        district: nullIfEmpty(billingDetails.district),
+        country: nullIfEmpty(billingDetails.country),
+        phone: nullIfEmpty(billingDetails.phone),
+        email: nullIfEmpty(billingDetails.email),
+      },
     }
 
     try {
-    if (cardDetails.cvv) {
-      const publicKey = await this.$cardsApi.getPCIPublicKey()
-      const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
-      const { encryptedMessage, keyId } = encryptedData
-      payload.keyId = keyId
-      payload.encryptedData = encryptedMessage
-    }
-    await this.$cardsApi.updateCard(cardId, payload)
+      if (cardDetails.cvv) {
+        const publicKey = await this.$cardsApi.getPCIPublicKey()
+        const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
+        const { encryptedMessage, keyId } = encryptedData
+        payload.keyId = keyId
+        payload.encryptedData = encryptedMessage
+      }
+      await this.$cardsApi.updateCard(cardId, payload)
     } catch (error) {
       this.error = error
       this.showError = true
