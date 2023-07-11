@@ -5,10 +5,7 @@
         <v-form>
           <v-text-field v-model="formData.cardId" label="Card Id" />
 
-          <v-text-field
-            v-model="formData.cvv"
-            label="CVV (Only required for updating expiry)"
-          />
+          <v-text-field v-model="formData.cvv" label="CVV" />
 
           <v-text-field v-model="formData.expiry.month" label="Expiry Month" />
 
@@ -181,13 +178,11 @@ export default class UpdateCardsClass extends Vue {
     }
 
     try {
-      if (cardDetails.cvv) {
-        const publicKey = await this.$cardsApi.getPCIPublicKey()
-        const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
-        const { encryptedMessage, keyId } = encryptedData
-        payload.keyId = keyId
-        payload.encryptedData = encryptedMessage
-      }
+      const publicKey = await this.$cardsApi.getPCIPublicKey()
+      const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
+      const { encryptedMessage, keyId } = encryptedData
+      payload.keyId = keyId
+      payload.encryptedData = encryptedMessage
       await this.$cardsApi.updateCard(cardId, payload)
     } catch (error) {
       this.error = error
