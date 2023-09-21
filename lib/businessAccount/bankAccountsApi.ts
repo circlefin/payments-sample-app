@@ -9,6 +9,7 @@ export interface CreateWireAccountPayload {
   accountNumber?: string
   routingNumber?: string
   iban?: string
+  ffcMemo?: string
   billingDetails: {
     name: string
     city: string
@@ -26,6 +27,11 @@ export interface CreateWireAccountPayload {
     line2?: string
     district?: string
     postalCode?: string
+  }
+  intermediaryBank?: {
+    identifier?: string
+    type?: string
+    countryCode?: string
   }
 }
 
