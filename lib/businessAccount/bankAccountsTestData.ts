@@ -6,6 +6,7 @@ export const exampleBankAccounts = [
       accountNumber: '11111111111',
       routingNumber: '121000248',
       iban: '',
+      ffcMemo: '',
       billingDetails: {
         name: 'Satoshi Nakamoto',
         city: 'Boston',
@@ -24,6 +25,11 @@ export const exampleBankAccounts = [
         district: '',
         postalCode: '',
       },
+      intermediaryBank: {
+        identifier: '',
+        type: '',
+        countryCode: '',
+      },
     },
   },
   {
@@ -33,6 +39,7 @@ export const exampleBankAccounts = [
       accountNumber: '',
       routingNumber: '',
       iban: 'DE31100400480532013000',
+      ffcMemo: '',
       billingDetails: {
         name: 'Satoshi Nakamoto',
         city: 'Boston',
@@ -51,6 +58,11 @@ export const exampleBankAccounts = [
         district: '',
         postalCode: '',
       },
+      intermediaryBank: {
+        identifier: '',
+        type: '',
+        countryCode: '',
+      },
     },
   },
   {
@@ -60,6 +72,7 @@ export const exampleBankAccounts = [
       accountNumber: '002010077777777771',
       routingNumber: 'BDEMMXMF',
       iban: '',
+      ffcMemo: '',
       billingDetails: {
         name: 'Satoshi Nakamoto',
         city: 'Boston',
@@ -77,6 +90,11 @@ export const exampleBankAccounts = [
         line2: 'Colonia Obrera',
         district: 'México DF',
         postalCode: '06800',
+      },
+      intermediaryBank: {
+        identifier: '',
+        type: '',
+        countryCode: '',
       },
     },
   },
