@@ -14,6 +14,7 @@
             label="Currency"
           />
           <v-text-field v-model="formData.amount" label="Amount" />
+          <v-select v-model="formData.rail" :items="rails" label="Rail" />
           <v-btn
             v-if="isSandbox"
             depressed
@@ -68,9 +69,12 @@ export default class CreateMockIncomingWireClass extends Vue {
     accountNumber: '',
     amount: '0.00',
     currency: 'USD', // Default to USD
+    rail: 'wire',
   }
 
   currencyTypes = ['USD', 'EUR']
+
+  rails = ['wire', 'rtgs']
 
   isSandbox: Boolean = !getLive()
   required = [(v: string) => !!v || 'Field is required']
@@ -94,6 +98,7 @@ export default class CreateMockIncomingWireClass extends Vue {
         accountNumber: this.formData.accountNumber,
       },
       amount: amountDetail,
+      rail: this.formData.rail,
     }
 
     try {
