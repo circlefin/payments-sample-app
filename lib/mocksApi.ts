@@ -12,6 +12,7 @@ export interface CreateMockPushPaymentPayload {
     amount: string
     currency: string
   }
+  rail: string
 }
 
 export interface CreateMockChargebackPayload {
