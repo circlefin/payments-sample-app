@@ -29,7 +29,7 @@
     "@types/card-validator": "7.0.1",
     "@types/vue-the-mask": "0.11.1",
     "@wagmi/core": "^0.8.19-cjs",
-    "axios": "0.24.0",
+    "axios": "1.6.0",
     "card-validator": "8.1.1",
     "cross-env": "7.0.3",
     "ethers": "^5.7.2",
