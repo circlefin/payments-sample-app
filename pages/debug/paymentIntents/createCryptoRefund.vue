@@ -23,6 +23,11 @@
           />
 
           <v-text-field
+            v-model="formData.addressTag"
+            label="Address Tag (Optional)"
+          />
+
+          <v-text-field
             v-model="formData.blockchain"
             label="Destination Blockchain"
           />
@@ -86,6 +91,7 @@ export default class CreatePaymentIntentClass extends Vue {
     toCurrency: '',
     blockchain: '',
     address: '',
+    addressTag: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']
@@ -113,6 +119,7 @@ export default class CreatePaymentIntentClass extends Vue {
       destination: {
         chain: this.formData.blockchain,
         address: this.formData.address,
+        addressTag: this.formData.addressTag,
       },
       amount: fromAmountDetail,
       toAmount: toAmountDetail,

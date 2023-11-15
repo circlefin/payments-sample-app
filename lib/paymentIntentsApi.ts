@@ -34,6 +34,7 @@ export interface CreateCryptoRefundPayload {
   destination: {
     address: string
     chain: string
+    addressTag: string
   }
   amount: {
     currency: string
