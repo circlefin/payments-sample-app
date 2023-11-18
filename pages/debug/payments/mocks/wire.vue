@@ -72,7 +72,7 @@ export default class CreateMockIncomingWireClass extends Vue {
     rail: 'wire',
   }
 
-  currencyTypes = ['USD', 'EUR']
+  currencyTypes = ['USD', 'EUR', 'SGD']
 
   rails = ['wire', 'rtgs']
 
