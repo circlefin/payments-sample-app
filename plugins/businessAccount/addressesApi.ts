@@ -11,6 +11,7 @@ declare module 'vue/types/vue' {
       getDepositAddresses: any
       createRecipientAddress: (payload: CreateRecipientAddressPayload) => any
       getRecipientAddresses: any
+      deleteRecipientAddress: any
     }
   }
 }

@@ -187,6 +187,12 @@
             Get all recipient addresses
           </a>
         </p>
+        <p>
+          <v-chip small color="primary accent">DELETE</v-chip>
+          <a href="/debug/businessAccount/addresses/recipient/delete">
+            Delete selected recipient address
+          </a>
+        </p>
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>

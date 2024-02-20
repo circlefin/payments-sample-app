@@ -391,6 +391,10 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/businessAccount/addresses/recipient/fetch',
     },
     {
+      title: 'DELETE /businessAccount/wallets/addresses/recipient/{id}',
+      to: '/debug/businessAccount/addresses/recipient/delete',
+    },
+    {
       title: 'GET /businessAccount/deposits',
       to: '/debug/businessAccount/deposits/fetch',
     },

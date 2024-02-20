@@ -32,6 +32,9 @@ instance.interceptors.response.use(
     if (get(response, 'data.data')) {
       return response.data.data
     }
+    if (response.data !== undefined) {
+      return response.data
+    }
     return response
   },
   function (error) {
@@ -83,6 +86,11 @@ function createRecipientAddress(payload: CreateRecipientAddressPayload) {
   return instance.post(url, payload)
 }
 
+function deleteRecipientAddress(recipientId: string) {
+  const url = `/v1/businessAccount/wallets/addresses/recipient/${recipientId}`
+  return instance.delete(url)
+}
+
 /**
  * Get deposit addresses
  * @param {String} from
@@ -116,4 +124,5 @@ export default {
   getDepositAddresses,
   createRecipientAddress,
   getRecipientAddresses,
+  deleteRecipientAddress,
 }
