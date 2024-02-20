@@ -86,6 +86,9 @@ function createRecipientAddress(payload: CreateRecipientAddressPayload) {
   return instance.post(url, payload)
 }
 
+/**
+ * Delete selected recipient address
+ */
 function deleteRecipientAddress(recipientId: string) {
   const url = `/v1/businessAccount/wallets/addresses/recipient/${recipientId}`
   return instance.delete(url)
