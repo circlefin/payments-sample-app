@@ -79,13 +79,14 @@ export default class CreatePayoutClass extends Vue {
   }
 
   required = [(v: string) => !!v || 'Field is required']
-  destinationType = ['wire', 'cbit', 'xpay', 'rtp', 'rtgs', 'sepa']
-  wireCurrencyTypes = ['USD', 'EUR']
+  destinationType = ['wire', 'cbit', 'xpay', 'rtp', 'rtgs', 'sepa', 'spei']
+  wireCurrencyTypes = ['USD', 'EUR', 'MXN']
   cbitCurrencyTypes = ['USD']
   xpayCurrencyTypes = ['USD']
   rtpCurrencyTypes = ['USD']
   rtgsCurrencyTypes = ['USD', 'EUR']
   sepaCurrencyTypes = ['EUR']
+  speiCurrencyTypes = ['MXN']
   currencyTypes = new Map([
     ['wire', this.wireCurrencyTypes],
     ['cbit', this.cbitCurrencyTypes],
@@ -93,6 +94,7 @@ export default class CreatePayoutClass extends Vue {
     ['rtp', this.rtpCurrencyTypes],
     ['rtgs', this.rtgsCurrencyTypes],
     ['sepa', this.sepaCurrencyTypes],
+    ['spei', this.speiCurrencyTypes],
   ])
 
   error = {}
