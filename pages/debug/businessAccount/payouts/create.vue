@@ -80,7 +80,7 @@ export default class CreatePayoutClass extends Vue {
 
   required = [(v: string) => !!v || 'Field is required']
   destinationType = ['wire', 'cbit', 'xpay', 'rtp', 'rtgs', 'sepa']
-  wireCurrencyTypes = ['USD', 'EUR']
+  wireCurrencyTypes = ['USD', 'EUR', 'SGD', 'MXN']
   cbitCurrencyTypes = ['USD']
   xpayCurrencyTypes = ['USD']
   rtpCurrencyTypes = ['USD']
