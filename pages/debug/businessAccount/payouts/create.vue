@@ -13,7 +13,8 @@
 
           <v-select
             v-model="formData.toCurrency"
-            :items="toCurrencyTypes.get(formData.currency + formData.destinationType)"
+            :items="
+              toCurrencyTypes.get(formData.currency + formData.destinationType)"
             label="To Currency"
           />
 
@@ -82,7 +83,7 @@ export default class CreatePayoutClass extends Vue {
     destination: '',
     destinationType: 'wire', // Default to wire
     currency: 'USD', // Default to USD
-    toCurrency:'',
+    toCurrency: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']
@@ -102,9 +103,7 @@ export default class CreatePayoutClass extends Vue {
     ['rtgs', this.rtgsCurrencyTypes],
     ['sepa', this.sepaCurrencyTypes],
   ])
-  toCurrencyTypes = new Map([
-    ['USDwire', this.fxCurrencyTypes],
-  ])
+  toCurrencyTypes = new Map([['USDwire', this.fxCurrencyTypes]])
 
   error = {}
   loading = false
