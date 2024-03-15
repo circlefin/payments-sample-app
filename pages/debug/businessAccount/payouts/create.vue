@@ -15,6 +15,7 @@
             v-model="formData.toCurrency"
             :items="
               toCurrencyTypes.get(formData.currency + formData.destinationType)"
+
             label="To Currency"
           />
 
@@ -103,6 +104,7 @@ export default class CreatePayoutClass extends Vue {
     ['rtgs', this.rtgsCurrencyTypes],
     ['sepa', this.sepaCurrencyTypes],
   ])
+
   toCurrencyTypes = new Map([['USDwire', this.fxCurrencyTypes]])
 
   error = {}
