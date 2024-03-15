@@ -14,8 +14,8 @@
           <v-select
             v-model="formData.toCurrency"
             :items="
-              toCurrencyTypes.get(formData.currency + formData.destinationType)"
-
+              toCurrencyTypes.get(formData.currency + formData.destinationType)
+            "
             label="To Currency"
           />
 
