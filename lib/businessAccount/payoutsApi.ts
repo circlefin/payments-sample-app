@@ -13,6 +13,9 @@ export interface CreatePayoutPayload {
     amount: string
     currency: string
   }
+  toAmount: {
+    currency: string
+  }
 }
 
 const instance = axios.create({
