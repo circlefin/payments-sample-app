@@ -131,7 +131,7 @@ export default class CreatePayoutClass extends Vue {
         id: this.formData.destination,
         type: this.formData.destinationType,
       },
-      ...(toAmountDetail.currency && {toAmount: toAmountDetail})
+      ...(toAmountDetail.currency && { toAmount: toAmountDetail }),
     }
     try {
       await this.$businessAccountPayoutsApi.createPayout(payload)
