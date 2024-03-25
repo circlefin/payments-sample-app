@@ -16,7 +16,7 @@
             :items="
               toCurrencyTypes.get(formData.currency + formData.destinationType)
             "
-            label="To Currency"
+            label="To Currency (Optional)"
           />
 
           <v-text-field
@@ -95,7 +95,7 @@ export default class CreatePayoutClass extends Vue {
   rtpCurrencyTypes = ['USD']
   rtgsCurrencyTypes = ['USD', 'EUR']
   sepaCurrencyTypes = ['EUR']
-  fxCurrencyTypes = ['SGD', 'MXN']
+  fxCurrencyTypes = ['', 'SGD', 'MXN']
   currencyTypes = new Map([
     ['wire', this.wireCurrencyTypes],
     ['cbit', this.cbitCurrencyTypes],
@@ -127,11 +127,11 @@ export default class CreatePayoutClass extends Vue {
     const payload: CreatePayoutPayload = {
       idempotencyKey: uuidv4(),
       amount: amountDetail,
-      toAmount: toAmountDetail,
       destination: {
         id: this.formData.destination,
         type: this.formData.destinationType,
       },
+      ...(toAmountDetail.currency && {toAmount: toAmountDetail})
     }
     try {
       await this.$businessAccountPayoutsApi.createPayout(payload)
