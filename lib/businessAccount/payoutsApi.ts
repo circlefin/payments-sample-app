@@ -13,7 +13,7 @@ export interface CreatePayoutPayload {
     amount: string
     currency: string
   }
-  toAmount: {
+  toAmount?: {
     currency: string
   }
 }
