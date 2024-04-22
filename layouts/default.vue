@@ -347,22 +347,6 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/businessAccount/xpayAccounts/instructions',
     },
     {
-      title: 'POST /businessAccount/banks/rtp',
-      to: '/debug/businessAccount/rtpAccounts/create',
-    },
-    {
-      title: 'GET /businessAccount/banks/rtp',
-      to: '/debug/businessAccount/rtpAccounts/fetch',
-    },
-    {
-      title: 'GET /businessAccount/banks/rtp/{id}',
-      to: '/debug/businessAccount/rtpAccounts/details',
-    },
-    {
-      title: 'GET /businessAccount/banks/rtp/{id}/instructions',
-      to: '/debug/businessAccount/rtpAccounts/instructions',
-    },
-    {
       title: 'POST /businessAccount/transfers',
       to: '/debug/businessAccount/transfers/create',
     },
