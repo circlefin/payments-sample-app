@@ -27,7 +27,7 @@
           <v-select
             v-model="formData.destinationType"
             :items="destinationType"
-            label="Fiat Account Type"
+            label="Transfer Type"
           />
 
           <v-btn
