@@ -74,7 +74,7 @@ export default class CreateMockIncomingWireClass extends Vue {
 
   currencyTypes = ['USD', 'EUR', 'SGD', 'MXN']
 
-  rails = ['wire', 'rtgs', 'spei']
+  rails = ['wire', 'rtgs', 'spei', 'sepa', 'sepa_instant']
 
   isSandbox: Boolean = !getLive()
   required = [(v: string) => !!v || 'Field is required']
