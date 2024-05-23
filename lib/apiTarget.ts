@@ -14,6 +14,11 @@ function getAPIHostname() {
   return window.location.origin.replace('sample', 'api')
 }
 
+function getIsInternal() {
+  const hostname = getAPIHostname()
+  return hostname!.includes('staging') || hostname!.includes('smokebox')
+}
+
 function getLive() {
   const hostname = getAPIHostname()
   return !(hostname!.includes('sandbox') || hostname!.includes('smokebox'))
@@ -29,4 +34,4 @@ function getIsLocalHost(): boolean {
   return hostname!.includes(':3011')
 }
 
-export { getAPIHostname, getLive, getIsStaging, getIsLocalHost }
+export { getAPIHostname, getIsInternal, getLive, getIsStaging, getIsLocalHost }

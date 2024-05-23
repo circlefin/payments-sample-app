@@ -46,7 +46,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import { getLive } from '../../../../lib/apiTarget'
+import { getIsInternal, getLive } from '../../../../lib/apiTarget'
 import RequestInfo from '../../../../components/RequestInfo.vue'
 import ErrorSheet from '../../../../components/ErrorSheet.vue'
 import { CreateMockPushPaymentPayload } from '~/lib/mocksApi'
@@ -74,7 +74,9 @@ export default class CreateMockIncomingWireClass extends Vue {
 
   currencyTypes = ['USD', 'EUR', 'SGD', 'MXN']
 
-  rails = ['wire', 'rtgs', 'spei']
+  rails = getIsInternal()
+    ? ['wire', 'rtgs', 'spei', 'sepa', 'sepa_instant']
+    : ['wire', 'rtgs', 'spei', 'sepa']
 
   isSandbox: Boolean = !getLive()
   required = [(v: string) => !!v || 'Field is required']
