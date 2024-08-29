@@ -4,7 +4,7 @@
       <v-col cols="12" md="4">
         <v-form>
           <v-text-field v-model="formData.trackingRef" label="Tracking Ref" />
-          <v-text-field v-model="formData.memo" label="External Ref" />
+          <v-text-field v-model="formData.memo" label="Memo" />
           <v-text-field
             v-model="formData.accountNumber"
             label="Account Number"
