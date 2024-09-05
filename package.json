@@ -35,7 +35,7 @@
     "ethers": "^5.7.2",
     "express": "4.17.3",
     "lodash": "4.17.21",
-    "nuxt": "2.15.8",
+    "nuxt": "3.12.4",
     "nuxt-fontawesome": "0.4.0",
     "nuxt-property-decorator": "2.9.1",
     "openpgp": "5.0.1",
