@@ -33,7 +33,7 @@
     "card-validator": "8.1.1",
     "cross-env": "7.0.3",
     "ethers": "^5.7.2",
-    "express": "4.17.3",
+    "express": "4.20.0",
     "lodash": "4.17.21",
     "nuxt": "2.15.8",
     "nuxt-fontawesome": "0.4.0",
