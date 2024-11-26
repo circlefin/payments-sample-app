@@ -38,7 +38,7 @@
     "nuxt": "2.15.8",
     "nuxt-fontawesome": "0.4.0",
     "nuxt-property-decorator": "2.9.1",
-    "openpgp": "5.0.1",
+    "openpgp": "5.10.1",
     "sns-validator": "0.3.4",
     "uuid": "^8.3.2",
     "vue-json-pretty": "1.8.2",
