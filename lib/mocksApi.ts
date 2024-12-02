@@ -16,6 +16,14 @@ export interface CreateMockPushPaymentPayload {
   rail: string
 }
 
+export interface CreateMockPixPushPaymentPayload {
+  trackingRef: string
+  accountNumber: string
+  amount: {
+    amount: string
+  }
+}
+
 export interface CreateMockChargebackPayload {
   paymentId: string
 }
@@ -60,6 +68,14 @@ function createMockWirePayment(payload: CreateMockPushPaymentPayload) {
 }
 
 /**
+ * Trigger pix payment
+ */
+function createMockPixPyament(payload: CreateMockPixPushPaymentPayload) {
+  const url = '/v1/mocks/payments/pix'
+  return instance.post(url, payload)
+}
+
+/**
  * Create a mock chargeback
  * @param {*} payload
  */
@@ -72,4 +88,5 @@ export default {
   getInstance,
   createMockWirePayment,
   createMockChargeback,
+  createMockPixPyament
 }

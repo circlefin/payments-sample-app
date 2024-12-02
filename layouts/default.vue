@@ -315,6 +315,10 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/payments/mocks/wire',
     },
     {
+      title: 'POST /mocks/payments/pix',
+      to: '/debug/payments/mocks/pix',
+    },
+    {
       title: 'POST /businessAccount/banks/cbit',
       to: '/debug/businessAccount/cbitAccounts/create',
     },
