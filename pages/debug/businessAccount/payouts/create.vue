@@ -105,6 +105,7 @@ export default class CreatePayoutClass extends Vue {
     ['rtp', this.rtpCurrencyTypes],
     ['rtgs', this.rtgsCurrencyTypes],
     ['sepa', this.sepaCurrencyTypes],
+    ['pix', this.pixCurrencyTypes],
   ])
 
   toCurrencyTypes = new Map([

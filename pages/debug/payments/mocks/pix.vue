@@ -64,6 +64,7 @@ export default class CreateMockIncomingPixClass extends Vue {
     amount: '0.00',
     currency: 'BRL',
   }
+
   isSandbox: Boolean = !getLive()
   required = [(v: string) => !!v || 'Field is required']
   error = {}
@@ -73,6 +74,7 @@ export default class CreateMockIncomingPixClass extends Vue {
     this.error = {}
     this.showError = false
   }
+
   async makeApiCall() {
     this.loading = true
     const amountDetail = {

@@ -88,5 +88,5 @@ export default {
   getInstance,
   createMockWirePayment,
   createMockChargeback,
-  createMockPixPyament
+  createMockPixPyament,
 }
