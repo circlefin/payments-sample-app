@@ -570,41 +570,6 @@ export default class DefaultLayoutsClass extends Vue {
     },
   ]
 
-  digitalDollarAccountsLinks = [
-    {
-      title: 'POST /wallets',
-      to: '/debug/wallets/wallets/create',
-    },
-    {
-      title: 'GET /wallets',
-      to: '/debug/wallets/wallets/fetch',
-    },
-    {
-      title: 'GET /wallets/{id}',
-      to: '/debug/wallets/wallets/details',
-    },
-    {
-      title: 'POST /{walletId}/addresses',
-      to: '/debug/wallets/addresses/create',
-    },
-    {
-      title: 'GET /{walletId}/addresses',
-      to: '/debug/wallets/addresses/fetch',
-    },
-    {
-      title: 'POST /transfers',
-      to: '/debug/wallets/transfers/create',
-    },
-    {
-      title: 'GET /transfers',
-      to: '/debug/wallets/transfers/fetch',
-    },
-    {
-      title: 'GET /transfers/{id}',
-      to: '/debug/wallets/transfers/details',
-    },
-  ]
-
   checkoutSessionsLinks = [
     {
       title: 'POST /checkoutSessions',
