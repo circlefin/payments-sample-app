@@ -165,32 +165,6 @@
 
         <v-list-group>
           <template #activator>
-            <v-list-item-title>Digital Dollar Accounts APIs</v-list-item-title>
-          </template>
-
-          <v-list-item to="/debug/digitalDollarAccounts" router exact>
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2">
-                Overview
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item
-            v-for="(item, i) in digitalDollarAccountsLinks"
-            :key="`digitalDollarAccountsLinks-${i}`"
-            :to="item.to"
-            router
-            exact
-          >
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2" v-text="item.title" />
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-
-        <v-list-group>
-          <template #activator>
             <v-list-item-title>Checkout Sessions APIs</v-list-item-title>
           </template>
 
@@ -434,26 +408,6 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/cards/update',
     },
     {
-      title: 'POST /wallets',
-      to: '/debug/wallets/wallets/create',
-    },
-    {
-      title: 'GET /wallets',
-      to: '/debug/wallets/wallets/fetch',
-    },
-    {
-      title: 'GET /wallets/{id}',
-      to: '/debug/wallets/wallets/details',
-    },
-    {
-      title: 'POST /{walletId}/addresses',
-      to: '/debug/wallets/addresses/create',
-    },
-    {
-      title: 'GET /{walletId}/addresses',
-      to: '/debug/wallets/addresses/fetch',
-    },
-    {
       title: 'GET /settlements',
       to: '/debug/settlements/fetch',
     },
@@ -591,18 +545,6 @@ export default class DefaultLayoutsClass extends Vue {
       title: 'GET /payouts/{id}',
       to: '/debug/payouts/details',
     },
-    {
-      title: 'POST /transfers',
-      to: '/debug/wallets/transfers/create',
-    },
-    {
-      title: 'GET /transfers',
-      to: '/debug/wallets/transfers/fetch',
-    },
-    {
-      title: 'GET /transfers/{id}',
-      to: '/debug/wallets/transfers/details',
-    },
   ]
 
   paymentIntentsLinks = [
@@ -625,41 +567,6 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'POST /paymentIntents/{id}/refund',
       to: '/debug/paymentIntents/createCryptoRefund',
-    },
-  ]
-
-  digitalDollarAccountsLinks = [
-    {
-      title: 'POST /wallets',
-      to: '/debug/wallets/wallets/create',
-    },
-    {
-      title: 'GET /wallets',
-      to: '/debug/wallets/wallets/fetch',
-    },
-    {
-      title: 'GET /wallets/{id}',
-      to: '/debug/wallets/wallets/details',
-    },
-    {
-      title: 'POST /{walletId}/addresses',
-      to: '/debug/wallets/addresses/create',
-    },
-    {
-      title: 'GET /{walletId}/addresses',
-      to: '/debug/wallets/addresses/fetch',
-    },
-    {
-      title: 'POST /transfers',
-      to: '/debug/wallets/transfers/create',
-    },
-    {
-      title: 'GET /transfers',
-      to: '/debug/wallets/transfers/fetch',
-    },
-    {
-      title: 'GET /transfers/{id}',
-      to: '/debug/wallets/transfers/details',
     },
   ]
 
