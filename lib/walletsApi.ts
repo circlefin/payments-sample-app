@@ -29,13 +29,6 @@ instance.interceptors.response.use(
   }
 )
 
-const nullIfEmpty = (prop: string | undefined) => {
-  if (prop !== undefined && prop.trim() === '') {
-    return undefined
-  }
-  return prop
-}
-
 /** Returns the axios instance */
 function getInstance() {
   return instance
