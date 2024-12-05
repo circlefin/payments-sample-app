@@ -32,28 +32,6 @@
           <a href="/debug/payouts/details"> Get payout details by id </a>
         </p>
       </v-card>
-
-      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Transfers endpoints</h2>
-        <span class="caption">Requires: api key</span>
-        <br /><br />
-        <p>Api endpoints to manage transfers.</p>
-        <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/wallets/transfers/create"> Add transfer </a>
-        </p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/wallets/transfers/fetch">Get all transfers</a>
-        </p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-
-          <a href="/debug/wallets/transfers/details">
-            Get transfer details by id
-          </a>
-        </p>
-      </v-card>
     </v-flex>
   </v-layout>
 </template>
