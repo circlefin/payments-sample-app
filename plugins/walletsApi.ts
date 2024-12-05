@@ -3,9 +3,6 @@ import walletsApi from '@/lib/walletsApi'
 declare module 'vue/types/vue' {
   interface Vue {
     $walletsApi: {
-      getWallets: any
-      getWalletById: any
-      createWallet: any
       getInstance: any
       getMasterWallet: any
       convertToken: any

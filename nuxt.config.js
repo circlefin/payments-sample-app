@@ -50,8 +50,6 @@ export default {
     '~/plugins/chargebacksApi',
     '~/plugins/settlementsApi',
     '~/plugins/walletsApi',
-    '~/plugins/transfersApi',
-    '~/plugins/addressesApi',
     '~/plugins/paymentIntentsApi',
     '~/plugins/mocksApi',
     '~/plugins/businessAccount/addressesApi',

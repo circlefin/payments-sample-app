@@ -115,41 +115,6 @@
         </p>
       </v-card>
 
-      <v-card
-        v-if="!isMarketplace"
-        class="body-1 px-6 py-8 mb-4"
-        max-width="800"
-        outlined
-      >
-        <h2 class="title">On-chain payments endpoints</h2>
-        <span class="caption">Requires: api key</span>
-        <br /><br />
-        <p>Api endpoints to initiate on-chain payments.</p>
-        <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/wallets/wallets/create"> Add wallet </a>
-        </p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/wallets/wallets/fetch">Get all wallets</a>
-        </p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-
-          <a href="/debug/wallets/wallets/details">
-            Get wallet details by id
-          </a>
-        </p>
-        <p>
-          <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/wallets/addresses/create"> Add address </a>
-        </p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/wallets/addresses/fetch">Get all addresses</a>
-        </p>
-      </v-card>
-
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
         <h2 class="title">Settlements endpoints</h2>
         <span class="caption">Requires: api key</span>
