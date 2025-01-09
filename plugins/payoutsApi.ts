@@ -7,7 +7,6 @@ declare module 'vue/types/vue' {
       getPayoutById: any
       createPayout: (payload: CreatePayoutPayload) => any
       getInstance: any
-      getReturns: any
     }
   }
 }

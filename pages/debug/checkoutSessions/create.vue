@@ -3,6 +3,12 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
+          <v-select
+            v-model="formData.mode"
+            :items="modes"
+            label="Checkout Session Mode"
+          />
+
           <v-text-field
             v-model="formData.successUrl"
             label="Success URL(Optional)"
@@ -74,6 +80,7 @@ export default class CreateCheckoutSessionClass extends Vue {
     successUrl: null,
     amount: '0.00',
     currency: '',
+    mode: 'widget',
   }
 
   required = [(v: string) => !!v || 'Field is required']
@@ -81,6 +88,7 @@ export default class CreateCheckoutSessionClass extends Vue {
   loading = false
   showError = false
   supportedCurrencies = ['USD', 'ETH', 'BTC']
+  modes = ['widget', 'crypto_button']
   currencySelected = false
 
   onErrorSheetClosed() {
@@ -102,6 +110,7 @@ export default class CreateCheckoutSessionClass extends Vue {
 
     const payload: CreateCheckoutSessionPayload = {
       amount: amountDetail,
+      mode: this.formData.mode,
     }
     if (successUrl) {
       payload.successUrl = successUrl

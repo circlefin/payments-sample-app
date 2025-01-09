@@ -2,14 +2,18 @@
   <v-layout>
     <v-row>
       <v-col cols="12" md="4">
-        <v-form>
+        <v-form v-model="isFormValid">
           <v-text-field
             v-model="formData.paymentIntentId"
-            hint="Payment Intent Id"
+            :rules="[rules.required, rules.isUUID]"
             label="Payment Intent Id"
           />
 
-          <v-text-field v-model="formData.amount" label="Amount" />
+          <v-text-field
+            v-model="formData.amount"
+            label="Amount"
+            :rules="[rules.required, rules.isNumber, rules.validDecimal]"
+          />
           <v-select
             v-model="formData.currency"
             :items="currency"
@@ -18,16 +22,19 @@
 
           <v-text-field
             v-model="formData.sourceAddress"
+            :rules="[rules.required]"
             label="Source Address"
           />
           <v-select
             v-model="formData.sourceType"
             :items="sourceType"
+            :rules="[rules.required]"
             label="Source Type"
           />
 
           <v-text-field
             v-model="formData.destinationAddress"
+            :rules="[rules.required]"
             label="Destination Address"
           />
           <v-select
@@ -38,7 +45,8 @@
 
           <v-text-field
             v-model="formData.feeQuoteId"
-            label="Fee Quote Id (Only for End User Pay)"
+            label="Fee Quote ID (Required if network fees paid by end user)"
+            :rules="[rules.isUUID]"
           />
 
           <v-select
@@ -49,26 +57,26 @@
 
           <v-text-field
             v-model="formData.validAfter"
-            hint="Signature ValidAfter"
             label="Signature ValidAfter"
+            :rules="[rules.required]"
           />
 
           <v-text-field
             v-model="formData.validBefore"
-            hint="Signature validBefore"
             label="Signature validBefore"
+            :rules="[rules.required]"
           />
 
           <v-text-field
             v-model="formData.metaTxNonce"
-            hint="Meta transaction nonce"
             label="Meta transaction nonce"
+            :rules="[rules.required]"
           />
 
           <v-text-field
             v-model="formData.rawSignature"
-            hint="ECDSA rawSignature"
             label="ECDSA rawSignature"
+            :rules="[rules.required]"
           />
 
           <v-btn
@@ -76,6 +84,7 @@
             class="mb-7"
             color="primary"
             :loading="loading"
+            :disabled="!isFormValid"
             @click.prevent="makeApiCall()"
           >
             Make api call
@@ -105,6 +114,7 @@ import { v4 as uuidv4 } from 'uuid'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import { CreateCryptoPaymentPayload } from '~/lib/cryptoPaymentsApi'
+import { isNumber, required, validDecimal, isUUID } from '@/helpers/validation'
 
 @Component({
   components: {
@@ -119,30 +129,40 @@ import { CreateCryptoPaymentPayload } from '~/lib/cryptoPaymentsApi'
       isMarketplace: 'isMarketplace',
     }),
   },
+  data: () => ({
+    isFormValid: false,
+  }),
 })
 export default class CreatePaymentClass extends Vue {
   formData = {
     paymentIntentId: (this.$route.query.paymentIntentId as string) || '',
     amount: (this.$route.query.amount as string) || '0.00',
     currency: (this.$route.query.currency as string) || 'USD',
-    sourceAddress: '',
+    sourceAddress: (this.$route.query.sourceAddress as string) || '',
     sourceType: 'blockchain',
     destinationAddress: (this.$route.query.destinationAddress as string) || '',
     destinationChain: 'ETH',
-    feeQuoteId: '',
+    feeQuoteId: (this.$route.query.feeQuoteId as string) || '',
     protocolType:
       (this.$route.query.protocolType as string) || 'TransferWithAuthorization',
     validAfter: (this.$route.query.validAfter as string) || '0',
     validBefore: (this.$route.query.validBefore as string) || '',
     metaTxNonce: (this.$route.query.metaTxNonce as string) || '',
-    rawSignature: (this.$route.query.signature as string) || '',
+    rawSignature: (this.$route.query.rawSignature as string) || '',
+  }
+
+  // validation rules
+  rules = {
+    isNumber,
+    required,
+    validDecimal,
+    isUUID,
   }
 
   sourceType = ['blockchain']
   currency = ['USD']
   destinationChain = ['ETH']
   protocolType = ['TransferWithAuthorization']
-  required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
   showError = false

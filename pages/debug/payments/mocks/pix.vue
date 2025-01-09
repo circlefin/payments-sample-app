@@ -4,18 +4,11 @@
       <v-col cols="12" md="4">
         <v-form>
           <v-text-field v-model="formData.trackingRef" label="Tracking Ref" />
-          <v-text-field v-model="formData.memo" label="Memo" />
           <v-text-field
             v-model="formData.accountNumber"
             label="Account Number"
           />
-          <v-select
-            v-model="formData.currency"
-            :items="currencyTypes"
-            label="Currency"
-          />
           <v-text-field v-model="formData.amount" label="Amount" />
-          <v-select v-model="formData.rail" :items="rails" label="Rail" />
           <v-btn
             v-if="isSandbox"
             depressed
@@ -47,10 +40,10 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import { getIsInternal, getLive } from '../../../../lib/apiTarget'
+import { getLive } from '../../../../lib/apiTarget'
 import RequestInfo from '../../../../components/RequestInfo.vue'
 import ErrorSheet from '../../../../components/ErrorSheet.vue'
-import { CreateMockPushPaymentPayload } from '~/lib/mocksApi'
+import { CreateMockPixPushPaymentPayload } from '~/lib/mocksApi'
 @Component({
   components: {
     RequestInfo,
@@ -64,21 +57,13 @@ import { CreateMockPushPaymentPayload } from '~/lib/mocksApi'
     }),
   },
 })
-export default class CreateMockIncomingWireClass extends Vue {
+export default class CreateMockIncomingPixClass extends Vue {
   formData = {
     trackingRef: '',
-    memo: '',
     accountNumber: '',
     amount: '0.00',
-    currency: 'USD', // Default to USD
-    rail: 'wire',
+    currency: 'BRL',
   }
-
-  currencyTypes = ['USD', 'EUR', 'SGD', 'MXN']
-
-  rails = getIsInternal()
-    ? ['wire', 'rtgs', 'spei', 'sepa', 'sepa_instant']
-    : ['wire', 'rtgs', 'spei', 'sepa']
 
   isSandbox: Boolean = !getLive()
   required = [(v: string) => !!v || 'Field is required']
@@ -96,18 +81,13 @@ export default class CreateMockIncomingWireClass extends Vue {
       amount: this.formData.amount,
       currency: this.formData.currency,
     }
-    const payload: CreateMockPushPaymentPayload = {
+    const payload: CreateMockPixPushPaymentPayload = {
       trackingRef: this.formData.trackingRef,
-      memo: this.formData.memo,
-      beneficiaryBank: {
-        accountNumber: this.formData.accountNumber,
-      },
+      accountNumber: this.formData.accountNumber,
       amount: amountDetail,
-      rail: this.formData.rail,
     }
-
     try {
-      await this.$mocksApi.createMockWirePayment(payload)
+      await this.$mocksApi.createMockPixPyament(payload)
     } catch (error) {
       this.error = error
       this.showError = true

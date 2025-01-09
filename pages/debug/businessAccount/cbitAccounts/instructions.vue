@@ -2,11 +2,12 @@
   <v-layout>
     <v-row>
       <v-col cols="12" md="4">
-        <v-form>
-          <v-text-field v-model="formData.accountId" label="Account Id" />
+        <v-form ref="form" lazy-validation>
           <v-text-field
-            v-model="formData.currency"
-            label="Currency (Optional)"
+            v-model="formData.accountId"
+            label="Account Id"
+            :rules="requiredRules"
+            required
           />
           <v-btn
             depressed
@@ -54,14 +55,13 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
     }),
   },
 })
-export default class FetchBankAccountInstructionsClass extends Vue {
+export default class FetchCbitBusinessAccountInstructionsClass extends Vue {
   // data
   formData = {
     accountId: '',
-    currency: '',
   }
 
-  required = [(v: string) => !!v || 'Field is required']
+  requiredRules = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
   showError = false
@@ -73,18 +73,19 @@ export default class FetchBankAccountInstructionsClass extends Vue {
   }
 
   async makeApiCall() {
-    this.loading = true
-
-    try {
-      await this.$bankAccountsApi.getBankAccountInstructions(
-        this.formData.accountId,
-        this.formData.currency
-      )
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
+    const form = this.$refs.form as any
+    if (form.validate()) {
+      this.loading = true
+      try {
+        await this.$cbitAccountsApi.getCbitBusinessAccountInstructions(
+          this.formData.accountId
+        )
+      } catch (error: any) {
+        this.error = error
+        this.showError = true
+      } finally {
+        this.loading = false
+      }
     }
   }
 }

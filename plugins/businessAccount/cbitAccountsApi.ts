@@ -1,17 +1,21 @@
-import walletsApi from '@/lib/walletsApi'
+import cbitAccountsApi, {
+  CreateCbitAccountPayload,
+} from '@/lib/businessAccount/cbitAccountsApi'
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $walletsApi: {
+    $cbitAccountsApi: {
       getInstance: any
-      getMasterWallet: any
-      convertToken: any
+      createCbitBusinessAccount: (payload: CreateCbitAccountPayload) => any
+      getCbitBusinessAccounts: any
+      getCbitBusinessAccountById: any
+      getCbitBusinessAccountInstructions: any
     }
   }
 }
 
 export default ({ store }: any, inject: any) => {
-  const instance = walletsApi.getInstance()
+  const instance = cbitAccountsApi.getInstance()
 
   instance.interceptors.request.use(
     function (config) {
@@ -39,5 +43,5 @@ export default ({ store }: any, inject: any) => {
     }
   )
 
-  inject('walletsApi', walletsApi)
+  inject('cbitAccountsApi', cbitAccountsApi)
 }

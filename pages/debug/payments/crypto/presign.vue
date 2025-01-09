@@ -2,22 +2,29 @@
   <v-layout>
     <v-row>
       <v-col cols="12" md="4">
-        <v-form>
+        <v-form v-model="isFormValid">
           <v-text-field
             v-model="formData.paymentIntentId"
+            :rules="[rules.required, rules.isUUID]"
             label="Payment Intent Id"
           />
           <v-text-field
             v-model="formData.endUserAddress"
+            :rules="[rules.required]"
             label="End User Address"
           />
           <header>Optional params:</header>
-          <v-text-field v-model="formData.amount" label="Amount" />
+          <v-text-field
+            v-model="formData.amount"
+            label="Amount"
+            :rules="[rules.isNumber, rules.validDecimal]"
+          />
           <v-text-field v-model="formData.currency" label="Currency" />
           <v-btn
             depressed
             class="mb-7"
             color="primary"
+            :disabled="!isFormValid"
             @click.prevent="makeApiCall()"
           >
             Make api call
@@ -41,16 +48,7 @@
               slot="append"
               :to="{
                 path: '/debug/payments/crypto/create',
-                query: {
-                  destinationAddress: getTypedData().message.to,
-                  amount: getTypedData().totalAmount.amount,
-                  currency: getTypedData().totalAmount.currency,
-                  protocolType: getTypedData().totalAmount.primaryType,
-                  signature: formData.rawSignature,
-                  validAfter: getTypedData().message.validAfter,
-                  metaTxNonce: getTypedData().message.nonce,
-                  validBefore: getTypedData().message.validBefore,
-                },
+                query: getCreatePaymentQueryParams(),
               }"
               class="subtitle-2 text-right"
             >
@@ -81,6 +79,7 @@ import { mapGetters } from 'vuex'
 import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import { sendPresignedDataToMetaMask } from '~/lib/walletConnect'
+import { isNumber, required, validDecimal, isUUID } from '@/helpers/validation'
 
 @Component({
   components: {
@@ -94,6 +93,9 @@ import { sendPresignedDataToMetaMask } from '~/lib/walletConnect'
       requestUrl: 'getRequestUrl',
     }),
   },
+  data: () => ({
+    isFormValid: false,
+  }),
 })
 export default class FetchPresignData extends Vue {
   error = {}
@@ -109,6 +111,14 @@ export default class FetchPresignData extends Vue {
     rawSignature: '',
   }
 
+  // validation rules
+  rules = {
+    isNumber,
+    required,
+    validDecimal,
+    isUUID,
+  }
+
   // methods
   onErrorSheetClosed() {
     this.error = {}
@@ -117,6 +127,30 @@ export default class FetchPresignData extends Vue {
 
   getTypedData() {
     return this.$store.getters.getRequestResponse.typedData
+  }
+
+  getCreatePaymentQueryParams() {
+    const { paymentIntentId, rawSignature } = this.formData
+    const {
+      message,
+      totalAmount,
+      networkFeeQuote,
+      feeChargeModel,
+      primaryType: protocolType,
+    } = this.getTypedData()
+    return {
+      paymentIntentId,
+      amount: totalAmount.amount,
+      currency: totalAmount.currency,
+      sourceAddress: message.from,
+      destinationAddress: message.to,
+      feeQuoteId: feeChargeModel === 'endUser' ? networkFeeQuote?.quoteId : '',
+      protocolType,
+      validAfter: message.validAfter,
+      validBefore: message.validBefore,
+      metaTxNonce: message.nonce,
+      rawSignature,
+    }
   }
 
   async makeApiCall() {

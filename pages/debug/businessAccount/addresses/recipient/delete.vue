@@ -3,11 +3,7 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <v-text-field v-model="formData.accountId" label="Account Id" />
-          <v-text-field
-            v-model="formData.currency"
-            label="Currency (Optional)"
-          />
+          <v-text-field v-model="formData.recipientId" label="Recipient Id" />
           <v-btn
             depressed
             class="mb-7"
@@ -38,9 +34,8 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
-
+import RequestInfo from '~/components/RequestInfo.vue'
+import ErrorSheet from '~/components/ErrorSheet.vue'
 @Component({
   components: {
     RequestInfo,
@@ -54,18 +49,16 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
     }),
   },
 })
-export default class FetchBankAccountInstructionsClass extends Vue {
+export default class DeleteRecipientClass extends Vue {
   // data
   formData = {
-    accountId: '',
-    currency: '',
+    recipientId: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
   showError = false
-
   // methods
   onErrorSheetClosed() {
     this.error = {}
@@ -74,11 +67,9 @@ export default class FetchBankAccountInstructionsClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
-
     try {
-      await this.$bankAccountsApi.getBankAccountInstructions(
-        this.formData.accountId,
-        this.formData.currency
+      await this.$businessAccountAddressesApi.deleteRecipientAddress(
+        this.formData.recipientId
       )
     } catch (error) {
       this.error = error

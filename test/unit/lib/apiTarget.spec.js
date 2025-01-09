@@ -1,4 +1,4 @@
-import { getAPIHostname, getLive } from '@/lib/apiTarget'
+import { getAPIHostname, getIsInternal, getLive } from '@/lib/apiTarget'
 
 describe('apiTarget', () => {
   beforeEach(() => {
@@ -25,17 +25,21 @@ describe('apiTarget', () => {
     window.location.origin = 'sample.circle.com'
     expect(getAPIHostname()).toStrictEqual('api.circle.com')
     expect(getLive()).toBeTruthy()
+    expect(getIsInternal()).toBeFalsy()
 
     window.location.origin = 'sample-staging.circle.com'
     expect(getAPIHostname()).toStrictEqual('api-staging.circle.com')
     expect(getLive()).toBeTruthy()
+    expect(getIsInternal()).toBeTruthy()
 
     window.location.origin = 'sample-sandbox.circle.com'
     expect(getAPIHostname()).toStrictEqual('api-sandbox.circle.com')
     expect(getLive()).toBeFalsy()
+    expect(getIsInternal()).toBeFalsy()
 
     window.location.origin = 'sample-smokebox.circle.com'
     expect(getAPIHostname()).toStrictEqual('api-smokebox.circle.com')
     expect(getLive()).toBeFalsy()
+    expect(getIsInternal()).toBeTruthy()
   })
 })

@@ -146,38 +146,9 @@ function createPayout(payload: CreatePayoutPayload) {
   return instance.post(url, payload)
 }
 
-/**
- * Get returns
- * @param {String} from
- * @param {String} to
- * @param {String} pageBefore
- * @param {String} pageAfter
- * @param {String} pageSize
- */
-function getReturns(
-  from: string,
-  to: string,
-  pageBefore: string,
-  pageAfter: string,
-  pageSize: string
-) {
-  const queryParams = {
-    from: nullIfEmpty(from),
-    to: nullIfEmpty(to),
-    pageBefore: nullIfEmpty(pageBefore),
-    pageAfter: nullIfEmpty(pageAfter),
-    pageSize: nullIfEmpty(pageSize),
-  }
-
-  const url = '/v1/returns'
-
-  return instance.get(url, { params: queryParams })
-}
-
 export default {
   getInstance,
   getPayouts,
   getPayoutById,
   createPayout,
-  getReturns,
 }

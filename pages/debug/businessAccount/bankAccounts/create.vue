@@ -52,6 +52,12 @@
           />
 
           <v-text-field
+            v-model="formData.ffcMemo"
+            label="FFC Memo"
+            hint="FFC Memo"
+          />
+
+          <v-text-field
             v-model="formData.billingDetails.name"
             label="Billing Name"
           />
@@ -123,6 +129,21 @@
             label="Bank Address Country Code"
           />
 
+          <v-text-field
+            v-model="formData.intermediaryBank.identifier"
+            label="Intermediary Bank Identifier"
+          />
+
+          <v-text-field
+            v-model="formData.intermediaryBank.type"
+            label="Intermediary Bank Identitifer Type"
+            hint="ABA for US domestic accounts, BIC for international"
+          />
+
+          <v-text-field
+            v-model="formData.intermediaryBank.countryCode"
+            label="Intermediary Bank Country Code"
+          />
           <v-btn
             depressed
             color="primary"
@@ -178,6 +199,7 @@ export default class CreateCardClass extends Vue {
     accountNumber: '',
     routingNumber: '',
     iban: '',
+    ffcMemo: '',
     billingDetails: {
       name: '',
       city: '',
@@ -195,6 +217,11 @@ export default class CreateCardClass extends Vue {
       line2: '',
       district: '',
       postalCode: '',
+    },
+    intermediaryBank: {
+      identifier: '',
+      type: '',
+      countryCode: '',
     },
   }
 
@@ -225,9 +252,15 @@ export default class CreateCardClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
-    const { beneficiaryName, accountNumber, routingNumber, iban, ...data } =
-      this.formData
-    const { billingDetails, bankAddress } = data
+    const {
+      beneficiaryName,
+      accountNumber,
+      routingNumber,
+      iban,
+      ffcMemo,
+      ...data
+    } = this.formData
+    const { billingDetails, bankAddress, intermediaryBank } = data
 
     const payload: CreateWireAccountPayload = {
       idempotencyKey: uuidv4(),
@@ -235,6 +268,7 @@ export default class CreateCardClass extends Vue {
       accountNumber,
       routingNumber,
       iban,
+      ffcMemo,
       billingDetails: {
         name: billingDetails.name,
         line1: billingDetails.line1,
@@ -253,6 +287,14 @@ export default class CreateCardClass extends Vue {
         country: bankAddress.country,
         postalCode: bankAddress.postalCode,
       },
+    }
+
+    if (intermediaryBank.identifier.length > 0) {
+      payload.intermediaryBank = {
+        identifier: intermediaryBank.identifier,
+        type: intermediaryBank.type,
+        countryCode: intermediaryBank.countryCode,
+      }
     }
 
     try {

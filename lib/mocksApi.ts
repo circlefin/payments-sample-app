@@ -5,6 +5,7 @@ import { getAPIHostname } from './apiTarget'
 
 export interface CreateMockPushPaymentPayload {
   trackingRef: string
+  memo: string
   beneficiaryBank: {
     accountNumber: string
   }
@@ -12,22 +13,19 @@ export interface CreateMockPushPaymentPayload {
     amount: string
     currency: string
   }
+  rail: string
+}
+
+export interface CreateMockPixPushPaymentPayload {
+  trackingRef: string
+  accountNumber: string
+  amount: {
+    amount: string
+  }
 }
 
 export interface CreateMockChargebackPayload {
   paymentId: string
-}
-
-export interface CreateMockACHBankAccount {
-  account: {
-    accountNumber: string
-    routingNumber: string
-    description: string
-  }
-  balance: {
-    amount: string
-    currency: string
-  }
 }
 
 const instance = axios.create({
@@ -70,20 +68,10 @@ function createMockWirePayment(payload: CreateMockPushPaymentPayload) {
 }
 
 /**
- * Trigger a mock sen payment
- * @param {*} payload
+ * Trigger pix payment
  */
-function createMockSenPayment(payload: CreateMockPushPaymentPayload) {
-  const url = '/v1/mocks/payments/sen'
-  return instance.post(url, payload)
-}
-
-/**
- * Trigger a mock sepa payment
- * @param {*} payload
- */
-function createMockSEPAPayment(payload: CreateMockPushPaymentPayload) {
-  const url = '/v1/mocks/payments/sepa'
+function createMockPixPyament(payload: CreateMockPixPushPaymentPayload) {
+  const url = '/v1/mocks/payments/pix'
   return instance.post(url, payload)
 }
 
@@ -96,20 +84,9 @@ function createMockChargeback(payload: CreateMockChargebackPayload) {
   return instance.post(url, payload)
 }
 
-/**
- * Create a mock ACH bank account
- * @param {*} payload
- */
-function createMockACHBankAccount(payload: CreateMockACHBankAccount) {
-  const url = '/v1/mocks/ach/accounts'
-  return instance.post(url, payload)
-}
-
 export default {
   getInstance,
   createMockWirePayment,
-  createMockSenPayment,
-  createMockSEPAPayment,
   createMockChargeback,
-  createMockACHBankAccount,
+  createMockPixPyament,
 }

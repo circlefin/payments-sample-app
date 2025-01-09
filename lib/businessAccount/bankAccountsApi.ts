@@ -9,6 +9,7 @@ export interface CreateWireAccountPayload {
   accountNumber?: string
   routingNumber?: string
   iban?: string
+  ffcMemo?: string
   billingDetails: {
     name: string
     city: string
@@ -26,6 +27,11 @@ export interface CreateWireAccountPayload {
     line2?: string
     district?: string
     postalCode?: string
+  }
+  intermediaryBank?: {
+    identifier?: string
+    type?: string
+    countryCode?: string
   }
 }
 
@@ -105,11 +111,12 @@ function getBankAccountById(bankId: string) {
 /**
  * Get wire bank account instructions
  * @param {String} bankId
+ * @param {String} currency
  */
-function getBankAccountInstructions(bankId: string) {
+function getBankAccountInstructions(bankId: string, currency: string) {
   const url = `/v1/businessAccount/banks/wires/${bankId}/instructions`
 
-  return instance.get(url)
+  return instance.get(url, { params: { currency: nullIfEmpty(currency) } })
 }
 
 export default {

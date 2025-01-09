@@ -74,32 +74,63 @@
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Business Account SEN endpoints</h2>
+        <h2 class="title">Business Account CBIT endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
-        <p>Api endpoints to manage sen business accounts.</p>
+        <p>Api endpoints to manage cbit business accounts.</p>
         <p>
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/businessAccount/senAccounts/create">
-            Create sen business account
+          <a href="/debug/businessAccount/cbitAccounts/create">
+            Create cbit business account
           </a>
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/businessAccount/senAccounts/fetch">
-            Get all sen business accounts
+          <a href="/debug/businessAccount/cbitAccounts/fetch">
+            Get all cbit business accounts
           </a>
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/businessAccount/senAccounts/details">
-            Get sen business account details by id
+          <a href="/debug/businessAccount/cbitAccounts/details">
+            Get cbit business account details by id
           </a>
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/businessAccount/senAccounts/instructions">
-            Get sen business account instructions for id
+          <a href="/debug/businessAccount/cbitAccounts/instructions">
+            Get cbit business account instructions for id
+          </a>
+        </p>
+      </v-card>
+
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
+        <h2 class="title">Business Account XPay endpoints</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>Api endpoints to manage xpay business accounts.</p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/businessAccount/xpayAccounts/create">
+            Create xpay business account
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/businessAccount/xpayAccounts/fetch">
+            Get all xpay business accounts
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/businessAccount/xpayAccounts/details">
+            Get xpay business account details by id
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/businessAccount/xpayAccounts/instructions">
+            Get xpay business account instructions for id
           </a>
         </p>
       </v-card>
@@ -154,6 +185,12 @@
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/businessAccount/addresses/recipient/fetch">
             Get all recipient addresses
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary accent">DELETE</v-chip>
+          <a href="/debug/businessAccount/addresses/recipient/delete">
+            Delete selected recipient address
           </a>
         </p>
       </v-card>

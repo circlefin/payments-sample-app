@@ -11,6 +11,14 @@
             label="Currency"
           />
 
+          <v-select
+            v-model="formData.toCurrency"
+            :items="
+              toCurrencyTypes.get(formData.currency + formData.destinationType)
+            "
+            label="To Currency (Optional)"
+          />
+
           <v-text-field
             v-model="formData.destination"
             label="Fiat Account Id"
@@ -19,7 +27,7 @@
           <v-select
             v-model="formData.destinationType"
             :items="destinationType"
-            label="Fiat Account Type"
+            label="Transfer Type"
           />
 
           <v-btn
@@ -76,15 +84,33 @@ export default class CreatePayoutClass extends Vue {
     destination: '',
     destinationType: 'wire', // Default to wire
     currency: 'USD', // Default to USD
+    toCurrency: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']
-  destinationType = ['wire', 'sen']
-  wireCurrencyTypes = ['USD']
-  senCurrencyTypes = ['USD', 'EUR']
+  destinationType = ['wire', 'cbit', 'xpay', 'rtp', 'rtgs', 'sepa', 'pix']
+  wireCurrencyTypes = ['USD', 'EUR']
+  cbitCurrencyTypes = ['USD']
+  xpayCurrencyTypes = ['USD']
+  rtpCurrencyTypes = ['USD']
+  rtgsCurrencyTypes = ['USD', 'EUR']
+  sepaCurrencyTypes = ['EUR']
+  pixCurrencyTypes = ['USD']
+  fxCurrencyTypes = ['', 'SGD', 'MXN']
+  pixFxCurrencyTypes = ['BRL']
   currencyTypes = new Map([
     ['wire', this.wireCurrencyTypes],
-    ['sen', this.senCurrencyTypes],
+    ['cbit', this.cbitCurrencyTypes],
+    ['xpay', this.xpayCurrencyTypes],
+    ['rtp', this.rtpCurrencyTypes],
+    ['rtgs', this.rtgsCurrencyTypes],
+    ['sepa', this.sepaCurrencyTypes],
+    ['pix', this.pixCurrencyTypes],
+  ])
+
+  toCurrencyTypes = new Map([
+    ['USDwire', this.fxCurrencyTypes],
+    ['USDpix', this.pixFxCurrencyTypes],
   ])
 
   error = {}
@@ -101,6 +127,9 @@ export default class CreatePayoutClass extends Vue {
       amount: this.formData.amount,
       currency: this.formData.currency,
     }
+    const toAmountDetail = {
+      currency: this.formData.toCurrency,
+    }
     const payload: CreatePayoutPayload = {
       idempotencyKey: uuidv4(),
       amount: amountDetail,
@@ -108,6 +137,7 @@ export default class CreatePayoutClass extends Vue {
         id: this.formData.destination,
         type: this.formData.destinationType,
       },
+      ...(toAmountDetail.currency && { toAmount: toAmountDetail }),
     }
     try {
       await this.$businessAccountPayoutsApi.createPayout(payload)

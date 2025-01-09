@@ -1,17 +1,21 @@
-import walletsApi from '@/lib/walletsApi'
+import xpayAccountsApi, {
+  CreateXpayAccountPayload,
+} from '@/lib/businessAccount/xpayAccountsApi'
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $walletsApi: {
+    $xpayAccountsApi: {
       getInstance: any
-      getMasterWallet: any
-      convertToken: any
+      createXpayBusinessAccount: (payload: CreateXpayAccountPayload) => any
+      getXpayBusinessAccounts: any
+      getXpayBusinessAccountById: any
+      getXpayBusinessAccountInstructions: any
     }
   }
 }
 
 export default ({ store }: any, inject: any) => {
-  const instance = walletsApi.getInstance()
+  const instance = xpayAccountsApi.getInstance()
 
   instance.interceptors.request.use(
     function (config) {
@@ -39,5 +43,5 @@ export default ({ store }: any, inject: any) => {
     }
   )
 
-  inject('walletsApi', walletsApi)
+  inject('xpayAccountsApi', xpayAccountsApi)
 }

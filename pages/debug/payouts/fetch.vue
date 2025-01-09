@@ -19,7 +19,7 @@
             :items="payoutStatuses"
             label="Status"
           />
-          <div v-if="isCryptoPayout()">
+          <div>
             <v-text-field
               v-model="formData.sourceCurrency"
               label="Source Currency"
@@ -102,18 +102,12 @@ export default class FetchPayoutsClass extends Vue {
     required: (v: string) => !!v || 'Field is required',
   }
 
-  destinationType = ['', 'wire', 'ach', 'sepa', 'address_book']
-  fiatDestinationTypes = new Set(['wire', 'ach', 'sepa'])
-  blockchainDestinationTypes = new Set(['address_book'])
+  destinationType = ['address_book']
   payoutStatuses = ['', 'pending', 'complete', 'failed']
   error = {}
   loading = false
   showError = false
   // methods
-  isCryptoPayout() {
-    return this.blockchainDestinationTypes.has(this.formData.destinationType)
-  }
-
   onErrorSheetClosed() {
     this.error = {}
     this.showError = false
@@ -121,16 +115,15 @@ export default class FetchPayoutsClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
-    const isCryptoPayout = this.isCryptoPayout()
     try {
       await this.$payoutsApi.getPayouts(
         this.formData.sourceWalletId,
         this.formData.destination,
         this.formData.destinationType,
         this.formData.status,
-        isCryptoPayout ? this.formData.sourceCurrency : '',
-        isCryptoPayout ? this.formData.destinationCurrency : '',
-        isCryptoPayout ? this.formData.chain : '',
+        this.formData.sourceCurrency,
+        this.formData.destinationCurrency,
+        this.formData.chain,
         this.formData.from,
         this.formData.to,
         this.formData.pageBefore,

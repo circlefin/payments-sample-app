@@ -7,17 +7,12 @@
 
           <v-select
             v-model="formData.currency"
-            :items="
-              isCryptoPayout()
-                ? Array.from(supportedCryptoPayoutCurrencyPairs.keys())
-                : supportedFiatPayoutCurrencies
-            "
+            :items="Array.from(supportedCryptoPayoutCurrencyPairs.keys())"
             label="Currency"
             @change="onCurrencyChange"
           />
 
           <v-select
-            v-if="isCryptoPayout()"
             v-model="formData.toCurrency"
             :items="supportedCryptoPayoutCurrencyPairs.get(formData.currency)"
             label="To Currency"
@@ -38,14 +33,13 @@
           />
 
           <v-text-field
-            v-if="!isCryptoPayout()"
             v-model="formData.beneficiaryEmail"
             label="Beneficiary Email"
           />
 
           <br />
 
-          <div v-if="isCryptoPayout() && sourceWalletIdNotEmpty()">
+          <div v-if="sourceWalletIdNotEmpty()">
             <header>Optional Identity:</header>
             <br />
 
@@ -147,7 +141,7 @@ export default class CreatePayoutClass extends Vue {
     currency: 'USD', // Default to USD
     toCurrency: 'USD', // Default to USD
     destination: '',
-    destinationType: 'wire', // Default to wire for payout creation
+    destinationType: 'address_book', // Default to wire for payout creation
     beneficiaryEmail: '',
     identityType: 'individual', // Default to individual for identity type
     identityName: '',
@@ -160,11 +154,9 @@ export default class CreatePayoutClass extends Vue {
   }
 
   required = [(v: string) => !!v || 'Field is required']
-  destinationType = ['wire', 'ach', 'sepa', 'address_book']
-  fiatDestinationTypes = new Set(['wire', 'ach', 'sepa'])
+  destinationType = ['address_book']
   blockchainDestinationTypes = new Set(['address_book'])
   identityTypes = ['individual', 'business']
-  supportedFiatPayoutCurrencies = ['USD']
   // TODO: we can probably implement an internal endpoint to get the supported currency pairs
   supportedCryptoPayoutCurrencyPairs = new Map([
     ['USD', ['USD', 'BTC', 'ETH', 'MATIC']],
@@ -179,10 +171,6 @@ export default class CreatePayoutClass extends Vue {
   error = {}
   loading = false
   showError = false
-
-  isCryptoPayout() {
-    return this.blockchainDestinationTypes.has(this.formData.destinationType)
-  }
 
   sourceWalletIdNotEmpty() {
     return this.formData.sourceWalletId.length > 0
@@ -201,11 +189,7 @@ export default class CreatePayoutClass extends Vue {
   }
 
   onCurrencyChange() {
-    // do nothing if it's not crypto payout
-    if (!this.isCryptoPayout()) {
-      return
-    }
-    // else update default toCurrency
+    // update default toCurrency
     const supportedToCurrencies = this.supportedCryptoPayoutCurrencyPairs.get(
       this.formData.currency
     )
@@ -216,9 +200,9 @@ export default class CreatePayoutClass extends Vue {
 
   onDestinationTypeChange() {
     // update currency to default
-    this.formData.currency = this.isCryptoPayout()
-      ? Array.from(this.supportedCryptoPayoutCurrencyPairs.keys())[0]
-      : this.supportedFiatPayoutCurrencies[0]
+    this.formData.currency = Array.from(
+      this.supportedCryptoPayoutCurrencyPairs.keys()
+    )[0]
     this.onCurrencyChange()
     this.resetIdentities()
   }
