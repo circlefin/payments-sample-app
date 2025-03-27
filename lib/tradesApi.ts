@@ -3,9 +3,16 @@ import axios from 'axios'
 
 import { getAPIHostname } from './apiTarget'
 
+export interface CreateTradePayload {
+  idempotencyKey: string
+  quoteId: string
+}
+
 const instance = axios.create({
   baseURL: getAPIHostname(),
 })
+
+const TRADES_PATH = '/v1/exchange/trades'
 
 /**
  * Global error handler:
@@ -36,23 +43,29 @@ function getInstance() {
 /**
  * Get Trades
  */
-function getTrades() {
-  const url = '/v1/exchange/trades'
+function createTrade(payload: CreateTradePayload) {
+  return instance.post(TRADES_PATH, payload)
+}
 
-  return instance.get(url)
+/**
+ * Get Trades
+ */
+function getTrades() {
+  return instance.get(TRADES_PATH)
 }
 
 /**
  * Get Trade
  */
 function getTrade(tradeId: string) {
-  const url = `/v1/exchange/trades/${tradeId}`
+  const url = `${TRADES_PATH}/${tradeId}`
 
   return instance.get(url)
 }
 
 export default {
   getInstance,
+  createTrade,
   getTrades,
   getTrade,
 }

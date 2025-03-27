@@ -617,6 +617,14 @@ export default class DefaultLayoutsClass extends Vue {
 
   tradesLinks = [
     {
+      title: 'POST /quotes',
+      to: '/debug/trades/createQuote',
+    },
+    {
+      title: 'POST /trades',
+      to: '/debug/trades/create',
+    },
+    {
       title: 'GET /trades',
       to: '/debug/trades/fetch',
     },
