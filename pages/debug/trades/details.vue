@@ -3,11 +3,16 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <v-text-field v-model="formData.id" label="Trade Id" />
+          <v-text-field
+            v-model="formData.id"
+            :rules="required"
+            label="Trade Id"
+          />
           <v-btn
             depressed
             class="mb-7"
             color="primary"
+            :disabled="!validForm || loading"
             @click.prevent="makeApiCall()"
           >
             Make api call
