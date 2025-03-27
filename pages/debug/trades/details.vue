@@ -2,7 +2,7 @@
   <v-layout>
     <v-row>
       <v-col cols="12" md="4">
-        <v-form>
+        <v-form v-model="validForm">
           <v-text-field
             v-model="formData.id"
             :rules="required"
@@ -55,6 +55,7 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
   },
 })
 export default class FetchTradeDetailsClass extends Vue {
+  validForm: boolean = false
   // data
   formData = {
     id: '',
