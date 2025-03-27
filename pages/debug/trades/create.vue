@@ -2,7 +2,7 @@
   <v-layout>
     <v-row>
       <v-col cols="12" md="4">
-        <v-form>
+        <v-form v-model="validForm">
           <v-text-field
             v-model="formData.quoteId"
             :rules="required"
@@ -14,6 +14,7 @@
             class="mb-7"
             color="primary"
             :loading="loading"
+            :disabled="!validForm || loading"
             @click.prevent="makeApiCall"
           >
             Make api call
@@ -59,6 +60,7 @@ import { CreateTradePayload } from '~/lib/tradesApi'
   },
 })
 export default class CreateTradeClass extends Vue {
+  validForm: boolean = false
   formData = {
     quoteId: null,
   }
