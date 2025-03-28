@@ -62,7 +62,7 @@ import { CreateTradePayload } from '~/lib/tradesApi'
 export default class CreateTradeClass extends Vue {
   validForm: boolean = false
   formData = {
-    quoteId: null,
+    quoteId: '',
   }
 
   required = [(v: string) => !!v || 'Field is required']

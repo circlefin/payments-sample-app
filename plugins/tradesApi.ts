@@ -3,6 +3,7 @@ import tradesApi from '~/lib/tradesApi'
 declare module 'vue/types/vue' {
   interface Vue {
     $tradesApi: {
+      createTrade: any
       getTrades: any
       getTrade: any
       getInstance: any
