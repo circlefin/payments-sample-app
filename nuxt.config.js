@@ -65,6 +65,7 @@ export default {
     '~/plugins/beta/addressBookApi',
     '~/plugins/payoutsApi',
     '~/plugins/checkoutSessionsApi',
+    '~/plugins/tradesApi',
   ],
   /*
    ** Nuxt.js dev-modules
