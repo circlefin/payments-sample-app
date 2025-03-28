@@ -20,6 +20,14 @@
         <br /><br />
         <p>Api endpoints for FX trading</p>
         <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/trades/quote">Create quote</a>
+        </p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/trades/create">Create trade</a>
+        </p>
+        <p>
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/trades/fetch">Get all trades</a>
         </p>

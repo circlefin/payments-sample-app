@@ -3,9 +3,29 @@ import axios from 'axios'
 
 import { getAPIHostname } from './apiTarget'
 
+export interface CreateQuotePayload {
+  type: string
+  from: {
+    amount: number
+    currency: string
+  }
+  to: {
+    currency: string
+  }
+}
+
+export interface CreateTradePayload {
+  idempotencyKey: string
+  quoteId: string
+}
+
 const instance = axios.create({
   baseURL: getAPIHostname(),
 })
+
+const TRADES_PATH = '/v1/exchange/trades'
+
+const QUOTES_PATH = '/v1/exchange/quotes'
 
 /**
  * Global error handler:
@@ -34,25 +54,39 @@ function getInstance() {
 }
 
 /**
+ * Create Quote
+ */
+function createQuote(payload: CreateQuotePayload) {
+  return instance.post(QUOTES_PATH, payload)
+}
+
+/**
+ * Create Trade
+ */
+function createTrade(payload: CreateTradePayload) {
+  return instance.post(TRADES_PATH, payload)
+}
+
+/**
  * Get Trades
  */
 function getTrades() {
-  const url = '/v1/exchange/trades'
-
-  return instance.get(url)
+  return instance.get(TRADES_PATH)
 }
 
 /**
  * Get Trade
  */
 function getTrade(tradeId: string) {
-  const url = `/v1/exchange/trades/${tradeId}`
+  const url = `${TRADES_PATH}/${tradeId}`
 
   return instance.get(url)
 }
 
 export default {
   getInstance,
+  createQuote,
+  createTrade,
   getTrades,
   getTrade,
 }
