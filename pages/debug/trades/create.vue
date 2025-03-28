@@ -6,7 +6,7 @@
           <v-text-field
             v-model="formData.quoteId"
             :rules="required"
-            hint="Quote ID"
+            hint="ID of FX quote to trade on"
             label="Quote ID"
           />
           <v-btn
