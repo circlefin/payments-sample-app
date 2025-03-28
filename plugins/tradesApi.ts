@@ -5,6 +5,10 @@ declare module 'vue/types/vue' {
     $tradesApi: {
       getTrades: any
       getTrade: any
+      getSettlements: any
+      getSettlement: any
+      getSettlementByReference: any
+      getSettlementInstructions: any
       getInstance: any
     }
   }
