@@ -7,6 +7,10 @@ declare module 'vue/types/vue' {
       createTrade: any
       getTrades: any
       getTrade: any
+      getSettlements: any
+      getSettlement: any
+      getSettlementByReference: any
+      getSettlementInstructions: any
       getInstance: any
     }
   }

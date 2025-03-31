@@ -35,6 +35,30 @@
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/trades/details"> Get trade details by id </a>
         </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/trades/settlements/fetch">
+            Get all trade settlements
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/trades/settlements/details">
+            Get trade settlement details by id
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/trades/settlements/detailsByreference">
+            Get trade settlement details by reference
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/trades/settlements/instructions">
+            Get trade settlement instructions
+          </a>
+        </p>
       </v-card>
     </v-flex>
   </v-layout>
