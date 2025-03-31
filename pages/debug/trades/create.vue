@@ -5,7 +5,7 @@
         <v-form v-model="validForm">
           <v-text-field
             v-model="formData.quoteId"
-            :rules="required"
+            :rules="[required]"
             hint="ID of FX quote to trade on"
             label="Quote ID"
           />
@@ -55,7 +55,6 @@ import { CreateTradePayload } from '~/lib/tradesApi'
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
       requestUrl: 'getRequestUrl',
-      isMarketplace: 'isMarketplace',
     }),
   },
 })
@@ -65,7 +64,7 @@ export default class CreateTradeClass extends Vue {
     quoteId: '',
   }
 
-  required = [(v: string) => !!v || 'Field is required']
+  required = (v: string) => !!v || 'Field is required'
   error = {}
   loading = false
   showError = false
