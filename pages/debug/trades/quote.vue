@@ -10,17 +10,23 @@
           />
           <v-text-field
             v-model="formData.from.amount"
-            :rules="[required, isNumber]"
-            label="From amount"
+            :rules="[isNumber]"
+            label="From amount (Must be present if to amount is not)"
           />
           <v-select
             v-model="formData.from.currency"
             :items="currencies"
             label="From currency"
           />
+          <v-text-field
+            v-model="formData.to.amount"
+            :rules="[isNumber]"
+            label="To amount (Must be present if from amount is not)"
+          />
           <v-select
             v-model="formData.to.currency"
             :items="toCurrencyMap.get(formData.from.currency)"
+            :rules="[required]"
             label="To currency"
           />
           <v-btn
@@ -76,17 +82,19 @@ export default class CreateQuoteClass extends Vue {
   formData = {
     type: 'tradable',
     from: {
-      amount: null,
+      amount: '',
       currency: 'USDC',
     },
     to: {
+      amount: '',
       currency: '',
     },
   }
 
   required = (v: string) => !!v || 'Field is required'
+
   isNumber = (v: string) =>
-    v === '' || !isNaN(parseInt(v)) || 'Please enter valid number'
+    !v || v === '' || !isNaN(parseInt(v)) || 'Please enter valid number'
 
   error = {}
   loading = false
@@ -106,6 +114,13 @@ export default class CreateQuoteClass extends Vue {
 
   async makeApiCall() {
     this.loading = true
+
+    if (!this.formData.from.amount) {
+      delete this.formData.from.amount
+    }
+    if (!this.formData.to.amount) {
+      delete this.formData.to.amount
+    }
 
     try {
       await this.$tradesApi.createQuote(this.formData)
