@@ -115,13 +115,6 @@ export default class CreateQuoteClass extends Vue {
   async makeApiCall() {
     this.loading = true
 
-    if (!this.formData.from.amount) {
-      delete this.formData.from.amount
-    }
-    if (!this.formData.to.amount) {
-      delete this.formData.to.amount
-    }
-
     try {
       await this.$tradesApi.createQuote(this.formData)
     } catch (error) {

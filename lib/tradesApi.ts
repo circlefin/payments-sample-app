@@ -6,10 +6,11 @@ import { getAPIHostname } from './apiTarget'
 export interface CreateQuotePayload {
   type: string
   from: {
-    amount: number
+    amount?: number
     currency: string
   }
   to: {
+    amount?: number
     currency: string
   }
 }
@@ -59,6 +60,13 @@ function getInstance() {
  * Create Quote
  */
 function createQuote(payload: CreateQuotePayload) {
+  if (!payload.from.amount) {
+    delete payload.from.amount
+  }
+  if (!payload.to.amount) {
+    delete payload.to.amount
+  }
+
   return instance.post(QUOTES_PATH, payload)
 }
 
