@@ -3,7 +3,11 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form v-model="validForm">
-          <v-text-field v-model="tradeId" :rules="required" label="Trade Id" />
+          <v-text-field
+            v-model="settlementId"
+            :rules="required"
+            label="Settlement Id"
+          />
           <v-btn
             depressed
             class="mb-7"
@@ -50,9 +54,9 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
     }),
   },
 })
-export default class FetchTradeDetailsClass extends Vue {
+export default class FetchSettlementDetailsClass extends Vue {
   validForm: boolean = false
-  tradeId = ''
+  settlementId = ''
 
   required = [(v: string) => !!v || 'Field is required']
   error = {}
@@ -65,14 +69,10 @@ export default class FetchTradeDetailsClass extends Vue {
     this.showError = false
   }
 
-  get isMarketplace() {
-    return this.$store.getters.isMarketplace
-  }
-
   async makeApiCall() {
     this.loading = true
     try {
-      await this.$tradesApi.getTrade(this.tradeId)
+      await this.$tradesApi.getSettlement(this.settlementId)
     } catch (error) {
       this.error = error
       this.showError = true

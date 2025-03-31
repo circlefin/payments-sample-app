@@ -2,13 +2,16 @@
   <v-layout>
     <v-row>
       <v-col cols="12" md="4">
-        <v-form v-model="validForm">
-          <v-text-field v-model="tradeId" :rules="required" label="Trade Id" />
+        <v-form>
+          <v-select
+            v-model="selectedCurrency"
+            :items="currencies"
+            label="Currency"
+          />
           <v-btn
             depressed
             class="mb-7"
             color="primary"
-            :disabled="!validForm || loading"
             @click.prevent="makeApiCall()"
           >
             Make api call
@@ -50,14 +53,12 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
     }),
   },
 })
-export default class FetchTradeDetailsClass extends Vue {
-  validForm: boolean = false
-  tradeId = ''
-
-  required = [(v: string) => !!v || 'Field is required']
+export default class FetchSettlementInstructionsClass extends Vue {
   error = {}
   loading = false
   showError = false
+  currencies = ['MXN', 'BRL']
+  selectedCurrency = 'MXN'
 
   // methods
   onErrorSheetClosed() {
@@ -72,7 +73,7 @@ export default class FetchTradeDetailsClass extends Vue {
   async makeApiCall() {
     this.loading = true
     try {
-      await this.$tradesApi.getTrade(this.tradeId)
+      await this.$tradesApi.getSettlementInstructions(this.selectedCurrency)
     } catch (error) {
       this.error = error
       this.showError = true

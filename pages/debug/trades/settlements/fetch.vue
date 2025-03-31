@@ -2,13 +2,28 @@
   <v-layout>
     <v-row>
       <v-col cols="12" md="4">
-        <v-form v-model="validForm">
-          <v-text-field v-model="tradeId" :rules="required" label="Trade Id" />
+        <v-form>
+          <header>Optional filter params:</header>
+          <v-select
+            v-model="formData.type"
+            :items="['', 'account_payable', 'account_receivable']"
+            label="Type"
+          />
+          <v-text-field v-model="formData.status" label="Status" />
+          <v-select
+            v-model="formData.currency"
+            :items="['', 'MXN', 'BRL']"
+            label="Currency"
+          />
+          <v-text-field v-model="formData.from" label="From" />
+          <v-text-field v-model="formData.to" label="To" />
+          <v-text-field v-model="formData.pageSize" label="PageSize" />
+          <v-text-field v-model="formData.pageBefore" label="PageBefore" />
+          <v-text-field v-model="formData.pageAfter" label="PageAfter" />
           <v-btn
             depressed
             class="mb-7"
             color="primary"
-            :disabled="!validForm || loading"
             @click.prevent="makeApiCall()"
           >
             Make api call
@@ -50,11 +65,19 @@ import ErrorSheet from '@/components/ErrorSheet.vue'
     }),
   },
 })
-export default class FetchTradeDetailsClass extends Vue {
-  validForm: boolean = false
-  tradeId = ''
+export default class FetchSettlementsClass extends Vue {
+  // data
+  formData = {
+    type: '',
+    status: '',
+    currency: '',
+    from: '',
+    to: '',
+    pageSize: '',
+    pageBefore: '',
+    pageAfter: '',
+  }
 
-  required = [(v: string) => !!v || 'Field is required']
   error = {}
   loading = false
   showError = false
@@ -72,7 +95,16 @@ export default class FetchTradeDetailsClass extends Vue {
   async makeApiCall() {
     this.loading = true
     try {
-      await this.$tradesApi.getTrade(this.tradeId)
+      await this.$tradesApi.getSettlements(
+        this.formData.type,
+        this.formData.status,
+        this.formData.currency,
+        this.formData.from,
+        this.formData.to,
+        this.formData.pageBefore,
+        this.formData.pageAfter,
+        this.formData.pageSize
+      )
     } catch (error) {
       this.error = error
       this.showError = true
