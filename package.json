@@ -29,7 +29,7 @@
     "@nuxtjs/vuetify": "1.12.2",
     "@types/card-validator": "7.0.1",
     "@types/vue-the-mask": "0.11.1",
-    "@wagmi/core": "^0.8.19-cjs",
+    "@wagmi/core": "^0.10.17",
     "axios": "0.30.0",
     "card-validator": "8.1.1",
     "cross-env": "7.0.3",
