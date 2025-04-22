@@ -1245,10 +1245,10 @@ side-channel@^1.0.4:
     get-intrinsic "^1.0.2"
     object-inspect "^1.9.0"
 
-sns-validator@^0.3.4:
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/sns-validator/-/sns-validator-0.3.4.tgz#a858be7c0bcdf0d68d6d992a521026e2c9bcf947"
-  integrity sha512-v2pDbfPW4qeUKssV9GbgbDf7XC3b9CG+0JTSATGYWKAo/2F7d0PBQJnSY5fpdryJyoquBkER647+7f/d+HR46A==
+sns-validator@^0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/sns-validator/-/sns-validator-0.3.5.tgz#4f6283734e65e493f0f32265c225c4dce87d53e3"
+  integrity sha512-lapYNmezLsltnt2fcQyhmYnC41mYZ7EjU7f2oR/hrhpbD/LemryclRpApwxO84gOyDIQ7MWe/h4HvkdunFzSKg==
 
 sshpk@^1.7.0:
   version "1.16.1"
