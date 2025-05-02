@@ -12637,10 +12637,10 @@ vue-jest@4.0.0-beta.2:
     source-map "^0.5.6"
     ts-jest "^23.10.5"
 
-vue-json-pretty@1.8.2:
-  version "1.8.2"
-  resolved "https://registry.yarnpkg.com/vue-json-pretty/-/vue-json-pretty-1.8.2.tgz#b85aa90faae261a54844412d978ce212d5c3437e"
-  integrity sha512-8DbgvyXpBrhDdBzz8RTe+POZ+HI6nSa33DqsPMWhMkv0u0ATklgxErUM3XRRvTzOQ/02Sh1LNWJ/rkqTow2rbA==
+vue-json-pretty@1.9.5:
+  version "1.9.5"
+  resolved "https://registry.yarnpkg.com/vue-json-pretty/-/vue-json-pretty-1.9.5.tgz#b59861710e352ee50dc8fafde1090382fa655111"
+  integrity sha512-fwbiH/ky/raX1D4MXRZZLFeKm157e9AkumMD7Y+djdLU1Sb0Tp5q2iOPvCnkWNzRpUfxx/zUjONUG+MIWsqx/w==
 
 vue-loader@^15.9.7:
   version "15.9.8"
