@@ -5,6 +5,10 @@
   "author": "Circle",
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": ">=22.1.0",
+    "npm": ">=10.2.4"
+  },
   "scripts": {
     "dev": "cross-env NODE_ENV=development nuxt",
     "build": "nuxt build",
