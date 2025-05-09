@@ -2501,10 +2501,10 @@
   dependencies:
     browserslist "*"
 
-"@types/card-validator@7.0.1":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@types/card-validator/-/card-validator-7.0.1.tgz#8fd8647b8d6fe77d7f32e7a7215f711a6ecb3b4d"
-  integrity sha512-Y1T6I2Zf0p3AxrXMYPcYb+5GU/gaOBbhI6FTHr+qanaisRKh1+zkNc3D4bE2JrWIKgxd6XiSxAP3exqSlSVgxw==
+"@types/card-validator@7.0.5":
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/@types/card-validator/-/card-validator-7.0.5.tgz#91110a1dece552a4f6a9081dc456e76341e4fa9f"
+  integrity sha512-qSnWM89Db6Y3AaV5x4lSYkk+yQ4jyUqS2Cxlozts7FvpWWcJDMTPzmu16kwZL1hU6cavDGbPcA4htWdfUIZy3w==
   dependencies:
     card-validator "*"
 
