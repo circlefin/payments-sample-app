@@ -20,6 +20,9 @@
         <br /><br />
         <p>Api endpoints for FX trading</p>
         <p>
+          <a href="/debug/trades/flow">Create trade flow</a>
+        </p>
+        <p>
           <v-chip small color="primary warning">POST</v-chip>
           <a href="/debug/trades/quote">Create quote</a>
         </p>
