@@ -5,7 +5,6 @@
         <v-card :loading="loading" class="mx-auto" outlined>
           <v-list-item three-line>
             <v-list-item-content>
-              <Environment />
               <v-list-item-title class="headline mb-1">
                 Create Trade Flow
               </v-list-item-title>
@@ -89,13 +88,11 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mapGetters } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
-import RequestInfo from '@/components/RequestInfo.vue'
 import ErrorSheet from '@/components/ErrorSheet.vue'
 import TradeStatus from '@/components/TradeStatus.vue'
 
 @Component({
   components: {
-    RequestInfo,
     ErrorSheet,
     TradeStatus,
   },
@@ -104,7 +101,6 @@ import TradeStatus from '@/components/TradeStatus.vue'
       payload: 'getRequestPayload',
       response: 'getRequestResponse',
       requestUrl: 'getRequestUrl',
-      isMarketplace: 'isMarketplace',
     }),
   },
 })

@@ -30,20 +30,13 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
 
 interface Amount {
   currency: string
   amount: number
 }
 
-@Component({
-  computed: {
-    ...mapGetters({
-      isMarketplace: 'isMarketplace',
-    }),
-  },
-})
+@Component({})
 export default class TradeStatus extends Vue {
   @Prop({ type: String, default: '' })
   quoteId!: string
