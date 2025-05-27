@@ -105,7 +105,13 @@ import TradeStatus from '@/components/TradeStatus.vue'
   },
 })
 export default class CreateTradeFlowClass extends Vue {
-  quoteResponse = {}
+  quoteResponse = {
+    id: '',
+    from: { currency: '', amount: '' },
+    to: { currency: '', amount: '' },
+    rate: '',
+  }
+
   tradeId: string = ''
   validForm: boolean = false
   formData = {
