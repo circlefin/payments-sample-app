@@ -52,12 +52,6 @@
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/trades/settlements/detailsByreference">
-            Get trade settlement details by reference
-          </a>
-        </p>
-        <p>
-          <v-chip small color="primary">GET</v-chip>
           <a href="/debug/trades/settlements/instructions">
             Get trade settlement instructions
           </a>

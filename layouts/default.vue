@@ -645,10 +645,6 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/trades/settlements/details',
     },
     {
-      title: 'GET /trades/settlements/reference/{ref}',
-      to: '/debug/trades/settlements/detailsByReference',
-    },
-    {
       title: 'GET /trades/settlements/instructions',
       to: '/debug/trades/settlements/instructions',
     },

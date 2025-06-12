@@ -11,7 +11,8 @@
     </p>
     <p>
       <b>Trade id:</b> {{ tradeId }} <br />
-      <b>Trade status:</b> {{ tradeStatus }}
+      <b>Trade status:</b> {{ tradeStatus }}<br />
+      <b>Instant payment:</b> {{ fulfill }}
     </p>
     <div v-if="polling" class="text-center">
       <v-progress-circular indeterminate color="primary"></v-progress-circular>
@@ -52,6 +53,9 @@ export default class TradeStatus extends Vue {
 
   @Prop({ type: Number, default: {} })
   rate!: number
+
+  @Prop({ type: Boolean, default: '' })
+  fulfill!: boolean
 
   tradeStatus: string = ''
   stopPollingStatuses = ['confirmed', 'pending_settlement', 'failed']
