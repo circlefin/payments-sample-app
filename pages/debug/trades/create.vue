@@ -9,6 +9,7 @@
             hint="ID of FX quote to trade on"
             label="Quote ID"
           />
+          <v-checkbox v-model="fulfill" label="Fulfill" />
           <v-btn
             depressed
             class="mb-7"
@@ -64,6 +65,8 @@ export default class CreateTradeClass extends Vue {
     quoteId: '',
   }
 
+  fulfill: boolean = true
+
   required = (v: string) => !!v || 'Field is required'
   error = {}
   loading = false
@@ -80,6 +83,7 @@ export default class CreateTradeClass extends Vue {
     const payload: CreateTradePayload = {
       idempotencyKey: uuidv4(),
       quoteId: this.formData.quoteId,
+      fulfill: this.fulfill,
     }
 
     try {

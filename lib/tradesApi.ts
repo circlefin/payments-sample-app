@@ -18,6 +18,7 @@ export interface CreateQuotePayload {
 export interface CreateTradePayload {
   idempotencyKey: string
   quoteId: string
+  fullfill: boolean
 }
 
 const instance = axios.create({

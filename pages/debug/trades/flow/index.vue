@@ -33,6 +33,7 @@
                 :rules="[required]"
                 label="To currency"
               />
+              <v-checkbox v-model="fulfill" label="Fulfill" />
               <v-btn
                 class="mt-4"
                 depressed
@@ -51,6 +52,7 @@
               :from="quoteResponse.from"
               :to="quoteResponse.to"
               :rate="quoteResponse.rate"
+              :fulfill="fulfill"
               @makeNewTrade="onNewTrade"
               @error="onPollingError"
             />
@@ -112,6 +114,8 @@ export default class CreateTradeFlowClass extends Vue {
     rate: '',
   }
 
+  fulfill: boolean = true
+
   tradeId: string = ''
   validForm: boolean = false
   formData = {
@@ -166,6 +170,7 @@ export default class CreateTradeFlowClass extends Vue {
       const { id: tradeId } = await this.$tradesApi.createTrade({
         idempotencyKey: uuidv4(),
         quoteId: this.quoteResponse.id,
+        fulfill: this.fulfill,
       })
       this.tradeId = tradeId
       this.showTradeStatus = true
