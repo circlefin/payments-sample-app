@@ -38,6 +38,10 @@
           <v-chip small color="primary">GET</v-chip>
           <a href="/debug/cps/details"> Get CPS Trade by ID</a>
         </p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/cps/signature">Register CPS signature</a>
+        </p>
       </v-card>
     </v-flex>
   </v-layout>

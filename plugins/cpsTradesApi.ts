@@ -7,6 +7,7 @@ declare module 'vue/types/vue' {
       createTrade: any
       getTrades: any
       getTrade: any
+      registerSignature: any
       getInstance: any
     }
   }

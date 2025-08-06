@@ -693,6 +693,10 @@ export default class DefaultLayoutsClass extends Vue {
       title: 'GET /cps/trades/{id}',
       to: '/debug/cps/details',
     },
+    {
+      title: 'POST /cps/signatures',
+      to: '/debug/cps/signature',
+    },
   ]
 
   miniVariant = false

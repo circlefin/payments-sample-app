@@ -19,13 +19,37 @@ export interface CreateCpsTradePayload {
   quoteId: string
 }
 
+export interface Consideration {
+  quoteId: string
+  base: string
+  quote: string
+  quoteAmount: number
+  baseAmount: number
+  maturity: number
+}
+
+export interface PiFXTraderDetails {
+  recipient: string
+  deadline: number
+  nonce: number
+  consideration: Consideration
+}
+
+export interface CreatePiFXSignaturePayload {
+  tradeId: string
+  type: string
+  address: string
+  details: PiFXTraderDetails
+  signature: string
+}
+
 const instance = axios.create({
   baseURL: getAPIHostname(),
 })
 
 const CPS_TRADES_PATH = '/v1/exchange/cps/trades'
-
 const CPS_QUOTES_PATH = '/v1/exchange/cps/quotes'
+const CPS_SIGNATURES_PATH = '/v1/exchange/cps/signatures'
 
 /**
  * Global error handler:
@@ -90,10 +114,18 @@ function getTrade(tradeId: string) {
   return instance.get(url)
 }
 
+/**
+ * Register CPS Signature
+ */
+function registerSignature(payload: CreatePiFXSignaturePayload) {
+  return instance.post(CPS_SIGNATURES_PATH, payload)
+}
+
 export default {
   getInstance,
   createQuote,
   createTrade,
   getTrades,
   getTrade,
+  registerSignature,
 }
