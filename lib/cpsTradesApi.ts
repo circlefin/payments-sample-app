@@ -17,7 +17,6 @@ export interface CreateCpsQuotePayload {
 export interface CreateCpsTradePayload {
   idempotencyKey: string
   quoteId: string
-  fulfill: boolean
 }
 
 const instance = axios.create({

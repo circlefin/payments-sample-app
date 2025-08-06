@@ -18,25 +18,25 @@
         <h2 class="title">CPS Trade API endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
-        <p>Api endpoints for CPS trading</p>
+        <p>API endpoints for CPS trading</p>
         <p>
-          <a href="/debug/cps/flow">Create CPS trade flow</a>
+          <a href="/debug/cps/flow">Create CPS Trade Flow</a>
         </p>
         <p>
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/cps/quote">Create CPS quote</a>
+          <a href="/debug/cps/quote">Create CPS Quote</a>
         </p>
         <p>
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/cps/create">Create CPS trade</a>
+          <a href="/debug/cps/create">Create CPS Trade</a>
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/cps/fetch">Get all CPS trades</a>
+          <a href="/debug/cps/fetch">Get all CPS Trades</a>
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/cps/details"> Get CPS trade details by id </a>
+          <a href="/debug/cps/details"> Get CPS Trade by ID</a>
         </p>
       </v-card>
     </v-flex>
