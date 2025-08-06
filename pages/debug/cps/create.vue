@@ -80,7 +80,6 @@ export default class CreateCpsTradeClass extends Vue {
     const payload: CreateCpsTradePayload = {
       idempotencyKey: uuidv4(),
       quoteId: this.formData.quoteId,
-      fulfill: true,
     }
 
     try {
