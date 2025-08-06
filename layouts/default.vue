@@ -214,6 +214,32 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
+
+        <v-list-group>
+          <template #activator>
+            <v-list-item-title>CPS Trade API</v-list-item-title>
+          </template>
+
+          <v-list-item to="/debug/cps" router exact>
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2">
+                Overview
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            v-for="(item, i) in cpsTradesLinks"
+            :key="`cpsTradesLinks-${i}`"
+            :to="item.to"
+            router
+            exact
+          >
+            <v-list-item-content>
+              <v-list-item-title class="list-items pl-2" v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar clipped-left fixed app dark color="primary" dense>
@@ -647,6 +673,25 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /trades/settlements/instructions',
       to: '/debug/trades/settlements/instructions',
+    },
+  ]
+
+  cpsTradesLinks = [
+    {
+      title: 'POST /cps/quotes',
+      to: '/debug/cps/quote',
+    },
+    {
+      title: 'POST /cps/trades',
+      to: '/debug/cps/create',
+    },
+    {
+      title: 'GET /cps/trades',
+      to: '/debug/cps/fetch',
+    },
+    {
+      title: 'GET /cps/trades/{id}',
+      to: '/debug/cps/details',
     },
   ]
 

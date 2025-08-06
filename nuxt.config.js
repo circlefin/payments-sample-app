@@ -52,6 +52,8 @@ export default {
     '~/plugins/walletsApi',
     '~/plugins/paymentIntentsApi',
     '~/plugins/mocksApi',
+    '~/plugins/tradesApi',
+    '~/plugins/cpsTradesApi',
     '~/plugins/businessAccount/addressesApi',
     '~/plugins/businessAccount/balancesApi',
     '~/plugins/businessAccount/bankAccountsApi',
