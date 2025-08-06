@@ -91,8 +91,6 @@ function getTrade(tradeId: string) {
   return instance.get(url)
 }
 
-
-
 const nullIfEmpty = (prop: string | undefined) => {
   if (prop === '') {
     return undefined
