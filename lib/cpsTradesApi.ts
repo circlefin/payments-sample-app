@@ -90,13 +90,6 @@ function getTrade(tradeId: string) {
   return instance.get(url)
 }
 
-const nullIfEmpty = (prop: string | undefined) => {
-  if (prop === '') {
-    return undefined
-  }
-  return prop
-}
-
 export default {
   getInstance,
   createQuote,
