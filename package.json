@@ -63,6 +63,7 @@
     "minimatch/brace-expansion": "1.1.12"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
     "@nuxt/types": "^2.15.8",
     "@nuxt/typescript-build": "2.1.0",
     "@nuxtjs/eslint-config-typescript": "8.0.0",
