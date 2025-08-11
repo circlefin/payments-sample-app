@@ -157,14 +157,8 @@ export default class CreatePayoutClass extends Vue {
   destinationType = ['address_book']
   blockchainDestinationTypes = new Set(['address_book'])
   identityTypes = ['individual', 'business']
-  // TODO: we can probably implement an internal endpoint to get the supported currency pairs
   supportedCryptoPayoutCurrencyPairs = new Map([
-    ['USD', ['USD', 'BTC', 'ETH', 'MATIC']],
-    ['BTC', ['USD', 'BTC']],
-    ['ETH', ['USD', 'ETH']],
-    ['MATIC', ['USD', 'MATIC']],
-    ['FLOW', ['FLOW']],
-    ['MANA', ['MANA']],
+    ['USD', ['USD']],
     ['EUR', ['EUR']],
   ])
 
