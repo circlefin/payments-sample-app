@@ -20,42 +20,6 @@
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">Example UI implementation</h2>
-
-        <p class="mt-2">
-          Explore the sample applications using your private api key.
-        </p>
-
-        <p class="font-weight-bold mt-6">Make payment UI</p>
-        <p class="font-weight-light">
-          Example form that combines adding card details and making a payment.
-        </p>
-        <p>
-          <v-btn href="/flow/charge" color="primary"> Charge flow </v-btn>
-        </p>
-
-        <p class="font-weight-bold mt-6">Use existing card UI</p>
-        <p class="font-weight-light">
-          Example form to make payment by selecting a previously added card.
-          Card information is only saved in your browser using local storage.
-        </p>
-        <p>
-          <v-btn href="/flow/charge/existing-card" color="primary">
-            Select card flow
-          </v-btn>
-        </p>
-
-        <p class="font-weight-bold mt-6">Add card UI</p>
-        <p class="font-weight-light">Simple form to enter card details.</p>
-
-        <p>
-          <v-btn href="/flow/card/create" color="primary">
-            Add card flow
-          </v-btn>
-        </p>
-      </v-card>
-
-      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
         <h2 class="title">API viewer</h2>
 
         <p class="mt-2">

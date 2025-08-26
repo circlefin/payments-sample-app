@@ -45,14 +45,11 @@ export default {
    */
   plugins: [
     '~/plugins/paymentsApi',
-    '~/plugins/cardsApi',
     '~/plugins/marketplaceApi',
-    '~/plugins/chargebacksApi',
     '~/plugins/settlementsApi',
     '~/plugins/walletsApi',
     '~/plugins/paymentIntentsApi',
     '~/plugins/mocksApi',
-    '~/plugins/tradesApi',
     '~/plugins/cpsTradesApi',
     '~/plugins/businessAccount/addressesApi',
     '~/plugins/businessAccount/balancesApi',
@@ -66,7 +63,6 @@ export default {
     '~/plugins/cryptoPaymentsApi',
     '~/plugins/beta/addressBookApi',
     '~/plugins/payoutsApi',
-    '~/plugins/checkoutSessionsApi',
     '~/plugins/tradesApi',
   ],
   /*

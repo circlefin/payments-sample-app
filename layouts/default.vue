@@ -17,24 +17,6 @@
 
         <v-list-group>
           <template #activator>
-            <v-list-item-title>Sample flows</v-list-item-title>
-          </template>
-
-          <v-list-item
-            v-for="(item, i) in flowLinks"
-            :key="`flowlink-${i}`"
-            :to="item.to"
-            router
-            exact
-          >
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2" v-text="item.title" />
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-
-        <v-list-group>
-          <template #activator>
             <v-list-item-title>Core Functionality</v-list-item-title>
           </template>
 
@@ -165,32 +147,6 @@
 
         <v-list-group>
           <template #activator>
-            <v-list-item-title>Checkout Sessions APIs</v-list-item-title>
-          </template>
-
-          <v-list-item to="/debug/checkoutSessions" router exact>
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2">
-                Overview
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item
-            v-for="(item, i) in checkoutSessionsLinks"
-            :key="`checkoutSessionsLinks-${i}`"
-            :to="item.to"
-            router
-            exact
-          >
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2" v-text="item.title" />
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-
-        <v-list-group>
-          <template #activator>
             <v-list-item-title>Trade API</v-list-item-title>
           </template>
 
@@ -287,21 +243,6 @@ export default class DefaultLayoutsClass extends Vue {
   isStaging: boolean = getIsStaging()
 
   isLocalHost: boolean = getIsLocalHost()
-
-  flowLinks = [
-    {
-      title: 'Charge a card',
-      to: '/flow/charge',
-    },
-    {
-      title: 'Use an existing card',
-      to: '/flow/charge/existing-card',
-    },
-    {
-      title: 'Add a new card',
-      to: '/flow/card/create',
-    },
-  ]
 
   coreLinks = [
     {
@@ -432,52 +373,12 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/payments/details',
     },
     {
-      title: 'POST /payments/{id}/capture',
-      to: '/debug/payments/capture',
-    },
-    {
-      title: 'POST /payments/{id}/cancel',
-      to: '/debug/payments/cancel',
-    },
-    {
-      title: 'POST /payments/{id}/refund',
-      to: '/debug/payments/refund',
-    },
-    {
-      title: 'POST /cards',
-      to: '/debug/cards/create',
-    },
-    {
-      title: 'GET /cards',
-      to: '/debug/cards/fetch',
-    },
-    {
-      title: 'GET /cards/{id}',
-      to: '/debug/cards/details',
-    },
-    {
-      title: 'PUT /cards/{id}',
-      to: '/debug/cards/update',
-    },
-    {
       title: 'GET /settlements',
       to: '/debug/settlements/fetch',
     },
     {
       title: 'GET /settlements/{id}',
       to: '/debug/settlements/details',
-    },
-    {
-      title: 'GET /chargebacks',
-      to: '/debug/chargebacks/fetch',
-    },
-    {
-      title: 'GET /chargebacks/{id}',
-      to: '/debug/chargebacks/details',
-    },
-    {
-      title: 'POST /mocks/cards/chargebacks',
-      to: '/debug/chargebacks/mocks/create',
     },
     {
       title: 'GET /balances',
@@ -511,28 +412,8 @@ export default class DefaultLayoutsClass extends Vue {
       to: '/debug/marketplace/payments/details',
     },
     {
-      title: 'POST /marketplace/payments/{id}/capture',
-      to: '/debug/marketplace/payments/capture',
-    },
-    {
-      title: 'POST /marketplace/payments/{id}/cancel',
-      to: '/debug/marketplace/payments/cancel',
-    },
-    {
-      title: 'POST /marketplace/payments/{id}/refund',
-      to: '/debug/marketplace/payments/refund',
-    },
-    {
-      title: 'POST /cards',
-      to: '/debug/cards/create',
-    },
-    {
-      title: 'GET /cards',
-      to: '/debug/cards/fetch',
-    },
-    {
-      title: 'GET /cards/{id}',
-      to: '/debug/cards/details',
+      title: 'POST /banks/wires',
+      to: '/debug/wires/create',
     },
     {
       title: 'POST /banks/wires',
@@ -553,15 +434,7 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'GET /settlements/{id}',
       to: '/debug/settlements/details',
-    },
-    {
-      title: 'GET /chargebacks',
-      to: '/debug/chargebacks/fetch',
-    },
-    {
-      title: 'GET /chargebacks/{id}',
-      to: '/debug/chargebacks/details',
-    },
+    }
   ]
 
   payoutsLinks = [
@@ -619,25 +492,6 @@ export default class DefaultLayoutsClass extends Vue {
     {
       title: 'POST /paymentIntents/{id}/refund',
       to: '/debug/paymentIntents/createCryptoRefund',
-    },
-  ]
-
-  checkoutSessionsLinks = [
-    {
-      title: 'POST /checkoutSessions',
-      to: '/debug/checkoutSessions/create',
-    },
-    {
-      title: 'GET /checkoutSessions',
-      to: '/debug/checkoutSessions/fetch',
-    },
-    {
-      title: 'GET /checkoutSessions/{id}',
-      to: '/debug/checkoutSessions/details',
-    },
-    {
-      title: 'POST /checkoutSessions/{id}/extend',
-      to: '/debug/checkoutSessions/extend',
     },
   ]
 
@@ -703,14 +557,6 @@ export default class DefaultLayoutsClass extends Vue {
   right = true
   showRightDrawer = false
   showDrawer = false
-
-  get title() {
-    const navItems = this.flowLinks.concat(this.paymentsLinks)
-    const currentPage = navItems.find((item) => {
-      return item.to === this.$route.path
-    })
-    return currentPage && currentPage.title
-  }
 
   get apiKey() {
     return this.$store.getters.getApiKey
