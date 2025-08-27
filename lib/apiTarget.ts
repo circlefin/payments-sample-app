@@ -1,57 +1,37 @@
 /**
- * Determine the API endpoint from the current hostname or runtime config.
- * Updated for Nuxt 3 compatibility.
+ * Silly hacky way to determine the API endpoint from the current hostname.  Nuxt makes it
+ * surprisingly difficult to add serverside runtime environment variables (to then serve to
+ * the client via a configuration endpoint), so we're stuck using this.  We can get away with
+ * this because we have very consistent naming between our environments.
  */
 
 function getAPIHostname() {
-  // Try to get the runtime config first (works in both server and client context in Nuxt 3)
-  try {
-    const config = useRuntimeConfig()
-    if (config?.public?.baseUrl) {
-      return config.public.baseUrl
-    }
-  } catch (error) {
-    // useRuntimeConfig might not be available in some contexts
+  // If app is running on localhost (ie, in  dev) the URL is provided via an environment variable (.env file), use that.
+  // Otherwise, base it off the window location.
+  if (window.location && window.location.hostname === 'localhost') {
+    return process.env.baseUrl
   }
-
-  // If app is running on localhost (ie, in dev) and we have window access
-  if (
-    typeof window !== 'undefined' &&
-    window.location &&
-    window.location.hostname === 'localhost'
-  ) {
-    // Fallback to environment variable or default
-    return process.env.BASE_URL || 'https://api-sandbox.circle.com'
-  }
-
-  if (typeof window !== 'undefined') {
-    return window.location.origin.replace('sample', 'api')
-  }
-
-  // Fallback for SSR context
-  return 'https://api-sandbox.circle.com'
+  return window.location.origin.replace('sample', 'api')
 }
 
 function getIsInternal() {
   const hostname = getAPIHostname()
-  return (
-    hostname?.includes('staging') || hostname?.includes('smokebox') || false
-  )
+  return hostname!.includes('staging') || hostname!.includes('smokebox')
 }
 
 function getLive() {
   const hostname = getAPIHostname()
-  return !(hostname?.includes('sandbox') || hostname?.includes('smokebox'))
+  return !(hostname!.includes('sandbox') || hostname!.includes('smokebox'))
 }
 
 function getIsStaging() {
   const hostname = getAPIHostname()
-  return hostname?.includes('staging') || false
+  return hostname!.includes('staging')
 }
 
 function getIsLocalHost(): boolean {
   const hostname = getAPIHostname()
-  return hostname?.includes(':3011') || false
+  return hostname!.includes(':3011')
 }
 
 export { getAPIHostname, getIsInternal, getLive, getIsStaging, getIsLocalHost }
