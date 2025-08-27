@@ -406,23 +406,23 @@ const marketplaceLinks = [
 const payoutsLinks = [
   {
     title: 'POST /addressBook/recipients',
-    to: '/debug/beta/addressBook/create',
+    to: '/debug/addressBook/create',
   },
   {
     title: 'GET /addressBook/recipients',
-    to: '/debug/beta/addressBook/fetch',
+    to: '/debug/addressBook/fetch',
   },
   {
     title: 'GET /addressBook/recipients/{id}',
-    to: '/debug/beta/addressBook/details',
+    to: '/debug/addressBook/details',
   },
   {
     title: 'PATCH /addressBook/recipients/{id}',
-    to: '/debug/beta/addressBook/patch',
+    to: '/debug/addressBook/patch',
   },
   {
     title: 'DELETE /addressBook/recipients/{id}',
-    to: '/debug/beta/addressBook/delete',
+    to: '/debug/addressBook/delete',
   },
   {
     title: 'POST /payouts',
