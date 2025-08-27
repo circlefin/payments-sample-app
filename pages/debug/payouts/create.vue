@@ -143,12 +143,7 @@ const destinationType = ['address_book']
 const blockchainDestinationTypes = new Set(['address_book'])
 const identityTypes = ['individual', 'business']
 const supportedCryptoPayoutCurrencyPairs = new Map([
-  ['USD', ['USD', 'BTC', 'ETH', 'MATIC']],
-  ['BTC', ['USD', 'BTC']],
-  ['ETH', ['USD', 'ETH']],
-  ['MATIC', ['USD', 'MATIC']],
-  ['FLOW', ['FLOW']],
-  ['MANA', ['MANA']],
+  ['USD', ['USD']],
   ['EUR', ['EUR']],
 ])
 
