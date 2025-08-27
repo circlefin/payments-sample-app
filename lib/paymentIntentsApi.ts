@@ -67,7 +67,7 @@ instance.interceptors.response.use(
       response = error.toJSON()
     }
     return Promise.reject(response)
-  }
+  },
 )
 
 const nullIfEmpty = (prop: string | undefined) => {
@@ -87,7 +87,7 @@ function getInstance() {
  * @param {*} payload
  */
 function createTransientPaymentIntent(
-  payload: CreateTransientPaymentIntentPayload
+  payload: CreateTransientPaymentIntentPayload,
 ) {
   const url = '/v1/paymentIntents'
   return instance.post(url, payload)
@@ -98,7 +98,7 @@ function createTransientPaymentIntent(
  * @param {*} payload
  */
 function createContinuousPaymentIntent(
-  payload: CreateContinuousPaymentIntentPayload
+  payload: CreateContinuousPaymentIntentPayload,
 ) {
   const url = '/v1/paymentIntents'
   return instance.post(url, payload)
@@ -129,7 +129,7 @@ function getPaymentIntentById(paymentIntentId: string) {
  */
 function createCryptoRefund(
   paymentIntentId: string,
-  payload: CreateCryptoRefundPayload
+  payload: CreateCryptoRefundPayload,
 ) {
   const url = `/v1/paymentIntents/${paymentIntentId}/refund`
   return instance.post(url, payload)
@@ -152,7 +152,7 @@ function getPaymentIntents(
   to: string,
   pageBefore: string,
   pageAfter: string,
-  pageSize: string
+  pageSize: string,
 ) {
   const queryParams = {
     status: nullIfEmpty(status),

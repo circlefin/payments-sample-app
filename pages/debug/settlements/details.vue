@@ -1,21 +1,11 @@
 <template>
-  <v-layout>
+  <v-container>
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <v-text-field
-            v-if="isMarketplace"
-            v-model="formData.merchantWalletId"
-            label="Merchant Wallet Id"
-          />
-          <v-text-field
-            v-if="isMarketplace"
-            v-model="formData.walletId"
-            label="Wallet Id"
-          />
           <v-text-field v-model="formData.settlementId" label="Settlement Id" />
           <v-btn
-            depressed
+            variant="flat"
             class="mb-7"
             color="primary"
             :loading="loading"
@@ -38,70 +28,40 @@
       :show-error="showError"
       @onChange="onErrorSheetClosed"
     />
-  </v-layout>
+  </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
-import MarketplaceInfoFields from '@/components/MarketplaceInfoFields.vue'
+<script setup lang="ts">
+const store = useMainStore()
+const { $settlementsApi } = useNuxtApp()
 
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
-    MarketplaceInfoFields,
-  },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-    }),
-  },
+const formData = reactive({
+  settlementId: '',
 })
-export default class FetchSettlementDetailsClass extends Vue {
-  // data
-  formData = {
-    settlementId: '',
-  }
 
-  marketplaceInfo = {
-    walletId: '',
-    merchantWalletId: '',
-  }
+const required = [(v: string) => !!v || 'Field is required']
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
 
-  required = [(v: string) => !!v || 'Field is required']
-  error = {}
-  loading = false
-  showError = false
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
 
-  // methods
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
-  }
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
 
-  get isMarketplace() {
-    return this.$store.getters.isMarketplace
-  }
-
-  async makeApiCall() {
-    this.loading = true
-    try {
-      await this.$settlementsApi.getSettlementById(
-        this.formData.settlementId,
-        this.marketplaceInfo.merchantWalletId,
-        this.marketplaceInfo.walletId
-      )
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
-    }
+const makeApiCall = async () => {
+  loading.value = true
+  try {
+    await $settlementsApi.getSettlementById(formData.settlementId, '', '')
+  } catch (err) {
+    error.value = err
+    showError.value = true
+  } finally {
+    loading.value = false
   }
 }
 </script>

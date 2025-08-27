@@ -17,89 +17,93 @@
     <div v-if="polling" class="text-center">
       <v-progress-circular indeterminate color="primary"></v-progress-circular>
       <br /><br />
-      <v-btn depressed small @click.prevent="stopPolling()">
+      <v-btn variant="flat" size="small" @click.prevent="stopPolling()">
         Stop polling
       </v-btn>
     </div>
     <div v-else class="text-center mt-8">
-      <v-btn depressed small @click.prevent="newTrade()">
+      <v-btn variant="flat" size="small" @click.prevent="newTrade()">
         Make a new trade
       </v-btn>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
-
+<script setup lang="ts">
 interface Amount {
   currency: string
   amount: number
 }
 
-@Component({})
-export default class TradeStatus extends Vue {
-  @Prop({ type: String, default: '' })
-  quoteId!: string
+interface Props {
+  quoteId?: string
+  tradeId?: string
+  from?: Amount
+  to?: Amount
+  rate?: number
+  fulfill?: boolean
+}
 
-  @Prop({ type: String, default: '' })
-  tradeId!: string
+const props = withDefaults(defineProps<Props>(), {
+  quoteId: '',
+  tradeId: '',
+  from: () => ({ currency: '', amount: 0 }),
+  to: () => ({ currency: '', amount: 0 }),
+  rate: 0,
+  fulfill: false,
+})
 
-  @Prop({ type: Object, default: {} })
-  from!: Amount
+const emit = defineEmits<{
+  finished: []
+  makeNewTrade: []
+  error: [error: any]
+}>()
 
-  @Prop({ type: Object, default: {} })
-  to!: Amount
+const { $tradesApi } = useNuxtApp()
 
-  @Prop({ type: Number, default: {} })
-  rate!: number
+const tradeStatus = ref('')
+const stopPollingStatuses = ['confirmed', 'pending_settlement', 'failed']
+const polling = ref(false)
+const pollingId = ref(0)
 
-  @Prop({ type: Boolean, default: '' })
-  fulfill!: boolean
+const stopPolling = () => {
+  clearInterval(pollingId.value)
+  polling.value = false
+  emit('finished')
+}
 
-  tradeStatus: string = ''
-  stopPollingStatuses = ['confirmed', 'pending_settlement', 'failed']
-  polling: boolean = false
-  pollingId: number = 0
+const pollForTrade = (id: string) => {
+  polling.value = true
+  pollingId.value = window.setInterval(() => {
+    getTrade(id)
+  }, 3000)
+}
 
-  stopPolling() {
-    clearInterval(this.pollingId)
-    this.polling = false
-    this.$emit('finished')
-  }
+const newTrade = () => {
+  emit('makeNewTrade')
+}
 
-  pollForTrade(id: string) {
-    this.polling = true
-    this.pollingId = window.setInterval(() => {
-      this.getTrade(id)
-    }, 3000)
-  }
-
-  newTrade() {
-    this.$emit('makeNewTrade')
-  }
-
-  async getTrade(tradeId: string) {
-    try {
-      const { status } = await this.$tradesApi.getTrade(tradeId)
-      this.tradeStatus = status
-      if (this.stopPollingStatuses.includes(status)) {
-        this.stopPolling()
-      }
-    } catch (error) {
-      this.stopPolling()
-      this.$emit('error', error)
+const getTrade = async (tradeId: string) => {
+  try {
+    const response = await $tradesApi.getTrade(tradeId)
+    const { status } = response.data
+    tradeStatus.value = status
+    if (stopPollingStatuses.includes(status)) {
+      stopPolling()
     }
-  }
-
-  mounted() {
-    if (this.tradeId) {
-      this.pollForTrade(this.tradeId)
-    }
-  }
-
-  beforeDestroy() {
-    this.stopPolling()
+  } catch (error) {
+    stopPolling()
+    emit('error', error)
   }
 }
+
+onMounted(() => {
+  if (props.tradeId) {
+    pollForTrade(props.tradeId)
+  }
+})
+
+onBeforeUnmount(() => {
+  stopPolling()
+})
 </script>

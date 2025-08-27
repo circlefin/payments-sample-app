@@ -36,10 +36,6 @@ After you [generate an API key for the sandbox environment](https://developers.c
 
 You are now ready to use the sample app and test some payments flows. In a production environment these payments would settle in the [USDC stablecoin](https://www.circle.com/en/usdc).
 
-## Test Card Numbers
-
-To automatically trigger certain responses from the Circle Payments API, you can use some pre-defined [test card numbers](https://developers.circle.com/docs/test-card-numbers) that exercise specific behaviors.
-
 ## Change API base url
 
 By default the API base url will be set to https://api-sandbox.circle.com.

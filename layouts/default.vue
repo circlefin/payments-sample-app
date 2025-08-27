@@ -2,225 +2,199 @@
   <v-app>
     <v-navigation-drawer
       v-model="showDrawer"
-      :mini-variant="miniVariant"
-      clipped
-      fixed
-      app
+      :rail="miniVariant"
       width="330"
+      temporary
     >
-      <v-list>
-        <v-list-item to="/" router exact>
-          <v-list-item-content>
-            <v-list-item-title> Home </v-list-item-title>
-          </v-list-item-content>
+      <v-list nav>
+        <v-list-item to="/" exact>
+          <template v-slot:prepend>
+            <v-icon>mdi-home</v-icon>
+          </template>
+          <v-list-item-title>Home</v-list-item-title>
         </v-list-item>
 
         <v-list-group>
-          <template #activator>
-            <v-list-item-title>Core Functionality</v-list-item-title>
+          <template v-slot:activator="{ props }">
+            <v-list-item v-bind="props">
+              <v-list-item-title>Core Functionality</v-list-item-title>
+            </v-list-item>
           </template>
 
-          <v-list-item to="/debug/businessAccount" router exact>
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2">
-                Overview
-              </v-list-item-title>
-            </v-list-item-content>
+          <v-list-item to="/debug/businessAccount" exact>
+            <v-list-item-title class="list-items"> Overview </v-list-item-title>
           </v-list-item>
 
           <v-list-item
             v-for="(item, i) in coreLinks"
             :key="`coreLinks-${i}`"
             :to="item.to"
-            router
             exact
           >
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2" v-text="item.title" />
-            </v-list-item-content>
+            <v-list-item-title class="list-items" v-text="item.title" />
           </v-list-item>
         </v-list-group>
 
         <v-list-group v-if="!isMarketplace">
-          <template #activator>
-            <v-list-item-title>Payments APIs</v-list-item-title>
+          <template v-slot:activator="{ props }">
+            <v-list-item v-bind="props">
+              <v-list-item-title>Payments APIs</v-list-item-title>
+            </v-list-item>
           </template>
 
-          <v-list-item to="/debug" router exact>
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2">
-                Overview
-              </v-list-item-title>
-            </v-list-item-content>
+          <v-list-item to="/debug" exact>
+            <v-list-item-title class="list-items"> Overview </v-list-item-title>
           </v-list-item>
 
           <v-list-item
             v-for="(item, i) in paymentsLinks"
             :key="`paymentlink-${i}`"
             :to="item.to"
-            router
             exact
           >
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2" v-text="item.title" />
-            </v-list-item-content>
+            <v-list-item-title class="list-items" v-text="item.title" />
           </v-list-item>
         </v-list-group>
 
         <v-list-group v-if="isMarketplace">
-          <template #activator>
-            <v-list-item-title>Marketplace APIs</v-list-item-title>
+          <template v-slot:activator="{ props }">
+            <v-list-item v-bind="props">
+              <v-list-item-title>Marketplace APIs</v-list-item-title>
+            </v-list-item>
           </template>
 
-          <v-list-item to="/debug" router exact>
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2">
-                Overview
-              </v-list-item-title>
-            </v-list-item-content>
+          <v-list-item to="/debug" exact>
+            <v-list-item-title class="list-items"> Overview </v-list-item-title>
           </v-list-item>
 
           <v-list-item
             v-for="(item, i) in marketplaceLinks"
             :key="`marketplacelink-${i}`"
             :to="item.to"
-            router
             exact
           >
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2" v-text="item.title" />
-            </v-list-item-content>
+            <v-list-item-title class="list-items" v-text="item.title" />
           </v-list-item>
         </v-list-group>
 
         <v-list-group>
-          <template #activator>
-            <v-list-item-title>Payouts APIs</v-list-item-title>
+          <template v-slot:activator="{ props }">
+            <v-list-item v-bind="props">
+              <v-list-item-title>Payouts APIs</v-list-item-title>
+            </v-list-item>
           </template>
 
-          <v-list-item to="/debug/payouts" router exact>
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2">
-                Overview
-              </v-list-item-title>
-            </v-list-item-content>
+          <v-list-item to="/debug/payouts" exact>
+            <v-list-item-title class="list-items"> Overview </v-list-item-title>
           </v-list-item>
 
           <v-list-item
             v-for="(item, i) in payoutsLinks"
             :key="`payoutsLinks-${i}`"
             :to="item.to"
-            router
             exact
           >
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2" v-text="item.title" />
-            </v-list-item-content>
+            <v-list-item-title class="list-items" v-text="item.title" />
           </v-list-item>
         </v-list-group>
 
         <v-list-group v-if="!isMarketplace">
-          <template #activator>
-            <v-list-item-title>Payment Intents APIs</v-list-item-title>
+          <template v-slot:activator="{ props }">
+            <v-list-item v-bind="props">
+              <v-list-item-title>Payment Intents APIs</v-list-item-title>
+            </v-list-item>
           </template>
 
-          <v-list-item to="/debug/paymentIntents" router exact>
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2">
-                Overview
-              </v-list-item-title>
-            </v-list-item-content>
+          <v-list-item to="/debug/paymentIntents" exact>
+            <v-list-item-title class="list-items"> Overview </v-list-item-title>
           </v-list-item>
 
           <v-list-item
             v-for="(item, i) in paymentIntentsLinks"
             :key="`paymentIntentsLinks-${i}`"
             :to="item.to"
-            router
             exact
           >
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2" v-text="item.title" />
-            </v-list-item-content>
+            <v-list-item-title class="list-items" v-text="item.title" />
           </v-list-item>
         </v-list-group>
 
         <v-list-group>
-          <template #activator>
-            <v-list-item-title>Trade API</v-list-item-title>
+          <template v-slot:activator="{ props }">
+            <v-list-item v-bind="props">
+              <v-list-item-title>Trade API</v-list-item-title>
+            </v-list-item>
           </template>
 
-          <v-list-item to="/debug/trades" router exact>
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2">
-                Overview
-              </v-list-item-title>
-            </v-list-item-content>
+          <v-list-item to="/debug/trades" exact>
+            <v-list-item-title class="list-items"> Overview </v-list-item-title>
           </v-list-item>
 
           <v-list-item
             v-for="(item, i) in tradesLinks"
             :key="`tradesLinks-${i}`"
             :to="item.to"
-            router
             exact
           >
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2" v-text="item.title" />
-            </v-list-item-content>
+            <v-list-item-title class="list-items" v-text="item.title" />
           </v-list-item>
         </v-list-group>
 
         <v-list-group>
-          <template #activator>
-            <v-list-item-title>CPS Trade API</v-list-item-title>
+          <template v-slot:activator="{ props }">
+            <v-list-item v-bind="props">
+              <v-list-item-title>CPS Trade API</v-list-item-title>
+            </v-list-item>
           </template>
 
-          <v-list-item to="/debug/cps" router exact>
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2">
-                Overview
-              </v-list-item-title>
-            </v-list-item-content>
+          <v-list-item to="/debug/cps" exact>
+            <v-list-item-title class="list-items"> Overview </v-list-item-title>
           </v-list-item>
 
           <v-list-item
             v-for="(item, i) in cpsTradesLinks"
             :key="`cpsTradesLinks-${i}`"
             :to="item.to"
-            router
             exact
           >
-            <v-list-item-content>
-              <v-list-item-title class="list-items pl-2" v-text="item.title" />
-            </v-list-item-content>
+            <v-list-item-title class="list-items" v-text="item.title" />
           </v-list-item>
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar clipped-left fixed app dark color="primary" dense>
-      <v-app-bar-nav-icon @click.stop="showDrawer = !showDrawer" />
-      <v-toolbar-title v-text="title" />
+    <v-app-bar color="primary" density="compact" elevation="1" app>
+      <v-app-bar-nav-icon
+        @click.stop="showDrawer = !showDrawer"
+        style="color: white !important"
+      >
+        <v-icon color="white">mdi-menu</v-icon>
+      </v-app-bar-nav-icon>
+
       <v-spacer />
-      <v-btn icon @click.stop="showRightDrawer = !showRightDrawer">
-        <v-icon>mdi-cog</v-icon>
+
+      <v-btn
+        @click.stop="showRightDrawer = !showRightDrawer"
+        style="color: white !important"
+        variant="text"
+        icon
+      >
+        <v-icon color="white">mdi-cog</v-icon>
       </v-btn>
     </v-app-bar>
-    <v-content>
+    <v-main>
       <v-container>
-        <nuxt />
+        <NuxtPage />
       </v-container>
-    </v-content>
-    <v-navigation-drawer
-      v-model="showRightDrawer"
-      :right="true"
-      temporary
-      fixed
-    >
-      <v-content class="pa-3 pt-8">
+    </v-main>
+    <v-navigation-drawer v-model="showRightDrawer" location="right" temporary>
+      <div class="pa-3 pt-8">
         <p>Settings</p>
         <v-form class="mt-8">
-          <v-text-field v-model="apiKey" label="Your API key" outlined />
+          <v-text-field
+            v-model="apiKey"
+            label="Your API key"
+            variant="outlined"
+          />
           <p class="subtitle-2 font-weight-light mb-8">
             Do not share or record your API keys in publicly accessible mediums
             such as GitHub, client-side code, etc.
@@ -230,351 +204,344 @@
             label="I am using a Circle Marketplaces API key"
           ></v-switch>
         </v-form>
-      </v-content>
+      </div>
     </v-navigation-drawer>
   </v-app>
 </template>
 
-<script lang="ts">
-import { Vue, Component } from 'nuxt-property-decorator'
+<script setup lang="ts">
 import { getIsStaging, getIsLocalHost } from '@/lib/apiTarget'
-@Component
-export default class DefaultLayoutsClass extends Vue {
-  isStaging: boolean = getIsStaging()
 
-  isLocalHost: boolean = getIsLocalHost()
+const router = useRouter()
+const store = useMainStore()
 
-  coreLinks = [
-    {
-      title: 'GET /businessAccount/balances',
-      to: '/debug/businessAccount/balances/fetch',
-    },
-    {
-      title: 'POST /businessAccount/payouts',
-      to: '/debug/businessAccount/payouts/create',
-    },
-    {
-      title: 'GET /businessAccount/payouts/',
-      to: '/debug/businessAccount/payouts/fetch',
-    },
-    {
-      title: 'GET /businessAccount/payouts/{id}',
-      to: '/debug/businessAccount/payouts/details',
-    },
-    {
-      title: 'POST /businessAccount/banks/wires',
-      to: '/debug/businessAccount/bankAccounts/create',
-    },
-    {
-      title: 'GET /businessAccount/banks/wires',
-      to: '/debug/businessAccount/bankAccounts/fetch',
-    },
-    {
-      title: 'GET /businessAccount/banks/wires/{id}',
-      to: '/debug/businessAccount/bankAccounts/details',
-    },
-    {
-      title: 'GET /businessAccount/banks/wires/{id}/instructions',
-      to: '/debug/businessAccount/bankAccounts/instructions',
-    },
-    {
-      title: 'POST /mocks/payments/wire',
-      to: '/debug/payments/mocks/wire',
-    },
-    {
-      title: 'POST /mocks/payments/pix',
-      to: '/debug/payments/mocks/pix',
-    },
-    {
-      title: 'POST /businessAccount/banks/cbit',
-      to: '/debug/businessAccount/cbitAccounts/create',
-    },
-    {
-      title: 'GET /businessAccount/banks/cbit',
-      to: '/debug/businessAccount/cbitAccounts/fetch',
-    },
-    {
-      title: 'GET /businessAccount/banks/cbit/{id}',
-      to: '/debug/businessAccount/cbitAccounts/details',
-    },
-    {
-      title: 'GET /businessAccount/banks/cbit/{id}/instructions',
-      to: '/debug/businessAccount/cbitAccounts/instructions',
-    },
-    {
-      title: 'POST /businessAccount/banks/xpay',
-      to: '/debug/businessAccount/xpayAccounts/create',
-    },
-    {
-      title: 'GET /businessAccount/banks/xpay',
-      to: '/debug/businessAccount/xpayAccounts/fetch',
-    },
-    {
-      title: 'GET /businessAccount/banks/xpay/{id}',
-      to: '/debug/businessAccount/xpayAccounts/details',
-    },
-    {
-      title: 'GET /businessAccount/banks/xpay/{id}/instructions',
-      to: '/debug/businessAccount/xpayAccounts/instructions',
-    },
-    {
-      title: 'POST /businessAccount/transfers',
-      to: '/debug/businessAccount/transfers/create',
-    },
-    {
-      title: 'GET /businessAccount/transfers',
-      to: '/debug/businessAccount/transfers/fetch',
-    },
-    {
-      title: 'GET /businessAccount/transfers/{id}',
-      to: '/debug/businessAccount/transfers/details',
-    },
-    {
-      title: 'POST /businessAccount/wallets/addresses/deposit',
-      to: '/debug/businessAccount/addresses/deposit/create',
-    },
-    {
-      title: 'GET /businessAccount/wallets/addresses/deposit',
-      to: '/debug/businessAccount/addresses/deposit/fetch',
-    },
-    {
-      title: 'POST /businessAccount/wallets/addresses/recipient',
-      to: '/debug/businessAccount/addresses/recipient/create',
-    },
-    {
-      title: 'GET /businessAccount/wallets/addresses/recipient',
-      to: '/debug/businessAccount/addresses/recipient/fetch',
-    },
-    {
-      title: 'DELETE /businessAccount/wallets/addresses/recipient/{id}',
-      to: '/debug/businessAccount/addresses/recipient/delete',
-    },
-    {
-      title: 'GET /businessAccount/deposits',
-      to: '/debug/businessAccount/deposits/fetch',
-    },
-  ]
+const isStaging = getIsStaging()
+const isLocalHost = getIsLocalHost()
 
-  paymentsLinks = [
-    {
-      title: 'GET /payments',
-      to: '/debug/payments/fetch',
-    },
-    {
-      title: 'POST /payments',
-      to: '/debug/payments/create',
-    },
-    {
-      title: 'POST /payments/crypto',
-      to: '/debug/payments/crypto/create',
-    },
-    {
-      title: 'GET /payments/{id}',
-      to: '/debug/payments/details',
-    },
-    {
-      title: 'GET /settlements',
-      to: '/debug/settlements/fetch',
-    },
-    {
-      title: 'GET /settlements/{id}',
-      to: '/debug/settlements/details',
-    },
-    {
-      title: 'GET /balances',
-      to: '/debug/payments/balances/fetch',
-    },
-    {
-      title: 'POST /paymentTokens',
-      to: '/debug/payments/digitalWallets/paymentTokens',
-    },
-    {
-      title: 'GET /presign',
-      to: '/debug/payments/crypto/presign',
-    },
-  ]
+const coreLinks = [
+  {
+    title: 'GET /businessAccount/balances',
+    to: '/debug/businessAccount/balances/fetch',
+  },
+  {
+    title: 'POST /businessAccount/payouts',
+    to: '/debug/businessAccount/payouts/create',
+  },
+  {
+    title: 'GET /businessAccount/payouts/',
+    to: '/debug/businessAccount/payouts/fetch',
+  },
+  {
+    title: 'GET /businessAccount/payouts/{id}',
+    to: '/debug/businessAccount/payouts/details',
+  },
+  {
+    title: 'POST /businessAccount/banks/wires',
+    to: '/debug/businessAccount/bankAccounts/create',
+  },
+  {
+    title: 'GET /businessAccount/banks/wires',
+    to: '/debug/businessAccount/bankAccounts/fetch',
+  },
+  {
+    title: 'GET /businessAccount/banks/wires/{id}',
+    to: '/debug/businessAccount/bankAccounts/details',
+  },
+  {
+    title: 'GET /businessAccount/banks/wires/{id}/instructions',
+    to: '/debug/businessAccount/bankAccounts/instructions',
+  },
+  {
+    title: 'POST /mocks/payments/wire',
+    to: '/debug/payments/mocks/wire',
+  },
+  {
+    title: 'POST /mocks/payments/pix',
+    to: '/debug/payments/mocks/pix',
+  },
+  {
+    title: 'POST /businessAccount/banks/cbit',
+    to: '/debug/businessAccount/cbitAccounts/create',
+  },
+  {
+    title: 'GET /businessAccount/banks/cbit',
+    to: '/debug/businessAccount/cbitAccounts/fetch',
+  },
+  {
+    title: 'GET /businessAccount/banks/cbit/{id}',
+    to: '/debug/businessAccount/cbitAccounts/details',
+  },
+  {
+    title: 'GET /businessAccount/banks/cbit/{id}/instructions',
+    to: '/debug/businessAccount/cbitAccounts/instructions',
+  },
+  {
+    title: 'POST /businessAccount/banks/xpay',
+    to: '/debug/businessAccount/xpayAccounts/create',
+  },
+  {
+    title: 'GET /businessAccount/banks/xpay',
+    to: '/debug/businessAccount/xpayAccounts/fetch',
+  },
+  {
+    title: 'GET /businessAccount/banks/xpay/{id}',
+    to: '/debug/businessAccount/xpayAccounts/details',
+  },
+  {
+    title: 'GET /businessAccount/banks/xpay/{id}/instructions',
+    to: '/debug/businessAccount/xpayAccounts/instructions',
+  },
+  {
+    title: 'POST /businessAccount/transfers',
+    to: '/debug/businessAccount/transfers/create',
+  },
+  {
+    title: 'GET /businessAccount/transfers',
+    to: '/debug/businessAccount/transfers/fetch',
+  },
+  {
+    title: 'GET /businessAccount/transfers/{id}',
+    to: '/debug/businessAccount/transfers/details',
+  },
+  {
+    title: 'POST /businessAccount/wallets/addresses/deposit',
+    to: '/debug/businessAccount/addresses/deposit/create',
+  },
+  {
+    title: 'GET /businessAccount/wallets/addresses/deposit',
+    to: '/debug/businessAccount/addresses/deposit/fetch',
+  },
+  {
+    title: 'POST /businessAccount/wallets/addresses/recipient',
+    to: '/debug/businessAccount/addresses/recipient/create',
+  },
+  {
+    title: 'GET /businessAccount/wallets/addresses/recipient',
+    to: '/debug/businessAccount/addresses/recipient/fetch',
+  },
+  {
+    title: 'DELETE /businessAccount/wallets/addresses/recipient/{id}',
+    to: '/debug/businessAccount/addresses/recipient/delete',
+  },
+  {
+    title: 'GET /businessAccount/deposits',
+    to: '/debug/businessAccount/deposits/fetch',
+  },
+]
 
-  marketplaceLinks = [
-    {
-      title: 'GET /marketplace/merchants',
-      to: '/debug/marketplace/merchants/fetch',
-    },
-    {
-      title: 'GET /marketplace/payments',
-      to: '/debug/marketplace/payments/fetch',
-    },
-    {
-      title: 'POST /marketplace/payments',
-      to: '/debug/marketplace/payments/create',
-    },
-    {
-      title: 'GET /marketplace/payments/{id}',
-      to: '/debug/marketplace/payments/details',
-    },
-    {
-      title: 'POST /banks/wires',
-      to: '/debug/wires/create',
-    },
-    {
-      title: 'POST /banks/wires',
-      to: '/debug/wires/create',
-    },
-    {
-      title: 'GET /banks/wires/{id}',
-      to: '/debug/wires/details',
-    },
-    {
-      title: 'GET /banks/wires/{id}/instructions',
-      to: '/debug/wires/instructions',
-    },
-    {
-      title: 'GET /settlements',
-      to: '/debug/settlements/fetch',
-    },
-    {
-      title: 'GET /settlements/{id}',
-      to: '/debug/settlements/details',
-    }
-  ]
+const paymentsLinks = [
+  {
+    title: 'GET /payments',
+    to: '/debug/payments/fetch',
+  },
+  {
+    title: 'POST /payments',
+    to: '/debug/payments/create',
+  },
+  {
+    title: 'POST /payments/crypto',
+    to: '/debug/payments/crypto/create',
+  },
+  {
+    title: 'GET /payments/{id}',
+    to: '/debug/payments/details',
+  },
+  {
+    title: 'GET /settlements',
+    to: '/debug/settlements/fetch',
+  },
+  {
+    title: 'GET /settlements/{id}',
+    to: '/debug/settlements/details',
+  },
+  {
+    title: 'GET /balances',
+    to: '/debug/payments/balances/fetch',
+  },
+  {
+    title: 'GET /presign',
+    to: '/debug/payments/crypto/presign',
+  },
+]
 
-  payoutsLinks = [
-    {
-      title: 'POST /addressBook/recipients',
-      to: '/debug/beta/addressBook/create',
-    },
-    {
-      title: 'GET /addressBook/recipients',
-      to: '/debug/beta/addressBook/fetch',
-    },
-    {
-      title: 'GET /addressBook/recipients/{id}',
-      to: '/debug/beta/addressBook/details',
-    },
-    {
-      title: 'PATCH /addressBook/recipients/{id}',
-      to: '/debug/beta/addressBook/patch',
-    },
-    {
-      title: 'DELETE /addressBook/recipients/{id}',
-      to: '/debug/beta/addressBook/delete',
-    },
-    {
-      title: 'POST /payouts',
-      to: '/debug/payouts/create',
-    },
-    {
-      title: 'GET /payouts',
-      to: '/debug/payouts/fetch',
-    },
-    {
-      title: 'GET /payouts/{id}',
-      to: '/debug/payouts/details',
-    },
-  ]
+const marketplaceLinks = [
+  {
+    title: 'GET /marketplace/merchants',
+    to: '/debug/marketplace/merchants/fetch',
+  },
+  {
+    title: 'GET /marketplace/payments',
+    to: '/debug/marketplace/payments/fetch',
+  },
+  {
+    title: 'POST /marketplace/payments',
+    to: '/debug/marketplace/payments/create',
+  },
+  {
+    title: 'GET /marketplace/payments/{id}',
+    to: '/debug/marketplace/payments/details',
+  },
+  {
+    title: 'POST /banks/wires',
+    to: '/debug/wires/create',
+  },
+  {
+    title: 'POST /banks/wires',
+    to: '/debug/wires/create',
+  },
+  {
+    title: 'GET /banks/wires/{id}',
+    to: '/debug/wires/details',
+  },
+  {
+    title: 'GET /banks/wires/{id}/instructions',
+    to: '/debug/wires/instructions',
+  },
+  {
+    title: 'GET /settlements',
+    to: '/debug/settlements/fetch',
+  },
+  {
+    title: 'GET /settlements/{id}',
+    to: '/debug/settlements/details',
+  },
+]
 
-  paymentIntentsLinks = [
-    {
-      title: 'POST /paymentIntents',
-      to: '/debug/paymentIntents/create',
-    },
-    {
-      title: 'GET /paymentIntents',
-      to: '/debug/paymentIntents/fetch',
-    },
-    {
-      title: 'GET /paymentIntents/{id}',
-      to: '/debug/paymentIntents/details',
-    },
-    {
-      title: 'POST /paymentIntents/{id}/expire',
-      to: '/debug/paymentIntents/expire',
-    },
-    {
-      title: 'POST /paymentIntents/{id}/refund',
-      to: '/debug/paymentIntents/createCryptoRefund',
-    },
-  ]
+const payoutsLinks = [
+  {
+    title: 'POST /addressBook/recipients',
+    to: '/debug/beta/addressBook/create',
+  },
+  {
+    title: 'GET /addressBook/recipients',
+    to: '/debug/beta/addressBook/fetch',
+  },
+  {
+    title: 'GET /addressBook/recipients/{id}',
+    to: '/debug/beta/addressBook/details',
+  },
+  {
+    title: 'PATCH /addressBook/recipients/{id}',
+    to: '/debug/beta/addressBook/patch',
+  },
+  {
+    title: 'DELETE /addressBook/recipients/{id}',
+    to: '/debug/beta/addressBook/delete',
+  },
+  {
+    title: 'POST /payouts',
+    to: '/debug/payouts/create',
+  },
+  {
+    title: 'GET /payouts',
+    to: '/debug/payouts/fetch',
+  },
+  {
+    title: 'GET /payouts/{id}',
+    to: '/debug/payouts/details',
+  },
+]
 
-  tradesLinks = [
-    {
-      title: 'Create Trade Flow',
-      to: '/debug/trades/flow',
-    },
-    {
-      title: 'POST /quotes',
-      to: '/debug/trades/quote',
-    },
-    {
-      title: 'POST /trades',
-      to: '/debug/trades/create',
-    },
-    {
-      title: 'GET /trades',
-      to: '/debug/trades/fetch',
-    },
-    {
-      title: 'GET /trades/{id}',
-      to: '/debug/trades/details',
-    },
-    {
-      title: 'GET /trades/settlements',
-      to: '/debug/trades/settlements/fetch',
-    },
-    {
-      title: 'GET /trades/settlements/{id}',
-      to: '/debug/trades/settlements/details',
-    },
-    {
-      title: 'GET /trades/settlements/instructions',
-      to: '/debug/trades/settlements/instructions',
-    },
-  ]
+const paymentIntentsLinks = [
+  {
+    title: 'POST /paymentIntents',
+    to: '/debug/paymentIntents/create',
+  },
+  {
+    title: 'GET /paymentIntents',
+    to: '/debug/paymentIntents/fetch',
+  },
+  {
+    title: 'GET /paymentIntents/{id}',
+    to: '/debug/paymentIntents/details',
+  },
+  {
+    title: 'POST /paymentIntents/{id}/expire',
+    to: '/debug/paymentIntents/expire',
+  },
+  {
+    title: 'POST /paymentIntents/{id}/refund',
+    to: '/debug/paymentIntents/createCryptoRefund',
+  },
+]
 
-  cpsTradesLinks = [
-    {
-      title: 'POST /cps/quotes',
-      to: '/debug/cps/quote',
-    },
-    {
-      title: 'POST /cps/trades',
-      to: '/debug/cps/create',
-    },
-    {
-      title: 'GET /cps/trades',
-      to: '/debug/cps/fetch',
-    },
-    {
-      title: 'GET /cps/trades/{id}',
-      to: '/debug/cps/details',
-    },
-    {
-      title: 'POST /cps/signatures',
-      to: '/debug/cps/signature',
-    },
-  ]
+const tradesLinks = [
+  {
+    title: 'Create Trade Flow',
+    to: '/debug/trades/flow',
+  },
+  {
+    title: 'POST /quotes',
+    to: '/debug/trades/quote',
+  },
+  {
+    title: 'POST /trades',
+    to: '/debug/trades/create',
+  },
+  {
+    title: 'GET /trades',
+    to: '/debug/trades/fetch',
+  },
+  {
+    title: 'GET /trades/{id}',
+    to: '/debug/trades/details',
+  },
+  {
+    title: 'GET /trades/settlements',
+    to: '/debug/trades/settlements/fetch',
+  },
+  {
+    title: 'GET /trades/settlements/{id}',
+    to: '/debug/trades/settlements/details',
+  },
+  {
+    title: 'GET /trades/settlements/instructions',
+    to: '/debug/trades/settlements/instructions',
+  },
+]
 
-  miniVariant = false
-  right = true
-  showRightDrawer = false
-  showDrawer = false
+const cpsTradesLinks = [
+  {
+    title: 'POST /cps/quotes',
+    to: '/debug/cps/quote',
+  },
+  {
+    title: 'POST /cps/trades',
+    to: '/debug/cps/create',
+  },
+  {
+    title: 'GET /cps/trades',
+    to: '/debug/cps/fetch',
+  },
+  {
+    title: 'GET /cps/trades/{id}',
+    to: '/debug/cps/details',
+  },
+  {
+    title: 'POST /cps/signatures',
+    to: '/debug/cps/signature',
+  },
+]
 
-  get apiKey() {
-    return this.$store.getters.getApiKey
-  }
+const miniVariant = ref(false)
+const right = ref(true)
+const showRightDrawer = ref(false)
+const showDrawer = ref(false)
 
-  set apiKey(value: string) {
-    this.$store.commit('SET_BEARER_TOKEN', value)
-  }
+const apiKey = computed({
+  get: () => store.getApiKey,
+  set: (value: string) => store.setBearerToken(value),
+})
 
-  get isMarketplace() {
-    return this.$store.getters.isMarketplace
-  }
+const isMarketplace = computed({
+  get: () => store.isMarketplace,
+  set: (bool: boolean) => {
+    store.setIsMarketplace(bool)
+    router.push('/')
+  },
+})
 
-  set isMarketplace(bool: boolean) {
-    this.$store.commit('SET_IS_MARKETPLACE', bool)
-    this.$router.push('/')
-  }
-}
+const title = ref('Circle Sample App')
 </script>
 
 <style scoped>
@@ -583,5 +550,19 @@ export default class DefaultLayoutsClass extends Vue {
 }
 .pointer {
   cursor: pointer;
+}
+
+/* Reduce padding for navigation items */
+:deep(.v-list-group__items .v-list-item) {
+  padding-left: 8px !important;
+}
+
+:deep(.v-list-item__content) {
+  padding-left: 0 !important;
+}
+
+:deep(.v-list-item-title) {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
 }
 </style>

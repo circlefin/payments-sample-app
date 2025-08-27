@@ -12,9 +12,7 @@
   </v-bottom-sheet>
 </template>
 
-<script lang="ts">
-import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
-
+<script setup lang="ts">
 interface Error {
   status?: string
   message?: string
@@ -24,34 +22,39 @@ interface Error {
   }
 }
 
-@Component
-export default class ErrorSheet extends Vue {
-  @Prop({ type: Object, default: () => {} })
-  error!: Error
-
-  @Prop({ type: Boolean })
-  showError!: boolean
-
-  status = ''
-  message = ''
-
-  get bottomSheetValue() {
-    return this.showError
-  }
-
-  set bottomSheetValue(bottomSheetValue) {
-    this.$emit('onChange', bottomSheetValue)
-  }
-
-  @Watch('error', { immediate: true })
-  onErrorChange(error: Error) {
-    this.status = error.status || ''
-
-    if (error.data) {
-      this.message = error.data.message || ''
-    } else {
-      this.message = error.message || ''
-    }
-  }
+interface Props {
+  error?: Error
+  showError?: boolean
 }
+
+const props = withDefaults(defineProps<Props>(), {
+  error: () => ({}),
+  showError: false,
+})
+
+const emit = defineEmits<{
+  onChange: [value: boolean]
+}>()
+
+const status = ref('')
+const message = ref('')
+
+const bottomSheetValue = computed({
+  get: () => props.showError,
+  set: (value: boolean) => emit('onChange', value),
+})
+
+watch(
+  () => props.error,
+  (error: Error) => {
+    status.value = error?.status || ''
+
+    if (error?.data) {
+      message.value = error.data.message || ''
+    } else {
+      message.value = error?.message || ''
+    }
+  },
+  { immediate: true },
+)
 </script>

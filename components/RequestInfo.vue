@@ -5,59 +5,56 @@
         {{ url }}
       </v-card>
     </div>
-    <v-expansion-panels multiple :value="openPanels">
+    <v-expansion-panels multiple v-model="openPanels">
       <v-expansion-panel>
-        <v-expansion-panel-header>Payload</v-expansion-panel-header>
-        <v-expansion-panel-content>
+        <v-expansion-panel-title>Payload</v-expansion-panel-title>
+        <v-expansion-panel-text>
           <div class="json-prettier">
             <vue-json-pretty :data="payload" />
           </div>
-        </v-expansion-panel-content>
+        </v-expansion-panel-text>
       </v-expansion-panel>
       <v-expansion-panel>
-        <v-expansion-panel-header>Response</v-expansion-panel-header>
-        <v-expansion-panel-content>
+        <v-expansion-panel-title>Response</v-expansion-panel-title>
+        <v-expansion-panel-text>
           <div class="json-prettier">
             <vue-json-pretty :data="response" />
           </div>
-        </v-expansion-panel-content>
+        </v-expansion-panel-text>
       </v-expansion-panel>
     </v-expansion-panels>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+<script setup lang="ts">
 // @ts-ignore
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 
-@Component({
-  components: {
-    VueJsonPretty,
-  },
-})
-export default class RequestInfo extends Vue {
-  @Prop({ type: String, default: '' })
-  url!: string
-
-  @Prop({ type: Object, default: () => {} })
-  payload: any
-
-  @Prop({ type: [Array, Object], default: () => {} })
-  response: any
-
-  mounted() {
-    this.$store.commit('CLEAR_REQUEST_DATA')
-  }
-
-  get openPanels() {
-    if (this.url !== '') {
-      return [0, 1]
-    }
-    return []
-  }
+interface Props {
+  url?: string
+  payload?: any
+  response?: any
 }
+
+const props = withDefaults(defineProps<Props>(), {
+  url: '',
+  payload: () => ({}),
+  response: () => ({}),
+})
+
+const store = useMainStore()
+
+const openPanels = computed(() => {
+  if (props.url !== '') {
+    return [0, 1]
+  }
+  return []
+})
+
+onMounted(() => {
+  store.clearRequestData()
+})
 </script>
 
 <style scoped>

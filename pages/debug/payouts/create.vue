@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-container>
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
@@ -86,7 +86,7 @@
           </div>
 
           <v-btn
-            depressed
+            variant="flat"
             class="mb-7"
             color="primary"
             :loading="loading"
@@ -109,184 +109,164 @@
       :show-error="showError"
       @onChange="onErrorSheetClosed"
     />
-  </v-layout>
+  </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
+<script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
-import RequestInfo from '~/components/RequestInfo.vue'
-import ErrorSheet from '~/components/ErrorSheet.vue'
-import { CreatePayoutPayload } from '~/lib/payoutsApi'
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
-  },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-      isMarketplace: 'isMarketplace',
-    }),
-  },
+import type { CreatePayoutPayload } from '~/lib/payoutsApi'
+
+const store = useMainStore()
+const { $payoutsApi } = useNuxtApp()
+
+const formData = reactive({
+  sourceWalletId: '',
+  idempotencyKey: '',
+  amount: '0.00',
+  currency: 'USD',
+  toCurrency: 'USD',
+  destination: '',
+  destinationType: 'address_book',
+  beneficiaryEmail: '',
+  identityType: 'individual',
+  identityName: '',
+  identityAddressLine1: '',
+  identityAddressLine2: '',
+  identityAddressCity: '',
+  identityAddressDistrict: '',
+  identityAddressPostalCode: '',
+  identityAddressCountry: '',
 })
-export default class CreatePayoutClass extends Vue {
-  formData = {
-    sourceWalletId: '',
-    idempotencyKey: '',
-    amount: '0.00',
-    currency: 'USD', // Default to USD
-    toCurrency: 'USD', // Default to USD
-    destination: '',
-    destinationType: 'address_book', // Default to wire for payout creation
-    beneficiaryEmail: '',
-    identityType: 'individual', // Default to individual for identity type
-    identityName: '',
-    identityAddressLine1: '',
-    identityAddressLine2: '',
-    identityAddressCity: '',
-    identityAddressDistrict: '',
-    identityAddressPostalCode: '',
-    identityAddressCountry: '',
+
+const required = [(v: string) => !!v || 'Field is required']
+const destinationType = ['address_book']
+const blockchainDestinationTypes = new Set(['address_book'])
+const identityTypes = ['individual', 'business']
+const supportedCryptoPayoutCurrencyPairs = new Map([
+  ['USD', ['USD', 'BTC', 'ETH', 'MATIC']],
+  ['BTC', ['USD', 'BTC']],
+  ['ETH', ['USD', 'ETH']],
+  ['MATIC', ['USD', 'MATIC']],
+  ['FLOW', ['FLOW']],
+  ['MANA', ['MANA']],
+  ['EUR', ['EUR']],
+])
+
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
+
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
+
+const sourceWalletIdNotEmpty = () => {
+  return formData.sourceWalletId.length > 0
+}
+
+const hasIdentity = () => {
+  return (
+    formData.identityAddressLine1 ||
+    formData.identityAddressLine2 ||
+    formData.identityAddressCity ||
+    formData.identityAddressDistrict ||
+    formData.identityAddressPostalCode ||
+    formData.identityAddressCountry ||
+    formData.identityName
+  )
+}
+
+const onCurrencyChange = () => {
+  const supportedToCurrencies = supportedCryptoPayoutCurrencyPairs.get(
+    formData.currency,
+  )
+  formData.toCurrency = supportedToCurrencies ? supportedToCurrencies[0] : ''
+}
+
+const onDestinationTypeChange = () => {
+  formData.currency = Array.from(supportedCryptoPayoutCurrencyPairs.keys())[0]
+  onCurrencyChange()
+  resetIdentities()
+}
+
+const resetIdentities = () => {
+  formData.identityAddressLine1 = ''
+  formData.identityAddressLine2 = ''
+  formData.identityAddressCountry = ''
+  formData.identityAddressCity = ''
+  formData.identityAddressDistrict = ''
+  formData.identityName = ''
+  formData.identityAddressPostalCode = ''
+}
+
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
+
+const makeApiCall = async () => {
+  loading.value = true
+  const amountDetail = {
+    amount: formData.amount,
+    currency: formData.currency,
+  }
+  const toAmountDetail = {
+    currency: formData.toCurrency,
+  }
+  const identityAddressObject = {
+    line1: formData.identityAddressLine1,
+    line2: formData.identityAddressLine2,
+    city: formData.identityAddressCity,
+    district: formData.identityAddressDistrict,
+    postalCode: formData.identityAddressPostalCode,
+    country: formData.identityAddressCountry,
+  }
+  const identityObject = {
+    type: formData.identityType,
+    name: formData.identityName,
+    addresses: [identityAddressObject],
   }
 
-  required = [(v: string) => !!v || 'Field is required']
-  destinationType = ['address_book']
-  blockchainDestinationTypes = new Set(['address_book'])
-  identityTypes = ['individual', 'business']
-  // TODO: we can probably implement an internal endpoint to get the supported currency pairs
-  supportedCryptoPayoutCurrencyPairs = new Map([
-    ['USD', ['USD', 'BTC', 'ETH', 'MATIC']],
-    ['BTC', ['USD', 'BTC']],
-    ['ETH', ['USD', 'ETH']],
-    ['MATIC', ['USD', 'MATIC']],
-    ['FLOW', ['FLOW']],
-    ['MANA', ['MANA']],
-    ['EUR', ['EUR']],
-  ])
-
-  error = {}
-  loading = false
-  showError = false
-
-  sourceWalletIdNotEmpty() {
-    return this.formData.sourceWalletId.length > 0
+  const identities = hasIdentity() && {
+    identities: [identityObject],
   }
 
-  hasIdentity() {
-    return (
-      this.formData.identityAddressLine1 ||
-      this.formData.identityAddressLine2 ||
-      this.formData.identityAddressCity ||
-      this.formData.identityAddressDistrict ||
-      this.formData.identityAddressPostalCode ||
-      this.formData.identityAddressCountry ||
-      this.formData.identityName
-    )
+  const sourceObject = {
+    id: formData.sourceWalletId,
+    type: 'wallet',
+    ...identities,
   }
 
-  onCurrencyChange() {
-    // update default toCurrency
-    const supportedToCurrencies = this.supportedCryptoPayoutCurrencyPairs.get(
-      this.formData.currency
-    )
-    this.formData.toCurrency = supportedToCurrencies
-      ? supportedToCurrencies[0]
-      : ''
+  const payloadData: CreatePayoutPayload = {
+    idempotencyKey: uuidv4(),
+    amount: amountDetail,
+    destination: {
+      id: formData.destination,
+      type: formData.destinationType,
+    },
   }
 
-  onDestinationTypeChange() {
-    // update currency to default
-    this.formData.currency = Array.from(
-      this.supportedCryptoPayoutCurrencyPairs.keys()
-    )[0]
-    this.onCurrencyChange()
-    this.resetIdentities()
+  if (formData.sourceWalletId) {
+    payloadData.source = sourceObject
   }
 
-  resetIdentities() {
-    // reset all identity fields
-    this.formData.identityAddressLine1 = ''
-    this.formData.identityAddressLine2 = ''
-    this.formData.identityAddressCountry = ''
-    this.formData.identityAddressCity = ''
-    this.formData.identityAddressDistrict = ''
-    this.formData.identityName = ''
-    this.formData.identityAddressPostalCode = ''
+  if (blockchainDestinationTypes.has(formData.destinationType)) {
+    payloadData.toAmount = toAmountDetail
   }
 
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
+  if (formData.beneficiaryEmail) {
+    payloadData.metadata = {
+      beneficiaryEmail: formData.beneficiaryEmail,
+    }
   }
 
-  async makeApiCall() {
-    this.loading = true
-    const amountDetail = {
-      amount: this.formData.amount,
-      currency: this.formData.currency,
-    }
-    const toAmountDetail = {
-      currency: this.formData.toCurrency,
-    }
-    const identityAddressObject = {
-      line1: this.formData.identityAddressLine1,
-      line2: this.formData.identityAddressLine2,
-      city: this.formData.identityAddressCity,
-      district: this.formData.identityAddressDistrict,
-      postalCode: this.formData.identityAddressPostalCode,
-      country: this.formData.identityAddressCountry,
-    }
-    const identityObject = {
-      type: this.formData.identityType,
-      name: this.formData.identityName,
-      addresses: [identityAddressObject],
-    }
-
-    const identities = this.hasIdentity() && {
-      identities: [identityObject],
-    }
-
-    const sourceObject = {
-      id: this.formData.sourceWalletId,
-      type: 'wallet',
-      ...identities,
-    }
-
-    const payload: CreatePayoutPayload = {
-      idempotencyKey: uuidv4(),
-      amount: amountDetail,
-      destination: {
-        id: this.formData.destination,
-        type: this.formData.destinationType,
-      },
-    }
-
-    if (this.formData.sourceWalletId) {
-      payload.source = sourceObject
-    }
-
-    if (this.blockchainDestinationTypes.has(this.formData.destinationType)) {
-      payload.toAmount = toAmountDetail
-    }
-
-    if (this.formData.beneficiaryEmail) {
-      payload.metadata = {
-        beneficiaryEmail: this.formData.beneficiaryEmail,
-      }
-    }
-
-    try {
-      await this.$payoutsApi.createPayout(payload)
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
-    }
+  try {
+    await $payoutsApi.createPayout(payloadData)
+  } catch (err) {
+    error.value = err
+    showError.value = true
+  } finally {
+    loading.value = false
   }
 }
 </script>

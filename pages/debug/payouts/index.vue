@@ -1,6 +1,6 @@
 <template>
-  <v-layout>
-    <v-flex>
+  <v-container>
+    <v-col>
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
         <h1 class="headline">API viewer</h1>
 
@@ -32,20 +32,11 @@
           <a href="/debug/payouts/details"> Get payout details by id </a>
         </p>
       </v-card>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-container>
 </template>
 
-<script lang="ts">
-import { Vue, Component } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
-
-@Component({
-  computed: {
-    ...mapGetters({
-      isMarketplace: 'isMarketplace',
-    }),
-  },
-})
-export default class PayoutsIndexClass extends Vue {}
+<script setup lang="ts">
+const store = useMainStore()
+const isMarketplace = computed(() => store.isMarketplace)
 </script>

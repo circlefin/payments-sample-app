@@ -15,7 +15,7 @@ import { publicProvider } from '@wagmi/core/providers/public'
 function startWagmiClient() {
   const { provider, webSocketProvider } = configureChains(
     [mainnet, goerli],
-    [publicProvider()]
+    [publicProvider()],
   )
 
   createClient({

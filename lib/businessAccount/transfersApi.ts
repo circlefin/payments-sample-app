@@ -41,7 +41,7 @@ instance.interceptors.response.use(
       response = error.toJSON()
     }
     return Promise.reject(response)
-  }
+  },
 )
 
 const nullIfEmpty = (prop: string | undefined) => {
@@ -78,7 +78,7 @@ function getTransfers(
   to: string,
   pageBefore: string,
   pageAfter: string,
-  pageSize: string
+  pageSize: string,
 ) {
   const queryParams = {
     from: nullIfEmpty(from),

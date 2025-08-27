@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-container>
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
@@ -63,7 +63,7 @@
           <v-text-field v-model="formData.email" label="Email" />
 
           <v-btn
-            depressed
+            variant="flat"
             class="mb-7"
             color="primary"
             :loading="loading"
@@ -86,148 +86,143 @@
       :show-error="showError"
       @onChange="onErrorSheetClosed"
     />
-  </v-layout>
+  </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Vue, Watch } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
+<script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
 import openPGP from '@/lib/openpgp'
-import { CreateCardPaymentPayload } from '@/lib/paymentsApi'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
+import type { CreateCardPaymentPayload } from '@/lib/paymentsApi'
 
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
-  },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-      isMarketplace: 'isMarketplace',
-    }),
-  },
+const store = useMainStore()
+const { $paymentsApi } = useNuxtApp()
+
+const showCvv = ref(true)
+const cvvLabel = ref('CVV')
+const formData = reactive({
+  sourceId: '',
+  sourceType: 'card',
+  verification: 'cvv',
+  amount: '0.00',
+  autoCapture: true,
+  cvv: '',
+  description: '',
+  channel: '',
+  verificationSuccessUrl: '',
+  verificationFailureUrl: '',
+  phoneNumber: '',
+  email: '',
 })
-export default class CreatePaymentClass extends Vue {
-  isMarketplace!: boolean
-  showCvv = true
-  cvvLabel = 'CVV'
-  formData = {
-    sourceId: '',
-    sourceType: 'card', // Default to card
-    verification: 'cvv',
-    amount: '0.00',
-    autoCapture: true,
-    cvv: '',
-    description: '',
-    channel: '',
-    verificationSuccessUrl: '',
-    verificationFailureUrl: '',
-    phoneNumber: '',
-    email: '',
-  }
 
-  verificationMethods = ['none', 'cvv', 'three_d_secure']
-  sourceType = ['card', 'ach', 'payment_token']
-  required = [(v: string) => !!v || 'Field is required']
-  error = {}
-  loading = false
-  showError = false
+const verificationMethods = ['none', 'cvv', 'three_d_secure']
+const sourceType = ['card', 'ach', 'payment_token']
+const required = [(v: string) => !!v || 'Field is required']
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
 
-  mounted() {
-    if (this.isMarketplace) {
-      return this.$nuxt.error({
-        statusCode: 404,
-        message: 'This endpoint is not available for marketplaces',
-      })
-    }
-  }
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
+const isMarketplace = computed(() => store.isMarketplace)
 
-  @Watch('formData.verification', { immediate: true })
-  onChildChanged(val: string) {
+watch(
+  () => formData.verification,
+  (val: string) => {
     if (val === 'none') {
-      this.showCvv = false
+      showCvv.value = false
     }
     if (val === 'cvv') {
-      this.showCvv = true
-      this.cvvLabel = 'CVV'
+      showCvv.value = true
+      cvvLabel.value = 'CVV'
     }
     if (val === 'three_d_secure') {
-      this.showCvv = true
-      this.cvvLabel = 'CVV (Optional)'
+      showCvv.value = true
+      cvvLabel.value = 'CVV (Optional)'
     }
-  }
+  },
+  { immediate: true },
+)
 
-  @Watch('formData.sourceType', { immediate: true })
-  onSourceTypeChanged(val: string) {
+watch(
+  () => formData.sourceType,
+  (val: string) => {
     if (val === 'card') {
-      this.formData.verification = 'cvv'
+      formData.verification = 'cvv'
     } else {
-      this.formData.verification = 'none'
+      formData.verification = 'none'
     }
+  },
+  { immediate: true },
+)
+
+onMounted(() => {
+  if (isMarketplace.value) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'This endpoint is not available for marketplaces',
+    })
+  }
+})
+
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
+
+const makeApiCall = async () => {
+  loading.value = true
+  const amountDetail = {
+    amount: formData.amount,
+    currency: 'USD',
+  }
+  const sourceDetails = {
+    id: formData.sourceId,
+    type: formData.sourceType,
+  }
+  const payloadData: CreateCardPaymentPayload = {
+    idempotencyKey: uuidv4(),
+    autoCapture: formData.autoCapture,
+    amount: amountDetail,
+    source: sourceDetails,
+    description: formData.description,
+    verificationSuccessUrl: formData.verificationSuccessUrl,
+    verificationFailureUrl: formData.verificationFailureUrl,
+    metadata: {
+      email: formData.email,
+      phoneNumber: formData.phoneNumber,
+      sessionId: 'xxx',
+      ipAddress: '172.33.222.1',
+    },
+    channel: formData.channel,
   }
 
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
+  if (formData.sourceType === 'card') {
+    payloadData.verification = formData.verification
   }
 
-  async makeApiCall() {
-    this.loading = true
-    const amountDetail = {
-      amount: this.formData.amount,
-      currency: 'USD',
-    }
-    const sourceDetails = {
-      id: this.formData.sourceId,
-      type: this.formData.sourceType,
-    }
-    const payload: CreateCardPaymentPayload = {
-      idempotencyKey: uuidv4(),
-      autoCapture: this.formData.autoCapture,
-      amount: amountDetail,
-      source: sourceDetails,
-      description: this.formData.description,
-      verificationSuccessUrl: this.formData.verificationSuccessUrl,
-      verificationFailureUrl: this.formData.verificationFailureUrl,
-      metadata: {
-        email: this.formData.email,
-        phoneNumber: this.formData.phoneNumber,
-        sessionId: 'xxx',
-        ipAddress: '172.33.222.1',
-      },
-      channel: this.formData.channel,
-    }
+  try {
+    if (
+      formData.verification === 'cvv' ||
+      (formData.verification === 'three_d_secure' && formData.cvv !== '')
+    ) {
+      const { cvv } = formData
+      const cardDetails = { cvv }
 
-    if (this.formData.sourceType === 'card') {
-      payload.verification = this.formData.verification
+      const publicKeyResponse = await $paymentsApi.getPCIPublicKey()
+      const encryptedData = await openPGP.encrypt(
+        cardDetails,
+        publicKeyResponse.data,
+      )
+      payloadData.encryptedData = encryptedData.encryptedMessage
+      payloadData.keyId = encryptedData.keyId
     }
-
-    try {
-      if (
-        this.formData.verification === 'cvv' ||
-        (this.formData.verification === 'three_d_secure' &&
-          this.formData.cvv !== '')
-      ) {
-        const { cvv } = this.formData
-        const cardDetails = { cvv }
-
-        const publicKey = await this.$paymentsApi.getPCIPublicKey()
-        const encryptedData = await openPGP.encrypt(cardDetails, publicKey)
-        payload.encryptedData = encryptedData.encryptedMessage
-        payload.keyId = encryptedData.keyId
-      }
-      await this.$paymentsApi.createPayment(payload)
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
-    }
+    await $paymentsApi.createPayment(payloadData)
+  } catch (err) {
+    error.value = err
+    showError.value = true
+  } finally {
+    loading.value = false
   }
 }
 </script>

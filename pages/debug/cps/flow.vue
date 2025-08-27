@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-container>
     <v-row>
       <v-col cols="12" md="4">
         <v-form v-model="validForm">
@@ -25,7 +25,7 @@
             label="To currency"
           />
           <v-btn
-            depressed
+            variant="flat"
             class="mb-7"
             color="primary"
             :loading="loading"
@@ -36,7 +36,7 @@
           </v-btn>
           <v-btn
             v-if="!showTradeStatus"
-            depressed
+            variant="flat"
             class="mb-7 ml-3"
             color="secondary"
             @click.prevent="onNewTrade"
@@ -67,101 +67,98 @@
       :show-error="showError"
       @onChange="onErrorSheetClosed"
     />
-  </v-layout>
+  </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
+<script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
-import TradeStatus from '@/components/TradeStatus.vue'
 
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
-    TradeStatus,
+const store = useMainStore()
+const { $cpsTradesApi } = useNuxtApp()
+
+const quoteResponse = ref({
+  id: '',
+  from: { currency: '', amount: 0 },
+  to: { currency: '', amount: 0 },
+  rate: 0,
+})
+
+const tradeId = ref('')
+const validForm = ref(false)
+const formData = reactive({
+  from: {
+    amount: '',
+    currency: 'USDC',
   },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-      isMarketplace: 'isMarketplace',
-    }),
+  to: {
+    amount: '',
+    currency: '',
   },
 })
-export default class CreateCpsTradeFlowClass extends Vue {
-  quoteResponse = {
-    id: '',
-    from: { currency: '', amount: '' },
-    to: { currency: '', amount: '' },
-    rate: '',
-  }
 
-  tradeId: string = ''
-  validForm: boolean = false
-  formData = {
-    from: {
-      amount: '',
-      currency: 'USDC',
-    },
-    to: {
-      amount: '',
-      currency: '',
-    },
-  }
+const showTradeStatus = ref(false)
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
 
-  showTradeStatus: boolean = false
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
 
-  required = (v: string) => !!v || 'Field is required'
+const required = (v: string) => !!v || 'Field is required'
+const isNumber = (v: string) =>
+  !v || v === '' || !isNaN(parseInt(v)) || 'Please enter valid number'
 
-  isNumber = (v: string) =>
-    !v || v === '' || !isNaN(parseInt(v)) || 'Please enter valid number'
+const currencies = ['USDC', 'EURC']
+const toCurrencyMap = new Map([
+  ['USDC', ['EURC']],
+  ['EURC', ['USDC']],
+])
 
-  error = {}
-  loading = false
-  showError = false
-  currencies = ['USDC', 'EURC']
-  toCurrencyMap = new Map([
-    ['USDC', ['EURC']],
-    ['EURC', ['USDC']],
-  ])
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
 
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
-  }
+const onNewTrade = () => {
+  showTradeStatus.value = false
+}
 
-  onNewTrade() {
-    this.showTradeStatus = false
-  }
+const onPollingError = (err: any) => {
+  error.value = err
+  showError.value = true
+}
 
-  onPollingError(error: any) {
-    this.error = error
-    this.showError = true
-  }
+const makeApiCall = async () => {
+  loading.value = true
 
-  async makeApiCall() {
-    this.loading = true
-
-    try {
-      this.quoteResponse = await this.$cpsTradesApi.createQuote(this.formData)
-      const { id: tradeId } = await this.$cpsTradesApi.createTrade({
-        idempotencyKey: uuidv4(),
-        quoteId: this.quoteResponse.id,
-        fulfill: true,
-      })
-      this.tradeId = tradeId
-      this.showTradeStatus = true
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
+  try {
+    // Convert string amounts to numbers for API call
+    const quotePayload = {
+      from: {
+        ...formData.from,
+        amount: formData.from.amount ? Number(formData.from.amount) : undefined,
+      },
+      to: {
+        ...formData.to,
+        amount: formData.to.amount ? Number(formData.to.amount) : undefined,
+      },
     }
+
+    const quoteApiResponse = await $cpsTradesApi.createQuote(quotePayload)
+    quoteResponse.value = quoteApiResponse.data
+
+    const tradeApiResponse = await $cpsTradesApi.createTrade({
+      idempotencyKey: uuidv4(),
+      quoteId: quoteResponse.value.id,
+    })
+    tradeId.value = tradeApiResponse.data.id
+    showTradeStatus.value = true
+  } catch (err) {
+    error.value = err
+    showError.value = true
+  } finally {
+    loading.value = false
   }
 }
 </script>

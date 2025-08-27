@@ -36,54 +36,39 @@
   </v-layout>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
-  },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-    }),
-  },
+<script setup lang="ts">
+const store = useMainStore()
+const { $xpayAccountsApi } = useNuxtApp()
+
+const formData = reactive({
+  accountId: '',
 })
-export default class FetchXpayBusinessAccountDetailsClass extends Vue {
-  // data
-  formData = {
-    accountId: '',
-  }
 
-  requiredRules = [(v: string) => !!v || 'Field is required']
-  error = {}
-  loading = false
-  showError = false
-  // methods
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
-  }
+const form = ref()
+const requiredRules = [(v: string) => !!v || 'Field is required']
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
 
-  async makeApiCall() {
-    const form = this.$refs.form as any
-    if (form.validate()) {
-      this.loading = true
-      try {
-        await this.$xpayAccountsApi.getXpayBusinessAccountById(
-          this.formData.accountId
-        )
-      } catch (error: any) {
-        this.error = error
-        this.showError = true
-      } finally {
-        this.loading = false
-      }
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
+
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
+
+const makeApiCall = async () => {
+  if (form.value.validate()) {
+    loading.value = true
+    try {
+      await $xpayAccountsApi.getXpayBusinessAccountById(formData.accountId)
+    } catch (err: any) {
+      error.value = err
+      showError.value = true
+    } finally {
+      loading.value = false
     }
   }
 }

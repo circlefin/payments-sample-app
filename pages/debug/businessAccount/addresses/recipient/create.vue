@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-container>
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
@@ -18,7 +18,7 @@
           <v-text-field v-model="formData.description" label="Description" />
 
           <v-btn
-            depressed
+            variant="flat"
             class="mb-7"
             color="primary"
             :loading="loading"
@@ -41,80 +41,65 @@
       :show-error="showError"
       @onChange="onErrorSheetClosed"
     />
-  </v-layout>
+  </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
+<script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
-import { CreateRecipientAddressPayload } from '@/lib/businessAccount/addressesApi'
-import ChainSelect from '@/components/ChainSelect.vue'
+import type { CreateRecipientAddressPayload } from '@/lib/businessAccount/addressesApi'
 import chains from '@/lib/chains.json'
 
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
-    ChainSelect,
-  },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-    }),
-  },
+const store = useMainStore()
+const { $businessAccountAddressesApi } = useNuxtApp()
+
+const formData = reactive({
+  address: '',
+  chain: '',
+  currency: '',
+  description: '',
+  addressTag: '',
 })
-export default class CreateRecipientAddressClass extends Vue {
-  formData = {
-    address: '',
-    chain: '',
-    currency: '',
-    description: '',
-    addressTag: '',
+
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
+
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
+
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
+
+const hasAddressTagSupport = (chain: string) => {
+  return chains.find((_chain) => {
+    return _chain.value === chain && _chain.addressTagSupport
+  })
+}
+
+const makeApiCall = async () => {
+  loading.value = true
+  const { address, chain, currency, description, addressTag } = formData
+  const payloadData: CreateRecipientAddressPayload = {
+    idempotencyKey: uuidv4(),
+    address,
+    chain,
+    currency,
+    description,
   }
 
-  error = {}
-  loading = false
-  showError = false
-  chains = chains
-
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
+  if (hasAddressTagSupport(chain)) {
+    payloadData.addressTag = addressTag
   }
-
-  hasAddressTagSupport(chain: string) {
-    return this.chains.find((_chain) => {
-      return _chain.value === chain && _chain.addressTagSupport
-    })
-  }
-
-  async makeApiCall() {
-    this.loading = true
-    const { address, chain, currency, description, addressTag } = this.formData
-    const payload: CreateRecipientAddressPayload = {
-      idempotencyKey: uuidv4(),
-      address,
-      chain,
-      currency,
-      description,
-    }
-
-    if (this.hasAddressTagSupport(chain)) {
-      payload.addressTag = addressTag
-    }
-    try {
-      await this.$businessAccountAddressesApi.createRecipientAddress(payload)
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
-    }
+  try {
+    await $businessAccountAddressesApi.createRecipientAddress(payloadData)
+  } catch (err) {
+    error.value = err
+    showError.value = true
+  } finally {
+    loading.value = false
   }
 }
 </script>

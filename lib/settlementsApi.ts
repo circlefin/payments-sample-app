@@ -25,7 +25,7 @@ instance.interceptors.response.use(
       response = error.toJSON()
     }
     return Promise.reject(response)
-  }
+  },
 )
 
 const nullIfEmpty = (prop: string | undefined) => {
@@ -55,7 +55,7 @@ function getSettlements(
   to: string,
   pageBefore: string,
   pageAfter: string,
-  pageSize: string
+  pageSize: string,
 ) {
   const queryParams = {
     merchantWalletId: nullIfEmpty(merchantWalletId),
@@ -81,7 +81,7 @@ function getSettlements(
 function getSettlementById(
   id: string,
   merchantWalletId: string,
-  walletId: string
+  walletId: string,
 ) {
   const url = `/v1/settlements/${id}`
 
