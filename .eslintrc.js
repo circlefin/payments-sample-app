@@ -3,12 +3,13 @@ module.exports = {
   env: {
     browser: true,
     node: true,
+    jest: true,
   },
   extends: [
     'prettier',
     'plugin:vue/recommended',
     'plugin:prettier/recommended',
-    '@nuxtjs/eslint-config-typescript',
+    '@nuxt/eslint-config',
   ],
   parserOptions: {
     parser: '@typescript-eslint/parser',

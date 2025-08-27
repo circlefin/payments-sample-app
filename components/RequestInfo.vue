@@ -5,7 +5,7 @@
         {{ url }}
       </v-card>
     </div>
-    <v-expansion-panels multiple v-model="openPanels">
+    <v-expansion-panels v-model="openPanels" multiple>
       <v-expansion-panel>
         <v-expansion-panel-title>Payload</v-expansion-panel-title>
         <v-expansion-panel-text>

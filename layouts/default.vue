@@ -8,14 +8,14 @@
     >
       <v-list nav>
         <v-list-item to="/" exact>
-          <template v-slot:prepend>
+          <template #prepend>
             <v-icon>mdi-home</v-icon>
           </template>
           <v-list-item-title>Home</v-list-item-title>
         </v-list-item>
 
         <v-list-group>
-          <template v-slot:activator="{ props }">
+          <template #activator="{ props }">
             <v-list-item v-bind="props">
               <v-list-item-title>Core Functionality</v-list-item-title>
             </v-list-item>
@@ -31,12 +31,14 @@
             :to="item.to"
             exact
           >
-            <v-list-item-title class="list-items" v-text="item.title" />
+            <v-list-item-title class="list-items">{{
+              item.title
+            }}</v-list-item-title>
           </v-list-item>
         </v-list-group>
 
         <v-list-group>
-          <template v-slot:activator="{ props }">
+          <template #activator="{ props }">
             <v-list-item v-bind="props">
               <v-list-item-title>Payments APIs</v-list-item-title>
             </v-list-item>
@@ -52,12 +54,14 @@
             :to="item.to"
             exact
           >
-            <v-list-item-title class="list-items" v-text="item.title" />
+            <v-list-item-title class="list-items">{{
+              item.title
+            }}</v-list-item-title>
           </v-list-item>
         </v-list-group>
 
         <v-list-group>
-          <template v-slot:activator="{ props }">
+          <template #activator="{ props }">
             <v-list-item v-bind="props">
               <v-list-item-title>Marketplace APIs</v-list-item-title>
             </v-list-item>
@@ -73,12 +77,14 @@
             :to="item.to"
             exact
           >
-            <v-list-item-title class="list-items" v-text="item.title" />
+            <v-list-item-title class="list-items">{{
+              item.title
+            }}</v-list-item-title>
           </v-list-item>
         </v-list-group>
 
         <v-list-group>
-          <template v-slot:activator="{ props }">
+          <template #activator="{ props }">
             <v-list-item v-bind="props">
               <v-list-item-title>Payouts APIs</v-list-item-title>
             </v-list-item>
@@ -94,12 +100,14 @@
             :to="item.to"
             exact
           >
-            <v-list-item-title class="list-items" v-text="item.title" />
+            <v-list-item-title class="list-items">{{
+              item.title
+            }}</v-list-item-title>
           </v-list-item>
         </v-list-group>
 
         <v-list-group>
-          <template v-slot:activator="{ props }">
+          <template #activator="{ props }">
             <v-list-item v-bind="props">
               <v-list-item-title>Payment Intents APIs</v-list-item-title>
             </v-list-item>
@@ -115,12 +123,14 @@
             :to="item.to"
             exact
           >
-            <v-list-item-title class="list-items" v-text="item.title" />
+            <v-list-item-title class="list-items">{{
+              item.title
+            }}</v-list-item-title>
           </v-list-item>
         </v-list-group>
 
         <v-list-group>
-          <template v-slot:activator="{ props }">
+          <template #activator="{ props }">
             <v-list-item v-bind="props">
               <v-list-item-title>Trade API</v-list-item-title>
             </v-list-item>
@@ -136,12 +146,14 @@
             :to="item.to"
             exact
           >
-            <v-list-item-title class="list-items" v-text="item.title" />
+            <v-list-item-title class="list-items">{{
+              item.title
+            }}</v-list-item-title>
           </v-list-item>
         </v-list-group>
 
         <v-list-group>
-          <template v-slot:activator="{ props }">
+          <template #activator="{ props }">
             <v-list-item v-bind="props">
               <v-list-item-title>CPS Trade API</v-list-item-title>
             </v-list-item>
@@ -157,15 +169,17 @@
             :to="item.to"
             exact
           >
-            <v-list-item-title class="list-items" v-text="item.title" />
+            <v-list-item-title class="list-items">{{
+              item.title
+            }}</v-list-item-title>
           </v-list-item>
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar color="primary" density="compact" elevation="1" app>
       <v-app-bar-nav-icon
-        @click.stop="showDrawer = !showDrawer"
         style="color: white !important"
+        @click.stop="showDrawer = !showDrawer"
       >
         <v-icon color="white">mdi-menu</v-icon>
       </v-app-bar-nav-icon>
@@ -173,10 +187,10 @@
       <v-spacer />
 
       <v-btn
-        @click.stop="showRightDrawer = !showRightDrawer"
         style="color: white !important"
         variant="text"
         icon
+        @click.stop="showRightDrawer = !showRightDrawer"
       >
         <v-icon color="white">mdi-cog</v-icon>
       </v-btn>
@@ -206,13 +220,7 @@
 </template>
 
 <script setup lang="ts">
-import { getIsStaging, getIsLocalHost } from '@/lib/apiTarget'
-
-const router = useRouter()
 const store = useMainStore()
-
-const isStaging = getIsStaging()
-const isLocalHost = getIsLocalHost()
 
 const coreLinks = [
   {
@@ -520,7 +528,6 @@ const cpsTradesLinks = [
 ]
 
 const miniVariant = ref(false)
-const right = ref(true)
 const showRightDrawer = ref(false)
 const showDrawer = ref(false)
 
@@ -528,7 +535,6 @@ const apiKey = computed({
   get: () => store.getApiKey,
   set: (value: string) => store.setBearerToken(value),
 })
-
 </script>
 
 <style scoped>

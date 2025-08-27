@@ -44,16 +44,17 @@
             label="ECDSA rawSignature"
             readonly
           >
-            <router-link
-              slot="append"
-              :to="{
-                path: '/debug/payments/crypto/create',
-                query: getCreatePaymentQueryParams(),
-              }"
-              class="subtitle-2 text-right"
-            >
-              Create crypto payment
-            </router-link>
+            <template #append>
+              <router-link
+                :to="{
+                  path: '/debug/payments/crypto/create',
+                  query: getCreatePaymentQueryParams(),
+                }"
+                class="subtitle-2 text-right"
+              >
+                Create crypto payment
+              </router-link>
+            </template>
           </v-text-field>
         </v-form>
       </v-col>
@@ -68,7 +69,7 @@
     <ErrorSheet
       :error="error"
       :show-error="showError"
-      @onChange="onErrorSheetClosed"
+      @on-change="onErrorSheetClosed"
     />
   </v-container>
 </template>

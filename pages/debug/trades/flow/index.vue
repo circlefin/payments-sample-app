@@ -53,7 +53,7 @@
               :to="quoteResponse.to"
               :rate="quoteResponse.rate"
               :fulfill="fulfill"
-              @makeNewTrade="onNewTrade"
+              @make-new-trade="onNewTrade"
               @error="onPollingError"
             />
           </v-card-text>
@@ -81,7 +81,7 @@
     <ErrorSheet
       :error="error"
       :show-error="showError"
-      @onChange="onErrorSheetClosed"
+      @on-change="onErrorSheetClosed"
     />
   </v-container>
 </template>
