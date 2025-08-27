@@ -1,10 +1,5 @@
 import { defineStore } from 'pinia'
 
-interface Card {
-  id: string
-  cvvRequired: boolean
-}
-
 interface ApiRequest {
   url: string
   payload: any
@@ -14,8 +9,6 @@ interface ApiRequest {
 interface MainState {
   bearerToken: string
   apiRequest: ApiRequest
-  cards: Card[]
-  isMarketplace: boolean
 }
 
 export const useMainStore = defineStore('main', {
@@ -26,8 +19,6 @@ export const useMainStore = defineStore('main', {
       payload: {},
       response: {},
     },
-    cards: [],
-    isMarketplace: false,
   }),
 
   getters: {
@@ -35,7 +26,6 @@ export const useMainStore = defineStore('main', {
     getRequestPayload: (state): any => state.apiRequest.payload,
     getRequestResponse: (state): any => state.apiRequest.response,
     getRequestUrl: (state): string => state.apiRequest.url,
-    getCards: (state): Card[] => state.cards,
   },
 
   actions: {
@@ -60,14 +50,6 @@ export const useMainStore = defineStore('main', {
 
     clearRequestData() {
       this.apiRequest = { url: '', payload: {}, response: {} }
-    },
-
-    setCard(card: Card) {
-      this.cards.push(card)
-    },
-
-    setIsMarketplace(bool: boolean) {
-      this.isMarketplace = bool
     },
   },
 

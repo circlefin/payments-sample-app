@@ -38,5 +38,4 @@
 
 <script setup lang="ts">
 const store = useMainStore()
-const isMarketplace = computed(() => store.isMarketplace)
 </script>

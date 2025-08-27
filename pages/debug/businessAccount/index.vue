@@ -210,8 +210,4 @@
 </template>
 
 <script setup lang="ts">
-const store = useMainStore()
-
-// computed
-const isMarketplace = computed(() => store.isMarketplace)
 </script>

@@ -116,7 +116,6 @@ const formData = reactive({
 
 const verificationMethods = ['none', 'cvv', 'three_d_secure']
 const sourceType = ['card', 'ach', 'payment_token']
-const required = [(v: string) => !!v || 'Field is required']
 const error = ref<any>({})
 const loading = ref(false)
 const showError = ref(false)
@@ -124,7 +123,6 @@ const showError = ref(false)
 const payload = computed(() => store.getRequestPayload)
 const response = computed(() => store.getRequestResponse)
 const requestUrl = computed(() => store.getRequestUrl)
-const isMarketplace = computed(() => store.isMarketplace)
 
 watch(
   () => formData.verification,
@@ -155,15 +153,6 @@ watch(
   },
   { immediate: true },
 )
-
-onMounted(() => {
-  if (isMarketplace.value) {
-    throw createError({
-      statusCode: 404,
-      statusMessage: 'This endpoint is not available for marketplaces',
-    })
-  }
-})
 
 const onErrorSheetClosed = () => {
   error.value = {}

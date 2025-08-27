@@ -35,7 +35,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group v-if="!isMarketplace">
+        <v-list-group>
           <template v-slot:activator="{ props }">
             <v-list-item v-bind="props">
               <v-list-item-title>Payments APIs</v-list-item-title>
@@ -56,7 +56,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group v-if="isMarketplace">
+        <v-list-group>
           <template v-slot:activator="{ props }">
             <v-list-item v-bind="props">
               <v-list-item-title>Marketplace APIs</v-list-item-title>
@@ -98,7 +98,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group v-if="!isMarketplace">
+        <v-list-group>
           <template v-slot:activator="{ props }">
             <v-list-item v-bind="props">
               <v-list-item-title>Payment Intents APIs</v-list-item-title>
@@ -199,10 +199,6 @@
             Do not share or record your API keys in publicly accessible mediums
             such as GitHub, client-side code, etc.
           </p>
-          <v-switch
-            v-model="isMarketplace"
-            label="I am using a Circle Marketplaces API key"
-          ></v-switch>
         </v-form>
       </div>
     </v-navigation-drawer>
@@ -533,15 +529,6 @@ const apiKey = computed({
   set: (value: string) => store.setBearerToken(value),
 })
 
-const isMarketplace = computed({
-  get: () => store.isMarketplace,
-  set: (bool: boolean) => {
-    store.setIsMarketplace(bool)
-    router.push('/')
-  },
-})
-
-const title = ref('Circle Sample App')
 </script>
 
 <style scoped>
