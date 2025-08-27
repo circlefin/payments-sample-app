@@ -24,6 +24,7 @@
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
     "@pinia/nuxt": "^0.5.1",
     "@wagmi/core": "^0.8.19-cjs",
+    "ethers": "^5.8.0",
     "lodash": "^4.17.21",
     "nuxt": "^3.8.0",
     "ofetch": "^1.3.3",
