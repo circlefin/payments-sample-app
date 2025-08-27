@@ -13,7 +13,7 @@ export default defineNuxtPlugin(() => {
       store.setRequestPayload(config.data)
 
       if (store.bearerToken) {
-        config.headers = { Authorization: `Bearer ${store.bearerToken}` }
+        config.headers.Authorization = `Bearer ${store.bearerToken}`
       }
       return config
     },

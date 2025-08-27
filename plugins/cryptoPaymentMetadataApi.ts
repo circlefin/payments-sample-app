@@ -9,7 +9,7 @@ export default defineNuxtPlugin(() => {
   instance.interceptors.request.use(
     function (config) {
       if (store.bearerToken) {
-        config.headers = { Authorization: `Bearer ${store.bearerToken}` }
+        config.headers.Authorization = `Bearer ${store.bearerToken}`
       }
       return config
     },
