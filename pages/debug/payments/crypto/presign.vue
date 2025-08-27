@@ -29,15 +29,7 @@
           >
             Make api call
           </v-btn>
-          <v-btn
-            v-if="showMetaMaskButton"
-            variant="flat"
-            class="mb-7"
-            color="primary"
-            @click.prevent="sendResponseToMetaMask()"
-          >
-            Send response to MetaMask
-          </v-btn>
+
           <v-text-field
             v-if="formData.rawSignature.length"
             v-model="formData.rawSignature"
@@ -75,7 +67,6 @@
 </template>
 
 <script setup lang="ts">
-import { sendPresignedDataToMetaMask } from '~/lib/walletConnect'
 import { isNumber, required, validDecimal, isUUID } from '@/helpers/validation'
 
 const store = useMainStore()
@@ -85,7 +76,6 @@ const isFormValid = ref(false)
 const error = ref<any>({})
 const loading = ref(false)
 const showError = ref(false)
-const showMetaMaskButton = ref(false)
 
 const formData = reactive({
   paymentIntentId: '',
@@ -153,16 +143,6 @@ const makeApiCall = async () => {
     showError.value = true
   } finally {
     loading.value = false
-    showMetaMaskButton.value = Object.keys(store.getRequestResponse).length > 0
-  }
-}
-
-const sendResponseToMetaMask = async () => {
-  try {
-    formData.rawSignature = await sendPresignedDataToMetaMask(getTypedData())
-  } catch (err) {
-    error.value = err
-    showError.value = true
   }
 }
 </script>

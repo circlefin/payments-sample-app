@@ -31,9 +31,9 @@
             :to="item.to"
             exact
           >
-            <v-list-item-title class="list-items">{{
-              item.title
-            }}</v-list-item-title>
+            <v-list-item-title class="list-items">
+              {{ item.title }}
+            </v-list-item-title>
           </v-list-item>
         </v-list-group>
 
@@ -54,9 +54,9 @@
             :to="item.to"
             exact
           >
-            <v-list-item-title class="list-items">{{
-              item.title
-            }}</v-list-item-title>
+            <v-list-item-title class="list-items">
+              {{ item.title }}
+            </v-list-item-title>
           </v-list-item>
         </v-list-group>
 
@@ -77,9 +77,9 @@
             :to="item.to"
             exact
           >
-            <v-list-item-title class="list-items">{{
-              item.title
-            }}</v-list-item-title>
+            <v-list-item-title class="list-items">
+              {{ item.title }}
+            </v-list-item-title>
           </v-list-item>
         </v-list-group>
 
@@ -100,9 +100,9 @@
             :to="item.to"
             exact
           >
-            <v-list-item-title class="list-items">{{
-              item.title
-            }}</v-list-item-title>
+            <v-list-item-title class="list-items">
+              {{ item.title }}
+            </v-list-item-title>
           </v-list-item>
         </v-list-group>
 
@@ -123,9 +123,9 @@
             :to="item.to"
             exact
           >
-            <v-list-item-title class="list-items">{{
-              item.title
-            }}</v-list-item-title>
+            <v-list-item-title class="list-items">
+              {{ item.title }}
+            </v-list-item-title>
           </v-list-item>
         </v-list-group>
 
@@ -146,9 +146,9 @@
             :to="item.to"
             exact
           >
-            <v-list-item-title class="list-items">{{
-              item.title
-            }}</v-list-item-title>
+            <v-list-item-title class="list-items">
+              {{ item.title }}
+            </v-list-item-title>
           </v-list-item>
         </v-list-group>
       </v-list>
