@@ -61,20 +61,12 @@ export default defineNuxtConfig({
 
   modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt'],
 
-  build: {
-    // Nuxt 3 uses Vite by default, so this config is different
-  },
-
   runtimeConfig: {
     // The private keys which are only available within server-side
     // Keys within public, will be also exposed to the client-side
     public: {
       baseUrl: process.env.BASE_URL || 'https://api-sandbox.circle.com',
     },
-  },
-
-  nitro: {
-    // Server handlers are automatically handled by the server/api directory structure
   },
 
   vite: {
