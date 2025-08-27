@@ -31,13 +31,6 @@ export default defineNuxtConfig({
           href: 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap',
         },
       ],
-      script: [
-        {
-          src: 'https://pay.google.com/gp/p/js/pay.js',
-          async: true,
-          defer: true,
-        },
-      ],
     },
   },
 
@@ -89,11 +82,11 @@ export default defineNuxtConfig({
       global: 'globalThis',
     },
     optimizeDeps: {
-      include: ['openpgp'],
+      include: [],
     },
     build: {
       rollupOptions: {
-        external: ['openpgp'],
+        external: [],
       },
     },
   },

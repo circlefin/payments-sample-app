@@ -63,29 +63,6 @@
         <v-list-group>
           <template #activator="{ props }">
             <v-list-item v-bind="props">
-              <v-list-item-title>Marketplace APIs</v-list-item-title>
-            </v-list-item>
-          </template>
-
-          <v-list-item to="/debug" exact>
-            <v-list-item-title class="list-items"> Overview </v-list-item-title>
-          </v-list-item>
-
-          <v-list-item
-            v-for="(item, i) in marketplaceLinks"
-            :key="`marketplacelink-${i}`"
-            :to="item.to"
-            exact
-          >
-            <v-list-item-title class="list-items">{{
-              item.title
-            }}</v-list-item-title>
-          </v-list-item>
-        </v-list-group>
-
-        <v-list-group>
-          <template #activator="{ props }">
-            <v-list-item v-bind="props">
               <v-list-item-title>Payouts APIs</v-list-item-title>
             </v-list-item>
           </template>
@@ -365,49 +342,6 @@ const paymentsLinks = [
   {
     title: 'GET /presign',
     to: '/debug/payments/crypto/presign',
-  },
-]
-
-const marketplaceLinks = [
-  {
-    title: 'GET /marketplace/merchants',
-    to: '/debug/marketplace/merchants/fetch',
-  },
-  {
-    title: 'GET /marketplace/payments',
-    to: '/debug/marketplace/payments/fetch',
-  },
-  {
-    title: 'POST /marketplace/payments',
-    to: '/debug/marketplace/payments/create',
-  },
-  {
-    title: 'GET /marketplace/payments/{id}',
-    to: '/debug/marketplace/payments/details',
-  },
-  {
-    title: 'POST /banks/wires',
-    to: '/debug/wires/create',
-  },
-  {
-    title: 'POST /banks/wires',
-    to: '/debug/wires/create',
-  },
-  {
-    title: 'GET /banks/wires/{id}',
-    to: '/debug/wires/details',
-  },
-  {
-    title: 'GET /banks/wires/{id}/instructions',
-    to: '/debug/wires/instructions',
-  },
-  {
-    title: 'GET /settlements',
-    to: '/debug/settlements/fetch',
-  },
-  {
-    title: 'GET /settlements/{id}',
-    to: '/debug/settlements/details',
   },
 ]
 
