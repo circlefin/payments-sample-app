@@ -91,7 +91,6 @@
 
 <script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
-import openPGP from '@/lib/openpgp'
 import type { CreateCardPaymentPayload } from '@/lib/paymentsApi'
 
 const store = useMainStore()
@@ -191,21 +190,6 @@ const makeApiCall = async () => {
   }
 
   try {
-    if (
-      formData.verification === 'cvv' ||
-      (formData.verification === 'three_d_secure' && formData.cvv !== '')
-    ) {
-      const { cvv } = formData
-      const cardDetails = { cvv }
-
-      const publicKeyResponse = await $paymentsApi.getPCIPublicKey()
-      const encryptedData = await openPGP.encrypt(
-        cardDetails,
-        publicKeyResponse.data,
-      )
-      payloadData.encryptedData = encryptedData.encryptedMessage
-      payloadData.keyId = encryptedData.keyId
-    }
     await $paymentsApi.createPayment(payloadData)
   } catch (err) {
     error.value = err
