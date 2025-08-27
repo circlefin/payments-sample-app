@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Sample App for Payments API",
   "author": "Circle",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "build": "nuxt build",
