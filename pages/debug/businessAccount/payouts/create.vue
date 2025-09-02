@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-container>
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
@@ -31,7 +31,7 @@
           />
 
           <v-btn
-            depressed
+            variant="flat"
             class="mb-7"
             color="primary"
             :loading="loading"
@@ -52,101 +52,92 @@
     <ErrorSheet
       :error="error"
       :show-error="showError"
-      @onChange="onErrorSheetClosed"
+      @on-change="onErrorSheetClosed"
     />
-  </v-layout>
+  </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
+<script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
-import { CreatePayoutPayload } from '@/lib/businessAccount/payoutsApi'
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
-  },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-    }),
-  },
+import type { CreatePayoutPayload } from '@/lib/businessAccount/payoutsApi'
+
+const store = useMainStore()
+const { $businessAccountPayoutsApi } = useNuxtApp()
+
+const formData = reactive({
+  idempotencyKey: '',
+  amount: '0.00',
+  destination: '',
+  destinationType: 'wire',
+  currency: 'USD',
+  toCurrency: '',
 })
-export default class CreatePayoutClass extends Vue {
-  formData = {
-    idempotencyKey: '',
-    amount: '0.00',
-    destination: '',
-    destinationType: 'wire', // Default to wire
-    currency: 'USD', // Default to USD
-    toCurrency: '',
+
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
+
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
+
+const required = [(v: string) => !!v || 'Field is required']
+const destinationType = ['wire', 'cbit', 'xpay', 'rtp', 'rtgs', 'sepa', 'pix']
+const wireCurrencyTypes = ['USD', 'EUR']
+const cbitCurrencyTypes = ['USD']
+const xpayCurrencyTypes = ['USD']
+const rtpCurrencyTypes = ['USD']
+const rtgsCurrencyTypes = ['USD', 'EUR']
+const sepaCurrencyTypes = ['EUR']
+const pixCurrencyTypes = ['USD']
+const fxCurrencyTypes = ['', 'SGD', 'MXN']
+const pixFxCurrencyTypes = ['BRL']
+
+const currencyTypes = new Map([
+  ['wire', wireCurrencyTypes],
+  ['cbit', cbitCurrencyTypes],
+  ['xpay', xpayCurrencyTypes],
+  ['rtp', rtpCurrencyTypes],
+  ['rtgs', rtgsCurrencyTypes],
+  ['sepa', sepaCurrencyTypes],
+  ['pix', pixCurrencyTypes],
+])
+
+const toCurrencyTypes = new Map([
+  ['USDwire', fxCurrencyTypes],
+  ['USDpix', pixFxCurrencyTypes],
+])
+
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
+
+const makeApiCall = async () => {
+  loading.value = true
+  const amountDetail = {
+    amount: formData.amount,
+    currency: formData.currency,
   }
-
-  required = [(v: string) => !!v || 'Field is required']
-  destinationType = ['wire', 'cbit', 'xpay', 'rtp', 'rtgs', 'sepa', 'pix']
-  wireCurrencyTypes = ['USD', 'EUR']
-  cbitCurrencyTypes = ['USD']
-  xpayCurrencyTypes = ['USD']
-  rtpCurrencyTypes = ['USD']
-  rtgsCurrencyTypes = ['USD', 'EUR']
-  sepaCurrencyTypes = ['EUR']
-  pixCurrencyTypes = ['USD']
-  fxCurrencyTypes = ['', 'SGD', 'MXN']
-  pixFxCurrencyTypes = ['BRL']
-  currencyTypes = new Map([
-    ['wire', this.wireCurrencyTypes],
-    ['cbit', this.cbitCurrencyTypes],
-    ['xpay', this.xpayCurrencyTypes],
-    ['rtp', this.rtpCurrencyTypes],
-    ['rtgs', this.rtgsCurrencyTypes],
-    ['sepa', this.sepaCurrencyTypes],
-    ['pix', this.pixCurrencyTypes],
-  ])
-
-  toCurrencyTypes = new Map([
-    ['USDwire', this.fxCurrencyTypes],
-    ['USDpix', this.pixFxCurrencyTypes],
-  ])
-
-  error = {}
-  loading = false
-  showError = false
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
+  const toAmountDetail = {
+    currency: formData.toCurrency,
   }
-
-  async makeApiCall() {
-    this.loading = true
-    const amountDetail = {
-      amount: this.formData.amount,
-      currency: this.formData.currency,
-    }
-    const toAmountDetail = {
-      currency: this.formData.toCurrency,
-    }
-    const payload: CreatePayoutPayload = {
-      idempotencyKey: uuidv4(),
-      amount: amountDetail,
-      destination: {
-        id: this.formData.destination,
-        type: this.formData.destinationType,
-      },
-      ...(toAmountDetail.currency && { toAmount: toAmountDetail }),
-    }
-    try {
-      await this.$businessAccountPayoutsApi.createPayout(payload)
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
-    }
+  const payloadData: CreatePayoutPayload = {
+    idempotencyKey: uuidv4(),
+    amount: amountDetail,
+    destination: {
+      id: formData.destination,
+      type: formData.destinationType,
+    },
+    ...(toAmountDetail.currency && { toAmount: toAmountDetail }),
+  }
+  try {
+    await $businessAccountPayoutsApi.createPayout(payloadData)
+  } catch (err) {
+    error.value = err
+    showError.value = true
+  } finally {
+    loading.value = false
   }
 }
 </script>

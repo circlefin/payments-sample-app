@@ -47,7 +47,7 @@ instance.interceptors.response.use(
       response = error.toJSON()
     }
     return Promise.reject(response)
-  }
+  },
 )
 
 const nullIfEmpty = (prop: string | undefined) => {
@@ -111,7 +111,7 @@ function getRecipients(
   to: string,
   pageBefore: string,
   pageAfter: string,
-  pageSize: string
+  pageSize: string,
 ) {
   const queryParams = {
     address: nullIfEmpty(address),

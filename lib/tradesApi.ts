@@ -49,7 +49,7 @@ instance.interceptors.response.use(
       response = error.toJSON()
     }
     return Promise.reject(response)
-  }
+  },
 )
 
 /** Returns the axios instance */
@@ -105,7 +105,7 @@ function getSettlements(
   to: string,
   pageBefore: string,
   pageAfter: string,
-  pageSize: string
+  pageSize: string,
 ) {
   const params = {
     type: nullIfEmpty(type),

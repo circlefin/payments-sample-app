@@ -31,61 +31,51 @@
     <ErrorSheet
       :error="error"
       :show-error="showError"
-      @onChange="onErrorSheetClosed"
+      @on-change="onErrorSheetClosed"
     />
   </v-layout>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
+<script setup lang="ts">
+const store = useMainStore()
+const { $cbitAccountsApi } = useNuxtApp()
 
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
-  },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-    }),
-  },
+// template refs
+const form = ref()
+
+// data
+const formData = reactive({
+  accountId: '',
 })
-export default class FetchCbitBusinessAccountInstructionsClass extends Vue {
-  // data
-  formData = {
-    accountId: '',
-  }
 
-  requiredRules = [(v: string) => !!v || 'Field is required']
-  error = {}
-  loading = false
-  showError = false
+const requiredRules = [(v: string) => !!v || 'Field is required']
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
 
-  // methods
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
-  }
+// computed
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
 
-  async makeApiCall() {
-    const form = this.$refs.form as any
-    if (form.validate()) {
-      this.loading = true
-      try {
-        await this.$cbitAccountsApi.getCbitBusinessAccountInstructions(
-          this.formData.accountId
-        )
-      } catch (error: any) {
-        this.error = error
-        this.showError = true
-      } finally {
-        this.loading = false
-      }
+// methods
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
+
+const makeApiCall = async () => {
+  if (form.value.validate()) {
+    loading.value = true
+    try {
+      await $cbitAccountsApi.getCbitBusinessAccountInstructions(
+        formData.accountId,
+      )
+    } catch (err: any) {
+      error.value = err
+      showError.value = true
+    } finally {
+      loading.value = false
     }
   }
 }

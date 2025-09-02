@@ -1,16 +1,16 @@
 <template>
-  <v-layout>
+  <v-container>
     <v-row>
       <v-col cols="12" md="4">
         <v-menu>
-          <template #activator="{ on }">
+          <template #activator="{ props }">
             <div class="d-flex flex-row-reverse">
               <v-btn
                 v-if="isSandbox"
-                small
-                color="blue-grey lighten-1"
+                size="small"
+                color="blue-grey-lighten-1"
                 dark
-                v-on="on"
+                v-bind="props"
               >
                 Prefill form
               </v-btn>
@@ -145,7 +145,7 @@
             label="Intermediary Bank Country Code"
           />
           <v-btn
-            depressed
+            variant="flat"
             color="primary"
             :loading="loading"
             @click.prevent="makeApiCall()"
@@ -165,146 +165,138 @@
     <ErrorSheet
       :error="error"
       :show-error="showError"
-      @onChange="onErrorSheetClosed"
+      @on-change="onErrorSheetClosed"
     />
-  </v-layout>
+  </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
+<script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
 import { getLive } from '@/lib/apiTarget'
 import { exampleBankAccounts } from '@/lib/businessAccount/bankAccountsTestData'
-import { CreateWireAccountPayload } from '@/lib/businessAccount/bankAccountsApi'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
+import type { CreateWireAccountPayload } from '@/lib/businessAccount/bankAccountsApi'
+
+const store = useMainStore()
+const { $bankAccountsApi } = useNuxtApp()
+
+// data
+const formData = reactive({
+  beneficiaryName: '',
+  accountNumber: '',
+  routingNumber: '',
+  iban: '',
+  ffcMemo: '',
+  billingDetails: {
+    name: '',
+    city: '',
+    country: '',
+    line1: '',
+    line2: '',
+    district: '',
+    postalCode: '',
   },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-    }),
+  bankAddress: {
+    bankName: '',
+    city: '',
+    country: '',
+    line1: '',
+    line2: '',
+    district: '',
+    postalCode: '',
+  },
+  intermediaryBank: {
+    identifier: '',
+    type: '',
+    countryCode: '',
   },
 })
-export default class CreateCardClass extends Vue {
-  // data
-  formData = {
-    beneficiaryName: '',
-    accountNumber: '',
-    routingNumber: '',
-    iban: '',
-    ffcMemo: '',
+
+const rules = {
+  isNumber: (v: string) =>
+    v === '' || !isNaN(parseInt(v)) || 'Please enter valid number',
+  required: (v: string) => !!v || 'Field is required',
+}
+
+const prefillItems = exampleBankAccounts
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
+const expiryLabels = {
+  month: 'Expiry Month',
+  year: 'Expiry Year',
+}
+
+const isSandbox = !getLive()
+
+// computed
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
+
+// methods
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
+
+const prefillForm = (index: number) => {
+  Object.assign(formData, prefillItems[index].formData)
+}
+
+const makeApiCall = async () => {
+  loading.value = true
+  const {
+    beneficiaryName,
+    accountNumber,
+    routingNumber,
+    iban,
+    ffcMemo,
+    ...data
+  } = formData
+  const { billingDetails, bankAddress, intermediaryBank } = data
+
+  const payload: CreateWireAccountPayload = {
+    idempotencyKey: uuidv4(),
+    beneficiaryName,
+    accountNumber,
+    routingNumber,
+    iban,
+    ffcMemo,
     billingDetails: {
-      name: '',
-      city: '',
-      country: '',
-      line1: '',
-      line2: '',
-      district: '',
-      postalCode: '',
+      name: billingDetails.name,
+      line1: billingDetails.line1,
+      line2: billingDetails.line2,
+      city: billingDetails.city,
+      district: billingDetails.district,
+      country: billingDetails.country,
+      postalCode: billingDetails.postalCode,
     },
     bankAddress: {
-      bankName: '',
-      city: '',
-      country: '',
-      line1: '',
-      line2: '',
-      district: '',
-      postalCode: '',
-    },
-    intermediaryBank: {
-      identifier: '',
-      type: '',
-      countryCode: '',
+      bankName: bankAddress.bankName,
+      line1: bankAddress.line1,
+      line2: bankAddress.line2,
+      city: bankAddress.city,
+      district: bankAddress.district,
+      country: bankAddress.country,
+      postalCode: bankAddress.postalCode,
     },
   }
 
-  rules = {
-    isNumber: (v: string) =>
-      v === '' || !isNaN(parseInt(v)) || 'Please enter valid number',
-    required: (v: string) => !!v || 'Field is required',
-  }
-
-  prefillItems = exampleBankAccounts
-  error = {}
-  loading = false
-  showError = false
-  expiryLabels = {
-    month: 'Expiry Month',
-    year: 'Expiry Year',
-  }
-
-  isSandbox: Boolean = !getLive()
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
-  }
-
-  prefillForm(index: number) {
-    this.formData = this.prefillItems[index].formData
-  }
-
-  async makeApiCall() {
-    this.loading = true
-    const {
-      beneficiaryName,
-      accountNumber,
-      routingNumber,
-      iban,
-      ffcMemo,
-      ...data
-    } = this.formData
-    const { billingDetails, bankAddress, intermediaryBank } = data
-
-    const payload: CreateWireAccountPayload = {
-      idempotencyKey: uuidv4(),
-      beneficiaryName,
-      accountNumber,
-      routingNumber,
-      iban,
-      ffcMemo,
-      billingDetails: {
-        name: billingDetails.name,
-        line1: billingDetails.line1,
-        line2: billingDetails.line2,
-        city: billingDetails.city,
-        district: billingDetails.district,
-        country: billingDetails.country,
-        postalCode: billingDetails.postalCode,
-      },
-      bankAddress: {
-        bankName: bankAddress.bankName,
-        line1: bankAddress.line1,
-        line2: bankAddress.line2,
-        city: bankAddress.city,
-        district: bankAddress.district,
-        country: bankAddress.country,
-        postalCode: bankAddress.postalCode,
-      },
+  if (intermediaryBank.identifier.length > 0) {
+    payload.intermediaryBank = {
+      identifier: intermediaryBank.identifier,
+      type: intermediaryBank.type,
+      countryCode: intermediaryBank.countryCode,
     }
+  }
 
-    if (intermediaryBank.identifier.length > 0) {
-      payload.intermediaryBank = {
-        identifier: intermediaryBank.identifier,
-        type: intermediaryBank.type,
-        countryCode: intermediaryBank.countryCode,
-      }
-    }
-
-    try {
-      await this.$bankAccountsApi.createBankAccount(payload)
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
-    }
+  try {
+    await $bankAccountsApi.createBankAccount(payload)
+  } catch (err) {
+    error.value = err
+    showError.value = true
+  } finally {
+    loading.value = false
   }
 }
 </script>

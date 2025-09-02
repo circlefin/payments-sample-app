@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-container>
     <v-row>
       <v-col cols="12" md="4">
         <v-form v-model="validForm">
@@ -77,7 +77,7 @@
             label="Signature"
           />
           <v-btn
-            depressed
+            variant="flat"
             class="mb-7"
             color="primary"
             :loading="loading"
@@ -99,102 +99,85 @@
     <ErrorSheet
       :error="error"
       :show-error="showError"
-      @onChange="onErrorSheetClosed"
+      @on-change="onErrorSheetClosed"
     />
-  </v-layout>
+  </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
-import { CreatePiFXSignaturePayload } from '~/lib/cpsTradesApi'
+<script setup lang="ts">
+import type { CreatePiFXSignaturePayload } from '~/lib/cpsTradesApi'
 
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
-  },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-    }),
-  },
-})
-export default class RegisterCpsSignatureClass extends Vue {
-  validForm: boolean = false
-  formData = {
-    tradeId: '',
-    type: '',
-    address: '',
-    details: {
-      recipient: '',
-      deadline: '',
-      nonce: '',
-      consideration: {
-        quoteId: '',
-        base: '',
-        quote: '',
-        quoteAmount: '',
-        baseAmount: '',
-        maturity: '',
-      },
+const store = useMainStore()
+const { $cpsTradesApi } = useNuxtApp()
+
+const validForm = ref(false)
+const formData = reactive({
+  tradeId: '',
+  type: '',
+  address: '',
+  details: {
+    recipient: '',
+    deadline: '',
+    nonce: '',
+    consideration: {
+      quoteId: '',
+      base: '',
+      quote: '',
+      quoteAmount: '',
+      baseAmount: '',
+      maturity: '',
     },
-    signature: '',
-  }
+  },
+  signature: '',
+})
 
-  required = (v: string) => !!v || 'Field is required'
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
 
-  isNumber = (v: string) =>
-    !v || v === '' || !isNaN(parseInt(v)) || 'Please enter valid number'
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
 
-  error = {}
-  loading = false
-  showError = false
+const required = (v: string) => !!v || 'Field is required'
+const isNumber = (v: string) =>
+  !v || v === '' || !isNaN(parseInt(v)) || 'Please enter valid number'
 
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
-  }
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
 
-  async makeApiCall() {
-    this.loading = true
+const makeApiCall = async () => {
+  loading.value = true
 
-    try {
-      const payload: CreatePiFXSignaturePayload = {
-        tradeId: this.formData.tradeId,
-        type: this.formData.type,
-        address: this.formData.address,
-        details: {
-          recipient: this.formData.details.recipient,
-          deadline: parseInt(this.formData.details.deadline),
-          nonce: parseInt(this.formData.details.nonce),
-          consideration: {
-            quoteId: this.formData.details.consideration.quoteId,
-            base: this.formData.details.consideration.base,
-            quote: this.formData.details.consideration.quote,
-            quoteAmount: parseInt(
-              this.formData.details.consideration.quoteAmount
-            ),
-            baseAmount: parseInt(
-              this.formData.details.consideration.baseAmount
-            ),
-            maturity: parseInt(this.formData.details.consideration.maturity),
-          },
+  try {
+    const payloadData: CreatePiFXSignaturePayload = {
+      tradeId: formData.tradeId,
+      type: formData.type,
+      address: formData.address,
+      details: {
+        recipient: formData.details.recipient,
+        deadline: parseInt(formData.details.deadline),
+        nonce: parseInt(formData.details.nonce),
+        consideration: {
+          quoteId: formData.details.consideration.quoteId,
+          base: formData.details.consideration.base,
+          quote: formData.details.consideration.quote,
+          quoteAmount: parseInt(formData.details.consideration.quoteAmount),
+          baseAmount: parseInt(formData.details.consideration.baseAmount),
+          maturity: parseInt(formData.details.consideration.maturity),
         },
-        signature: this.formData.signature,
-      }
-
-      await this.$cpsTradesApi.registerSignature(payload)
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
+      },
+      signature: formData.signature,
     }
+
+    await $cpsTradesApi.registerSignature(payloadData)
+  } catch (err) {
+    error.value = err
+    showError.value = true
+  } finally {
+    loading.value = false
   }
 }
 </script>

@@ -1,48 +1,40 @@
-import mocksApi, {
-  CreateMockChargebackPayload,
-  CreateMockPixPushPaymentPayload,
-  CreateMockPushPaymentPayload,
-} from '@/lib/mocksApi'
+import mocksApi from '@/lib/mocksApi'
 
-declare module 'vue/types/vue' {
-  interface Vue {
-    $mocksApi: {
-      getInstance: any
-      createMockChargeback: (payload: CreateMockChargebackPayload) => any
-      createMockWirePayment: (payload: CreateMockPushPaymentPayload) => any
-      createMockPixPyament: (payload: CreateMockPixPushPaymentPayload) => any
-    }
-  }
-}
+export default defineNuxtPlugin(() => {
+  const { $pinia } = useNuxtApp()
+  const store = useMainStore($pinia)
 
-export default ({ store }: any, inject: any) => {
   const instance = mocksApi.getInstance()
 
   instance.interceptors.request.use(
     function (config) {
-      store.commit('CLEAR_REQUEST_DATA')
-      store.commit('SET_REQUEST_URL', `${config.baseURL}${config.url}`)
-      store.commit('SET_REQUEST_PAYLOAD', config.data)
+      store.clearRequestData()
+      store.setRequestUrl(`${config.baseURL}${config.url}`)
+      store.setRequestPayload(config.data)
 
-      if (store.state.bearerToken) {
-        config.headers = { Authorization: `Bearer ${store.state.bearerToken}` }
+      if (store.bearerToken) {
+        config.headers.Authorization = `Bearer ${store.bearerToken}`
       }
       return config
     },
     function (error) {
       return Promise.reject(error)
-    }
+    },
   )
 
   instance.interceptors.response.use(
     function (response) {
-      store.commit('SET_RESPONSE', response)
+      store.setResponse(response)
       return response
     },
     function (error) {
       return Promise.reject(error)
-    }
+    },
   )
 
-  inject('mocksApi', mocksApi)
-}
+  return {
+    provide: {
+      mocksApi: mocksApi,
+    },
+  }
+})

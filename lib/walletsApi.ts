@@ -26,7 +26,7 @@ instance.interceptors.response.use(
       response = error.toJSON()
     }
     return Promise.reject(response)
-  }
+  },
 )
 
 /** Returns the axios instance */

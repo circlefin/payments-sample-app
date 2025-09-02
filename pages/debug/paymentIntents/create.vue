@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-container>
     <v-row>
       <v-col cols="12" md="4">
         <v-form v-model="isFormValid">
@@ -54,7 +54,7 @@
 
           <v-btn
             v-if="currencySelected"
-            depressed
+            variant="flat"
             class="mb-7"
             color="primary"
             :loading="loading"
@@ -76,18 +76,14 @@
     <ErrorSheet
       :error="error"
       :show-error="showError"
-      @onChange="onErrorSheetClosed"
+      @on-change="onErrorSheetClosed"
     />
-  </v-layout>
+  </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
+<script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
-import {
+import type {
   CreateContinuousPaymentIntentPayload,
   CreateTransientPaymentIntentPayload,
 } from '@/lib/paymentIntentsApi'
@@ -98,138 +94,127 @@ interface CurrencyBlockchainPair {
   blockchains: string[]
 }
 
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
-  },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-      isMarketplace: 'isMarketplace',
-    }),
-  },
-  data: () => ({
-    isFormValid: false,
-  }),
+const store = useMainStore()
+const { $cryptoPaymentMetadataApi, $paymentIntentsApi } = useNuxtApp()
+
+const isFormValid = ref(false)
+const formData = reactive({
+  idempotencyKey: '',
+  amount: '',
+  currency: '',
+  merchantWalletId: '',
+  settlementCurrency: '',
+  blockchain: '',
+  expiresOn: '',
+  type: 'transient',
 })
-export default class CreatePaymentIntentClass extends Vue {
-  formData = {
-    idempotencyKey: '',
-    amount: '',
-    currency: '',
-    merchantWalletId: '',
-    settlementCurrency: '',
-    blockchain: '',
-    expiresOn: '',
-    type: 'transient',
+
+const rules = {
+  isNumber,
+  required,
+  validDecimal,
+}
+
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
+const currencyBlockchainPairs = ref<CurrencyBlockchainPair[]>([])
+const supportedCurrencies = ref([''])
+const supportedChains = ref([''])
+const currencySelected = ref(false)
+const transientIntentSelected = ref(true)
+const continuousIntentSelected = ref(false)
+const intentTypes = ['continuous', 'transient']
+
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
+
+onMounted(async () => {
+  const apiResponse =
+    await $cryptoPaymentMetadataApi.getSupportedCurrencyAndBlockchainCombinations()
+  currencyBlockchainPairs.value = apiResponse.data
+  supportedCurrencies.value = currencyBlockchainPairs.value.map((obj) => {
+    return obj.currency
+  })
+})
+
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
+
+const onCurrencyChange = () => {
+  supportedChains.value =
+    currencyBlockchainPairs.value.find(
+      ({ currency }) => currency === formData.currency,
+    )?.blockchains ?? []
+  formData.blockchain = ''
+  currencySelected.value = true
+}
+
+const onIntentTypeChange = () => {
+  if (formData.type === 'continuous') {
+    continuousIntentSelected.value = true
+    transientIntentSelected.value = false
+  } else if (formData.type === 'transient') {
+    continuousIntentSelected.value = false
+    transientIntentSelected.value = true
   }
+}
 
-  // validation rules
-  rules = {
-    isNumber,
-    required,
-    validDecimal,
+const makeApiCall = async () => {
+  loading.value = true
+  const blockchainPaymentMethod = {
+    type: 'blockchain',
+    chain: formData.blockchain,
   }
-
-  error = {}
-  loading = false
-  showError = false
-  currencyBlockchainPairs: CurrencyBlockchainPair[] = []
-  supportedCurrencies = ['']
-  supportedChains = ['']
-  currencySelected = false
-  transientIntentSelected = true
-  continuousIntentSelected = false
-  intentTypes = ['continuous', 'transient']
-
-  async mounted() {
-    this.currencyBlockchainPairs =
-      await this.$cryptoPaymentMetadataApi.getSupportedCurrencyAndBlockchainCombinations()
-    this.supportedCurrencies = this.currencyBlockchainPairs.map((obj) => {
-      return obj.currency
-    })
-  }
-
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
-  }
-
-  onCurrencyChange() {
-    this.supportedChains =
-      this.currencyBlockchainPairs.find(
-        ({ currency }) => currency === this.formData.currency
-      )?.blockchains ?? []
-    this.formData.blockchain = ''
-    this.currencySelected = true
-  }
-
-  onIntentTypeChange() {
-    if (this.formData.type === 'continuous') {
-      this.continuousIntentSelected = true
-      this.transientIntentSelected = false
-    } else if (this.formData.type === 'transient') {
-      this.continuousIntentSelected = false
-      this.transientIntentSelected = true
+  if (transientIntentSelected.value) {
+    const amountDetail = {
+      amount: formData.amount,
+      currency: formData.currency,
     }
-  }
 
-  async makeApiCall() {
-    this.loading = true
-    const blockchainPaymentMethod = {
-      type: 'blockchain',
-      chain: this.formData.blockchain,
+    const payloadData: CreateTransientPaymentIntentPayload = {
+      idempotencyKey: uuidv4(),
+      amount: amountDetail,
+      settlementCurrency: formData.settlementCurrency,
+      paymentMethods: [blockchainPaymentMethod],
+      expiresOn: formData.expiresOn,
     }
-    if (this.transientIntentSelected) {
-      const amountDetail = {
-        amount: this.formData.amount,
-        currency: this.formData.currency,
-      }
 
-      const payload: CreateTransientPaymentIntentPayload = {
-        idempotencyKey: uuidv4(),
-        amount: amountDetail,
-        settlementCurrency: this.formData.settlementCurrency,
-        paymentMethods: [blockchainPaymentMethod],
-        expiresOn: this.formData.expiresOn,
-      }
+    if (formData.merchantWalletId !== '') {
+      payloadData.merchantWalletId = formData.merchantWalletId
+    }
 
-      if (this.formData.merchantWalletId !== '') {
-        payload.merchantWalletId = this.formData.merchantWalletId
-      }
+    try {
+      await $paymentIntentsApi.createTransientPaymentIntent(payloadData)
+    } catch (err) {
+      error.value = err
+      showError.value = true
+    } finally {
+      loading.value = false
+    }
+  } else if (continuousIntentSelected.value) {
+    const payloadData: CreateContinuousPaymentIntentPayload = {
+      idempotencyKey: uuidv4(),
+      currency: formData.currency,
+      settlementCurrency: formData.settlementCurrency,
+      paymentMethods: [blockchainPaymentMethod],
+      type: formData.type,
+    }
 
-      try {
-        await this.$paymentIntentsApi.createTransientPaymentIntent(payload)
-      } catch (error) {
-        this.error = error
-        this.showError = true
-      } finally {
-        this.loading = false
-      }
-    } else if (this.continuousIntentSelected) {
-      const payload: CreateContinuousPaymentIntentPayload = {
-        idempotencyKey: uuidv4(),
-        currency: this.formData.currency,
-        settlementCurrency: this.formData.settlementCurrency,
-        paymentMethods: [blockchainPaymentMethod],
-        type: this.formData.type,
-      }
+    if (formData.merchantWalletId !== '') {
+      payloadData.merchantWalletId = formData.merchantWalletId
+    }
 
-      if (this.formData.merchantWalletId !== '') {
-        payload.merchantWalletId = this.formData.merchantWalletId
-      }
-
-      try {
-        await this.$paymentIntentsApi.createContinuousPaymentIntent(payload)
-      } catch (error) {
-        this.error = error
-        this.showError = true
-      } finally {
-        this.loading = false
-      }
+    try {
+      await $paymentIntentsApi.createContinuousPaymentIntent(payloadData)
+    } catch (err) {
+      error.value = err
+      showError.value = true
+    } finally {
+      loading.value = false
     }
   }
 }

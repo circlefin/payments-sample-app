@@ -2,68 +2,78 @@
   <v-text-field
     v-model="amountFormatted"
     :rules="rules"
-    :label="label"
-    :prefix="prefix"
-    :disabled="disabled"
+    :label="props.label"
+    :prefix="props.prefix"
+    :disabled="props.disabled"
   />
 </template>
 
-<script lang="ts">
-import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
-
-@Component({})
-export default class AmountInput extends Vue {
-  @Prop({ type: String, default: '$' }) prefix!: string
-  @Prop({ type: String, default: '' }) label!: string
-  @Prop({ type: String, default: '' }) value!: string
-  @Prop({ type: Boolean, default: false }) disabled!: boolean
-
-  amountFormatted: string = '0.00'
-
-  ruleFunctions = {
-    positive: (v: string) => {
-      return parseFloat(v) > 0 || 'Please enter a positive amount'
-    },
-    isCurrency: (v: string) => {
-      const amount = v.trim()
-      return (
-        /^[0-9]+(.[0-9]{1,2})?$/.test(amount) || 'Please enter valid amount'
-      )
-    },
-    isNumber: (v: string) => {
-      return !isNaN(parseInt(v)) || 'Please enter valid amount'
-    },
-    isRequired: (v: string) => {
-      return v.trim() !== '' || 'Please enter an amount'
-    },
-  }
-
-  get rules() {
-    return [
-      this.ruleFunctions.isRequired,
-      this.ruleFunctions.isNumber,
-      this.ruleFunctions.isCurrency,
-      this.ruleFunctions.positive,
-    ]
-  }
-
-  @Watch('amountFormatted', { immediate: true })
-  amountFormattedChange(value: string) {
-    this.amountFormatted = this.format(value)
-    this.$emit('input', this.amountFormatted)
-  }
-
-  @Watch('value', { immediate: true })
-  valueChange(value: string) {
-    this.amountFormatted = this.format(value)
-  }
-
-  format(value: string) {
-    if (!value) {
-      return ''
-    }
-
-    return value
-  }
+<script setup lang="ts">
+interface Props {
+  prefix?: string
+  label?: string
+  modelValue?: string
+  disabled?: boolean
 }
+
+const props = withDefaults(defineProps<Props>(), {
+  prefix: '$',
+  label: '',
+  modelValue: '',
+  disabled: false,
+})
+
+const emit = defineEmits<{
+  'update:modelValue': [value: string]
+}>()
+
+const amountFormatted = ref('0.00')
+
+const ruleFunctions = {
+  positive: (v: string) => {
+    return parseFloat(v) > 0 || 'Please enter a positive amount'
+  },
+  isCurrency: (v: string) => {
+    const amount = v.trim()
+    return /^[0-9]+(.[0-9]{1,2})?$/.test(amount) || 'Please enter valid amount'
+  },
+  isNumber: (v: string) => {
+    return !isNaN(parseInt(v)) || 'Please enter valid amount'
+  },
+  isRequired: (v: string) => {
+    return v.trim() !== '' || 'Please enter an amount'
+  },
+}
+
+const rules = computed(() => [
+  ruleFunctions.isRequired,
+  ruleFunctions.isNumber,
+  ruleFunctions.isCurrency,
+  ruleFunctions.positive,
+])
+
+const format = (value: string) => {
+  if (!value) {
+    return ''
+  }
+  return value
+}
+
+watch(
+  amountFormatted,
+  (value: string) => {
+    const formatted = format(value)
+    amountFormatted.value = formatted
+    emit('update:modelValue', formatted)
+  },
+  { immediate: true },
+)
+
+watch(
+  () => props.modelValue,
+  (value: string) => {
+    amountFormatted.value = format(value)
+  },
+  { immediate: true },
+)
 </script>

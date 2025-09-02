@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-container>
     <v-row>
       <v-col cols="12" md="4">
         <v-form v-model="isFormValid">
@@ -21,7 +21,7 @@
           />
           <v-text-field v-model="formData.currency" label="Currency" />
           <v-btn
-            depressed
+            variant="flat"
             class="mb-7"
             color="primary"
             :disabled="!isFormValid"
@@ -29,31 +29,24 @@
           >
             Make api call
           </v-btn>
-          <v-btn
-            v-if="showMetaMaskButton"
-            depressed
-            class="mb-7"
-            color="primary"
-            @click.prevent="sendResponseToMetaMask()"
-          >
-            Send response to MetaMask
-          </v-btn>
+
           <v-text-field
             v-if="formData.rawSignature.length"
             v-model="formData.rawSignature"
             label="ECDSA rawSignature"
             readonly
           >
-            <router-link
-              slot="append"
-              :to="{
-                path: '/debug/payments/crypto/create',
-                query: getCreatePaymentQueryParams(),
-              }"
-              class="subtitle-2 text-right"
-            >
-              Create crypto payment
-            </router-link>
+            <template #append>
+              <router-link
+                :to="{
+                  path: '/debug/payments/crypto/create',
+                  query: getCreatePaymentQueryParams(),
+                }"
+                class="subtitle-2 text-right"
+              >
+                Create crypto payment
+              </router-link>
+            </template>
           </v-text-field>
         </v-form>
       </v-col>
@@ -68,119 +61,88 @@
     <ErrorSheet
       :error="error"
       :show-error="showError"
-      @onChange="onErrorSheetClosed"
+      @on-change="onErrorSheetClosed"
     />
-  </v-layout>
+  </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
-import { sendPresignedDataToMetaMask } from '~/lib/walletConnect'
+<script setup lang="ts">
 import { isNumber, required, validDecimal, isUUID } from '@/helpers/validation'
 
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
-  },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-    }),
-  },
-  data: () => ({
-    isFormValid: false,
-  }),
+const store = useMainStore()
+const { $paymentsApi } = useNuxtApp()
+
+const isFormValid = ref(false)
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
+
+const formData = reactive({
+  paymentIntentId: '',
+  endUserAddress: '',
+  amount: '',
+  currency: '',
+  rawSignature: '',
 })
-export default class FetchPresignData extends Vue {
-  error = {}
-  loading = false
-  showError = false
-  showMetaMaskButton = false
 
-  formData = {
-    paymentIntentId: '',
-    endUserAddress: '',
-    amount: '',
-    currency: '',
-    rawSignature: '',
+const rules = {
+  isNumber,
+  required,
+  validDecimal,
+  isUUID,
+}
+
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
+
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
+
+const getTypedData = () => {
+  return store.getRequestResponse.typedData
+}
+
+const getCreatePaymentQueryParams = () => {
+  const { paymentIntentId, rawSignature } = formData
+  const {
+    message,
+    totalAmount,
+    networkFeeQuote,
+    feeChargeModel,
+    primaryType: protocolType,
+  } = getTypedData()
+  return {
+    paymentIntentId,
+    amount: totalAmount.amount,
+    currency: totalAmount.currency,
+    sourceAddress: message.from,
+    destinationAddress: message.to,
+    feeQuoteId: feeChargeModel === 'endUser' ? networkFeeQuote?.quoteId : '',
+    protocolType,
+    validAfter: message.validAfter,
+    validBefore: message.validBefore,
+    metaTxNonce: message.nonce,
+    rawSignature,
   }
+}
 
-  // validation rules
-  rules = {
-    isNumber,
-    required,
-    validDecimal,
-    isUUID,
-  }
-
-  // methods
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
-  }
-
-  getTypedData() {
-    return this.$store.getters.getRequestResponse.typedData
-  }
-
-  getCreatePaymentQueryParams() {
-    const { paymentIntentId, rawSignature } = this.formData
-    const {
-      message,
-      totalAmount,
-      networkFeeQuote,
-      feeChargeModel,
-      primaryType: protocolType,
-    } = this.getTypedData()
-    return {
-      paymentIntentId,
-      amount: totalAmount.amount,
-      currency: totalAmount.currency,
-      sourceAddress: message.from,
-      destinationAddress: message.to,
-      feeQuoteId: feeChargeModel === 'endUser' ? networkFeeQuote?.quoteId : '',
-      protocolType,
-      validAfter: message.validAfter,
-      validBefore: message.validBefore,
-      metaTxNonce: message.nonce,
-      rawSignature,
-    }
-  }
-
-  async makeApiCall() {
-    this.loading = true
-    try {
-      await this.$paymentsApi.getPresignData(
-        this.formData.paymentIntentId,
-        this.formData.endUserAddress,
-        this.formData.amount,
-        this.formData.currency
-      )
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
-      this.showMetaMaskButton =
-        Object.keys(this.$store.getters.getRequestResponse).length > 0
-    }
-  }
-
-  async sendResponseToMetaMask() {
-    try {
-      this.formData.rawSignature = await sendPresignedDataToMetaMask(
-        this.getTypedData()
-      )
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    }
+const makeApiCall = async () => {
+  loading.value = true
+  try {
+    await $paymentsApi.getPresignData(
+      formData.paymentIntentId,
+      formData.endUserAddress,
+      formData.amount,
+      formData.currency,
+    )
+  } catch (err) {
+    error.value = err
+    showError.value = true
+  } finally {
+    loading.value = false
   }
 }
 </script>

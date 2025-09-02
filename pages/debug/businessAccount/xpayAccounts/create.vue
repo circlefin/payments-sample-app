@@ -31,65 +31,53 @@
     <ErrorSheet
       :error="error"
       :show-error="showError"
-      @onChange="onErrorSheetClosed"
+      @on-change="onErrorSheetClosed"
     />
   </v-layout>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
+<script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
-import { CreateXpayAccountPayload } from '@/lib/businessAccount/xpayAccountsApi'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
-  },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-    }),
-  },
+import type { CreateXpayAccountPayload } from '@/lib/businessAccount/xpayAccountsApi'
+
+const store = useMainStore()
+const { $xpayAccountsApi } = useNuxtApp()
+
+const formData = reactive({
+  accountNumber: '',
 })
-export default class CreateXpayBusinessAccountClass extends Vue {
-  // data
-  formData = {
-    accountNumber: '',
-  }
 
-  requiredRules = [(v: string) => !!v || 'Field is required']
-  error = {}
-  loading = false
-  showError = false
-  // methods
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
-  }
+const form = ref()
+const requiredRules = [(v: string) => !!v || 'Field is required']
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
 
-  async makeApiCall() {
-    const form = this.$refs.form as any
-    if (form.validate()) {
-      this.loading = true
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
 
-      const payload: CreateXpayAccountPayload = {
-        idempotencyKey: uuidv4(),
-        accountNumber: this.formData.accountNumber,
-      }
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
 
-      try {
-        await this.$xpayAccountsApi.createXpayBusinessAccount(payload)
-      } catch (error: any) {
-        this.error = error
-        this.showError = true
-      } finally {
-        this.loading = false
-      }
+const makeApiCall = async () => {
+  if (form.value.validate()) {
+    loading.value = true
+
+    const payloadData: CreateXpayAccountPayload = {
+      idempotencyKey: uuidv4(),
+      accountNumber: formData.accountNumber,
+    }
+
+    try {
+      await $xpayAccountsApi.createXpayBusinessAccount(payloadData)
+    } catch (err: any) {
+      error.value = err
+      showError.value = true
+    } finally {
+      loading.value = false
     }
   }
 }

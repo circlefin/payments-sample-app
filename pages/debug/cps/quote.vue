@@ -47,74 +47,77 @@
     <ErrorSheet
       :error="error"
       :show-error="showError"
-      @onChange="onErrorSheetClosed"
+      @on-change="onErrorSheetClosed"
     />
   </v-layout>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
+<script setup lang="ts">
+import { getAPIHostname } from '~/lib/apiTarget'
 
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
+const store = useMainStore()
+const { $cpsTradesApi } = useNuxtApp()
+
+const validForm = ref(false)
+const formData = reactive({
+  from: {
+    amount: '',
+    currency: 'USDC',
   },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-      isMarketplace: 'isMarketplace',
-    }),
+  to: {
+    amount: '',
+    currency: '',
   },
 })
-export default class CreateCpsQuoteClass extends Vue {
-  validForm: boolean = false
-  formData = {
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
+const currencies = ['USDC', 'EURC']
+const toCurrencyMap = new Map([
+  ['USDC', ['EURC']],
+  ['EURC', ['USDC']],
+])
+
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
+
+const required = (v: string) => !!v || 'Field is required'
+const isNumber = (v: string) =>
+  !v || v === '' || !isNaN(parseInt(v)) || 'Please enter valid number'
+
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
+
+const makeApiCall = async () => {
+  loading.value = true
+
+  const payloadData = {
     from: {
-      amount: '',
-      currency: 'USDC',
+      amount: formData.from.amount
+        ? parseFloat(formData.from.amount)
+        : undefined,
+      currency: formData.from.currency,
     },
     to: {
-      amount: '',
-      currency: '',
+      amount: formData.to.amount ? parseFloat(formData.to.amount) : undefined,
+      currency: formData.to.currency,
     },
   }
 
-  required = (v: string) => !!v || 'Field is required'
+  try {
+    store.setRequestPayload(payloadData)
+    store.setRequestUrl(`${getAPIHostname()}/v1/cps/quotes`)
 
-  isNumber = (v: string) =>
-    !v || v === '' || !isNaN(parseInt(v)) || 'Please enter valid number'
-
-  error = {}
-  loading = false
-  showError = false
-  currencies = ['USDC', 'EURC']
-  toCurrencyMap = new Map([
-    ['USDC', ['EURC']],
-    ['EURC', ['USDC']],
-  ])
-
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
-  }
-
-  async makeApiCall() {
-    this.loading = true
-
-    try {
-      await this.$cpsTradesApi.createQuote(this.formData)
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
-    }
+    const response = await $cpsTradesApi.createQuote(payloadData)
+    store.setResponse(response)
+  } catch (err) {
+    error.value = err
+    showError.value = true
+  } finally {
+    loading.value = false
   }
 }
 </script>

@@ -10,86 +10,83 @@
     <div v-if="polling" class="text-center">
       <v-progress-circular indeterminate color="primary"></v-progress-circular>
       <br /><br />
-      <v-btn depressed small @click.prevent="stopPolling()">
+      <v-btn variant="flat" size="small" @click.prevent="stopPolling()">
         Stop polling
       </v-btn>
     </div>
     <div v-else class="text-center mt-8">
-      <v-btn depressed small @click.prevent="newPayment()">
+      <v-btn variant="flat" size="small" @click.prevent="newPayment()">
         Make a new payment
       </v-btn>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
+<script setup lang="ts">
+interface Props {
+  paymentId?: string
+}
 
-@Component({
-  computed: {
-    ...mapGetters({
-      isMarketplace: 'isMarketplace',
-    }),
-  },
+const props = withDefaults(defineProps<Props>(), {
+  paymentId: '',
 })
-export default class PaymentStatus extends Vue {
-  @Prop({ type: String, default: '' })
-  paymentId!: string
 
-  paymentResponse = {
-    id: '',
-    status: '',
-  }
+const emit = defineEmits<{
+  finished: []
+  makeNewPayment: []
+  error: [error: any]
+}>()
 
-  polling: boolean = false
-  pollingId: number = 0
-  isMarketplace!: boolean
+const store = useMainStore()
+const { $paymentsApi } = useNuxtApp()
 
-  stopPolling() {
-    clearInterval(this.pollingId)
-    this.polling = false
-    this.$emit('finished')
-  }
+const paymentResponse = ref({
+  id: '',
+  status: '',
+})
 
-  pollForPaymentsDetail(id: string) {
-    this.polling = true
-    this.pollingId = window.setInterval(() => {
-      this.getPayment(id)
-    }, 3000)
-  }
+const polling = ref(false)
+const pollingId = ref(0)
 
-  newPayment() {
-    this.$emit('makeNewPayment')
-  }
+const stopPolling = () => {
+  clearInterval(pollingId.value)
+  polling.value = false
+  emit('finished')
+}
 
-  async getPayment(paymentId: string) {
-    try {
-      let payment
-      if (this.isMarketplace) {
-        payment = await this.$marketplaceApi.getPaymentById(paymentId)
-      } else {
-        payment = await this.$paymentsApi.getPaymentById(paymentId)
-      }
+const pollForPaymentsDetail = (id: string) => {
+  polling.value = true
+  pollingId.value = window.setInterval(() => {
+    getPayment(id)
+  }, 3000)
+}
 
-      if (payment.status === 'confirmed' || payment.status === 'failed') {
-        this.stopPolling()
-      }
-      this.paymentResponse = payment
-    } catch (error) {
-      this.stopPolling()
-      this.$emit('error', error)
+const newPayment = () => {
+  emit('makeNewPayment')
+}
+
+const getPayment = async (paymentId: string) => {
+  try {
+    const apiResponse = await $paymentsApi.getPaymentById(paymentId)
+
+    const payment = apiResponse.data
+    if (payment.status === 'confirmed' || payment.status === 'failed') {
+      stopPolling()
     }
-  }
-
-  mounted() {
-    if (this.paymentId) {
-      this.pollForPaymentsDetail(this.paymentId)
-    }
-  }
-
-  beforeDestroy() {
-    this.stopPolling()
+    paymentResponse.value = payment
+  } catch (error) {
+    stopPolling()
+    emit('error', error)
   }
 }
+
+onMounted(() => {
+  if (props.paymentId) {
+    pollForPaymentsDetail(props.paymentId)
+  }
+})
+
+onBeforeUnmount(() => {
+  stopPolling()
+})
 </script>

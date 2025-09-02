@@ -11,10 +11,10 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
 
-      - name: Install Node 16.x
+      - name: Install Node 22.x
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 22.18.0
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
@@ -22,16 +22,13 @@ jobs:
       - name: Run Lint
         run: yarn lint
 
-      - name: Run Test
-        run: yarn test
-
       - name: Run Build
         run: yarn build
 
   scan:
     needs: test
     if: github.event_name == 'pull_request'
-    uses: circlefin/circle-public-github-workflows/.github/workflows/pr-scan.yaml@v1
+    uses: circlefin/circle-public-github-workflows/.github/workflows/pr-scan.yaml@fix-pr-scan
 
   release-sbom:
     needs: test

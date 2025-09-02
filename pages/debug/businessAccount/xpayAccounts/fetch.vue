@@ -24,49 +24,37 @@
     <ErrorSheet
       :error="error"
       :show-error="showError"
-      @onChange="onErrorSheetClosed"
+      @on-change="onErrorSheetClosed"
     />
   </v-layout>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
-  },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-    }),
-  },
-})
-export default class FetchXpayBusinessAccountsClass extends Vue {
-  error = {}
-  loading = false
-  showError = false
-  // methods
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
-  }
+<script setup lang="ts">
+const store = useMainStore()
+const { $xpayAccountsApi } = useNuxtApp()
 
-  async makeApiCall() {
-    this.loading = true
-    try {
-      await this.$xpayAccountsApi.getXpayBusinessAccounts()
-    } catch (error: any) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
-    }
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
+
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
+
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
+
+const makeApiCall = async () => {
+  loading.value = true
+  try {
+    await $xpayAccountsApi.getXpayBusinessAccounts()
+  } catch (err: any) {
+    error.value = err
+    showError.value = true
+  } finally {
+    loading.value = false
   }
 }
 </script>

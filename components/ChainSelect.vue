@@ -1,29 +1,38 @@
 <template>
   <v-select
-    :value="value"
+    :model-value="modelValue"
     :items="items"
     :label="label"
     :rules="rules"
     :disabled="disabled"
     validate-on-blur
-    @input="onInput"
+    @update:model-value="onInput"
   ></v-select>
 </template>
-<script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+<script setup lang="ts">
 import chains from '@/lib/chains.json'
 
-@Component({})
-export default class ChainSelect extends Vue {
-  @Prop({ type: String }) value!: string
-  @Prop({ type: String, default: 'Chain' }) label!: string
-  @Prop({ type: Boolean, default: false }) disabled!: boolean
-  @Prop({ type: Array }) rules!: Array<Function>
+interface Props {
+  modelValue?: string
+  label?: string
+  disabled?: boolean
+  rules?: Array<(value: any) => boolean | string>
+}
 
-  items = chains
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: '',
+  label: 'Chain',
+  disabled: false,
+  rules: () => [],
+})
 
-  onInput(value: string) {
-    this.$emit('input', value)
-  }
+const emit = defineEmits<{
+  'update:modelValue': [value: string]
+}>()
+
+const items = chains
+
+const onInput = (value: string) => {
+  emit('update:modelValue', value)
 }
 </script>

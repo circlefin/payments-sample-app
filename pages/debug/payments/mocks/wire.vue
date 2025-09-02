@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-container>
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
@@ -18,7 +18,7 @@
           <v-select v-model="formData.rail" :items="rails" label="Rail" />
           <v-btn
             v-if="isSandbox"
-            depressed
+            variant="flat"
             class="mb-7"
             color="primary"
             :loading="loading"
@@ -39,81 +39,70 @@
     <ErrorSheet
       :error="error"
       :show-error="showError"
-      @onChange="onErrorSheetClosed"
+      @on-change="onErrorSheetClosed"
     />
-  </v-layout>
+  </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
+<script setup lang="ts">
 import { getIsInternal, getLive } from '../../../../lib/apiTarget'
-import RequestInfo from '../../../../components/RequestInfo.vue'
-import ErrorSheet from '../../../../components/ErrorSheet.vue'
-import { CreateMockPushPaymentPayload } from '~/lib/mocksApi'
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
-  },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-    }),
-  },
+import type { CreateMockPushPaymentPayload } from '~/lib/mocksApi'
+
+const store = useMainStore()
+const { $mocksApi } = useNuxtApp()
+
+const formData = reactive({
+  trackingRef: '',
+  memo: '',
+  accountNumber: '',
+  amount: '0.00',
+  currency: 'USD',
+  rail: 'wire',
 })
-export default class CreateMockIncomingWireClass extends Vue {
-  formData = {
-    trackingRef: '',
-    memo: '',
-    accountNumber: '',
-    amount: '0.00',
-    currency: 'USD', // Default to USD
-    rail: 'wire',
+
+const currencyTypes = ['USD', 'EUR', 'SGD', 'MXN']
+const rails = getIsInternal()
+  ? ['wire', 'rtgs', 'spei', 'sepa', 'sepa_instant']
+  : ['wire', 'rtgs', 'spei', 'sepa']
+
+const isSandbox = !getLive()
+const required = [(v: string) => !!v || 'Field is required']
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
+
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
+
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
+
+const makeApiCall = async () => {
+  loading.value = true
+  const amountDetail = {
+    amount: formData.amount,
+    currency: formData.currency,
+  }
+  const payloadData: CreateMockPushPaymentPayload = {
+    trackingRef: formData.trackingRef,
+    memo: formData.memo,
+    beneficiaryBank: {
+      accountNumber: formData.accountNumber,
+    },
+    amount: amountDetail,
+    rail: formData.rail,
   }
 
-  currencyTypes = ['USD', 'EUR', 'SGD', 'MXN']
-
-  rails = getIsInternal()
-    ? ['wire', 'rtgs', 'spei', 'sepa', 'sepa_instant']
-    : ['wire', 'rtgs', 'spei', 'sepa']
-
-  isSandbox: Boolean = !getLive()
-  required = [(v: string) => !!v || 'Field is required']
-  error = {}
-  loading = false
-  showError = false
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
-  }
-
-  async makeApiCall() {
-    this.loading = true
-    const amountDetail = {
-      amount: this.formData.amount,
-      currency: this.formData.currency,
-    }
-    const payload: CreateMockPushPaymentPayload = {
-      trackingRef: this.formData.trackingRef,
-      memo: this.formData.memo,
-      beneficiaryBank: {
-        accountNumber: this.formData.accountNumber,
-      },
-      amount: amountDetail,
-      rail: this.formData.rail,
-    }
-
-    try {
-      await this.$mocksApi.createMockWirePayment(payload)
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
-    }
+  try {
+    await $mocksApi.createMockWirePayment(payloadData)
+  } catch (err) {
+    error.value = err
+    showError.value = true
+  } finally {
+    loading.value = false
   }
 }
 </script>

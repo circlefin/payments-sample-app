@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-container>
     <v-row>
       <v-col cols="12" md="4">
         <v-form v-model="validForm">
@@ -9,7 +9,7 @@
             label="CPS Trade ID"
           />
           <v-btn
-            depressed
+            variant="flat"
             class="mb-7"
             color="primary"
             :loading="loading"
@@ -31,58 +31,44 @@
     <ErrorSheet
       :error="error"
       :show-error="showError"
-      @onChange="onErrorSheetClosed"
+      @on-change="onErrorSheetClosed"
     />
-  </v-layout>
+  </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
+<script setup lang="ts">
+const store = useMainStore()
+const { $cpsTradesApi } = useNuxtApp()
 
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
-  },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-      isMarketplace: 'isMarketplace',
-    }),
-  },
+const validForm = ref(false)
+const formData = reactive({
+  tradeId: '',
 })
-export default class GetCpsTradeDetailsClass extends Vue {
-  validForm: boolean = false
-  formData = {
-    tradeId: '',
-  }
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
 
-  required = (v: string) => !!v || 'Field is required'
-  error = {}
-  loading = false
-  showError = false
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
 
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
-  }
+const required = (v: string) => !!v || 'Field is required'
 
-  async makeApiCall() {
-    this.loading = true
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
 
-    try {
-      await this.$cpsTradesApi.getTrade(this.formData.tradeId)
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
-    }
+const makeApiCall = async () => {
+  loading.value = true
+
+  try {
+    await $cpsTradesApi.getTrade(formData.tradeId)
+  } catch (err) {
+    error.value = err
+    showError.value = true
+  } finally {
+    loading.value = false
   }
 }
 </script>

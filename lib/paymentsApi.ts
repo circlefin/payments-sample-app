@@ -73,7 +73,7 @@ instance.interceptors.response.use(
       response = error.toJSON()
     }
     return Promise.reject(response)
-  }
+  },
 )
 
 const nullIfEmpty = (prop: string | undefined) => {
@@ -138,7 +138,7 @@ function getPayments(
   to: string,
   pageBefore: string,
   pageAfter: string,
-  pageSize: string
+  pageSize: string,
 ) {
   const queryParams = {
     settlementId: nullIfEmpty(settlementId),
@@ -207,7 +207,7 @@ function getReversals(
   to: string,
   pageBefore: string,
   pageAfter: string,
-  pageSize: string
+  pageSize: string,
 ) {
   const queryParams = {
     status: nullIfEmpty(status),
@@ -230,7 +230,7 @@ function getPresignData(
   paymentIntentId: string,
   endUserAddress: string,
   amount: string,
-  currency: string
+  currency: string,
 ) {
   const queryParams = {
     paymentIntentId,

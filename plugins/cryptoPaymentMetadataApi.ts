@@ -1,26 +1,21 @@
 import cryptoPaymentMetadataApi from '@/lib/cryptoPaymentMetadataApi'
 
-declare module 'vue/types/vue' {
-  interface Vue {
-    $cryptoPaymentMetadataApi: {
-      getSupportedCurrencyAndBlockchainCombinations: any
-    }
-  }
-}
+export default defineNuxtPlugin(() => {
+  const { $pinia } = useNuxtApp()
+  const store = useMainStore($pinia)
 
-export default ({ store }: any, inject: any) => {
   const instance = cryptoPaymentMetadataApi.getInstance()
 
   instance.interceptors.request.use(
     function (config) {
-      if (store.state.bearerToken) {
-        config.headers = { Authorization: `Bearer ${store.state.bearerToken}` }
+      if (store.bearerToken) {
+        config.headers.Authorization = `Bearer ${store.bearerToken}`
       }
       return config
     },
     function (error) {
       return Promise.reject(error)
-    }
+    },
   )
 
   instance.interceptors.response.use(
@@ -29,8 +24,12 @@ export default ({ store }: any, inject: any) => {
     },
     function (error) {
       return Promise.reject(error)
-    }
+    },
   )
 
-  inject('cryptoPaymentMetadataApi', cryptoPaymentMetadataApi)
-}
+  return {
+    provide: {
+      cryptoPaymentMetadataApi: cryptoPaymentMetadataApi,
+    },
+  }
+})

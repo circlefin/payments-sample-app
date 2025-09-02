@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-container>
     <v-row>
       <v-col cols="12" md="4">
         <v-form v-model="isFormValid">
@@ -80,7 +80,7 @@
           />
 
           <v-btn
-            depressed
+            variant="flat"
             class="mb-7"
             color="primary"
             :loading="loading"
@@ -102,115 +102,100 @@
     <ErrorSheet
       :error="error"
       :show-error="showError"
-      @onChange="onErrorSheetClosed"
+      @on-change="onErrorSheetClosed"
     />
-  </v-layout>
+  </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
+<script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
-import { CreateCryptoPaymentPayload } from '~/lib/cryptoPaymentsApi'
+import type { CreateCryptoPaymentPayload } from '~/lib/cryptoPaymentsApi'
 import { isNumber, required, validDecimal, isUUID } from '@/helpers/validation'
 
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
-  },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-      isMarketplace: 'isMarketplace',
-    }),
-  },
-  data: () => ({
-    isFormValid: false,
-  }),
+const route = useRoute()
+const store = useMainStore()
+const { $paymentsApiBeta } = useNuxtApp()
+
+const isFormValid = ref(false)
+const formData = reactive({
+  paymentIntentId: (route.query.paymentIntentId as string) || '',
+  amount: (route.query.amount as string) || '0.00',
+  currency: (route.query.currency as string) || 'USD',
+  sourceAddress: (route.query.sourceAddress as string) || '',
+  sourceType: 'blockchain',
+  destinationAddress: (route.query.destinationAddress as string) || '',
+  destinationChain: 'ETH',
+  feeQuoteId: (route.query.feeQuoteId as string) || '',
+  protocolType:
+    (route.query.protocolType as string) || 'TransferWithAuthorization',
+  validAfter: (route.query.validAfter as string) || '0',
+  validBefore: (route.query.validBefore as string) || '',
+  metaTxNonce: (route.query.metaTxNonce as string) || '',
+  rawSignature: (route.query.rawSignature as string) || '',
 })
-export default class CreatePaymentClass extends Vue {
-  formData = {
-    paymentIntentId: (this.$route.query.paymentIntentId as string) || '',
-    amount: (this.$route.query.amount as string) || '0.00',
-    currency: (this.$route.query.currency as string) || 'USD',
-    sourceAddress: (this.$route.query.sourceAddress as string) || '',
-    sourceType: 'blockchain',
-    destinationAddress: (this.$route.query.destinationAddress as string) || '',
-    destinationChain: 'ETH',
-    feeQuoteId: (this.$route.query.feeQuoteId as string) || '',
-    protocolType:
-      (this.$route.query.protocolType as string) || 'TransferWithAuthorization',
-    validAfter: (this.$route.query.validAfter as string) || '0',
-    validBefore: (this.$route.query.validBefore as string) || '',
-    metaTxNonce: (this.$route.query.metaTxNonce as string) || '',
-    rawSignature: (this.$route.query.rawSignature as string) || '',
+
+const rules = {
+  isNumber,
+  required,
+  validDecimal,
+  isUUID,
+}
+
+const sourceType = ['blockchain']
+const currency = ['USD']
+const destinationChain = ['ETH']
+const protocolType = ['TransferWithAuthorization']
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
+
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
+
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
+
+const makeApiCall = async () => {
+  loading.value = true
+  const amountDetail = {
+    amount: formData.amount,
+    currency: formData.currency,
+  }
+  const sourceDetails = {
+    address: formData.sourceAddress,
+    type: formData.sourceType,
+  }
+  const destinationDetails = {
+    address: formData.destinationAddress,
+    chain: formData.destinationChain,
+  }
+  const protocolMetadataDetails = {
+    type: formData.protocolType,
+    metaTxNonce: formData.metaTxNonce,
+    signatureValidAfter: formData.validAfter,
+    signatureValidBefore: formData.validBefore,
+    rawSignature: formData.rawSignature,
+  }
+  const payloadData: CreateCryptoPaymentPayload = {
+    idempotencyKey: uuidv4(),
+    paymentIntentId: formData.paymentIntentId,
+    amount: amountDetail,
+    source: sourceDetails,
+    destination: destinationDetails,
+    protocolMetadata: protocolMetadataDetails,
+    quoteId: formData.feeQuoteId,
   }
 
-  // validation rules
-  rules = {
-    isNumber,
-    required,
-    validDecimal,
-    isUUID,
-  }
-
-  sourceType = ['blockchain']
-  currency = ['USD']
-  destinationChain = ['ETH']
-  protocolType = ['TransferWithAuthorization']
-  error = {}
-  loading = false
-  showError = false
-
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
-  }
-
-  async makeApiCall() {
-    this.loading = true
-    const amountDetail = {
-      amount: this.formData.amount,
-      currency: this.formData.currency,
-    }
-    const sourceDetails = {
-      address: this.formData.sourceAddress,
-      type: this.formData.sourceType,
-    }
-    const destinationDetails = {
-      address: this.formData.destinationAddress,
-      chain: this.formData.destinationChain,
-    }
-    const protocolMetadataDetails = {
-      type: this.formData.protocolType,
-      metaTxNonce: this.formData.metaTxNonce,
-      signatureValidAfter: this.formData.validAfter,
-      signatureValidBefore: this.formData.validBefore,
-      rawSignature: this.formData.rawSignature,
-    }
-    const payload: CreateCryptoPaymentPayload = {
-      idempotencyKey: uuidv4(),
-      paymentIntentId: this.formData.paymentIntentId,
-      amount: amountDetail,
-      source: sourceDetails,
-      destination: destinationDetails,
-      protocolMetadata: protocolMetadataDetails,
-      quoteId: this.formData.feeQuoteId,
-    }
-
-    try {
-      await this.$paymentsApiBeta.createCryptoPayment(payload)
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
-    }
+  try {
+    await $paymentsApiBeta.createCryptoPayment(payloadData)
+  } catch (err) {
+    error.value = err
+    showError.value = true
+  } finally {
+    loading.value = false
   }
 }
 </script>

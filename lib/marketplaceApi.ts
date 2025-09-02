@@ -84,7 +84,7 @@ instance.interceptors.response.use(
       response = error.toJSON()
     }
     return Promise.reject(response)
-  }
+  },
 )
 
 const nullIfEmpty = (prop: string | undefined) => {
@@ -126,7 +126,7 @@ function getPayments(
   pageBefore: string,
   pageAfter: string,
   pageSize: string,
-  merchantId: string
+  merchantId: string,
 ) {
   const nullIfEmpty = (prop: string) => {
     if (prop === '') {

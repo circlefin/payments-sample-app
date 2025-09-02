@@ -1,44 +1,40 @@
-import payoutsApi, { CreatePayoutPayload } from '@/lib/payoutsApi'
+import payoutsApi from '@/lib/payoutsApi'
 
-declare module 'vue/types/vue' {
-  interface Vue {
-    $payoutsApi: {
-      getPayouts: any
-      getPayoutById: any
-      createPayout: (payload: CreatePayoutPayload) => any
-      getInstance: any
-    }
-  }
-}
+export default defineNuxtPlugin(() => {
+  const { $pinia } = useNuxtApp()
+  const store = useMainStore($pinia)
 
-export default ({ store }: any, inject: any) => {
   const instance = payoutsApi.getInstance()
 
   instance.interceptors.request.use(
     function (config) {
-      store.commit('CLEAR_REQUEST_DATA')
-      store.commit('SET_REQUEST_URL', `${config.baseURL}${config.url}`)
-      store.commit('SET_REQUEST_PAYLOAD', config.data)
+      store.clearRequestData()
+      store.setRequestUrl(`${config.baseURL}${config.url}`)
+      store.setRequestPayload(config.data)
 
-      if (store.state.bearerToken) {
-        config.headers = { Authorization: `Bearer ${store.state.bearerToken}` }
+      if (store.bearerToken) {
+        config.headers.Authorization = `Bearer ${store.bearerToken}`
       }
       return config
     },
     function (error) {
       return Promise.reject(error)
-    }
+    },
   )
 
   instance.interceptors.response.use(
     function (response) {
-      store.commit('SET_RESPONSE', response)
+      store.setResponse(response)
       return response
     },
     function (error) {
       return Promise.reject(error)
-    }
+    },
   )
 
-  inject('payoutsApi', payoutsApi)
-}
+  return {
+    provide: {
+      payoutsApi: payoutsApi,
+    },
+  }
+})

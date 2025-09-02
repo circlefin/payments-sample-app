@@ -1,15 +1,20 @@
 <template>
-  <v-layout>
+  <v-container>
     <v-row>
       <v-col cols="12" md="4">
         <v-form v-model="validForm">
-          <v-text-field v-model="tradeId" :rules="required" label="Trade Id" />
+          <v-text-field
+            v-model="tradeId"
+            :rules="[required]"
+            label="Trade Id"
+          />
           <v-btn
-            depressed
+            variant="flat"
             class="mb-7"
             color="primary"
+            :loading="loading"
             :disabled="!validForm || loading"
-            @click.prevent="makeApiCall()"
+            @click.prevent="makeApiCall"
           >
             Make api call
           </v-btn>
@@ -26,59 +31,41 @@
     <ErrorSheet
       :error="error"
       :show-error="showError"
-      @onChange="onErrorSheetClosed"
+      @on-change="onErrorSheetClosed"
     />
-  </v-layout>
+  </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
-import RequestInfo from '@/components/RequestInfo.vue'
-import ErrorSheet from '@/components/ErrorSheet.vue'
+<script setup lang="ts">
+const store = useMainStore()
+const { $tradesApi } = useNuxtApp()
 
-@Component({
-  components: {
-    RequestInfo,
-    ErrorSheet,
-  },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-    }),
-  },
-})
-export default class FetchTradeDetailsClass extends Vue {
-  validForm: boolean = false
-  tradeId = ''
+const validForm = ref(false)
+const tradeId = ref('')
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
 
-  required = [(v: string) => !!v || 'Field is required']
-  error = {}
-  loading = false
-  showError = false
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
 
-  // methods
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
-  }
+const required = (v: string) => !!v || 'Field is required'
 
-  get isMarketplace() {
-    return this.$store.getters.isMarketplace
-  }
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
 
-  async makeApiCall() {
-    this.loading = true
-    try {
-      await this.$tradesApi.getTrade(this.tradeId)
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
-    }
+const makeApiCall = async () => {
+  loading.value = true
+  try {
+    await $tradesApi.getTrade(tradeId.value)
+  } catch (err) {
+    error.value = err
+    showError.value = true
+  } finally {
+    loading.value = false
   }
 }
 </script>

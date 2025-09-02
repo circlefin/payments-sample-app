@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-container>
     <v-row>
       <v-col cols="12" md="5">
         <v-card :loading="loading" class="mx-auto" outlined>
@@ -36,7 +36,7 @@
               <v-checkbox v-model="fulfill" label="Fulfill" />
               <v-btn
                 class="mt-4"
-                depressed
+                variant="flat"
                 block
                 color="primary"
                 :disabled="!validForm || loading"
@@ -53,7 +53,7 @@
               :to="quoteResponse.to"
               :rate="quoteResponse.rate"
               :fulfill="fulfill"
-              @makeNewTrade="onNewTrade"
+              @make-new-trade="onNewTrade"
               @error="onPollingError"
             />
           </v-card-text>
@@ -81,105 +81,106 @@
     <ErrorSheet
       :error="error"
       :show-error="showError"
-      @onChange="onErrorSheetClosed"
+      @on-change="onErrorSheetClosed"
     />
-  </v-layout>
+  </v-container>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { mapGetters } from 'vuex'
+<script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
-import ErrorSheet from '@/components/ErrorSheet.vue'
-import TradeStatus from '@/components/TradeStatus.vue'
 
-@Component({
-  components: {
-    ErrorSheet,
-    TradeStatus,
+const store = useMainStore()
+const { $tradesApi } = useNuxtApp()
+
+const quoteResponse = ref({
+  id: '',
+  from: { currency: '', amount: 0 },
+  to: { currency: '', amount: 0 },
+  rate: 0,
+})
+
+const fulfill = ref(true)
+const tradeId = ref('')
+const validForm = ref(false)
+const formData = reactive({
+  type: 'tradable',
+  from: {
+    amount: '',
+    currency: 'USDC',
   },
-  computed: {
-    ...mapGetters({
-      payload: 'getRequestPayload',
-      response: 'getRequestResponse',
-      requestUrl: 'getRequestUrl',
-    }),
+  to: {
+    amount: '',
+    currency: '',
   },
 })
-export default class CreateTradeFlowClass extends Vue {
-  quoteResponse = {
-    id: '',
-    from: { currency: '', amount: '' },
-    to: { currency: '', amount: '' },
-    rate: '',
-  }
 
-  fulfill: boolean = true
+const showTradeStatus = ref(false)
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
 
-  tradeId: string = ''
-  validForm: boolean = false
-  formData = {
-    type: 'tradable',
-    from: {
-      amount: '',
-      currency: 'USDC',
-    },
-    to: {
-      amount: '',
-      currency: '',
-    },
-  }
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
 
-  showTradeStatus: boolean = false
+const required = (v: string) => !!v || 'Field is required'
+const isNumber = (v: string) =>
+  !v || v === '' || !isNaN(parseInt(v)) || 'Please enter valid number'
 
-  required = (v: string) => !!v || 'Field is required'
+const currencies = ['USDC', 'EURC', 'MXN', 'BRL']
+const toCurrencyMap = new Map([
+  ['USDC', ['EURC', 'MXN', 'BRL']],
+  ['EURC', ['USDC']],
+  ['MXN', ['USDC']],
+  ['BRL', ['USDC']],
+])
 
-  isNumber = (v: string) =>
-    !v || v === '' || !isNaN(parseInt(v)) || 'Please enter valid number'
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
 
-  error = {}
-  loading = false
-  showError = false
-  currencies = ['USDC', 'EURC', 'MXN', 'BRL']
-  toCurrencyMap = new Map([
-    ['USDC', ['EURC', 'MXN', 'BRL']],
-    ['EURC', ['USDC']],
-    ['MXN', ['USDC']],
-    ['BRL', ['USDC']],
-  ])
+const onNewTrade = () => {
+  showTradeStatus.value = false
+}
 
-  onErrorSheetClosed() {
-    this.error = {}
-    this.showError = false
-  }
+const onPollingError = (err: any) => {
+  error.value = err
+  showError.value = true
+}
 
-  onNewTrade() {
-    this.showTradeStatus = false
-  }
+const makeApiCall = async () => {
+  loading.value = true
 
-  onPollingError(error: any) {
-    this.error = error
-    this.showError = true
-  }
-
-  async makeApiCall() {
-    this.loading = true
-
-    try {
-      this.quoteResponse = await this.$tradesApi.createQuote(this.formData)
-      const { id: tradeId } = await this.$tradesApi.createTrade({
-        idempotencyKey: uuidv4(),
-        quoteId: this.quoteResponse.id,
-        fulfill: this.fulfill,
-      })
-      this.tradeId = tradeId
-      this.showTradeStatus = true
-    } catch (error) {
-      this.error = error
-      this.showError = true
-    } finally {
-      this.loading = false
+  try {
+    // Convert string amounts to numbers for API call
+    const quotePayload = {
+      ...formData,
+      from: {
+        ...formData.from,
+        amount: formData.from.amount ? Number(formData.from.amount) : undefined,
+      },
+      to: {
+        ...formData.to,
+        amount: formData.to.amount ? Number(formData.to.amount) : undefined,
+      },
     }
+
+    const quoteApiResponse = await $tradesApi.createQuote(quotePayload)
+    quoteResponse.value = quoteApiResponse.data
+
+    const tradeApiResponse = await $tradesApi.createTrade({
+      idempotencyKey: uuidv4(),
+      quoteId: quoteResponse.value.id,
+      fulfill: fulfill.value,
+    })
+    tradeId.value = tradeApiResponse.data.id
+    showTradeStatus.value = true
+  } catch (err) {
+    error.value = err
+    showError.value = true
+  } finally {
+    loading.value = false
   }
 }
 </script>

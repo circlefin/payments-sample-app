@@ -1,51 +1,38 @@
-import paymentsApi, { BasePaymentPayload } from '@/lib/paymentsApi'
+import paymentsApi from '@/lib/paymentsApi'
 
-declare module 'vue/types/vue' {
-  interface Vue {
-    $paymentsApi: {
-      cancelPayment: any
-      createPayment: (payload: BasePaymentPayload) => any
-      getPayments: any
-      getPaymentById: any
-      getPCIPublicKey: any
-      refundPayment: any
-      capturePayment: any
-      getBalance: any
-      getInstance: any
-      getReversals: any
-      getPresignData: any
-    }
-  }
-}
-
-export default ({ store }: any, inject: any) => {
+export default defineNuxtPlugin(() => {
+  const store = useMainStore()
   const instance = paymentsApi.getInstance()
 
   instance.interceptors.request.use(
     function (config) {
-      store.commit('CLEAR_REQUEST_DATA')
-      store.commit('SET_REQUEST_URL', `${config.baseURL}${config.url}`)
-      store.commit('SET_REQUEST_PAYLOAD', config.data)
+      store.clearRequestData()
+      store.setRequestUrl(`${config.baseURL}${config.url}`)
+      store.setRequestPayload(config.data)
 
-      if (store.state.bearerToken) {
-        config.headers = { Authorization: `Bearer ${store.state.bearerToken}` }
+      if (store.bearerToken) {
+        config.headers.Authorization = `Bearer ${store.bearerToken}`
       }
       return config
     },
     function (error) {
       return Promise.reject(error)
-    }
+    },
   )
 
   instance.interceptors.response.use(
     function (response) {
-      store.commit('SET_RESPONSE', response)
+      store.setResponse(response)
       return response
     },
     function (error) {
       return Promise.reject(error)
-    }
+    },
   )
 
-  inject('paymentsApi', paymentsApi)
-}
+  return {
+    provide: {
+      paymentsApi: paymentsApi,
+    },
+  }
+})

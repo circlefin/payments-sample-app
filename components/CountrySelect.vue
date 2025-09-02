@@ -1,29 +1,38 @@
 <template>
   <v-select
-    :value="value"
+    :model-value="modelValue"
     :items="items"
     :label="label"
     :rules="rules"
     :disabled="disabled"
     validate-on-blur
-    @input="onInput"
+    @update:model-value="onInput"
   ></v-select>
 </template>
-<script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+<script setup lang="ts">
 import countries from '@/lib/countries.json'
 
-@Component({})
-export default class CountrySelect extends Vue {
-  @Prop({ type: String }) value!: string
-  @Prop({ type: String, default: 'Country' }) label!: string
-  @Prop({ type: Boolean, default: false }) disabled!: boolean
-  @Prop({ type: Array, default: false }) rules!: Array<Function>
+interface Props {
+  modelValue?: string
+  label?: string
+  disabled?: boolean
+  rules?: Array<(value: any) => boolean | string>
+}
 
-  items = countries
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: '',
+  label: 'Country',
+  disabled: false,
+  rules: () => [],
+})
 
-  onInput(value: string) {
-    this.$emit('input', value)
-  }
+const emit = defineEmits<{
+  'update:modelValue': [value: string]
+}>()
+
+const items = countries
+
+const onInput = (value: string) => {
+  emit('update:modelValue', value)
 }
 </script>
