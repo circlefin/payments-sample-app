@@ -131,7 +131,8 @@ const response = computed(() => store.getRequestResponse)
 const requestUrl = computed(() => store.getRequestUrl)
 
 onMounted(async () => {
-  currencyBlockchainPairs.value = await $cryptoPaymentMetadataApi.getSupportedCurrencyAndBlockchainCombinations()
+  currencyBlockchainPairs.value =
+    await $cryptoPaymentMetadataApi.getSupportedCurrencyAndBlockchainCombinations()
   supportedCurrencies.value = currencyBlockchainPairs.value.map((obj) => {
     return obj.currency
   })
