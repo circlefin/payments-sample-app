@@ -7,6 +7,11 @@ const instance = axios.create({
   baseURL: getAPIHostname(),
 })
 
+interface CurrencyBlockchainPair {
+  currency: string
+  blockchains: string[]
+}
+
 /**
  * Global error handler:
  * Intercepts all axios responses and maps
@@ -36,7 +41,9 @@ function getInstance() {
 /**
  * Get supported currency and blockchain combinations
  */
-function getSupportedCurrencyAndBlockchainCombinations() {
+function getSupportedCurrencyAndBlockchainCombinations(): Promise<
+  CurrencyBlockchainPair[]
+> {
   const url = '/v1/paymentIntents/metadata/supportedCurrencies'
   return instance.get(url)
 }

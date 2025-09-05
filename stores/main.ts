@@ -13,7 +13,10 @@ interface MainState {
 
 export const useMainStore = defineStore('main', {
   state: (): MainState => ({
-    bearerToken: '',
+    bearerToken:
+      typeof window !== 'undefined'
+        ? sessionStorage.getItem('bearerToken') || ''
+        : '',
     apiRequest: {
       url: '',
       payload: {},
@@ -31,6 +34,9 @@ export const useMainStore = defineStore('main', {
   actions: {
     setBearerToken(apiKey: string) {
       this.bearerToken = apiKey
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('bearerToken', apiKey)
+      }
     },
 
     setRequestUrl(url: string) {
