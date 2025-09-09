@@ -463,6 +463,10 @@ const cpsTradesLinks = [
     title: 'POST /cps/signatures',
     to: '/debug/cps/signature',
   },
+  {
+    title: 'POST /cps/signatures/funding/presign',
+    to: '/debug/cps/funding-presign',
+  },
 ]
 
 const miniVariant = ref(false)
