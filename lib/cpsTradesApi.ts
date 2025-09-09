@@ -29,9 +29,10 @@ export interface Consideration {
 }
 
 export interface PiFXTraderDetails {
-  recipient: string
+  recipient?: string
   deadline: number
   nonce: number
+  fee: number
   consideration: Consideration
 }
 
@@ -41,6 +42,12 @@ export interface CreatePiFXSignaturePayload {
   address: string
   details: PiFXTraderDetails
   signature: string
+}
+
+export interface FundingPresignPayload {
+  contractTradeIds: string[]
+  fundingMode: 'gross' | 'net'
+  traderType: 'maker' | 'taker'
 }
 
 const instance = axios.create({
@@ -72,6 +79,13 @@ instance.interceptors.response.use(
   },
 )
 
+const nullIfEmpty = (prop: string | undefined) => {
+  if (prop === '') {
+    return undefined
+  }
+  return prop
+}
+
 /** Returns the axios instance */
 function getInstance() {
   return instance
@@ -101,17 +115,38 @@ function createTrade(payload: CreateCpsTradePayload) {
 /**
  * Get CPS Trades
  */
-function getTrades() {
-  return instance.get(CPS_TRADES_PATH)
+function getTrades(
+  startCreateDateInclusive?: string,
+  endCreateDateInclusive?: string,
+  statuses?: string,
+  type?: string,
+  pageAfter?: string,
+  pageBefore?: string,
+  pageSize?: string,
+) {
+  const queryParams = {
+    startCreateDateInclusive: nullIfEmpty(startCreateDateInclusive),
+    endCreateDateInclusive: nullIfEmpty(endCreateDateInclusive),
+    status: nullIfEmpty(statuses),
+    type: nullIfEmpty(type),
+    pageAfter: nullIfEmpty(pageAfter),
+    pageBefore: nullIfEmpty(pageBefore),
+    pageSize: nullIfEmpty(pageSize),
+  }
+
+  return instance.get(CPS_TRADES_PATH, { params: queryParams })
 }
 
 /**
  * Get CPS Trade
  */
-function getTrade(tradeId: string) {
+function getTrade(tradeId: string, type?: string) {
   const url = `${CPS_TRADES_PATH}/${tradeId}`
+  const queryParams = {
+    type: nullIfEmpty(type),
+  }
 
-  return instance.get(url)
+  return instance.get(url, { params: queryParams })
 }
 
 /**
@@ -121,6 +156,28 @@ function registerSignature(payload: CreatePiFXSignaturePayload) {
   return instance.post(CPS_SIGNATURES_PATH, payload)
 }
 
+/**
+ * Get presign data for signing
+ */
+function getPresignData(
+  type: string,
+  tradeId: string,
+  recipientAddress?: string,
+) {
+  const url = `/v1/exchange/cps/signatures/presign/${type}/${tradeId}`
+  const queryParams = recipientAddress ? { recipientAddress } : {}
+
+  return instance.get(url, { params: queryParams })
+}
+
+/**
+ * Get funding presign data
+ */
+function getFundingPresignData(payload: FundingPresignPayload) {
+  const url = '/v1/exchange/cps/signatures/funding/presign'
+  return instance.post(url, payload)
+}
+
 export default {
   getInstance,
   createQuote,
@@ -128,4 +185,6 @@ export default {
   getTrades,
   getTrade,
   registerSignature,
+  getPresignData,
+  getFundingPresignData,
 }

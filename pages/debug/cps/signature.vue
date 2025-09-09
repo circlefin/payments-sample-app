@@ -20,8 +20,9 @@
             label="Address"
           />
           <v-text-field
+            v-if="formData.type === 'taker'"
             v-model="formData.details.recipient"
-            :rules="[required]"
+            :rules="formData.type === 'taker' ? [required] : []"
             label="Recipient Address"
           />
           <v-text-field
@@ -34,6 +35,12 @@
             v-model="formData.details.nonce"
             :rules="[required, isNumber]"
             label="Nonce"
+            type="number"
+          />
+          <v-text-field
+            v-model="formData.fee"
+            :rules="[required, isNumber]"
+            label="Fee"
             type="number"
           />
           <v-divider class="my-4" />
@@ -128,6 +135,7 @@ const formData = reactive({
       maturity: '',
     },
   },
+  fee: '',
   signature: '',
 })
 
@@ -152,23 +160,30 @@ const makeApiCall = async () => {
   loading.value = true
 
   try {
+    const details: any = {
+      deadline: parseInt(formData.details.deadline),
+      nonce: parseInt(formData.details.nonce),
+      fee: parseInt(formData.fee),
+      consideration: {
+        quoteId: formData.details.consideration.quoteId,
+        base: formData.details.consideration.base,
+        quote: formData.details.consideration.quote,
+        quoteAmount: parseInt(formData.details.consideration.quoteAmount),
+        baseAmount: parseInt(formData.details.consideration.baseAmount),
+        maturity: parseInt(formData.details.consideration.maturity),
+      },
+    }
+
+    // Only include recipient if type is taker
+    if (formData.type === 'taker') {
+      details.recipient = formData.details.recipient
+    }
+
     const payloadData: CreatePiFXSignaturePayload = {
       tradeId: formData.tradeId,
       type: formData.type,
       address: formData.address,
-      details: {
-        recipient: formData.details.recipient,
-        deadline: parseInt(formData.details.deadline),
-        nonce: parseInt(formData.details.nonce),
-        consideration: {
-          quoteId: formData.details.consideration.quoteId,
-          base: formData.details.consideration.base,
-          quote: formData.details.consideration.quote,
-          quoteAmount: parseInt(formData.details.consideration.quoteAmount),
-          baseAmount: parseInt(formData.details.consideration.baseAmount),
-          maturity: parseInt(formData.details.consideration.maturity),
-        },
-      },
+      details,
       signature: formData.signature,
     }
 

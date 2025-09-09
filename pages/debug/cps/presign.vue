@@ -3,16 +3,22 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form v-model="validForm">
-          <v-text-field
-            v-model="formData.tradeId"
-            :rules="[required]"
-            label="CPS Trade ID"
-          />
           <v-select
             v-model="formData.type"
             :items="typeOptions"
-            label="Type (optional)"
-            clearable
+            :rules="[required]"
+            label="Type"
+          />
+          <v-text-field
+            v-model="formData.tradeId"
+            :rules="[required]"
+            label="Trade ID"
+          />
+          <v-text-field
+            v-if="formData.type === 'taker'"
+            v-model="formData.recipientAddress"
+            :rules="formData.type === 'taker' ? [required] : []"
+            label="Recipient Address"
           />
           <v-btn
             variant="flat"
@@ -22,7 +28,7 @@
             :disabled="!validForm || loading"
             @click.prevent="makeApiCall"
           >
-            Make api call
+            Get Presign Data
           </v-btn>
         </v-form>
       </v-col>
@@ -48,14 +54,16 @@ const { $cpsTradesApi } = useNuxtApp()
 
 const validForm = ref(false)
 const formData = reactive({
-  tradeId: '',
   type: '',
+  tradeId: '',
+  recipientAddress: '',
 })
 
 const typeOptions = [
   { title: 'Taker', value: 'taker' },
   { title: 'Maker', value: 'maker' },
 ]
+
 const error = ref<any>({})
 const loading = ref(false)
 const showError = ref(false)
@@ -75,7 +83,13 @@ const makeApiCall = async () => {
   loading.value = true
 
   try {
-    await $cpsTradesApi.getTrade(formData.tradeId, formData.type || undefined)
+    const recipientAddress =
+      formData.type === 'taker' ? formData.recipientAddress : undefined
+    await $cpsTradesApi.getPresignData(
+      formData.type,
+      formData.tradeId,
+      recipientAddress,
+    )
   } catch (err) {
     error.value = err
     showError.value = true

@@ -42,6 +42,14 @@
           <v-chip small color="primary warning">POST</v-chip>
           <a href="/debug/cps/signature">Register CPS signature</a>
         </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/cps/presign">Get presign data for trade</a>
+        </p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/cps/funding-presign">Get presign data for funding</a>
+        </p>
       </v-card>
     </v-col>
   </v-container>

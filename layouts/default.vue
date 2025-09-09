@@ -456,8 +456,16 @@ const cpsTradesLinks = [
     to: '/debug/cps/details',
   },
   {
+    title: 'GET /cps/signatures/presign',
+    to: '/debug/cps/presign',
+  },
+  {
     title: 'POST /cps/signatures',
     to: '/debug/cps/signature',
+  },
+  {
+    title: 'POST /cps/signatures/funding/presign',
+    to: '/debug/cps/funding-presign',
   },
 ]
 
