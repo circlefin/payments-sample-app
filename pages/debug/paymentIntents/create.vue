@@ -14,7 +14,7 @@
             v-model="formData.currency"
             :items="supportedCurrencies"
             label="Payment Currency"
-            @change="onCurrencyChange"
+            @update:model-value="onCurrencyChange"
           />
 
           <v-select
@@ -39,7 +39,7 @@
             v-model="formData.type"
             :items="intentTypes"
             label="Payment Intent Type"
-            @change="onIntentTypeChange"
+            @update:model-value="onIntentTypeChange"
           />
           <v-text-field
             v-if="currencySelected && transientIntentSelected"
@@ -53,7 +53,6 @@
           />
 
           <v-btn
-            v-if="currencySelected"
             variant="flat"
             class="mb-7"
             color="primary"

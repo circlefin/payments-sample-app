@@ -5,6 +5,8 @@
     :label="label"
     :rules="rules"
     :disabled="disabled"
+    item-title="text"
+    item-value="value"
     validate-on-blur
     @update:model-value="onInput"
   ></v-select>
