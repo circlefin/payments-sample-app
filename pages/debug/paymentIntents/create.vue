@@ -82,7 +82,6 @@
 
 <script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
-import { watch } from 'vue'
 import type {
   CreateContinuousPaymentIntentPayload,
   CreateTransientPaymentIntentPayload,
@@ -131,22 +130,11 @@ const response = computed(() => store.getRequestResponse)
 const requestUrl = computed(() => store.getRequestUrl)
 
 onMounted(async () => {
-  try {
-    currencyBlockchainPairs.value =
-      await $cryptoPaymentMetadataApi.getSupportedCurrencyAndBlockchainCombinations()
-    
-    supportedCurrencies.value = currencyBlockchainPairs.value.map((obj) => {
-      return obj.currency
-    })
-    
-    // Check if currency is already selected to show the button
-    if (formData.currency) {
-      currencySelected.value = true
-      onCurrencyChange()
-    }
-  } catch (error) {
-    // Handle error silently or add proper error handling
-  }
+  currencyBlockchainPairs.value =
+    await $cryptoPaymentMetadataApi.getSupportedCurrencyAndBlockchainCombinations()
+  supportedCurrencies.value = currencyBlockchainPairs.value.map((obj) => {
+    return obj.currency
+  })
 })
 
 const onErrorSheetClosed = () => {
@@ -154,13 +142,11 @@ const onErrorSheetClosed = () => {
   showError.value = false
 }
 
-const onCurrencyChange = (value?: string) => {
-  console.log('onCurrencyChange triggered with value:', value || formData.currency)
-  const foundPair = currencyBlockchainPairs.value.find(
-    ({ currency }) => currency === formData.currency,
-  )
-  
-  supportedChains.value = foundPair?.blockchains ?? []
+const onCurrencyChange = () => {
+  supportedChains.value =
+    currencyBlockchainPairs.value.find(
+      ({ currency }) => currency === formData.currency,
+    )?.blockchains ?? []
   formData.blockchain = ''
   currencySelected.value = true
 }
