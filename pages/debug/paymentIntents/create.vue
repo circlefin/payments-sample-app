@@ -14,7 +14,7 @@
             v-model="formData.currency"
             :items="supportedCurrencies"
             label="Payment Currency"
-            @change="onCurrencyChange"
+            @update:model-value="onCurrencyChange"
           />
 
           <v-select
@@ -39,7 +39,7 @@
             v-model="formData.type"
             :items="intentTypes"
             label="Payment Intent Type"
-            @change="onIntentTypeChange"
+            @update:model-value="onIntentTypeChange"
           />
           <v-text-field
             v-if="currencySelected && transientIntentSelected"
@@ -53,7 +53,6 @@
           />
 
           <v-btn
-            v-if="currencySelected"
             variant="flat"
             class="mb-7"
             color="primary"
@@ -83,6 +82,7 @@
 
 <script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
+import { watch } from 'vue'
 import type {
   CreateContinuousPaymentIntentPayload,
   CreateTransientPaymentIntentPayload,
@@ -131,11 +131,22 @@ const response = computed(() => store.getRequestResponse)
 const requestUrl = computed(() => store.getRequestUrl)
 
 onMounted(async () => {
-  currencyBlockchainPairs.value =
-    await $cryptoPaymentMetadataApi.getSupportedCurrencyAndBlockchainCombinations()
-  supportedCurrencies.value = currencyBlockchainPairs.value.map((obj) => {
-    return obj.currency
-  })
+  try {
+    currencyBlockchainPairs.value =
+      await $cryptoPaymentMetadataApi.getSupportedCurrencyAndBlockchainCombinations()
+    
+    supportedCurrencies.value = currencyBlockchainPairs.value.map((obj) => {
+      return obj.currency
+    })
+    
+    // Check if currency is already selected to show the button
+    if (formData.currency) {
+      currencySelected.value = true
+      onCurrencyChange()
+    }
+  } catch (error) {
+    // Handle error silently or add proper error handling
+  }
 })
 
 const onErrorSheetClosed = () => {
@@ -143,11 +154,13 @@ const onErrorSheetClosed = () => {
   showError.value = false
 }
 
-const onCurrencyChange = () => {
-  supportedChains.value =
-    currencyBlockchainPairs.value.find(
-      ({ currency }) => currency === formData.currency,
-    )?.blockchains ?? []
+const onCurrencyChange = (value?: string) => {
+  console.log('onCurrencyChange triggered with value:', value || formData.currency)
+  const foundPair = currencyBlockchainPairs.value.find(
+    ({ currency }) => currency === formData.currency,
+  )
+  
+  supportedChains.value = foundPair?.blockchains ?? []
   formData.blockchain = ''
   currencySelected.value = true
 }
