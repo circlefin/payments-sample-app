@@ -35,7 +35,7 @@
           <div v-if="formData.permit2Type === 'single'">
             <v-divider class="my-4" />
             <h3 class="subtitle-1 mb-2">Single Trade Witness Permit2</h3>
-            
+
             <v-text-field
               v-model="formData.single.permitted.token"
               :rules="[required]"
@@ -87,7 +87,7 @@
           <div v-if="formData.permit2Type === 'batch'">
             <v-divider class="my-4" />
             <h3 class="subtitle-1 mb-2">Batch Trade Witness Permit2</h3>
-            
+
             <!-- Permitted Tokens Section -->
             <div class="mb-4">
               <div class="d-flex justify-space-between align-center mb-2">
@@ -101,7 +101,7 @@
                   Add Token
                 </v-btn>
               </div>
-              
+
               <div
                 v-for="(token, index) in formData.batch.permittedTokens"
                 :key="index"
@@ -118,7 +118,7 @@
                     @click="removePermittedToken(index)"
                   />
                 </div>
-                
+
                 <v-text-field
                   v-model="token.token"
                   :rules="[required]"
@@ -126,7 +126,7 @@
                   placeholder="0x1c7d4b196cb0c7b01d743fbc6116a902379c7238"
                   class="mb-2"
                 />
-                
+
                 <v-text-field
                   v-model.number="token.amount"
                   :rules="[required, numberRule]"
@@ -200,7 +200,11 @@
 </template>
 
 <script setup lang="ts">
-import type { CpsFundPayload, SingleTradeWitnessPermit2, BatchTradeWitnessPermit2 } from '~/lib/cpsTradesApi'
+import type {
+  CpsFundPayload,
+  SingleTradeWitnessPermit2,
+  BatchTradeWitnessPermit2,
+} from '~/lib/cpsTradesApi'
 
 const store = useMainStore()
 const { $cpsTradesApi } = useNuxtApp()
@@ -261,7 +265,8 @@ const response = computed(() => store.getRequestResponse)
 const requestUrl = computed(() => store.getRequestUrl)
 
 const required = (v: string | number) => !!v || 'Field is required'
-const numberRule = (v: number) => !isNaN(v) && v > 0 || 'Must be a positive number'
+const numberRule = (v: number) =>
+  (!isNaN(v) && v > 0) || 'Must be a positive number'
 
 const validateNetMode = (v: string) => {
   if (v === 'net' && formData.type !== 'maker') {
@@ -309,11 +314,11 @@ const makeApiCall = async () => {
       }
     } else {
       // Use the permitted tokens array directly
-      const permittedTokens = formData.batch.permittedTokens.map(token => ({
+      const permittedTokens = formData.batch.permittedTokens.map((token) => ({
         token: token.token,
         amount: token.amount,
       }))
-      
+
       // Parse witness IDs
       const witnessIds = formData.batch.witnessIds
         .split(',')
