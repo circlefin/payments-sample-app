@@ -50,6 +50,39 @@ export interface FundingPresignPayload {
   traderType: 'maker' | 'taker'
 }
 
+export interface SingleTradeWitnessPermit2 {
+  permitted: {
+    token: string
+    amount: number
+  }
+  spender: string
+  nonce: number
+  deadline: number
+  witness: {
+    id: number
+  }
+}
+
+export interface BatchTradeWitnessPermit2 {
+  permitted: Array<{
+    token: string
+    amount: number
+  }>
+  spender: string
+  nonce: number
+  deadline: number
+  witness: {
+    ids: number[]
+  }
+}
+
+export interface CpsFundPayload {
+  type: 'maker' | 'taker'
+  signature: string
+  fundingMode: 'gross' | 'net'
+  permit2: SingleTradeWitnessPermit2 | BatchTradeWitnessPermit2
+}
+
 const instance = axios.create({
   baseURL: getAPIHostname(),
 })
@@ -57,6 +90,7 @@ const instance = axios.create({
 const CPS_TRADES_PATH = '/v1/exchange/cps/trades'
 const CPS_QUOTES_PATH = '/v1/exchange/cps/quotes'
 const CPS_SIGNATURES_PATH = '/v1/exchange/cps/signatures'
+const CPS_FUND_PATH = '/v1/exchange/cps/fund'
 
 /**
  * Global error handler:
@@ -178,6 +212,19 @@ function getFundingPresignData(payload: FundingPresignPayload) {
   return instance.post(url, payload)
 }
 
+/**
+ * Fund CPS Trade
+ * Note: 'net' funding mode is only available for makers
+ */
+function fund(payload: CpsFundPayload) {
+  // Validate that net funding mode is only used with makers
+  if (payload.fundingMode === 'net' && payload.type !== 'maker') {
+    throw new Error('Net funding mode is only available for makers')
+  }
+
+  return instance.post(CPS_FUND_PATH, payload)
+}
+
 export default {
   getInstance,
   createQuote,
@@ -187,4 +234,5 @@ export default {
   registerSignature,
   getPresignData,
   getFundingPresignData,
+  fund,
 }
