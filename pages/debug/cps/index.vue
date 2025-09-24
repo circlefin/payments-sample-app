@@ -50,6 +50,10 @@
           <v-chip small color="primary warning">POST</v-chip>
           <a href="/debug/cps/funding-presign">Get presign data for funding</a>
         </p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/cps/fund">Fund CPS Trade</a>
+        </p>
       </v-card>
     </v-col>
   </v-container>
