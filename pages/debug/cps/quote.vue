@@ -24,6 +24,12 @@
             :rules="[required]"
             label="To currency"
           />
+          <v-select
+            v-model="formData.tenor"
+            :items="tenorOption"
+            :rules="[required]"
+            label="Settlement Tenor"
+          />
           <v-btn
             depressed
             class="mb-7"
@@ -68,7 +74,15 @@ const formData = reactive({
     amount: '',
     currency: '',
   },
+  tenor: '',
 })
+
+const tenorOption = [
+  { title: 'Instant Settlement', value: 'instant' },
+  { title: 'Hourly Settlement', value: 'hourly' },
+  { title: 'Daily Settlement', value: 'daily' },
+]
+
 const error = ref<any>({})
 const loading = ref(false)
 const showError = ref(false)
@@ -105,6 +119,7 @@ const makeApiCall = async () => {
       amount: formData.to.amount ? parseFloat(formData.to.amount) : undefined,
       currency: formData.to.currency,
     },
+    tenor: formData.tenor,
   }
 
   try {
