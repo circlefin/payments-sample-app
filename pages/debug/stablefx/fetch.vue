@@ -2,33 +2,40 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="4">
-        <v-form v-model="validForm">
+        <v-form>
+          <header>Optional filter params:</header>
+          <v-select
+            v-model="formData.statuses"
+            :items="statusOptions"
+            label="Status"
+            clearable
+          />
           <v-select
             v-model="formData.type"
             :items="typeOptions"
-            :rules="[required]"
             label="Type"
+            clearable
           />
           <v-text-field
-            v-model="formData.tradeId"
-            :rules="[required]"
-            label="Trade ID"
+            v-model="formData.startCreateDateInclusive"
+            label="Start Create Date (Inclusive)"
           />
           <v-text-field
-            v-if="formData.type === 'taker'"
-            v-model="formData.recipientAddress"
-            :rules="formData.type === 'taker' ? [required] : []"
-            label="Recipient Address"
+            v-model="formData.endCreateDateInclusive"
+            label="End Create Date (Inclusive)"
           />
+          <v-text-field v-model="formData.pageSize" label="PageSize" />
+          <v-text-field v-model="formData.pageBefore" label="PageBefore" />
+          <v-text-field v-model="formData.pageAfter" label="PageAfter" />
           <v-btn
             variant="flat"
             class="mb-7"
             color="primary"
             :loading="loading"
-            :disabled="!validForm || loading"
+            :disabled="loading"
             @click.prevent="makeApiCall"
           >
-            Get Presign Data
+            Make api call
           </v-btn>
         </v-form>
       </v-col>
@@ -50,19 +57,32 @@
 
 <script setup lang="ts">
 const store = useMainStore()
-const { $cpsTradesApi } = useNuxtApp()
+const { $stablefxTradesApi } = useNuxtApp()
 
-const validForm = ref(false)
-const formData = reactive({
-  type: '',
-  tradeId: '',
-  recipientAddress: '',
-})
-
-const typeOptions = [
-  { title: 'Taker', value: 'taker' },
-  { title: 'Maker', value: 'maker' },
+const statusOptions = [
+  'pending',
+  'confirmed',
+  'pending_settlement',
+  'complete',
+  'failed',
+  'terminated',
+  'breaching',
+  'breached',
+  'taker_funded',
+  'maker_funded',
 ]
+
+const typeOptions = ['taker', 'maker']
+
+const formData = reactive({
+  startCreateDateInclusive: '',
+  endCreateDateInclusive: '',
+  statuses: '',
+  type: '',
+  pageSize: '',
+  pageBefore: '',
+  pageAfter: '',
+})
 
 const error = ref<any>({})
 const loading = ref(false)
@@ -72,8 +92,6 @@ const payload = computed(() => store.getRequestPayload)
 const response = computed(() => store.getRequestResponse)
 const requestUrl = computed(() => store.getRequestUrl)
 
-const required = (v: string) => !!v || 'Field is required'
-
 const onErrorSheetClosed = () => {
   error.value = {}
   showError.value = false
@@ -81,14 +99,15 @@ const onErrorSheetClosed = () => {
 
 const makeApiCall = async () => {
   loading.value = true
-
   try {
-    const recipientAddress =
-      formData.type === 'taker' ? formData.recipientAddress : undefined
-    await $cpsTradesApi.getPresignData(
+    await $stablefxTradesApi.getTrades(
+      formData.startCreateDateInclusive,
+      formData.endCreateDateInclusive,
+      formData.statuses,
       formData.type,
-      formData.tradeId,
-      recipientAddress,
+      formData.pageAfter,
+      formData.pageBefore,
+      formData.pageSize,
     )
   } catch (err) {
     error.value = err

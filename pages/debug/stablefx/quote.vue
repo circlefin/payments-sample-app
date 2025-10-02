@@ -62,7 +62,7 @@
 import { getAPIHostname } from '~/lib/apiTarget'
 
 const store = useMainStore()
-const { $cpsTradesApi } = useNuxtApp()
+const { $stablefxTradesApi } = useNuxtApp()
 
 const validForm = ref(false)
 const formData = reactive({
@@ -124,9 +124,9 @@ const makeApiCall = async () => {
 
   try {
     store.setRequestPayload(payloadData)
-    store.setRequestUrl(`${getAPIHostname()}/v1/cps/quotes`)
+    store.setRequestUrl(`${getAPIHostname()}/v1/stablefx/quotes`)
 
-    const response = await $cpsTradesApi.createQuote(payloadData)
+    const response = await $stablefxTradesApi.createQuote(payloadData)
     store.setResponse(response)
   } catch (err) {
     error.value = err

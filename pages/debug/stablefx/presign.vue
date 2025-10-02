@@ -3,11 +3,22 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form v-model="validForm">
-          <v-text-field
-            v-model="formData.quoteId"
+          <v-select
+            v-model="formData.type"
+            :items="typeOptions"
             :rules="[required]"
-            hint="ID of CPS FX quote to trade on"
-            label="Quote ID"
+            label="Type"
+          />
+          <v-text-field
+            v-model="formData.tradeId"
+            :rules="[required]"
+            label="Trade ID"
+          />
+          <v-text-field
+            v-if="formData.type === 'taker'"
+            v-model="formData.recipientAddress"
+            :rules="formData.type === 'taker' ? [required] : []"
+            label="Recipient Address"
           />
           <v-btn
             variant="flat"
@@ -17,7 +28,7 @@
             :disabled="!validForm || loading"
             @click.prevent="makeApiCall"
           >
-            Make api call
+            Get Presign Data
           </v-btn>
         </v-form>
       </v-col>
@@ -38,16 +49,21 @@
 </template>
 
 <script setup lang="ts">
-import { v4 as uuidv4 } from 'uuid'
-import type { CreateCpsTradePayload } from '~/lib/cpsTradesApi'
-
 const store = useMainStore()
-const { $cpsTradesApi } = useNuxtApp()
+const { $stablefxTradesApi } = useNuxtApp()
 
 const validForm = ref(false)
 const formData = reactive({
-  quoteId: '',
+  type: '',
+  tradeId: '',
+  recipientAddress: '',
 })
+
+const typeOptions = [
+  { title: 'Taker', value: 'taker' },
+  { title: 'Maker', value: 'maker' },
+]
+
 const error = ref<any>({})
 const loading = ref(false)
 const showError = ref(false)
@@ -66,13 +82,14 @@ const onErrorSheetClosed = () => {
 const makeApiCall = async () => {
   loading.value = true
 
-  const payloadData: CreateCpsTradePayload = {
-    idempotencyKey: uuidv4(),
-    quoteId: formData.quoteId,
-  }
-
   try {
-    await $cpsTradesApi.createTrade(payloadData)
+    const recipientAddress =
+      formData.type === 'taker' ? formData.recipientAddress : undefined
+    await $stablefxTradesApi.getPresignData(
+      formData.type,
+      formData.tradeId,
+      recipientAddress,
+    )
   } catch (err) {
     error.value = err
     showError.value = true

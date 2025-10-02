@@ -112,10 +112,10 @@
 </template>
 
 <script setup lang="ts">
-import type { CreatePiFXSignaturePayload } from '~/lib/cpsTradesApi'
+import type { CreatePiFXSignaturePayload } from '~/lib/stablefxTradesApi'
 
 const store = useMainStore()
-const { $cpsTradesApi } = useNuxtApp()
+const { $stablefxTradesApi } = useNuxtApp()
 
 const validForm = ref(false)
 const formData = reactive({
@@ -187,7 +187,7 @@ const makeApiCall = async () => {
       signature: formData.signature,
     }
 
-    await $cpsTradesApi.registerSignature(payloadData)
+    await $stablefxTradesApi.registerSignature(payloadData)
   } catch (err) {
     error.value = err
     showError.value = true

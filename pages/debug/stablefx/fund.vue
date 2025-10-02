@@ -179,7 +179,7 @@
             block
             @click.prevent="makeApiCall"
           >
-            Fund CPS Trade
+            Fund Trade
           </v-btn>
         </v-form>
       </v-col>
@@ -201,13 +201,13 @@
 
 <script setup lang="ts">
 import type {
-  CpsFundPayload,
+  StableFXFundPayload,
   SingleTradeWitnessPermit2,
   BatchTradeWitnessPermit2,
-} from '~/lib/cpsTradesApi'
+} from '~/lib/stablefxTradesApi'
 
 const store = useMainStore()
-const { $cpsTradesApi } = useNuxtApp()
+const { $stablefxTradesApi } = useNuxtApp()
 
 const validForm = ref(false)
 const formData = reactive({
@@ -336,14 +336,14 @@ const makeApiCall = async () => {
       }
     }
 
-    const payloadData: CpsFundPayload = {
+    const payloadData: StableFXFundPayload = {
       type: formData.type as 'maker' | 'taker',
       signature: formData.signature,
       fundingMode: formData.fundingMode as 'gross' | 'net',
       permit2,
     }
 
-    await $cpsTradesApi.fund(payloadData)
+    await $stablefxTradesApi.fund(payloadData)
   } catch (err) {
     error.value = err
     showError.value = true
