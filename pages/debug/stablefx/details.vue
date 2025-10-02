@@ -6,7 +6,7 @@
           <v-text-field
             v-model="formData.tradeId"
             :rules="[required]"
-            label="CPS Trade ID"
+            label="Trade ID"
           />
           <v-select
             v-model="formData.type"

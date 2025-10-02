@@ -179,7 +179,7 @@
             block
             @click.prevent="makeApiCall"
           >
-            Fund CPS Trade
+            Fund Trade
           </v-btn>
         </v-form>
       </v-col>

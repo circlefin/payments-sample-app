@@ -124,7 +124,7 @@ const makeApiCall = async () => {
 
   try {
     store.setRequestPayload(payloadData)
-    store.setRequestUrl(`${getAPIHostname()}/v1/cps/quotes`)
+    store.setRequestUrl(`${getAPIHostname()}/v1/stablefx/quotes`)
 
     const response = await $stablefxTradesApi.createQuote(payloadData)
     store.setResponse(response)

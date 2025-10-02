@@ -32,7 +32,7 @@
             :disabled="!validForm || loading"
             @click.prevent="makeApiCall"
           >
-            Create CPS Quote and Trade
+            Create Stable FX Quote and Trade
           </v-btn>
           <v-btn
             v-if="!showTradeStatus"
@@ -41,7 +41,7 @@
             color="secondary"
             @click.prevent="onNewTrade"
           >
-            New CPS Trade
+            New Stable FX Trade
           </v-btn>
         </v-form>
       </v-col>
@@ -53,7 +53,7 @@
         />
         <div v-if="showTradeStatus">
           <v-divider class="my-4" />
-          <h3>CPS Trade Status</h3>
+          <h3>Stable FX Trade Status</h3>
           <TradeStatus
             :trade-id="tradeId"
             :api-service="$stablefxTradesApi"
