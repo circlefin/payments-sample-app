@@ -48,7 +48,9 @@
         </p>
         <p>
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/stablefx/funding-presign">Get presign data for funding</a>
+          <a href="/debug/stablefx/funding-presign"
+            >Get presign data for funding</a
+          >
         </p>
         <p>
           <v-chip small color="primary warning">POST</v-chip>
