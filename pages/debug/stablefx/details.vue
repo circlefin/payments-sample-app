@@ -4,10 +4,15 @@
       <v-col cols="12" md="4">
         <v-form v-model="validForm">
           <v-text-field
-            v-model="formData.quoteId"
+            v-model="formData.tradeId"
             :rules="[required]"
-            hint="ID of CPS FX quote to trade on"
-            label="Quote ID"
+            label="CPS Trade ID"
+          />
+          <v-select
+            v-model="formData.type"
+            :items="typeOptions"
+            label="Type (optional)"
+            clearable
           />
           <v-btn
             variant="flat"
@@ -38,16 +43,19 @@
 </template>
 
 <script setup lang="ts">
-import { v4 as uuidv4 } from 'uuid'
-import type { CreateCpsTradePayload } from '~/lib/cpsTradesApi'
-
 const store = useMainStore()
-const { $cpsTradesApi } = useNuxtApp()
+const { $stablefxTradesApi } = useNuxtApp()
 
 const validForm = ref(false)
 const formData = reactive({
-  quoteId: '',
+  tradeId: '',
+  type: '',
 })
+
+const typeOptions = [
+  { title: 'Taker', value: 'taker' },
+  { title: 'Maker', value: 'maker' },
+]
 const error = ref<any>({})
 const loading = ref(false)
 const showError = ref(false)
@@ -66,13 +74,11 @@ const onErrorSheetClosed = () => {
 const makeApiCall = async () => {
   loading.value = true
 
-  const payloadData: CreateCpsTradePayload = {
-    idempotencyKey: uuidv4(),
-    quoteId: formData.quoteId,
-  }
-
   try {
-    await $cpsTradesApi.createTrade(payloadData)
+    await $stablefxTradesApi.getTrade(
+      formData.tradeId,
+      formData.type || undefined,
+    )
   } catch (err) {
     error.value = err
     showError.value = true

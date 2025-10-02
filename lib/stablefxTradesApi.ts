@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import { getAPIHostname } from './apiTarget'
 
-export interface CreateCpsQuotePayload {
+export interface CreateStableFXQuotePayload {
   from: {
     amount?: number
     currency: string
@@ -14,7 +14,7 @@ export interface CreateCpsQuotePayload {
   }
 }
 
-export interface CreateCpsTradePayload {
+export interface CreateStableFXTradePayload {
   idempotencyKey: string
   quoteId: string
 }
@@ -50,13 +50,47 @@ export interface FundingPresignPayload {
   traderType: 'maker' | 'taker'
 }
 
+export interface SingleTradeWitnessPermit2 {
+  permitted: {
+    token: string
+    amount: number
+  }
+  spender: string
+  nonce: number
+  deadline: number
+  witness: {
+    id: number
+  }
+}
+
+export interface BatchTradeWitnessPermit2 {
+  permitted: Array<{
+    token: string
+    amount: number
+  }>
+  spender: string
+  nonce: number
+  deadline: number
+  witness: {
+    ids: number[]
+  }
+}
+
+export interface StableFXFundPayload {
+  type: 'maker' | 'taker'
+  signature: string
+  fundingMode: 'gross' | 'net'
+  permit2: SingleTradeWitnessPermit2 | BatchTradeWitnessPermit2
+}
+
 const instance = axios.create({
   baseURL: getAPIHostname(),
 })
 
-const CPS_TRADES_PATH = '/v1/exchange/cps/trades'
-const CPS_QUOTES_PATH = '/v1/exchange/cps/quotes'
-const CPS_SIGNATURES_PATH = '/v1/exchange/cps/signatures'
+const STABLEFX_TRADES_PATH = '/v1/exchange/stablefx/trades'
+const STABLEFX_QUOTES_PATH = '/v1/exchange/stablefx/quotes'
+const STABLEFX_SIGNATURES_PATH = '/v1/exchange/stablefx/signatures'
+const STABLEFX_FUND_PATH = '/v1/exchange/stablefx/fund'
 
 /**
  * Global error handler:
@@ -92,9 +126,9 @@ function getInstance() {
 }
 
 /**
- * Create CPS Quote
+ * Create StableFX Quote
  */
-function createQuote(payload: CreateCpsQuotePayload) {
+function createQuote(payload: CreateStableFXQuotePayload) {
   if (!payload.from.amount) {
     delete payload.from.amount
   }
@@ -102,18 +136,18 @@ function createQuote(payload: CreateCpsQuotePayload) {
     delete payload.to.amount
   }
 
-  return instance.post(CPS_QUOTES_PATH, payload)
+  return instance.post(STABLEFX_QUOTES_PATH, payload)
 }
 
 /**
- * Create CPS Trade
+ * Create StableFX Trade
  */
-function createTrade(payload: CreateCpsTradePayload) {
-  return instance.post(CPS_TRADES_PATH, payload)
+function createTrade(payload: CreateStableFXTradePayload) {
+  return instance.post(STABLEFX_TRADES_PATH, payload)
 }
 
 /**
- * Get CPS Trades
+ * Get StableFX Trades
  */
 function getTrades(
   startCreateDateInclusive?: string,
@@ -134,14 +168,14 @@ function getTrades(
     pageSize: nullIfEmpty(pageSize),
   }
 
-  return instance.get(CPS_TRADES_PATH, { params: queryParams })
+  return instance.get(STABLEFX_TRADES_PATH, { params: queryParams })
 }
 
 /**
- * Get CPS Trade
+ * Get StableFX Trade
  */
 function getTrade(tradeId: string, type?: string) {
-  const url = `${CPS_TRADES_PATH}/${tradeId}`
+  const url = `${STABLEFX_TRADES_PATH}/${tradeId}`
   const queryParams = {
     type: nullIfEmpty(type),
   }
@@ -150,10 +184,10 @@ function getTrade(tradeId: string, type?: string) {
 }
 
 /**
- * Register CPS Signature
+ * Register StableFX Signature
  */
 function registerSignature(payload: CreatePiFXSignaturePayload) {
-  return instance.post(CPS_SIGNATURES_PATH, payload)
+  return instance.post(STABLEFX_SIGNATURES_PATH, payload)
 }
 
 /**
@@ -164,7 +198,7 @@ function getPresignData(
   tradeId: string,
   recipientAddress?: string,
 ) {
-  const url = `/v1/exchange/cps/signatures/presign/${type}/${tradeId}`
+  const url = `/v1/exchange/stablefx/signatures/presign/${type}/${tradeId}`
   const queryParams = recipientAddress ? { recipientAddress } : {}
 
   return instance.get(url, { params: queryParams })
@@ -174,8 +208,21 @@ function getPresignData(
  * Get funding presign data
  */
 function getFundingPresignData(payload: FundingPresignPayload) {
-  const url = '/v1/exchange/cps/signatures/funding/presign'
+  const url = '/v1/exchange/stablefx/signatures/funding/presign'
   return instance.post(url, payload)
+}
+
+/**
+ * Fund StableFX Trade
+ * Note: 'net' funding mode is only available for makers
+ */
+function fund(payload: StableFXFundPayload) {
+  // Validate that net funding mode is only used with makers
+  if (payload.fundingMode === 'net' && payload.type !== 'maker') {
+    throw new Error('Net funding mode is only available for makers')
+  }
+
+  return instance.post(STABLEFX_FUND_PATH, payload)
 }
 
 export default {

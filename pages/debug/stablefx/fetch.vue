@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 const store = useMainStore()
-const { $cpsTradesApi } = useNuxtApp()
+const { $stablefxTradesApi } = useNuxtApp()
 
 const statusOptions = [
   'pending',
@@ -100,7 +100,7 @@ const onErrorSheetClosed = () => {
 const makeApiCall = async () => {
   loading.value = true
   try {
-    await $cpsTradesApi.getTrades(
+    await $stablefxTradesApi.getTrades(
       formData.startCreateDateInclusive,
       formData.endCreateDateInclusive,
       formData.statuses,

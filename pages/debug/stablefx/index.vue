@@ -15,40 +15,44 @@
       </v-card>
 
       <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
-        <h2 class="title">CPS Trade API endpoints</h2>
+        <h2 class="title">StableFX Trade API endpoints</h2>
         <span class="caption">Requires: api key</span>
         <br /><br />
-        <p>API endpoints for CPS trading</p>
+        <p>API endpoints for StableFX trading</p>
         <p>
-          <a href="/debug/cps/flow">Create CPS Trade Flow</a>
+          <a href="/debug/stablefx/flow">Create StableFX Trade Flow</a>
         </p>
         <p>
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/cps/quote">Create CPS Quote</a>
+          <a href="/debug/stablefx/quote">Create StableFX Quote</a>
         </p>
         <p>
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/cps/create">Create CPS Trade</a>
+          <a href="/debug/stablefx/create">Create StableFX Trade</a>
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/cps/fetch">Get all CPS Trades</a>
+          <a href="/debug/stablefx/fetch">Get all StableFX Trades</a>
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/cps/details"> Get CPS Trade by ID</a>
+          <a href="/debug/stablefx/details"> Get StableFX Trade by ID</a>
         </p>
         <p>
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/cps/signature">Register CPS signature</a>
+          <a href="/debug/stablefx/signature">Register StableFX signature</a>
         </p>
         <p>
           <v-chip small color="primary">GET</v-chip>
-          <a href="/debug/cps/presign">Get presign data for trade</a>
+          <a href="/debug/stablefx/presign">Get presign data for trade</a>
         </p>
         <p>
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/cps/funding-presign">Get presign data for funding</a>
+          <a href="/debug/stablefx/funding-presign">Get presign data for funding</a>
+        </p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/stablefx/fund">Fund StableFX Trade</a>
         </p>
       </v-card>
     </v-col>

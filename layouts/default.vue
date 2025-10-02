@@ -132,17 +132,17 @@
         <v-list-group>
           <template #activator="{ props }">
             <v-list-item v-bind="props">
-              <v-list-item-title>CPS Trade API</v-list-item-title>
+              <v-list-item-title>StableFX API</v-list-item-title>
             </v-list-item>
           </template>
 
-          <v-list-item to="/debug/cps" exact>
+          <v-list-item to="/debug/stablefx" exact>
             <v-list-item-title class="list-items"> Overview </v-list-item-title>
           </v-list-item>
 
           <v-list-item
-            v-for="(item, i) in cpsTradesLinks"
-            :key="`cpsTradesLinks-${i}`"
+            v-for="(item, i) in stablefxTradesLinks"
+            :key="`stablefxTradesLinks-${i}`"
             :to="item.to"
             exact
           >
@@ -438,34 +438,38 @@ const tradesLinks = [
   },
 ]
 
-const cpsTradesLinks = [
+const stablefxTradesLinks = [
   {
-    title: 'POST /cps/quotes',
-    to: '/debug/cps/quote',
+    title: 'POST /stablefx/quotes',
+    to: '/debug/stablefx/quote',
   },
   {
-    title: 'POST /cps/trades',
-    to: '/debug/cps/create',
+    title: 'POST /stablefx/trades',
+    to: '/debug/stablefx/create',
   },
   {
-    title: 'GET /cps/trades',
-    to: '/debug/cps/fetch',
+    title: 'GET /stablefx/trades',
+    to: '/debug/stablefx/fetch',
   },
   {
-    title: 'GET /cps/trades/{id}',
-    to: '/debug/cps/details',
+    title: 'GET /stablefx/trades/{id}',
+    to: '/debug/stablefx/details',
   },
   {
-    title: 'GET /cps/signatures/presign',
-    to: '/debug/cps/presign',
+    title: 'GET /stablefx/signatures/presign',
+    to: '/debug/stablefx/presign',
   },
   {
-    title: 'POST /cps/signatures',
-    to: '/debug/cps/signature',
+    title: 'POST /stablefx/signatures',
+    to: '/debug/stablefx/signature',
   },
   {
-    title: 'POST /cps/signatures/funding/presign',
-    to: '/debug/cps/funding-presign',
+    title: 'POST /stablefx/signatures/funding/presign',
+    to: '/debug/stablefx/funding-presign',
+  },
+  {
+    title: 'POST /stablefx/fund',
+    to: '/debug/stablefx/fund',
   },
 ]
 

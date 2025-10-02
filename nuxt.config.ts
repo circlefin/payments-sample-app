@@ -44,7 +44,7 @@ export default defineNuxtConfig({
     '~/plugins/walletsApi.ts',
     '~/plugins/paymentIntentsApi.ts',
     '~/plugins/mocksApi.ts',
-    '~/plugins/cpsTradesApi.ts',
+    '~/plugins/stablefxTradesApi.ts',
     '~/plugins/businessAccount/addressesApi.ts',
     '~/plugins/businessAccount/balancesApi.ts',
     '~/plugins/businessAccount/bankAccountsApi.ts',
