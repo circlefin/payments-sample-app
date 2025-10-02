@@ -201,7 +201,7 @@
 
 <script setup lang="ts">
 import type {
-  CpsFundPayload,
+  StableFXFundPayload,
   SingleTradeWitnessPermit2,
   BatchTradeWitnessPermit2,
 } from '~/lib/stablefxTradesApi'
@@ -336,7 +336,7 @@ const makeApiCall = async () => {
       }
     }
 
-    const payloadData: CpsFundPayload = {
+    const payloadData: StableFXFundPayload = {
       type: formData.type as 'maker' | 'taker',
       signature: formData.signature,
       fundingMode: formData.fundingMode as 'gross' | 'net',

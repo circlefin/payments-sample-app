@@ -234,4 +234,5 @@ export default {
   registerSignature,
   getPresignData,
   getFundingPresignData,
+  fund,
 }

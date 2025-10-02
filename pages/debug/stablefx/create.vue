@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
-import type { CreateCpsTradePayload } from '~/lib/stablefxTradesApi'
+import type { CreateStableFXTradePayload } from '~/lib/stablefxTradesApi'
 
 const store = useMainStore()
 const { $stablefxTradesApi } = useNuxtApp()
@@ -66,7 +66,7 @@ const onErrorSheetClosed = () => {
 const makeApiCall = async () => {
   loading.value = true
 
-  const payloadData: CreateCpsTradePayload = {
+  const payloadData: CreateStableFXTradePayload = {
     idempotencyKey: uuidv4(),
     quoteId: formData.quoteId,
   }
