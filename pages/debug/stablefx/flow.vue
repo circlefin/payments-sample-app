@@ -32,7 +32,7 @@
             :disabled="!validForm || loading"
             @click.prevent="makeApiCall"
           >
-            Create CPS Quote and Trade
+            Create Stable FX Quote and Trade
           </v-btn>
           <v-btn
             v-if="!showTradeStatus"
@@ -41,7 +41,7 @@
             color="secondary"
             @click.prevent="onNewTrade"
           >
-            New CPS Trade
+            New Stable FX Trade
           </v-btn>
         </v-form>
       </v-col>
@@ -53,10 +53,10 @@
         />
         <div v-if="showTradeStatus">
           <v-divider class="my-4" />
-          <h3>CPS Trade Status</h3>
+          <h3>Stable FX Trade Status</h3>
           <TradeStatus
             :trade-id="tradeId"
-            :api-service="$cpsTradesApi"
+            :api-service="$stablefxTradesApi"
             @error="onPollingError"
           />
         </div>
@@ -74,7 +74,7 @@
 import { v4 as uuidv4 } from 'uuid'
 
 const store = useMainStore()
-const { $cpsTradesApi } = useNuxtApp()
+const { $stablefxTradesApi } = useNuxtApp()
 
 const quoteResponse = ref({
   id: '',
@@ -145,10 +145,10 @@ const makeApiCall = async () => {
       },
     }
 
-    const quoteApiResponse = await $cpsTradesApi.createQuote(quotePayload)
+    const quoteApiResponse = await $stablefxTradesApi.createQuote(quotePayload)
     quoteResponse.value = quoteApiResponse.data
 
-    const tradeApiResponse = await $cpsTradesApi.createTrade({
+    const tradeApiResponse = await $stablefxTradesApi.createTrade({
       idempotencyKey: uuidv4(),
       quoteId: quoteResponse.value.id,
     })

@@ -1,10 +1,10 @@
-import cpsTradesApi from '~/lib/cpsTradesApi'
+import stablefxTradesApi from '~/lib/stablefxTradesApi'
 
 export default defineNuxtPlugin(() => {
   const { $pinia } = useNuxtApp()
   const store = useMainStore($pinia)
 
-  const instance = cpsTradesApi.getInstance()
+  const instance = stablefxTradesApi.getInstance()
 
   instance.interceptors.request.use(
     function (config) {
@@ -34,7 +34,7 @@ export default defineNuxtPlugin(() => {
 
   return {
     provide: {
-      cpsTradesApi: cpsTradesApi,
+      stablefxTradesApi: stablefxTradesApi,
     },
   }
 })

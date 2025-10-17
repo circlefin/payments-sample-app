@@ -56,10 +56,10 @@
 </template>
 
 <script setup lang="ts">
-import type { FundingPresignPayload } from '~/lib/cpsTradesApi'
+import type { FundingPresignPayload } from '~/lib/stablefxTradesApi'
 
 const store = useMainStore()
-const { $cpsTradesApi } = useNuxtApp()
+const { $stablefxTradesApi } = useNuxtApp()
 
 const validForm = ref(false)
 const formData = reactive({
@@ -109,7 +109,7 @@ const makeApiCall = async () => {
       traderType: formData.traderType as 'maker' | 'taker',
     }
 
-    await $cpsTradesApi.getFundingPresignData(payloadData)
+    await $stablefxTradesApi.getFundingPresignData(payloadData)
   } catch (err) {
     error.value = err
     showError.value = true
