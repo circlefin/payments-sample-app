@@ -85,8 +85,7 @@ const newTrade = () => {
 
 const getTrade = async (tradeId: string) => {
   try {
-    const response = await $tradesApi.getTrade(tradeId)
-    const { status } = response.data
+    const { status } = (await $tradesApi.getTrade(tradeId)) as any
     tradeStatus.value = status
     if (stopPollingStatuses.includes(status)) {
       stopPolling()
