@@ -166,13 +166,15 @@ const makeApiCall = async () => {
       },
     }
 
-    quoteResponse.value = await $tradesApi.createQuote(quotePayload) as any
+    quoteResponse.value = (await $tradesApi.createQuote(quotePayload)) as any
 
-    tradeId.value = (await $tradesApi.createTrade({
-      idempotencyKey: uuidv4(),
-      quoteId: quoteResponse.value.id,
-      fulfill: fulfill.value,
-    }) as any).id
+    tradeId.value = (
+      (await $tradesApi.createTrade({
+        idempotencyKey: uuidv4(),
+        quoteId: quoteResponse.value.id,
+        fulfill: fulfill.value,
+      })) as any
+    ).id
     showTradeStatus.value = true
   } catch (err) {
     error.value = err
