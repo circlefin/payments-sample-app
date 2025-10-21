@@ -4,6 +4,7 @@
   "description": "Sample App for Payments API",
   "author": "Circle",
   "license": "MIT",
+  "packageManager": "yarn@1.22.22",
   "private": true,
   "scripts": {
     "build": "nuxt build",
