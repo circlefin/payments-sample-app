@@ -177,7 +177,12 @@
         <NuxtPage />
       </v-container>
     </v-main>
-    <v-navigation-drawer v-model="showRightDrawer" location="right" temporary>
+    <v-navigation-drawer
+      v-model="showRightDrawer"
+      location="right"
+      temporary
+      width="400"
+    >
       <div class="pa-3 pt-8">
         <p>Settings</p>
         <v-form class="mt-8">
@@ -191,6 +196,43 @@
             such as GitHub, client-side code, etc.
           </p>
         </v-form>
+
+        <!-- Developer Controlled Wallets Settings -->
+        <v-expansion-panels class="mt-6">
+          <v-expansion-panel>
+            <v-expansion-panel-title>
+              Developer Controlled Wallets
+            </v-expansion-panel-title>
+            <v-expansion-panel-text>
+              <v-form>
+                <v-text-field
+                  v-model="walletApiKey"
+                  label="Wallet API Key"
+                  variant="outlined"
+                  type="password"
+                  class="mb-4"
+                />
+                <v-text-field
+                  v-model="entitySecret"
+                  label="Entity Secret"
+                  variant="outlined"
+                  type="password"
+                  class="mb-4"
+                />
+                <v-text-field
+                  v-model="walletId"
+                  label="Wallet ID"
+                  variant="outlined"
+                  class="mb-4"
+                />
+                <p class="subtitle-2 font-weight-light">
+                  Configure your Circle Developer Controlled Wallets credentials
+                  for signing operations.
+                </p>
+              </v-form>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </div>
     </v-navigation-drawer>
   </v-app>
@@ -480,6 +522,21 @@ const showDrawer = ref(false)
 const apiKey = computed({
   get: () => store.getApiKey,
   set: (value: string) => store.setBearerToken(value),
+})
+
+const walletApiKey = computed({
+  get: () => store.getWalletApiKey,
+  set: (value: string) => store.setWalletApiKey(value),
+})
+
+const entitySecret = computed({
+  get: () => store.getEntitySecret,
+  set: (value: string) => store.setEntitySecret(value),
+})
+
+const walletId = computed({
+  get: () => store.getWalletId,
+  set: (value: string) => store.setWalletId(value),
 })
 </script>
 

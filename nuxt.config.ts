@@ -58,6 +58,7 @@ export default defineNuxtConfig({
     '~/plugins/beta/addressBookApi.ts',
     '~/plugins/payoutsApi.ts',
     '~/plugins/tradesApi.ts',
+    '~/plugins/circleWalletsApi.ts',
   ],
 
   modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt'],
