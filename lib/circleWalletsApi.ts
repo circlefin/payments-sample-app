@@ -1,17 +1,27 @@
 import axios, { type AxiosInstance } from 'axios'
+import { getLive } from '@/lib/apiTarget'
 
 class CircleWalletsApi {
   private instance: AxiosInstance
 
   constructor() {
     this.instance = axios.create({
-      baseURL: 'https://api.circle.com',
+      baseURL: this.getCircleBaseUrl(),
       timeout: 60000,
     })
   }
 
+  private getCircleBaseUrl(): string {
+    // Use api.circle.com for production/sandbox, api-staging.circle.com for smokebox/staging
+    return getLive() ? 'https://api.circle.com' : 'https://api-staging.circle.com'
+  }
+
   getInstance(): AxiosInstance {
     return this.instance
+  }
+
+  updateBaseUrl() {
+    this.instance.defaults.baseURL = this.getCircleBaseUrl()
   }
 
   /**
