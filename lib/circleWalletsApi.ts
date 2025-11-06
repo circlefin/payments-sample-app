@@ -13,7 +13,9 @@ class CircleWalletsApi {
 
   private getCircleBaseUrl(): string {
     // Use api.circle.com for production/sandbox, api-staging.circle.com for smokebox/staging
-    return getLive() ? 'https://api.circle.com' : 'https://api-staging.circle.com'
+    return getLive()
+      ? 'https://api.circle.com'
+      : 'https://api-staging.circle.com'
   }
 
   getInstance(): AxiosInstance {
@@ -30,21 +32,17 @@ class CircleWalletsApi {
    * @returns Public key PEM string
    */
   async getEntityPublicKey(apiKey: string): Promise<string> {
-    try {
-      const response = await this.instance.get(
-        '/v1/w3s/config/entity/publicKey',
-        {
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            'Content-Type': 'application/json',
-          },
+    const response = await this.instance.get(
+      '/v1/w3s/config/entity/publicKey',
+      {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
         },
-      )
+      },
+    )
 
-      return response.data.data.publicKey
-    } catch (error) {
-      throw error
-    }
+    return response.data.data.publicKey
   }
 
   /**
@@ -57,37 +55,33 @@ class CircleWalletsApi {
     entitySecret: string,
     publicKeyPem: string,
   ): Promise<string> {
-    try {
-      const publicKeyBuffer = this.pemToArrayBuffer(publicKeyPem)
-      const publicKey = await crypto.subtle.importKey(
-        'spki',
-        publicKeyBuffer,
-        {
-          name: 'RSA-OAEP',
-          hash: 'SHA-256',
-        },
-        false,
-        ['encrypt'],
-      )
+    const publicKeyBuffer = this.pemToArrayBuffer(publicKeyPem)
+    const publicKey = await crypto.subtle.importKey(
+      'spki',
+      publicKeyBuffer,
+      {
+        name: 'RSA-OAEP',
+        hash: 'SHA-256',
+      },
+      false,
+      ['encrypt'],
+    )
 
-      // Convert hex entity secret to bytes
-      const entitySecretBytes = this.hexToBytes(entitySecret)
+    // Convert hex entity secret to bytes
+    const entitySecretBytes = this.hexToBytes(entitySecret)
 
-      // Encrypt the entity secret
-      const encryptedData = await crypto.subtle.encrypt(
-        {
-          name: 'RSA-OAEP',
-        },
-        publicKey,
-        entitySecretBytes,
-      )
+    // Encrypt the entity secret
+    const encryptedData = await crypto.subtle.encrypt(
+      {
+        name: 'RSA-OAEP',
+      },
+      publicKey,
+      entitySecretBytes,
+    )
 
-      // Convert to base64
-      const ciphertext = this.arrayBufferToBase64(encryptedData)
-      return ciphertext
-    } catch (error) {
-      throw error
-    }
+    // Convert to base64
+    const ciphertext = this.arrayBufferToBase64(encryptedData)
+    return ciphertext
   }
 
   /**
@@ -104,25 +98,21 @@ class CircleWalletsApi {
     entitySecretCiphertext: string,
     apiKey: string,
   ): Promise<any> {
-    try {
-      const response = await this.instance.post(
-        '/v1/w3s/developer/sign/typedData',
-        {
-          walletId,
-          data: typedData,
-          entitySecretCiphertext,
+    const response = await this.instance.post(
+      '/v1/w3s/developer/sign/typedData',
+      {
+        walletId,
+        data: typedData,
+        entitySecretCiphertext,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
         },
-        {
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            'Content-Type': 'application/json',
-          },
-        },
-      )
-      return response.data
-    } catch (error) {
-      throw error
-    }
+      },
+    )
+    return response.data
   }
 
   /**
@@ -139,23 +129,19 @@ class CircleWalletsApi {
     entitySecret: string,
     apiKey: string,
   ): Promise<any> {
-    try {
-      const publicKeyPem = await this.getEntityPublicKey(apiKey)
+    const publicKeyPem = await this.getEntityPublicKey(apiKey)
 
-      const entitySecretCiphertext = await this.generateEntitySecretCiphertext(
-        entitySecret,
-        publicKeyPem,
-      )
+    const entitySecretCiphertext = await this.generateEntitySecretCiphertext(
+      entitySecret,
+      publicKeyPem,
+    )
 
-      return await this.signTypedData(
-        walletId,
-        typedData,
-        entitySecretCiphertext,
-        apiKey,
-      )
-    } catch (error) {
-      throw error
-    }
+    return await this.signTypedData(
+      walletId,
+      typedData,
+      entitySecretCiphertext,
+      apiKey,
+    )
   }
 
   // Utility methods
