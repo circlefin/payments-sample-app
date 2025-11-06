@@ -173,11 +173,14 @@ const makeApiCall = async () => {
 
 const signWithCircle = async () => {
   if (!hasWalletConfig.value) {
-    error.value = { message: 'Please configure your Circle Developer Controlled Wallets credentials in the settings panel.' }
+    error.value = {
+      message:
+        'Please configure your Circle Developer Controlled Wallets credentials in the settings panel.',
+    }
     showError.value = true
     return
   }
-  
+
   if (!hasPresignResponse.value) {
     error.value = { message: 'Please get presign data first before signing.' }
     showError.value = true
@@ -196,7 +199,10 @@ const signWithCircle = async () => {
     }
 
     if (!typedData) {
-      error.value = { message: 'No typed data found in the presign response. Please ensure the presign data contains valid typed data.' }
+      error.value = {
+        message:
+          'No typed data found in the presign response. Please ensure the presign data contains valid typed data.',
+      }
       showError.value = true
       return
     }

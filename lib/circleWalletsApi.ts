@@ -20,13 +20,16 @@ class CircleWalletsApi {
    * @returns Public key PEM string
    */
   async getEntityPublicKey(apiKey: string): Promise<string> {
-    try {      
-      const response = await this.instance.get('/v1/w3s/config/entity/publicKey', {
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-        }
-      })
+    try {
+      const response = await this.instance.get(
+        '/v1/w3s/config/entity/publicKey',
+        {
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      )
 
       return response.data.data.publicKey
     } catch (error) {
@@ -40,8 +43,11 @@ class CircleWalletsApi {
    * @param publicKeyPem - The public key in PEM format
    * @returns Base64 encoded ciphertext
    */
-  async generateEntitySecretCiphertext(entitySecret: string, publicKeyPem: string): Promise<string> {
-    try {      
+  async generateEntitySecretCiphertext(
+    entitySecret: string,
+    publicKeyPem: string,
+  ): Promise<string> {
+    try {
       const publicKeyBuffer = this.pemToArrayBuffer(publicKeyPem)
       const publicKey = await crypto.subtle.importKey(
         'spki',
@@ -51,23 +57,23 @@ class CircleWalletsApi {
           hash: 'SHA-256',
         },
         false,
-        ['encrypt']
+        ['encrypt'],
       )
 
       // Convert hex entity secret to bytes
       const entitySecretBytes = this.hexToBytes(entitySecret)
-      
+
       // Encrypt the entity secret
       const encryptedData = await crypto.subtle.encrypt(
         {
           name: 'RSA-OAEP',
         },
         publicKey,
-        entitySecretBytes
+        entitySecretBytes,
       )
 
       // Convert to base64
-      const ciphertext = this.arrayBufferToBase64(encryptedData)      
+      const ciphertext = this.arrayBufferToBase64(encryptedData)
       return ciphertext
     } catch (error) {
       throw error
@@ -86,19 +92,23 @@ class CircleWalletsApi {
     walletId: string,
     typedData: string,
     entitySecretCiphertext: string,
-    apiKey: string
+    apiKey: string,
   ): Promise<any> {
-    try {      
-      const response = await this.instance.post('/v1/w3s/developer/sign/typedData', {
-        walletId,
-        data: typedData,
-        entitySecretCiphertext,
-      }, {
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-        }
-      })
+    try {
+      const response = await this.instance.post(
+        '/v1/w3s/developer/sign/typedData',
+        {
+          walletId,
+          data: typedData,
+          entitySecretCiphertext,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      )
       return response.data
     } catch (error) {
       throw error
@@ -117,14 +127,22 @@ class CircleWalletsApi {
     walletId: string,
     typedData: string,
     entitySecret: string,
-    apiKey: string
+    apiKey: string,
   ): Promise<any> {
     try {
       const publicKeyPem = await this.getEntityPublicKey(apiKey)
-      
-      const entitySecretCiphertext = await this.generateEntitySecretCiphertext(entitySecret, publicKeyPem)
-      
-      return await this.signTypedData(walletId, typedData, entitySecretCiphertext, apiKey)
+
+      const entitySecretCiphertext = await this.generateEntitySecretCiphertext(
+        entitySecret,
+        publicKeyPem,
+      )
+
+      return await this.signTypedData(
+        walletId,
+        typedData,
+        entitySecretCiphertext,
+        apiKey,
+      )
     } catch (error) {
       throw error
     }
@@ -134,7 +152,10 @@ class CircleWalletsApi {
   private pemToArrayBuffer(pem: string): ArrayBuffer {
     const pemHeader = '-----BEGIN PUBLIC KEY-----'
     const pemFooter = '-----END PUBLIC KEY-----'
-    const pemContents = pem.replace(pemHeader, '').replace(pemFooter, '').replace(/\s/g, '')
+    const pemContents = pem
+      .replace(pemHeader, '')
+      .replace(pemFooter, '')
+      .replace(/\s/g, '')
     const binaryString = atob(pemContents)
     const bytes = new Uint8Array(binaryString.length)
     for (let i = 0; i < binaryString.length; i++) {
