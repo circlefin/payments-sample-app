@@ -172,8 +172,15 @@ const makeApiCall = async () => {
 }
 
 const signWithCircle = async () => {
-  if (!hasWalletConfig.value || !hasPresignResponse.value) {
-    console.log('Missing wallet config or presign response')
+  if (!hasWalletConfig.value) {
+    error.value = { message: 'Please configure your Circle Developer Controlled Wallets credentials in the settings panel.' }
+    showError.value = true
+    return
+  }
+  
+  if (!hasPresignResponse.value) {
+    error.value = { message: 'Please get presign data first before signing.' }
+    showError.value = true
     return
   }
 
@@ -188,7 +195,11 @@ const signWithCircle = async () => {
       typedData = response.value.data
     }
 
-    console.log('Typed data to sign:', typedData)
+    if (!typedData) {
+      error.value = { message: 'No typed data found in the presign response. Please ensure the presign data contains valid typed data.' }
+      showError.value = true
+      return
+    }
 
     // Convert typed data to string format expected by Circle API
     const typedDataString = JSON.stringify(typedData)
@@ -201,8 +212,6 @@ const signWithCircle = async () => {
       store.getWalletApiKey,
     )
 
-    console.log('Sign result:', signResult)
-
     // Extract just the signature from the response
     const signature =
       signResult?.data?.signature ||
@@ -210,7 +219,6 @@ const signWithCircle = async () => {
       'No signature found'
     signatureResult.value = signature
   } catch (err) {
-    console.error('Error signing with Circle:', err)
     error.value = err
     showError.value = true
   } finally {
@@ -221,9 +229,9 @@ const signWithCircle = async () => {
 const copySignature = async () => {
   try {
     await navigator.clipboard.writeText(signatureResult.value)
-    console.log('Signature copied to clipboard')
   } catch (err) {
-    console.error('Failed to copy signature:', err)
+    error.value = { message: 'Failed to copy signature.' }
+    showError.value = true
   }
 }
 </script>
