@@ -1,5 +1,5 @@
 import axios, { type AxiosInstance } from 'axios'
-import { getLive } from '@/lib/apiTarget'
+import { getIsNotStagingOrSmokebox } from '@/lib/apiTarget'
 
 class CircleWalletsApi {
   private instance: AxiosInstance
@@ -13,9 +13,7 @@ class CircleWalletsApi {
 
   private getCircleBaseUrl(): string {
     // Use api.circle.com for production/sandbox, api-staging.circle.com for smokebox/staging
-    return getLive()
-      ? 'https://api.circle.com'
-      : 'https://api-staging.circle.com'
+    return getIsNotStagingOrSmokebox() ? 'https://api.circle.com' : 'https://api-staging.circle.com';
   }
 
   getInstance(): AxiosInstance {

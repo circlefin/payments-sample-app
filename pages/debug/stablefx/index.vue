@@ -20,9 +20,6 @@
         <br /><br />
         <p>API endpoints for StableFX trading</p>
         <p>
-          <a href="/debug/stablefx/flow">Create StableFX Trade Flow</a>
-        </p>
-        <p>
           <v-chip small color="primary warning">POST</v-chip>
           <a href="/debug/stablefx/quote">Create StableFX Quote</a>
         </p>

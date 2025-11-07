@@ -58,6 +58,7 @@
 <script setup lang="ts">
 const store = useMainStore()
 const { $stablefxTradesApi } = useNuxtApp()
+const route = useRoute()
 
 const statusOptions = [
   'pending',
@@ -78,7 +79,7 @@ const formData = reactive({
   startCreateDateInclusive: '',
   endCreateDateInclusive: '',
   statuses: '',
-  type: '',
+  type: (route.query.type as string) || '',
   pageSize: '',
   pageBefore: '',
   pageAfter: '',

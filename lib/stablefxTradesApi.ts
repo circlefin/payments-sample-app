@@ -47,7 +47,7 @@ export interface CreatePiFXSignaturePayload {
 export interface FundingPresignPayload {
   contractTradeIds: string[]
   fundingMode: 'gross' | 'net'
-  traderType: 'maker' | 'taker'
+  type: 'maker' | 'taker'
 }
 
 export interface SingleTradeWitnessPermit2 {

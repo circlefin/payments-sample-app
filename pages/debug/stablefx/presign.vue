@@ -82,6 +82,15 @@
               append-inner-icon="mdi-content-copy"
               @click:append-inner="copySignature"
             />
+            <v-btn
+              variant="flat"
+              color="secondary"
+              class="mt-4"
+              block
+              @click.prevent="goToRegisterSignature"
+            >
+              Proceed to Register Signature
+            </v-btn>
           </v-card-text>
         </v-card>
       </v-col>
@@ -104,11 +113,13 @@
 <script setup lang="ts">
 const store = useMainStore()
 const { $stablefxTradesApi, $circleWalletsApi } = useNuxtApp()
+const route = useRoute()
+const router = useRouter()
 
 const validForm = ref(false)
 const formData = reactive({
   type: '',
-  tradeId: '',
+  tradeId: (route.query.tradeId as string) || '',
   recipientAddress: '',
 })
 
@@ -239,5 +250,26 @@ const copySignature = async () => {
     error.value = { message: 'Failed to copy signature.' }
     showError.value = true
   }
+}
+
+const goToRegisterSignature = () => {
+  // Extract typed data from the presign response
+  let typedData = response.value.data?.typedData || response.value.typedData
+  
+  if (!typedData && response.value.data) {
+    typedData = response.value.data
+  }
+  
+  const typedDataMessage = typedData?.message ? JSON.stringify(typedData.message, null, 2) : ''
+  
+  router.push({
+    path: '/debug/stablefx/signature',
+    query: {
+      tradeId: formData.tradeId,
+      signature: signatureResult.value,
+      typedDataMessage: typedDataMessage,
+      type: formData.type,
+    },
+  })
 }
 </script>

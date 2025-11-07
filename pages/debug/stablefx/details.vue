@@ -45,11 +45,12 @@
 <script setup lang="ts">
 const store = useMainStore()
 const { $stablefxTradesApi } = useNuxtApp()
+const route = useRoute()
 
 const validForm = ref(false)
 const formData = reactive({
-  tradeId: '',
-  type: '',
+  tradeId: (route.query.tradeId as string) || '',
+  type: (route.query.type as string) || '',
 })
 
 const typeOptions = [

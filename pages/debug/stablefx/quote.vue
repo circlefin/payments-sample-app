@@ -40,6 +40,15 @@
           >
             Make api call
           </v-btn>
+          <v-btn
+            v-if="quoteId"
+            depressed
+            class="mb-7 ml-3"
+            color="secondary"
+            @click.prevent="goToCreateTrade"
+          >
+            Create Trade from Quote
+          </v-btn>
         </v-form>
       </v-col>
       <v-col cols="12" md="8">
@@ -59,12 +68,15 @@
 </template>
 
 <script setup lang="ts">
+import { v4 as uuidv4 } from 'uuid'
 import { getAPIHostname } from '~/lib/apiTarget'
 
 const store = useMainStore()
 const { $stablefxTradesApi } = useNuxtApp()
+const router = useRouter()
 
 const validForm = ref(false)
+const quoteId = ref('')
 const formData = reactive({
   from: {
     amount: '',
@@ -127,12 +139,27 @@ const makeApiCall = async () => {
     store.setRequestUrl(`${getAPIHostname()}/v1/stablefx/quotes`)
 
     const response = await $stablefxTradesApi.createQuote(payloadData)
-    store.setResponse(response)
+    
+    // Extract quote ID from response
+    if ((response as any)?.id) {
+      quoteId.value = (response as any).id
+    }
   } catch (err) {
     error.value = err
     showError.value = true
   } finally {
     loading.value = false
   }
+}
+
+const goToCreateTrade = () => {
+  const idempotencyKey = uuidv4()
+  router.push({
+    path: '/debug/stablefx/create',
+    query: {
+      quoteId: quoteId.value,
+      idempotencyKey: idempotencyKey,
+    },
+  })
 }
 </script>
