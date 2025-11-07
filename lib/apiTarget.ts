@@ -9,11 +9,9 @@ function getAPIHostname() {
   // If app is running on localhost (ie, in  dev) the URL is provided via an environment variable (.env file), use that.
   // Otherwise, base it off the window location.
   if (window.location && window.location.hostname === 'localhost') {
-    const result = process.env.baseUrl || 'https://api-sandbox.circle.com'
-    return result
+    return process.env.baseUrl || 'https://api-sandbox.circle.com'
   }
-  const result = window.location.origin.replace('sample', 'api')
-  return result
+  return window.location.origin.replace('sample', 'api')
 }
 
 function getIsInternal() {
@@ -38,7 +36,6 @@ function getIsStaging() {
 
 function getIsLocalHost(): boolean {
   const hostname = getAPIHostname()
-  console.log('getIsLocalHost - hostname:', hostname, 'type:', typeof hostname);
   return hostname?.includes(':3011') || false
 }
 
@@ -47,4 +44,11 @@ function getIsNotStagingOrSmokebox(): boolean {
   return !(hostname?.includes('staging') || hostname?.includes('smokebox'))
 }
 
-export { getAPIHostname, getIsInternal, getLive, getIsStaging, getIsLocalHost, getIsNotStagingOrSmokebox }
+export {
+  getAPIHostname,
+  getIsInternal,
+  getLive,
+  getIsStaging,
+  getIsLocalHost,
+  getIsNotStagingOrSmokebox,
+}

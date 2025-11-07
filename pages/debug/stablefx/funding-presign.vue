@@ -15,7 +15,11 @@
             :items="fundingModeOptions"
             :rules="[required]"
             label="Funding Mode"
-            :hint="formData.type === 'taker' ? 'Takers can only use gross funding mode' : ''"
+            :hint="
+              formData.type === 'taker'
+                ? 'Takers can only use gross funding mode'
+                : ''
+            "
             persistent-hint
           />
 
@@ -293,14 +297,16 @@ const copySignature = async () => {
 const goToFund = () => {
   // Extract typed data from the presign response
   let typedData = response.value.data?.typedData || response.value.typedData
-  
+
   if (!typedData && response.value.data) {
     typedData = response.value.data
   }
-  
+
   // Extract permit2 data from the typed data message
-  const permit2Data = typedData?.message ? JSON.stringify(typedData.message, null, 2) : ''
-  
+  const permit2Data = typedData?.message
+    ? JSON.stringify(typedData.message, null, 2)
+    : ''
+
   router.push({
     path: '/debug/stablefx/fund',
     query: {

@@ -92,7 +92,7 @@ const makeApiCall = async () => {
 
   try {
     const response = await $stablefxTradesApi.createTrade(payloadData)
-    
+
     // Extract trade ID from response
     if ((response as any)?.id) {
       tradeId.value = (response as any).id

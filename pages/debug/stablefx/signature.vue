@@ -118,7 +118,7 @@ const makeApiCall = async () => {
   try {
     // Parse the typed data message JSON
     const parsedMessage = JSON.parse(formData.typedDataMessage)
-    
+
     const payloadData: CreatePiFXSignaturePayload = {
       tradeId: formData.tradeId,
       type: formData.type,

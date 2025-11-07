@@ -139,7 +139,7 @@ const makeApiCall = async () => {
     store.setRequestUrl(`${getAPIHostname()}/v1/stablefx/quotes`)
 
     const response = await $stablefxTradesApi.createQuote(payloadData)
-    
+
     // Extract quote ID from response
     if ((response as any)?.id) {
       quoteId.value = (response as any).id

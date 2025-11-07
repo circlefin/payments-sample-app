@@ -255,13 +255,15 @@ const copySignature = async () => {
 const goToRegisterSignature = () => {
   // Extract typed data from the presign response
   let typedData = response.value.data?.typedData || response.value.typedData
-  
+
   if (!typedData && response.value.data) {
     typedData = response.value.data
   }
-  
-  const typedDataMessage = typedData?.message ? JSON.stringify(typedData.message, null, 2) : ''
-  
+
+  const typedDataMessage = typedData?.message
+    ? JSON.stringify(typedData.message, null, 2)
+    : ''
+
   router.push({
     path: '/debug/stablefx/signature',
     query: {

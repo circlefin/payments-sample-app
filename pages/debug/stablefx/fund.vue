@@ -49,11 +49,7 @@
         <!-- Success Message -->
         <v-card v-if="fundingSuccess" class="mt-6">
           <v-card-text>
-            <v-alert
-              type="success"
-              variant="tonal"
-              class="mb-4"
-            >
+            <v-alert type="success" variant="tonal" class="mb-4">
               Trade funded successfully!
             </v-alert>
             <v-btn
@@ -94,9 +90,12 @@ const router = useRouter()
 const validForm = ref(false)
 const fundingSuccess = ref(false)
 const formData = reactive({
-  type: (route.query.type as 'maker' | 'taker') || ('' as 'maker' | 'taker' | ''),
+  type:
+    (route.query.type as 'maker' | 'taker') || ('' as 'maker' | 'taker' | ''),
   signature: (route.query.signature as string) || '',
-  fundingMode: (route.query.fundingMode as 'gross' | 'net') || ('' as 'gross' | 'net' | ''),
+  fundingMode:
+    (route.query.fundingMode as 'gross' | 'net') ||
+    ('' as 'gross' | 'net' | ''),
   permit2DataMessage: (route.query.permit2Data as string) || '',
 })
 
