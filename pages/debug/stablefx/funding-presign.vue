@@ -4,10 +4,10 @@
       <v-col cols="12" md="4">
         <v-form v-model="validForm">
           <v-select
-            v-model="formData.traderType"
-            :items="traderTypeOptions"
+            v-model="formData.type"
+            :items="typeOptions"
             :rules="[required]"
-            label="Trader Type"
+            label="Type"
           />
 
           <v-select
@@ -15,6 +15,12 @@
             :items="fundingModeOptions"
             :rules="[required]"
             label="Funding Mode"
+            :hint="
+              formData.type === 'taker'
+                ? 'Takers can only use gross funding mode'
+                : ''
+            "
+            persistent-hint
           />
 
           <v-text-field
@@ -88,6 +94,15 @@
               append-inner-icon="mdi-content-copy"
               @click:append-inner="copySignature"
             />
+            <v-btn
+              variant="flat"
+              color="secondary"
+              class="mt-4"
+              block
+              @click.prevent="goToFund"
+            >
+              Proceed to Fund Trade
+            </v-btn>
           </v-card-text>
         </v-card>
       </v-col>
@@ -112,23 +127,31 @@ import type { FundingPresignPayload } from '~/lib/stablefxTradesApi'
 
 const store = useMainStore()
 const { $stablefxTradesApi, $circleWalletsApi } = useNuxtApp()
+const router = useRouter()
 
 const validForm = ref(false)
 const formData = reactive({
   contractTradeIds: '',
   fundingMode: '' as 'gross' | 'net' | '',
-  traderType: '' as 'maker' | 'taker' | '',
+  type: '' as 'maker' | 'taker' | '',
 })
 
-const traderTypeOptions = [
+const typeOptions = [
   { title: 'Maker', value: 'maker' },
   { title: 'Taker', value: 'taker' },
 ]
 
-const fundingModeOptions = [
-  { title: 'Gross', value: 'gross' },
-  { title: 'Net', value: 'net' },
-]
+const fundingModeOptions = computed(() => {
+  // Takers can only use gross funding mode
+  if (formData.type === 'taker') {
+    return [{ title: 'Gross', value: 'gross' }]
+  }
+  // Makers can use both gross and net
+  return [
+    { title: 'Gross', value: 'gross' },
+    { title: 'Net', value: 'net' },
+  ]
+})
 
 const error = ref<any>({})
 const loading = ref(false)
@@ -159,6 +182,16 @@ const hasWalletConfig = computed(() => {
 
 const required = (v: string) => !!v || 'Field is required'
 
+// Watch for type changes and reset funding mode if taker is selected with net mode
+watch(
+  () => formData.type,
+  (newType) => {
+    if (newType === 'taker' && formData.fundingMode === 'net') {
+      formData.fundingMode = ''
+    }
+  },
+)
+
 const onErrorSheetClosed = () => {
   error.value = {}
   showError.value = false
@@ -178,7 +211,7 @@ const makeApiCall = async () => {
     const payloadData: FundingPresignPayload = {
       contractTradeIds,
       fundingMode: formData.fundingMode as 'gross' | 'net',
-      traderType: formData.traderType as 'maker' | 'taker',
+      type: formData.type as 'maker' | 'taker',
     }
 
     await $stablefxTradesApi.getFundingPresignData(payloadData)
@@ -259,5 +292,29 @@ const copySignature = async () => {
     error.value = { message: 'Failed to copy signature.' }
     showError.value = true
   }
+}
+
+const goToFund = () => {
+  // Extract typed data from the presign response
+  let typedData = response.value.data?.typedData || response.value.typedData
+
+  if (!typedData && response.value.data) {
+    typedData = response.value.data
+  }
+
+  // Extract permit2 data from the typed data message
+  const permit2Data = typedData?.message
+    ? JSON.stringify(typedData.message, null, 2)
+    : ''
+
+  router.push({
+    path: '/debug/stablefx/fund',
+    query: {
+      type: formData.type,
+      signature: signatureResult.value,
+      fundingMode: formData.fundingMode,
+      permit2Data: permit2Data,
+    },
+  })
 }
 </script>

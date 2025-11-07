@@ -9,8 +9,12 @@
           response data in the UI.
         </p>
         <p>
-          Please use the settings panel on the right to configure your payments
+          Please use the settings panel on the right to configure your StableFX
           api key.
+        </p>
+        <p>
+          You can also configure your Developer Controlled Wallets credentials
+          for signing operations.
         </p>
       </v-card>
 
@@ -19,9 +23,6 @@
         <span class="caption">Requires: api key</span>
         <br /><br />
         <p>API endpoints for StableFX trading</p>
-        <p>
-          <a href="/debug/stablefx/flow">Create StableFX Trade Flow</a>
-        </p>
         <p>
           <v-chip small color="primary warning">POST</v-chip>
           <a href="/debug/stablefx/quote">Create StableFX Quote</a>
@@ -48,9 +49,9 @@
         </p>
         <p>
           <v-chip small color="primary warning">POST</v-chip>
-          <a href="/debug/stablefx/funding-presign"
-            >Get presign data for funding</a
-          >
+          <a href="/debug/stablefx/funding-presign">
+            Get presign data for funding
+          </a>
         </p>
         <p>
           <v-chip small color="primary warning">POST</v-chip>

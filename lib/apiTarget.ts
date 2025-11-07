@@ -39,4 +39,16 @@ function getIsLocalHost(): boolean {
   return hostname?.includes(':3011') || false
 }
 
-export { getAPIHostname, getIsInternal, getLive, getIsStaging, getIsLocalHost }
+function getIsNotStagingOrSmokebox(): boolean {
+  const hostname = getAPIHostname()
+  return !(hostname?.includes('staging') || hostname?.includes('smokebox'))
+}
+
+export {
+  getAPIHostname,
+  getIsInternal,
+  getLive,
+  getIsStaging,
+  getIsLocalHost,
+  getIsNotStagingOrSmokebox,
+}
