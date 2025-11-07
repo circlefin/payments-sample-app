@@ -10,10 +10,11 @@
         </p>
         <p>
           Please use the settings panel on the right to configure your StableFX
-          api key. 
+          api key.
         </p>
         <p>
-          You can also configure your Developer Controlled Wallets credentials for signing operations.
+          You can also configure your Developer Controlled Wallets credentials
+          for signing operations.
         </p>
       </v-card>
 
