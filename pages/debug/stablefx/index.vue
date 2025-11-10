@@ -40,6 +40,10 @@
           <a href="/debug/stablefx/details"> Get StableFX Trade by ID</a>
         </p>
         <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/stablefx/fees">Get StableFX Trade Fees</a>
+        </p>
+        <p>
           <v-chip small color="primary warning">POST</v-chip>
           <a href="/debug/stablefx/signature">Register StableFX signature</a>
         </p>
