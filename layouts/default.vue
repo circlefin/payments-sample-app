@@ -498,6 +498,10 @@ const stablefxTradesLinks = [
     to: '/debug/stablefx/details',
   },
   {
+    title: 'GET /stablefx/fees/{tradeId}',
+    to: '/debug/stablefx/fees',
+  },
+  {
     title: 'GET /stablefx/signatures/presign',
     to: '/debug/stablefx/presign',
   },

@@ -225,6 +225,15 @@ function fund(payload: StableFXFundPayload) {
   return instance.post(STABLEFX_FUND_PATH, payload)
 }
 
+/**
+ * Get StableFX Trade Fees
+ */
+function getFees(tradeId: string, type?: 'maker' | 'taker') {
+  const url = `/v1/exchange/stablefx/fees/${tradeId}`
+  const params = type ? { type } : {}
+  return instance.get(url, { params })
+}
+
 export default {
   getInstance,
   createQuote,
@@ -235,4 +244,5 @@ export default {
   getPresignData,
   getFundingPresignData,
   fund,
+  getFees,
 }
