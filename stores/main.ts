@@ -18,19 +18,19 @@ export const useMainStore = defineStore('main', {
   state: (): MainState => ({
     bearerToken:
       typeof window !== 'undefined'
-        ? sessionStorage.getItem('bearerToken') || ''
+        ? localStorage.getItem('bearerToken') || ''
         : '',
     walletApiKey:
       typeof window !== 'undefined'
-        ? sessionStorage.getItem('walletApiKey') || ''
+        ? localStorage.getItem('walletApiKey') || ''
         : '',
     entitySecret:
       typeof window !== 'undefined'
-        ? sessionStorage.getItem('entitySecret') || ''
+        ? localStorage.getItem('entitySecret') || ''
         : '',
     walletId:
       typeof window !== 'undefined'
-        ? sessionStorage.getItem('walletId') || ''
+        ? localStorage.getItem('walletId') || ''
         : '',
     apiRequest: {
       url: '',
@@ -53,28 +53,28 @@ export const useMainStore = defineStore('main', {
     setBearerToken(apiKey: string) {
       this.bearerToken = apiKey
       if (typeof window !== 'undefined') {
-        sessionStorage.setItem('bearerToken', apiKey)
+        localStorage.setItem('bearerToken', apiKey)
       }
     },
 
     setWalletApiKey(walletApiKey: string) {
       this.walletApiKey = walletApiKey
       if (typeof window !== 'undefined') {
-        sessionStorage.setItem('walletApiKey', walletApiKey)
+        localStorage.setItem('walletApiKey', walletApiKey)
       }
     },
 
     setEntitySecret(entitySecret: string) {
       this.entitySecret = entitySecret
       if (typeof window !== 'undefined') {
-        sessionStorage.setItem('entitySecret', entitySecret)
+        localStorage.setItem('entitySecret', entitySecret)
       }
     },
 
     setWalletId(walletId: string) {
       this.walletId = walletId
       if (typeof window !== 'undefined') {
-        sessionStorage.setItem('walletId', walletId)
+        localStorage.setItem('walletId', walletId)
       }
     },
 
