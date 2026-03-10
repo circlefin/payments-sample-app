@@ -9,7 +9,7 @@ function getAPIHostname() {
   // If app is running on localhost (ie, in  dev) the URL is provided via an environment variable (.env file), use that.
   // Otherwise, base it off the window location.
   if (window.location && window.location.hostname === 'localhost') {
-    return process.env.baseUrl || 'https://api-smokebox.circle.com'
+    return process.env.baseUrl || 'https://api-sandbox.circle.com'
   }
   return window.location.origin.replace('sample', 'api')
 }
