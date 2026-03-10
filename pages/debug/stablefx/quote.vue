@@ -98,10 +98,11 @@ const tenorOption = [
 const error = ref<any>({})
 const loading = ref(false)
 const showError = ref(false)
-const currencies = ['USDC', 'EURC', 'QCAD']
+const currencies = ['USDC', 'EURC', 'QCAD', 'AUDF']
 const toCurrencyMap = new Map([
-  ['USDC', ['EURC', 'QCAD']],
+  ['USDC', ['EURC', 'QCAD', 'AUDF']],
   ['QCAD', ['USDC']],
+  ['AUDF', ['USDC']],
   ['EURC', ['USDC']],
 ])
 
