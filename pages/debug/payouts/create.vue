@@ -20,7 +20,7 @@
 
           <v-text-field
             v-model="formData.sourceWalletId"
-            label="Optional Source Wallet Id"
+            label="Source Wallet Id (optional)"
           />
 
           <v-text-field v-model="formData.destination" label="Destination" />
@@ -34,7 +34,18 @@
 
           <v-text-field
             v-model="formData.beneficiaryEmail"
-            label="Beneficiary Email"
+            label="Beneficiary Email (optional)"
+          />
+
+          <v-divider class="my-4" />
+          <v-alert type="info" density="compact" variant="tonal" class="mb-5">
+            Purpose of Transfer below is required for SG legal entities
+          </v-alert>
+          <v-select
+            v-model="formData.purposeOfTransfer"
+            :items="purposeOfTransferOptions"
+            label="Purpose of Transfer (optional)"
+            clearable
           />
 
           <br />
@@ -128,6 +139,7 @@ const formData = reactive({
   destination: '',
   destinationType: 'address_book',
   beneficiaryEmail: '',
+  purposeOfTransfer: '',
   identityType: 'individual',
   identityName: '',
   identityAddressLine1: '',
@@ -142,6 +154,42 @@ const required = [(v: string) => !!v || 'Field is required']
 const destinationType = ['address_book']
 const blockchainDestinationTypes = new Set(['address_book'])
 const identityTypes = ['individual', 'business']
+const purposeOfTransferOptions = [
+  'PMT000 - Other',
+  'PMT001 - Invoice payments',
+  'PMT002 - Payment for services',
+  'PMT003 - Payment for software',
+  'PMT004 - Payment for imported goods',
+  'PMT005 - Travel services',
+  'PMT006 - Transfer to own account',
+  'PMT007 - Repayment of loans',
+  'PMT008 - Payroll',
+  'PMT009 - Payment of property rental',
+  'PMT010 - Information Service Charges',
+  'PMT011 - Advertising & Public relations-related expenses',
+  'PMT012 - Royalty fees, trademark fees, patent fees, and copyright fees',
+  'PMT013 - Fees for brokers, front end fee, commitment fee, guarantee fee and custodian fee',
+  'PMT014 - Fees for advisors, technical assistance, and academic knowledge',
+  'PMT015 - Representative office expenses',
+  'PMT016 - Tax Payment',
+  'PMT017 - Transportation fees for goods',
+  'PMT018 - Construction costs/expenses',
+  'PMT019 - Insurance Premium',
+  'PMT020 - General Goods Trades - Offline trade',
+  'PMT021 - Insurance Claims Payment',
+  'PMT022 - Remittance payments to friends/family',
+  'PMT023 - Education-related student expenses',
+  'PMT024 - Medical Treatment',
+  'PMT025 - Donations',
+  'PMT026 - Mutual Fund Investment',
+  'PMT027 - Currency Exchange',
+  'PMT028 - Advance Payments for Goods',
+  'PMT029 - Merchant Settlement',
+  'PMT030 - Repatriation Fund Settlement',
+].map((item) => {
+  const code = item.split(' - ')[0]
+  return { title: item, value: code }
+})
 const supportedCryptoPayoutCurrencyPairs = new Map([
   ['USD', ['USD']],
   ['EUR', ['EUR']],
@@ -253,6 +301,10 @@ const makeApiCall = async () => {
     payloadData.metadata = {
       beneficiaryEmail: formData.beneficiaryEmail,
     }
+  }
+
+  if (formData.purposeOfTransfer) {
+    payloadData.purposeOfTransfer = formData.purposeOfTransfer
   }
 
   try {
