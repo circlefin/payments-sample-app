@@ -3,6 +3,10 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
+          <v-text-field
+            v-model="formData.idempotencyKey"
+            label="Idempotency Key (auto-generated if empty)"
+          />
           <v-text-field v-model="formData.address" label="Address" />
           <v-select
             v-model="formData.chain"
@@ -105,6 +109,7 @@ const store = useMainStore()
 const { $addressBookApiBeta } = useNuxtApp()
 
 const formData = reactive({
+  idempotencyKey: '',
   address: '',
   chain: '',
   addressTag: '',
@@ -152,7 +157,7 @@ const onErrorSheetClosed = () => {
 const makeApiCall = async () => {
   loading.value = true
   const payloadData: CreateRecipientPayload = {
-    idempotencyKey: uuidv4(),
+    idempotencyKey: formData.idempotencyKey || uuidv4(),
     address: formData.address,
     chain: formData.chain,
     metadata: {

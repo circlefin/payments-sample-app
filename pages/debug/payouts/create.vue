@@ -3,6 +3,10 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
+          <v-text-field
+            v-model="formData.idempotencyKey"
+            label="Idempotency Key (auto-generated if empty)"
+          />
           <v-text-field v-model="formData.amount" label="Amount" />
 
           <v-select
@@ -281,7 +285,7 @@ const makeApiCall = async () => {
   }
 
   const payloadData: CreatePayoutPayload = {
-    idempotencyKey: uuidv4(),
+    idempotencyKey: formData.idempotencyKey || uuidv4(),
     amount: amountDetail,
     destination: {
       id: formData.destination,
