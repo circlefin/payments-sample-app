@@ -7,10 +7,25 @@ export interface CreateRecipientPayload {
   idempotencyKey: string
   chain: string
   address: string
+  addressTag?: string
   metadata: {
     email: string
     bns: string
     nickname: string
+  }
+  identity?: {
+    type: string
+    firstName?: string
+    lastName?: string
+    businessName?: string
+  }
+  walletId?: string
+  ownership?: {
+    type: string
+    custody: {
+      type: string
+      vaspId?: string
+    }
   }
 }
 
@@ -74,10 +89,12 @@ function createRecipient(payload: CreateRecipientPayload) {
 /**
  * Get Recipient
  * @param {String} recipientId
+ * @param {String} walletId
  */
-function getRecipientById(recipientId: string) {
+function getRecipientById(recipientId: string, walletId?: string) {
   const url = `/v1/addressBook/recipients/${recipientId}`
-  return instance.get(url)
+  const params = { walletId: nullIfEmpty(walletId) }
+  return instance.get(url, { params })
 }
 
 function patchRecipient(recipientId: string, payload: PatchRecipientPayload) {
@@ -91,7 +108,7 @@ function deleteRecipient(recipientId: string) {
 }
 
 /**
- * Get Recipient
+ * Get Recipients
  * @param address
  * @param chain
  * @param email
@@ -101,6 +118,7 @@ function deleteRecipient(recipientId: string) {
  * @param {String} pageBefore
  * @param {String} pageAfter
  * @param {String} pageSize
+ * @param {String} walletId
  */
 function getRecipients(
   address: string,
@@ -112,6 +130,7 @@ function getRecipients(
   pageBefore: string,
   pageAfter: string,
   pageSize: string,
+  walletId?: string,
 ) {
   const queryParams = {
     address: nullIfEmpty(address),
@@ -123,11 +142,20 @@ function getRecipients(
     pageBefore: nullIfEmpty(pageBefore),
     pageAfter: nullIfEmpty(pageAfter),
     pageSize: nullIfEmpty(pageSize),
+    walletId: nullIfEmpty(walletId),
   }
 
   const url = '/v1/addressBook/recipients'
 
   return instance.get(url, { params: queryParams })
+}
+
+/**
+ * Get VASPs
+ */
+function getVasps() {
+  const url = '/v1/addressBook/vasps'
+  return instance.get(url)
 }
 
 export default {
@@ -137,4 +165,5 @@ export default {
   createRecipient,
   patchRecipient,
   deleteRecipient,
+  getVasps,
 }

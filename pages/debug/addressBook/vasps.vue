@@ -3,11 +3,6 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
-          <v-text-field v-model="formData.recipientId" label="Recipient Id" />
-          <v-text-field
-            v-model="formData.walletId"
-            label="Wallet ID (optional)"
-          />
           <v-btn
             variant="flat"
             class="mb-7"
@@ -39,12 +34,6 @@
 const store = useMainStore()
 const { $addressBookApiBeta } = useNuxtApp()
 
-const formData = reactive({
-  recipientId: '',
-  walletId: '',
-})
-
-const required = [(v: string) => !!v || 'Field is required']
 const error = ref<any>({})
 const loading = ref(false)
 const showError = ref(false)
@@ -61,10 +50,7 @@ const onErrorSheetClosed = () => {
 const makeApiCall = async () => {
   loading.value = true
   try {
-    await $addressBookApiBeta.getRecipientById(
-      formData.recipientId,
-      formData.walletId || undefined,
-    )
+    await $addressBookApiBeta.getVasps()
   } catch (err) {
     error.value = err
     showError.value = true

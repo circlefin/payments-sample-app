@@ -39,6 +39,7 @@ export interface CreatePayoutPayload {
   metadata?: {
     beneficiaryEmail: string
   }
+  purposeOfTransfer?: string
 }
 
 const instance = axios.create({

@@ -409,6 +409,10 @@ const payoutsLinks = [
     to: '/debug/addressBook/delete',
   },
   {
+    title: 'GET /addressBook/vasps',
+    to: '/debug/addressBook/vasps',
+  },
+  {
     title: 'POST /payouts',
     to: '/debug/payouts/create',
   },
