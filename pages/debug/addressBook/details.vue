@@ -4,7 +4,10 @@
       <v-col cols="12" md="4">
         <v-form>
           <v-text-field v-model="formData.recipientId" label="Recipient Id" />
-          <v-text-field v-model="formData.walletId" label="Wallet ID (optional)" />
+          <v-text-field
+            v-model="formData.walletId"
+            label="Wallet ID (optional)"
+          />
           <v-btn
             variant="flat"
             class="mb-7"

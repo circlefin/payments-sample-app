@@ -9,11 +9,20 @@
             :items="supportedChains"
             label="Blockchain"
           />
-          <v-text-field v-model="formData.addressTag" label="Address Tag (optional)" />
+          <v-text-field
+            v-model="formData.addressTag"
+            label="Address Tag (optional)"
+          />
           <v-text-field v-model="formData.email" label="Email (optional)" />
           <v-text-field v-model="formData.bns" label="BNS (optional)" />
-          <v-text-field v-model="formData.nickname" label="Nickname (optional)" />
-          <v-text-field v-model="formData.walletId" label="Wallet ID (optional)" />
+          <v-text-field
+            v-model="formData.nickname"
+            label="Nickname (optional)"
+          />
+          <v-text-field
+            v-model="formData.walletId"
+            label="Wallet ID (optional)"
+          />
 
           <v-divider class="my-4" />
           <v-alert type="info" density="compact" variant="tonal" class="mb-3">
@@ -113,7 +122,16 @@ const formData = reactive({
 })
 
 const required = [(v: string) => !!v || 'Field is required']
-const supportedChains = ['ETH', 'MATIC', 'POLY', 'SOL', 'TRX', 'DOT', 'PAH', 'EVMOS']
+const supportedChains = [
+  'ETH',
+  'MATIC',
+  'POLY',
+  'SOL',
+  'TRX',
+  'DOT',
+  'PAH',
+  'EVMOS',
+]
 const identityTypes = ['individual', 'business']
 const ownershipTypes = ['third_party']
 const custodyTypes = ['hosted']

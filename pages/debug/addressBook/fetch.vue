@@ -14,7 +14,10 @@
           <v-text-field v-model="formData.status" label="Status" />
           <v-text-field v-model="formData.from" label="From" />
           <v-text-field v-model="formData.to" label="To" />
-          <v-text-field v-model="formData.walletId" label="Wallet ID (optional)" />
+          <v-text-field
+            v-model="formData.walletId"
+            label="Wallet ID (optional)"
+          />
           <v-text-field v-model="formData.pageSize" label="PageSize" />
           <v-text-field v-model="formData.pageBefore" label="PageBefore" />
           <v-text-field v-model="formData.pageAfter" label="PageAfter" />
@@ -61,7 +64,16 @@ const formData = reactive({
   pageAfter: '',
 })
 
-const supportedChains = ['ETH', 'MATIC', 'POLY', 'SOL', 'TRX', 'DOT', 'PAH', 'EVMOS']
+const supportedChains = [
+  'ETH',
+  'MATIC',
+  'POLY',
+  'SOL',
+  'TRX',
+  'DOT',
+  'PAH',
+  'EVMOS',
+]
 const error = ref<any>({})
 const loading = ref(false)
 const showError = ref(false)
