@@ -139,7 +139,7 @@ const supportedChains = [
 ]
 const identityTypes = ['individual', 'business']
 const ownershipTypes = ['third_party']
-const custodyTypes = ['hosted']
+const custodyTypes = ['hosted', 'self_hosted']
 
 const error = ref<any>({})
 const loading = ref(false)
