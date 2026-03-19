@@ -4,6 +4,7 @@ import axios from 'axios'
 import { getAPIHostname } from './apiTarget'
 
 export interface CreateStableFXQuotePayload {
+  type?: 'tradable' | 'reference'
   from: {
     amount?: number
     currency: string
@@ -12,11 +13,16 @@ export interface CreateStableFXQuotePayload {
     amount?: number
     currency: string
   }
+  tenor?: 'instant' | 'hourly' | 'daily'
+  recipientAddress?: string
 }
 
 export interface CreateStableFXTradePayload {
   idempotencyKey: string
   quoteId: string
+  address?: string
+  signature?: string
+  message?: StableFXPermit2TradeMessage
 }
 
 export interface Consideration {
@@ -28,19 +34,26 @@ export interface Consideration {
   maturity: number
 }
 
-export interface PiFXTraderDetails {
-  recipient?: string
-  deadline: number
+export interface StableFXPermit2TradeMessage {
+  permitted: {
+    token: string
+    amount: number
+  }
+  spender: string
   nonce: number
-  fee: number
-  consideration: Consideration
+  deadline: number
+  witness: {
+    consideration: Consideration
+    recipient: string
+    fee: number
+  }
 }
 
 export interface CreatePiFXSignaturePayload {
   tradeId: string
   type: string
   address: string
-  details: PiFXTraderDetails
+  details: StableFXPermit2TradeMessage
   signature: string
 }
 
