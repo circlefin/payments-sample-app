@@ -15,6 +15,27 @@
             hint="Unique key for this trade"
             label="Idempotency Key"
           />
+          <v-text-field
+            v-model="formData.address"
+            label="Address"
+            hint="Signer address"
+            persistent-hint
+          />
+          <v-text-field
+            v-model="formData.signature"
+            label="Signature"
+            hint="Signature"
+            persistent-hint
+          />
+          <v-textarea
+            v-model="formData.message"
+            :rules="[isValidOptionalJSON]"
+            label="Message (JSON)"
+            rows="8"
+            auto-grow
+            hint="Paste JSON message object"
+            persistent-hint
+          />
           <v-btn
             variant="flat"
             class="mb-7"
@@ -66,6 +87,9 @@ const tradeId = ref('')
 const formData = reactive({
   quoteId: (route.query.quoteId as string) || '',
   idempotencyKey: (route.query.idempotencyKey as string) || uuidv4(),
+  address: (route.query.address as string) || '',
+  signature: (route.query.signature as string) || '',
+  message: (route.query.message as string) || '',
 })
 const error = ref<any>({})
 const loading = ref(false)
@@ -76,6 +100,15 @@ const response = computed(() => store.getRequestResponse)
 const requestUrl = computed(() => store.getRequestUrl)
 
 const required = (v: string) => !!v || 'Field is required'
+const isValidOptionalJSON = (v: string) => {
+  if (!v || !v.trim()) return true
+  try {
+    JSON.parse(v)
+    return true
+  } catch (e) {
+    return 'Please enter valid JSON'
+  }
+}
 
 const onErrorSheetClosed = () => {
   error.value = {}
@@ -85,12 +118,17 @@ const onErrorSheetClosed = () => {
 const makeApiCall = async () => {
   loading.value = true
 
-  const payloadData: CreateStableFXTradePayload = {
-    idempotencyKey: formData.idempotencyKey,
-    quoteId: formData.quoteId,
-  }
-
   try {
+    const payloadData: CreateStableFXTradePayload = {
+      idempotencyKey: formData.idempotencyKey,
+      quoteId: formData.quoteId,
+      address: formData.address.trim() || undefined,
+      signature: formData.signature.trim() || undefined,
+      message: formData.message.trim()
+        ? JSON.parse(formData.message)
+        : undefined,
+    }
+
     const response = await $stablefxTradesApi.createTrade(payloadData)
 
     // Extract trade ID from response
