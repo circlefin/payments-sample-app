@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.28.3",
-    "@nuxt/devtools": "latest",
+    "@nuxt/devtools": "^3.2.3",
     "@nuxt/eslint-config": "^0.2.0",
     "@types/lodash": "^4.17.20",
     "@types/uuid": "8.3.3",
