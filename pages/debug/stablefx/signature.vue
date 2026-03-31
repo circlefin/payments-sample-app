@@ -8,12 +8,6 @@
             :rules="[required]"
             label="Trade ID"
           />
-          <v-select
-            v-model="formData.type"
-            :items="['maker', 'taker']"
-            :rules="[required]"
-            label="Trader Type"
-          />
           <v-text-field
             v-model="formData.address"
             :rules="[required]"
@@ -81,7 +75,6 @@ const validForm = ref(false)
 const registrationSuccess = ref(false)
 const formData = reactive({
   tradeId: (route.query.tradeId as string) || '',
-  type: (route.query.type as string) || '',
   address: '',
   signature: (route.query.signature as string) || '',
   typedDataMessage: (route.query.typedDataMessage as string) || '',
@@ -121,7 +114,6 @@ const makeApiCall = async () => {
 
     const payloadData: CreatePiFXSignaturePayload = {
       tradeId: formData.tradeId,
-      type: formData.type,
       address: formData.address,
       details: parsedMessage,
       signature: formData.signature,
@@ -142,7 +134,6 @@ const goToTradeDetails = () => {
     path: '/debug/stablefx/details',
     query: {
       tradeId: formData.tradeId,
-      type: formData.type,
     },
   })
 }

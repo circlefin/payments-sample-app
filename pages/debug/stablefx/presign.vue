@@ -3,22 +3,10 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form v-model="validForm">
-          <v-select
-            v-model="formData.type"
-            :items="typeOptions"
-            :rules="[required]"
-            label="Type"
-          />
           <v-text-field
             v-model="formData.tradeId"
             :rules="[required]"
             label="Trade ID"
-          />
-          <v-text-field
-            v-if="formData.type === 'taker'"
-            v-model="formData.recipientAddress"
-            :rules="formData.type === 'taker' ? [required] : []"
-            label="Recipient Address"
           />
           <v-row class="mb-7">
             <v-col cols="12" sm="6">
@@ -118,15 +106,8 @@ const router = useRouter()
 
 const validForm = ref(false)
 const formData = reactive({
-  type: '',
   tradeId: (route.query.tradeId as string) || '',
-  recipientAddress: '',
 })
-
-const typeOptions = [
-  { title: 'Taker', value: 'taker' },
-  { title: 'Maker', value: 'maker' },
-]
 
 const error = ref<any>({})
 const loading = ref(false)
@@ -167,13 +148,7 @@ const makeApiCall = async () => {
   signatureResult.value = '' // Clear previous signature result
 
   try {
-    const recipientAddress =
-      formData.type === 'taker' ? formData.recipientAddress : undefined
-    await $stablefxTradesApi.getPresignData(
-      formData.type,
-      formData.tradeId,
-      recipientAddress,
-    )
+    await $stablefxTradesApi.getPresignData(formData.tradeId)
   } catch (err) {
     error.value = err
     showError.value = true
@@ -270,7 +245,6 @@ const goToRegisterSignature = () => {
       tradeId: formData.tradeId,
       signature: signatureResult.value,
       typedDataMessage: typedDataMessage,
-      type: formData.type,
     },
   })
 }

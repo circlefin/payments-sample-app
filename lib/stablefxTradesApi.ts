@@ -51,7 +51,6 @@ export interface StableFXPermit2TradeMessage {
 
 export interface CreatePiFXSignaturePayload {
   tradeId: string
-  type: string
   address: string
   details: StableFXPermit2TradeMessage
   signature: string
@@ -206,15 +205,9 @@ function registerSignature(payload: CreatePiFXSignaturePayload) {
 /**
  * Get presign data for signing
  */
-function getPresignData(
-  type: string,
-  tradeId: string,
-  recipientAddress?: string,
-) {
-  const url = `/v1/exchange/stablefx/signatures/presign/${type}/${tradeId}`
-  const queryParams = recipientAddress ? { recipientAddress } : {}
-
-  return instance.get(url, { params: queryParams })
+function getPresignData(tradeId: string) {
+  const url = `/v1/exchange/stablefx/signatures/presign/${tradeId}`
+  return instance.get(url)
 }
 
 /**
