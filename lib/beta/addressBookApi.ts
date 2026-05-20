@@ -18,6 +18,7 @@ export interface CreateRecipientPayload {
     firstName?: string
     lastName?: string
     businessName?: string
+    lei?: string
   }
   walletId?: string
   ownership?: {
