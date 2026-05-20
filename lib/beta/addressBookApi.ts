@@ -12,13 +12,13 @@ export interface CreateRecipientPayload {
     email: string
     bns: string
     nickname: string
+    lei?: string
   }
   identity?: {
     type: string
     firstName?: string
     lastName?: string
     businessName?: string
-    lei?: string
   }
   walletId?: string
   ownership?: {
