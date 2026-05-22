@@ -54,6 +54,11 @@
             v-model="formData.businessName"
             label="Business Name"
           />
+          <v-text-field
+            v-if="formData.identityType === 'business'"
+            v-model="formData.lei"
+            label="LEI (optional)"
+          />
 
           <div class="text-subtitle-2 mb-2">Ownership (optional)</div>
           <v-select
@@ -121,6 +126,7 @@ const formData = reactive({
   firstName: '',
   lastName: '',
   businessName: '',
+  lei: '',
   ownershipType: '',
   custodyType: '',
   vaspId: '',
@@ -164,6 +170,7 @@ const makeApiCall = async () => {
       email: formData.email,
       bns: formData.bns,
       nickname: formData.nickname,
+      ...(formData.lei && { lei: formData.lei }),
     },
   }
 

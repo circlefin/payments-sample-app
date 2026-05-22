@@ -12,6 +12,7 @@ export interface CreateRecipientPayload {
     email: string
     bns: string
     nickname: string
+    lei?: string
   }
   identity?: {
     type: string
