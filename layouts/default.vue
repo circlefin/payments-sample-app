@@ -413,6 +413,14 @@ const payoutsLinks = [
     to: '/debug/addressBook/vasps',
   },
   {
+    title: 'POST /addressBook/recipients/{id}/verification/cancel',
+    to: '/debug/addressBook/verificationCancel',
+  },
+  {
+    title: 'POST /addressBook/recipients/{id}/verification/resend',
+    to: '/debug/addressBook/verificationResend',
+  },
+  {
     title: 'POST /payouts',
     to: '/debug/payouts/create',
   },
