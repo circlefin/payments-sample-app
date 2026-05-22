@@ -60,6 +60,79 @@
             label="LEI (optional)"
           />
 
+          <template v-if="formData.identityType === 'individual'">
+            <v-text-field
+              v-model="formData.individualDateOfBirth"
+              label="Date of Birth (yyyy-MM-dd)"
+            />
+            <v-text-field
+              v-model="formData.individualNationality"
+              label="Nationality"
+            />
+            <v-text-field
+              v-model="formData.individualAddressLine1"
+              label="Address Line 1"
+            />
+            <v-text-field
+              v-model="formData.individualAddressLine2"
+              label="Address Line 2 (optional)"
+            />
+            <v-text-field v-model="formData.individualCity" label="City" />
+            <v-text-field
+              v-model="formData.individualDistrict"
+              label="District"
+            />
+            <v-text-field
+              v-model="formData.individualPostalCode"
+              label="Postal Code"
+            />
+            <v-text-field
+              v-model="formData.individualCountry"
+              label="Country"
+            />
+            <v-text-field
+              v-model="formData.individualGovernmentIssuedId"
+              label="Government Issued ID"
+            />
+          </template>
+
+          <template v-if="formData.identityType === 'business'">
+            <v-text-field
+              v-model="formData.businessDateOfIncorporation"
+              label="Date of Incorporation (yyyy-MM-dd)"
+            />
+            <v-text-field
+              v-model="formData.businessAddressLine1"
+              label="Address Line 1"
+            />
+            <v-text-field
+              v-model="formData.businessAddressLine2"
+              label="Address Line 2 (optional)"
+            />
+            <v-text-field v-model="formData.businessCity" label="City" />
+            <v-text-field
+              v-model="formData.businessDistrict"
+              label="District"
+            />
+            <v-text-field
+              v-model="formData.businessPostalCode"
+              label="Postal Code"
+            />
+            <v-text-field v-model="formData.businessCountry" label="Country" />
+            <v-text-field
+              v-model="formData.businessRegistrationNumber"
+              label="Business Registration Number"
+            />
+            <v-text-field
+              v-model="formData.businessCountryOfIncorporation"
+              label="Country of Incorporation"
+            />
+            <v-text-field
+              v-model="formData.businessIdentificationNumber"
+              label="Business Identification Number"
+            />
+          </template>
+
           <div class="text-subtitle-2 mb-2">Ownership (optional)</div>
           <v-select
             v-model="formData.ownershipType"
@@ -127,6 +200,25 @@ const formData = reactive({
   lastName: '',
   businessName: '',
   lei: '',
+  individualDateOfBirth: '',
+  individualNationality: '',
+  individualAddressLine1: '',
+  individualAddressLine2: '',
+  individualCity: '',
+  individualDistrict: '',
+  individualPostalCode: '',
+  individualCountry: '',
+  individualGovernmentIssuedId: '',
+  businessDateOfIncorporation: '',
+  businessAddressLine1: '',
+  businessAddressLine2: '',
+  businessCity: '',
+  businessDistrict: '',
+  businessPostalCode: '',
+  businessCountry: '',
+  businessRegistrationNumber: '',
+  businessCountryOfIncorporation: '',
+  businessIdentificationNumber: '',
   ownershipType: '',
   custodyType: '',
   vaspId: '',
@@ -192,6 +284,44 @@ const makeApiCall = async () => {
       ...(formData.identityType === 'business' && {
         businessName: formData.businessName || undefined,
       }),
+    }
+
+    if (formData.identityType === 'individual') {
+      const individual = {
+        dateOfBirth: formData.individualDateOfBirth || undefined,
+        nationality: formData.individualNationality || undefined,
+        addressLine1: formData.individualAddressLine1 || undefined,
+        addressLine2: formData.individualAddressLine2 || undefined,
+        city: formData.individualCity || undefined,
+        district: formData.individualDistrict || undefined,
+        postalCode: formData.individualPostalCode || undefined,
+        country: formData.individualCountry || undefined,
+        governmentIssuedId: formData.individualGovernmentIssuedId || undefined,
+      }
+      if (Object.values(individual).some((v) => v !== undefined)) {
+        payloadData.identity.individual = individual
+      }
+    }
+
+    if (formData.identityType === 'business') {
+      const business = {
+        dateOfIncorporation: formData.businessDateOfIncorporation || undefined,
+        addressLine1: formData.businessAddressLine1 || undefined,
+        addressLine2: formData.businessAddressLine2 || undefined,
+        city: formData.businessCity || undefined,
+        district: formData.businessDistrict || undefined,
+        postalCode: formData.businessPostalCode || undefined,
+        country: formData.businessCountry || undefined,
+        businessRegistrationNumber:
+          formData.businessRegistrationNumber || undefined,
+        countryOfIncorporation:
+          formData.businessCountryOfIncorporation || undefined,
+        businessIdentificationNumber:
+          formData.businessIdentificationNumber || undefined,
+      }
+      if (Object.values(business).some((v) => v !== undefined)) {
+        payloadData.identity.business = business
+      }
     }
   }
 
