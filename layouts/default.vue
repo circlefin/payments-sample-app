@@ -559,6 +559,10 @@ const walletId = computed({
 <style scoped>
 .list-items {
   font-size: 14px;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  word-break: break-all;
 }
 .pointer {
   cursor: pointer;
