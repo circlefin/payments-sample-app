@@ -159,6 +159,24 @@ function getVasps() {
   return instance.get(url)
 }
 
+/**
+ * Cancel a self-hosted wallet verification session for a recipient.
+ * @param {String} addressId
+ */
+function cancelVerification(addressId: string) {
+  const url = `/v1/addressBook/recipients/${addressId}/verification/cancel`
+  return instance.post(url)
+}
+
+/**
+ * Resend the self-hosted wallet verification email for a recipient.
+ * @param {String} addressId
+ */
+function resendVerification(addressId: string) {
+  const url = `/v1/addressBook/recipients/${addressId}/verification/resend`
+  return instance.post(url)
+}
+
 export default {
   getInstance,
   getRecipients,
@@ -167,4 +185,6 @@ export default {
   patchRecipient,
   deleteRecipient,
   getVasps,
+  cancelVerification,
+  resendVerification,
 }

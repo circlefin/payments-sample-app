@@ -413,6 +413,14 @@ const payoutsLinks = [
     to: '/debug/addressBook/vasps',
   },
   {
+    title: 'POST /addressBook/recipients/{id}/verification/cancel',
+    to: '/debug/addressBook/verificationCancel',
+  },
+  {
+    title: 'POST /addressBook/recipients/{id}/verification/resend',
+    to: '/debug/addressBook/verificationResend',
+  },
+  {
     title: 'POST /payouts',
     to: '/debug/payouts/create',
   },
@@ -551,6 +559,10 @@ const walletId = computed({
 <style scoped>
 .list-items {
   font-size: 14px;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  word-break: break-all;
 }
 .pointer {
   cursor: pointer;
