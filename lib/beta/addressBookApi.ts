@@ -19,6 +19,29 @@ export interface CreateRecipientPayload {
     firstName?: string
     lastName?: string
     businessName?: string
+    individual?: {
+      dateOfBirth?: string
+      nationality?: string
+      addressLine1?: string
+      addressLine2?: string
+      city?: string
+      district?: string
+      postalCode?: string
+      country?: string
+      governmentIssuedId?: string
+    }
+    business?: {
+      dateOfIncorporation?: string
+      addressLine1?: string
+      addressLine2?: string
+      city?: string
+      district?: string
+      postalCode?: string
+      country?: string
+      businessRegistrationNumber?: string
+      countryOfIncorporation?: string
+      businessIdentificationNumber?: string
+    }
   }
   walletId?: string
   ownership?: {
