@@ -262,7 +262,6 @@ const makeApiCall = async () => {
       email: formData.email,
       bns: formData.bns,
       nickname: formData.nickname,
-      ...(formData.lei && { lei: formData.lei }),
     },
   }
 
@@ -283,6 +282,7 @@ const makeApiCall = async () => {
       }),
       ...(formData.identityType === 'business' && {
         businessName: formData.businessName || undefined,
+        lei: formData.lei || undefined,
       }),
     }
 
