@@ -62,6 +62,61 @@
           <a href="/debug/stablefx/fund">Fund Trades</a>
         </p>
       </v-card>
+
+      <v-card class="body-1 px-6 py-8 mb-4" max-width="800" outlined>
+        <h2 class="title">StableFX Settlement Advance APIs</h2>
+        <span class="caption">Requires: api key</span>
+        <br /><br />
+        <p>API endpoints for StableFX settlement advances</p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/stablefx/settlementAdvance/credit">Get Credit Line</a>
+        </p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/stablefx/settlementAdvance/reserve">
+            Reserve Advance
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/stablefx/settlementAdvance/cancelReservation">
+            Cancel Reservation
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/stablefx/settlementAdvance/presign">
+            Get Presign Data for Advance
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/stablefx/settlementAdvance/request">
+            Request Advance
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/stablefx/settlementAdvance/fetch">List Advances</a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/stablefx/settlementAdvance/details">
+            Get Advance by ID
+          </a>
+        </p>
+        <p>
+          <v-chip small color="primary warning">POST</v-chip>
+          <a href="/debug/stablefx/settlementAdvance/repay">Repay Advance</a>
+        </p>
+        <p>
+          <v-chip small color="primary">GET</v-chip>
+          <a href="/debug/stablefx/settlementAdvance/repayment">
+            Get Repayment by ID
+          </a>
+        </p>
+      </v-card>
     </v-col>
   </v-container>
 </template>

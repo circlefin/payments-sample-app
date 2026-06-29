@@ -95,6 +95,43 @@ export interface StableFXFundPayload {
   permit2: SingleTradeWitnessPermit2 | BatchTradeWitnessPermit2
 }
 
+export interface SettlementAdvanceCurrencyAmount {
+  currency: string
+  amount: string
+}
+
+export interface ReserveSettlementAdvancePayload {
+  idempotencyKey: string
+  advance: SettlementAdvanceCurrencyAmount
+}
+
+export interface SettlementAdvancePresignPayload {
+  tradeId: string
+}
+
+export interface DelegateFundingPermit2 {
+  permitted: {
+    token: string
+    amount: string
+  }
+  spender: string
+  nonce: string
+  deadline: string
+  witness: Record<string, unknown>
+}
+
+export interface RequestSettlementAdvancePayload {
+  idempotencyKey: string
+  tradeId: string
+  permit2: DelegateFundingPermit2
+  signature: string
+}
+
+export interface RepaySettlementAdvancePayload {
+  idempotencyKey: string
+  amount: SettlementAdvanceCurrencyAmount
+}
+
 const instance = axios.create({
   baseURL: getAPIHostname(),
 })
@@ -103,7 +140,8 @@ const STABLEFX_TRADES_PATH = '/v1/exchange/stablefx/trades'
 const STABLEFX_QUOTES_PATH = '/v1/exchange/stablefx/quotes'
 const STABLEFX_SIGNATURES_PATH = '/v1/exchange/stablefx/signatures'
 const STABLEFX_FUND_PATH = '/v1/exchange/stablefx/fund'
-
+const STABLEFX_SETTLEMENT_ADVANCE_PATH =
+  '/v1/exchange/stablefx/settlementAdvance'
 /**
  * Global error handler:
  * Intercepts all axios reponses and maps
@@ -240,6 +278,92 @@ function getFees(tradeId: string, type?: 'maker' | 'taker') {
   return instance.get(url, { params })
 }
 
+/**
+ * Get StableFX Settlement Advance Credit Line
+ */
+function getSettlementAdvanceCreditLine() {
+  return instance.get(`${STABLEFX_SETTLEMENT_ADVANCE_PATH}/credit`)
+}
+
+/**
+ * Reserve a StableFX Settlement Advance
+ */
+function reserveSettlementAdvance(payload: ReserveSettlementAdvancePayload) {
+  return instance.post(`${STABLEFX_SETTLEMENT_ADVANCE_PATH}/reserve`, payload)
+}
+
+/**
+ * Cancel a StableFX Settlement Advance Reservation
+ */
+function cancelSettlementAdvanceReservation(reservationId: string) {
+  const url = `${STABLEFX_SETTLEMENT_ADVANCE_PATH}/reservation/${reservationId}/cancel`
+  return instance.post(url)
+}
+
+/**
+ * Get presign data for a StableFX Settlement Advance
+ */
+function getSettlementAdvancePresignData(
+  payload: SettlementAdvancePresignPayload,
+) {
+  const url = `${STABLEFX_SIGNATURES_PATH}/settlementAdvance/presign`
+  return instance.post(url, payload)
+}
+
+/**
+ * Request a StableFX Settlement Advance
+ */
+function requestSettlementAdvance(payload: RequestSettlementAdvancePayload) {
+  return instance.post(STABLEFX_SETTLEMENT_ADVANCE_PATH, payload)
+}
+
+/**
+ * Get a StableFX Settlement Advance by ID
+ */
+function getSettlementAdvance(advanceId: string) {
+  return instance.get(`${STABLEFX_SETTLEMENT_ADVANCE_PATH}/${advanceId}`)
+}
+
+/**
+ * List StableFX Settlement Advances
+ */
+function getSettlementAdvances(
+  statuses?: string,
+  startCreateDateInclusive?: string,
+  endCreateDateInclusive?: string,
+  pageAfter?: string,
+  pageBefore?: string,
+  pageSize?: string,
+) {
+  const queryParams = {
+    status: nullIfEmpty(statuses),
+    startCreateDateInclusive: nullIfEmpty(startCreateDateInclusive),
+    endCreateDateInclusive: nullIfEmpty(endCreateDateInclusive),
+    pageAfter: nullIfEmpty(pageAfter),
+    pageBefore: nullIfEmpty(pageBefore),
+    pageSize: nullIfEmpty(pageSize),
+  }
+
+  return instance.get(STABLEFX_SETTLEMENT_ADVANCE_PATH, {
+    params: queryParams,
+  })
+}
+
+/**
+ * Repay a StableFX Settlement Advance
+ */
+function repaySettlementAdvance(payload: RepaySettlementAdvancePayload) {
+  return instance.post(`${STABLEFX_SETTLEMENT_ADVANCE_PATH}/repayment`, payload)
+}
+
+/**
+ * Get a StableFX Settlement Advance Repayment by ID
+ */
+function getSettlementAdvanceRepayment(repaymentId: string) {
+  const url = `${STABLEFX_SETTLEMENT_ADVANCE_PATH}/repayment/${repaymentId}`
+  return instance.get(url)
+}
+
 export default {
   getInstance,
   createQuote,
@@ -251,4 +375,13 @@ export default {
   getFundingPresignData,
   fund,
   getFees,
+  getSettlementAdvanceCreditLine,
+  reserveSettlementAdvance,
+  cancelSettlementAdvanceReservation,
+  getSettlementAdvancePresignData,
+  requestSettlementAdvance,
+  getSettlementAdvance,
+  getSettlementAdvances,
+  repaySettlementAdvance,
+  getSettlementAdvanceRepayment,
 }

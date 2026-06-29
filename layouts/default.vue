@@ -529,6 +529,42 @@ const stablefxTradesLinks = [
     title: 'POST /stablefx/fund',
     to: '/debug/stablefx/fund',
   },
+  {
+    title: 'GET /stablefx/settlementAdvance/credit',
+    to: '/debug/stablefx/settlementAdvance/credit',
+  },
+  {
+    title: 'POST /stablefx/settlementAdvance/reserve',
+    to: '/debug/stablefx/settlementAdvance/reserve',
+  },
+  {
+    title: 'POST /stablefx/settlementAdvance/reservation/{id}/cancel',
+    to: '/debug/stablefx/settlementAdvance/cancelReservation',
+  },
+  {
+    title: 'POST /stablefx/signatures/settlementAdvance/presign',
+    to: '/debug/stablefx/settlementAdvance/presign',
+  },
+  {
+    title: 'POST /stablefx/settlementAdvance',
+    to: '/debug/stablefx/settlementAdvance/request',
+  },
+  {
+    title: 'GET /stablefx/settlementAdvance',
+    to: '/debug/stablefx/settlementAdvance/fetch',
+  },
+  {
+    title: 'GET /stablefx/settlementAdvance/{id}',
+    to: '/debug/stablefx/settlementAdvance/details',
+  },
+  {
+    title: 'POST /stablefx/settlementAdvance/repayment',
+    to: '/debug/stablefx/settlementAdvance/repay',
+  },
+  {
+    title: 'GET /stablefx/settlementAdvance/repayment/{id}',
+    to: '/debug/stablefx/settlementAdvance/repayment',
+  },
 ]
 
 const miniVariant = ref(false)
