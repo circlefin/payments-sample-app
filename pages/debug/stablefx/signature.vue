@@ -45,6 +45,15 @@
           >
             Proceed to Get Trade By ID
           </v-btn>
+          <v-btn
+            v-if="registrationSuccess"
+            variant="flat"
+            class="mb-7 ml-3"
+            color="secondary"
+            @click.prevent="goToSettlementAdvance"
+          >
+            Proceed to Settlement Advance
+          </v-btn>
         </v-form>
       </v-col>
       <v-col cols="12" md="8">
@@ -132,6 +141,15 @@ const makeApiCall = async () => {
 const goToTradeDetails = () => {
   router.push({
     path: '/debug/stablefx/details',
+    query: {
+      tradeId: formData.tradeId,
+    },
+  })
+}
+
+const goToSettlementAdvance = () => {
+  router.push({
+    path: '/debug/stablefx/settlementAdvance/presign',
     query: {
       tradeId: formData.tradeId,
     },
