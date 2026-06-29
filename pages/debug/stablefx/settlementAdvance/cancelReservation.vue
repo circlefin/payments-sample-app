@@ -1,0 +1,78 @@
+<template>
+  <v-container>
+    <v-row>
+      <v-col cols="12" md="4">
+        <v-form v-model="validForm">
+          <v-text-field
+            v-model="formData.reservationId"
+            :rules="[required]"
+            label="Reservation ID"
+          />
+          <v-btn
+            variant="flat"
+            class="mb-7"
+            color="primary"
+            :loading="loading"
+            :disabled="!validForm || loading"
+            @click.prevent="makeApiCall"
+          >
+            Cancel Reservation
+          </v-btn>
+        </v-form>
+      </v-col>
+      <v-col cols="12" md="8">
+        <RequestInfo
+          :url="requestUrl"
+          :payload="payload"
+          :response="response"
+        />
+      </v-col>
+    </v-row>
+    <ErrorSheet
+      :error="error"
+      :show-error="showError"
+      @on-change="onErrorSheetClosed"
+    />
+  </v-container>
+</template>
+
+<script setup lang="ts">
+const store = useMainStore()
+const { $stablefxTradesApi } = useNuxtApp()
+const route = useRoute()
+
+const validForm = ref(false)
+const formData = reactive({
+  reservationId: (route.query.reservationId as string) || '',
+})
+
+const error = ref<any>({})
+const loading = ref(false)
+const showError = ref(false)
+
+const payload = computed(() => store.getRequestPayload)
+const response = computed(() => store.getRequestResponse)
+const requestUrl = computed(() => store.getRequestUrl)
+
+const required = (v: string) => !!v || 'Field is required'
+
+const onErrorSheetClosed = () => {
+  error.value = {}
+  showError.value = false
+}
+
+const makeApiCall = async () => {
+  loading.value = true
+
+  try {
+    await $stablefxTradesApi.cancelSettlementAdvanceReservation(
+      formData.reservationId,
+    )
+  } catch (err) {
+    error.value = err
+    showError.value = true
+  } finally {
+    loading.value = false
+  }
+}
+</script>

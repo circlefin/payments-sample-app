@@ -4,55 +4,50 @@
       <v-col cols="12" md="4">
         <v-form v-model="validForm">
           <v-text-field
+            v-model="formData.idempotencyKey"
+            :rules="[required]"
+            hint="Unique key for this advance"
+            label="Idempotency Key"
+          />
+          <v-text-field
             v-model="formData.tradeId"
             :rules="[required]"
             label="Trade ID"
           />
           <v-text-field
-            v-model="formData.address"
-            :rules="[required]"
-            label="Address"
-          />
-          <v-text-field
             v-model="formData.signature"
             :rules="[required]"
             label="Signature"
+            placeholder="Enter signature string"
           />
           <v-textarea
-            v-model="formData.typedDataMessage"
+            v-model="formData.permit2DataMessage"
             :rules="[required, isValidJSON]"
-            label="Typed Data Message (JSON)"
+            label="Permit2 Typed Data Message (JSON)"
             rows="15"
             auto-grow
-            hint="Paste the typedData.message JSON object here"
+            hint="Paste the permit2 message JSON object here"
           />
           <v-btn
             variant="flat"
-            class="mb-7"
+            class="mb-7 mt-4"
             color="primary"
             :loading="loading"
             :disabled="!validForm || loading"
+            block
             @click.prevent="makeApiCall"
           >
-            Register Signature
+            Request Advance
           </v-btn>
           <v-btn
-            v-if="registrationSuccess"
+            v-if="advanceId"
             variant="flat"
-            class="mb-7 ml-3"
+            class="mb-7"
             color="secondary"
-            @click.prevent="goToTradeDetails"
+            block
+            @click.prevent="goToAdvanceDetails"
           >
-            Proceed to Get Trade By ID
-          </v-btn>
-          <v-btn
-            v-if="registrationSuccess"
-            variant="flat"
-            class="mb-7 ml-3"
-            color="secondary"
-            @click.prevent="goToSettlementAdvance"
-          >
-            Proceed to Settlement Advance
+            Proceed to Get Advance By ID
           </v-btn>
         </v-form>
       </v-col>
@@ -73,7 +68,8 @@
 </template>
 
 <script setup lang="ts">
-import type { CreatePiFXSignaturePayload } from '~/lib/stablefxTradesApi'
+import { v4 as uuidv4 } from 'uuid'
+import type { RequestSettlementAdvancePayload } from '~/lib/stablefxTradesApi'
 
 const store = useMainStore()
 const { $stablefxTradesApi } = useNuxtApp()
@@ -81,12 +77,12 @@ const route = useRoute()
 const router = useRouter()
 
 const validForm = ref(false)
-const registrationSuccess = ref(false)
+const advanceId = ref('')
 const formData = reactive({
+  idempotencyKey: (route.query.idempotencyKey as string) || uuidv4(),
   tradeId: (route.query.tradeId as string) || '',
-  address: '',
   signature: (route.query.signature as string) || '',
-  typedDataMessage: (route.query.typedDataMessage as string) || '',
+  permit2DataMessage: (route.query.permit2Data as string) || '',
 })
 
 const error = ref<any>({})
@@ -115,21 +111,24 @@ const onErrorSheetClosed = () => {
 
 const makeApiCall = async () => {
   loading.value = true
-  registrationSuccess.value = false
+  advanceId.value = ''
 
   try {
-    // Parse the typed data message JSON
-    const parsedMessage = JSON.parse(formData.typedDataMessage)
+    const permit2 = JSON.parse(formData.permit2DataMessage)
 
-    const payloadData: CreatePiFXSignaturePayload = {
+    const payloadData: RequestSettlementAdvancePayload = {
+      idempotencyKey: formData.idempotencyKey,
       tradeId: formData.tradeId,
-      address: formData.address,
-      details: parsedMessage,
+      permit2,
       signature: formData.signature,
     }
 
-    await $stablefxTradesApi.registerSignature(payloadData)
-    registrationSuccess.value = true
+    const result =
+      await $stablefxTradesApi.requestSettlementAdvance(payloadData)
+
+    if ((result as any)?.advanceId) {
+      advanceId.value = (result as any).advanceId
+    }
   } catch (err) {
     error.value = err
     showError.value = true
@@ -138,20 +137,11 @@ const makeApiCall = async () => {
   }
 }
 
-const goToTradeDetails = () => {
+const goToAdvanceDetails = () => {
   router.push({
-    path: '/debug/stablefx/details',
+    path: '/debug/stablefx/settlementAdvance/details',
     query: {
-      tradeId: formData.tradeId,
-    },
-  })
-}
-
-const goToSettlementAdvance = () => {
-  router.push({
-    path: '/debug/stablefx/settlementAdvance/presign',
-    query: {
-      tradeId: formData.tradeId,
+      advanceId: advanceId.value,
     },
   })
 }

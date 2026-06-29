@@ -8,11 +8,6 @@
             :rules="[required]"
             label="Trade ID"
           />
-          <v-text-field
-            v-model="formData.recipientAddress"
-            :rules="[required]"
-            label="Recipient Address"
-          />
           <v-row class="mb-7">
             <v-col cols="12" sm="6">
               <v-btn
@@ -80,9 +75,9 @@
               color="secondary"
               class="mt-4"
               block
-              @click.prevent="goToRegisterSignature"
+              @click.prevent="goToRequestAdvance"
             >
-              Proceed to Register Signature
+              Proceed to Request Advance
             </v-btn>
           </v-card-text>
         </v-card>
@@ -104,6 +99,8 @@
 </template>
 
 <script setup lang="ts">
+import type { SettlementAdvancePresignPayload } from '~/lib/stablefxTradesApi'
+
 const store = useMainStore()
 const { $stablefxTradesApi, $circleWalletsApi } = useNuxtApp()
 const route = useRoute()
@@ -112,7 +109,6 @@ const router = useRouter()
 const validForm = ref(false)
 const formData = reactive({
   tradeId: (route.query.tradeId as string) || '',
-  recipientAddress: (route.query.recipientAddress as string) || '',
 })
 
 const error = ref<any>({})
@@ -125,17 +121,16 @@ const payload = computed(() => store.getRequestPayload)
 const response = computed(() => store.getRequestResponse)
 const requestUrl = computed(() => store.getRequestUrl)
 
-// Check if we have a presign response with typed data
-const hasPresignResponse = computed(() => {
-  if (!response.value) return false
-
-  // Check different possible response structures
+// Extract the maker permit typed data from the presign response
+const getTypedData = () => {
+  if (!response.value) return undefined
   return (
-    (response.value.data && response.value.data.typedData) ||
-    response.value.typedData ||
-    (response.value.data && Object.keys(response.value.data).length > 0)
+    response.value.makerPermitTypedData ||
+    response.value.data?.makerPermitTypedData
   )
-})
+}
+
+const hasPresignResponse = computed(() => !!getTypedData())
 
 // Check if wallet configuration is complete
 const hasWalletConfig = computed(() => {
@@ -154,10 +149,10 @@ const makeApiCall = async () => {
   signatureResult.value = '' // Clear previous signature result
 
   try {
-    await $stablefxTradesApi.getPresignData(
-      formData.tradeId,
-      formData.recipientAddress,
-    )
+    const payloadData: SettlementAdvancePresignPayload = {
+      tradeId: formData.tradeId,
+    }
+    await $stablefxTradesApi.getSettlementAdvancePresignData(payloadData)
   } catch (err) {
     error.value = err
     showError.value = true
@@ -176,8 +171,11 @@ const signWithCircle = async () => {
     return
   }
 
-  if (!hasPresignResponse.value) {
-    error.value = { message: 'Please get presign data first before signing.' }
+  const typedData = getTypedData()
+  if (!typedData) {
+    error.value = {
+      message: 'Please get presign data first before signing.',
+    }
     showError.value = true
     return
   }
@@ -185,23 +183,6 @@ const signWithCircle = async () => {
   signingLoading.value = true
 
   try {
-    // Extract typed data from the presign response - handle different structures
-    let typedData = response.value.data?.typedData || response.value.typedData
-
-    // If no typedData found, use the entire data object
-    if (!typedData && response.value.data) {
-      typedData = response.value.data
-    }
-
-    if (!typedData) {
-      error.value = {
-        message:
-          'No typed data found in the presign response. Please ensure the presign data contains valid typed data.',
-      }
-      showError.value = true
-      return
-    }
-
     // Convert typed data to string format expected by Circle API
     const typedDataString = JSON.stringify(typedData)
 
@@ -236,24 +217,18 @@ const copySignature = async () => {
   }
 }
 
-const goToRegisterSignature = () => {
-  // Extract typed data from the presign response
-  let typedData = response.value.data?.typedData || response.value.typedData
-
-  if (!typedData && response.value.data) {
-    typedData = response.value.data
-  }
-
-  const typedDataMessage = typedData?.message
+const goToRequestAdvance = () => {
+  const typedData = getTypedData()
+  const permit2Data = typedData?.message
     ? JSON.stringify(typedData.message, null, 2)
     : ''
 
   router.push({
-    path: '/debug/stablefx/signature',
+    path: '/debug/stablefx/settlementAdvance/request',
     query: {
       tradeId: formData.tradeId,
       signature: signatureResult.value,
-      typedDataMessage: typedDataMessage,
+      permit2Data: permit2Data,
     },
   })
 }

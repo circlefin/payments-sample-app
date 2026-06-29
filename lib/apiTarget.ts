@@ -6,10 +6,12 @@
  */
 
 function getAPIHostname() {
-  // If app is running on localhost (ie, in  dev) the URL is provided via an environment variable (.env file), use that.
+  // If app is running on localhost (ie, in dev) the URL is provided via the
+  // BASE_URL env var, exposed to the client through Nuxt's public runtimeConfig.
   // Otherwise, base it off the window location.
   if (window.location && window.location.hostname === 'localhost') {
-    return process.env.baseUrl || 'https://api-sandbox.circle.com'
+    const runtimeBaseUrl = (window as any).__NUXT__?.config?.public?.baseUrl
+    return runtimeBaseUrl || 'https://api-sandbox.circle.com'
   }
   return window.location.origin.replace('sample', 'api')
 }
