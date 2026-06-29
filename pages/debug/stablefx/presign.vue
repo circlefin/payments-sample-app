@@ -8,6 +8,11 @@
             :rules="[required]"
             label="Trade ID"
           />
+          <v-text-field
+            v-model="formData.recipientAddress"
+            :rules="[required]"
+            label="Recipient Address"
+          />
           <v-row class="mb-7">
             <v-col cols="12" sm="6">
               <v-btn
@@ -107,6 +112,7 @@ const router = useRouter()
 const validForm = ref(false)
 const formData = reactive({
   tradeId: (route.query.tradeId as string) || '',
+  recipientAddress: (route.query.recipientAddress as string) || '',
 })
 
 const error = ref<any>({})
@@ -148,7 +154,10 @@ const makeApiCall = async () => {
   signatureResult.value = '' // Clear previous signature result
 
   try {
-    await $stablefxTradesApi.getPresignData(formData.tradeId)
+    await $stablefxTradesApi.getPresignData(
+      formData.tradeId,
+      formData.recipientAddress,
+    )
   } catch (err) {
     error.value = err
     showError.value = true

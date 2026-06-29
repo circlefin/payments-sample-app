@@ -243,9 +243,9 @@ function registerSignature(payload: CreatePiFXSignaturePayload) {
 /**
  * Get presign data for signing
  */
-function getPresignData(tradeId: string) {
+function getPresignData(tradeId: string, recipientAddress: string) {
   const url = `/v1/exchange/stablefx/signatures/presign/${tradeId}`
-  return instance.get(url)
+  return instance.get(url, { params: { recipientAddress } })
 }
 
 /**
