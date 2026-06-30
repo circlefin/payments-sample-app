@@ -353,7 +353,10 @@ function getSettlementAdvances(
  * Repay a StableFX Settlement Advance
  */
 function repaySettlementAdvance(payload: RepaySettlementAdvancePayload) {
-  return instance.post(`${STABLEFX_SETTLEMENT_ADVANCE_PATH}/repayments`, payload)
+  return instance.post(
+    `${STABLEFX_SETTLEMENT_ADVANCE_PATH}/repayments`,
+    payload,
+  )
 }
 
 /**
