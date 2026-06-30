@@ -141,7 +141,7 @@ const STABLEFX_QUOTES_PATH = '/v1/exchange/stablefx/quotes'
 const STABLEFX_SIGNATURES_PATH = '/v1/exchange/stablefx/signatures'
 const STABLEFX_FUND_PATH = '/v1/exchange/stablefx/fund'
 const STABLEFX_SETTLEMENT_ADVANCE_PATH =
-  '/v1/exchange/stablefx/settlementAdvance'
+  '/v1/exchange/stablefx/settlementAdvances'
 /**
  * Global error handler:
  * Intercepts all axios reponses and maps
@@ -296,7 +296,7 @@ function reserveSettlementAdvance(payload: ReserveSettlementAdvancePayload) {
  * Cancel a StableFX Settlement Advance Reservation
  */
 function cancelSettlementAdvanceReservation(reservationId: string) {
-  const url = `${STABLEFX_SETTLEMENT_ADVANCE_PATH}/reservation/${reservationId}/cancel`
+  const url = `${STABLEFX_SETTLEMENT_ADVANCE_PATH}/reservations/${reservationId}/cancel`
   return instance.post(url)
 }
 
@@ -306,7 +306,7 @@ function cancelSettlementAdvanceReservation(reservationId: string) {
 function getSettlementAdvancePresignData(
   payload: SettlementAdvancePresignPayload,
 ) {
-  const url = `${STABLEFX_SIGNATURES_PATH}/settlementAdvance/presign`
+  const url = `${STABLEFX_SIGNATURES_PATH}/settlementAdvances/presign`
   return instance.post(url, payload)
 }
 
@@ -353,14 +353,14 @@ function getSettlementAdvances(
  * Repay a StableFX Settlement Advance
  */
 function repaySettlementAdvance(payload: RepaySettlementAdvancePayload) {
-  return instance.post(`${STABLEFX_SETTLEMENT_ADVANCE_PATH}/repayment`, payload)
+  return instance.post(`${STABLEFX_SETTLEMENT_ADVANCE_PATH}/repayments`, payload)
 }
 
 /**
  * Get a StableFX Settlement Advance Repayment by ID
  */
 function getSettlementAdvanceRepayment(repaymentId: string) {
-  const url = `${STABLEFX_SETTLEMENT_ADVANCE_PATH}/repayment/${repaymentId}`
+  const url = `${STABLEFX_SETTLEMENT_ADVANCE_PATH}/repayments/${repaymentId}`
   return instance.get(url)
 }
 
