@@ -44,7 +44,7 @@ const { $tradesApi } = useNuxtApp()
 const error = ref<any>({})
 const loading = ref(false)
 const showError = ref(false)
-const currencies = ['MXN', 'BRL']
+const currencies = ['MXN', 'BRL', 'HKD', 'CNH', 'SGD']
 const selectedCurrency = ref('MXN')
 
 const payload = computed(() => store.getRequestPayload)

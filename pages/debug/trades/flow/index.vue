@@ -127,12 +127,15 @@ const required = (v: string) => !!v || 'Field is required'
 const isNumber = (v: string) =>
   !v || v === '' || !isNaN(parseInt(v)) || 'Please enter valid number'
 
-const currencies = ['USDC', 'EURC', 'MXN', 'BRL']
+const currencies = ['USDC', 'EURC', 'MXN', 'BRL', 'HKD', 'CNH', 'SGD']
 const toCurrencyMap = new Map([
-  ['USDC', ['EURC', 'MXN', 'BRL']],
+  ['USDC', ['EURC', 'MXN', 'BRL', 'HKD', 'CNH', 'SGD']],
   ['EURC', ['USDC']],
   ['MXN', ['USDC']],
   ['BRL', ['USDC']],
+  ['HKD', ['USDC']],
+  ['CNH', ['USDC']],
+  ['SGD', ['USDC']],
 ])
 
 const onErrorSheetClosed = () => {

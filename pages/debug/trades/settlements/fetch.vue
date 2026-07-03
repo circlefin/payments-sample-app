@@ -63,6 +63,7 @@ const formData = reactive({
 const error = ref<any>({})
 const loading = ref(false)
 const showError = ref(false)
+const settlementCurrencies = ['', 'MXN', 'BRL', 'HKD', 'CNH', 'SGD']
 
 const payload = computed(() => store.getRequestPayload)
 const response = computed(() => store.getRequestResponse)

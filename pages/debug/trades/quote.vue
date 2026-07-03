@@ -78,12 +78,15 @@ const formData = reactive({
 const error = ref<any>({})
 const loading = ref(false)
 const showError = ref(false)
-const currencies = ['USDC', 'EURC', 'MXN', 'BRL']
+const currencies = ['USDC', 'EURC', 'MXN', 'BRL', 'HKD', 'CNH', 'SGD']
 const toCurrencyMap = new Map([
-  ['USDC', ['EURC', 'MXN', 'BRL']],
+  ['USDC', ['EURC', 'MXN', 'BRL', 'HKD', 'CNH', 'SGD']],
   ['EURC', ['USDC']],
   ['MXN', ['USDC']],
   ['BRL', ['USDC']],
+  ['HKD', ['USDC']],
+  ['CNH', ['USDC']],
+  ['SGD', ['USDC']],
 ])
 
 const payload = computed(() => store.getRequestPayload)
