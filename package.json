@@ -57,5 +57,8 @@
     "typescript": "^5.3.0",
     "vitest": "^1.0.0",
     "vue-tsc": "^3.0.6"
+  },
+  "resolutions": {
+    "tar": "^7.5.19"
   }
 }
