@@ -149,13 +149,25 @@ const loading = ref(false)
 const showError = ref(false)
 const signingLoading = ref(false)
 const signatureResult = ref('')
-const currencies = ['USDC', 'EURC', 'QCAD', 'AUDF', 'MXNB']
+const currencies = [
+  'USDC',
+  'EURC',
+  'QCAD',
+  'AUDF',
+  'MXNB',
+  'BRLA',
+  'KRW1',
+  'GBPA',
+]
 const toCurrencyMap = new Map([
-  ['USDC', ['EURC', 'QCAD', 'AUDF', 'MXNB']],
+  ['USDC', ['EURC', 'QCAD', 'AUDF', 'MXNB', 'BRLA', 'KRW1', 'GBPA']],
   ['QCAD', ['USDC']],
   ['AUDF', ['USDC']],
   ['EURC', ['USDC']],
   ['MXNB', ['USDC']],
+  ['BRLA', ['USDC']],
+  ['KRW1', ['USDC']],
+  ['GBPA', ['USDC']],
 ])
 
 const payload = computed(() => store.getRequestPayload)
