@@ -3,6 +3,10 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-form>
+          <v-text-field
+            v-model="clientEntityId"
+            label="Client Entity Id (optional)"
+          />
           <v-btn
             variant="flat"
             class="mb-7"
@@ -34,6 +38,7 @@
 const store = useMainStore()
 const { $tradesApi } = useNuxtApp()
 
+const clientEntityId = ref('')
 const error = ref<any>({})
 const loading = ref(false)
 const showError = ref(false)
@@ -50,7 +55,7 @@ const onErrorSheetClosed = () => {
 const makeApiCall = async () => {
   loading.value = true
   try {
-    await $tradesApi.getTrades()
+    await $tradesApi.getTrades(clientEntityId.value || undefined)
   } catch (err) {
     error.value = err
     showError.value = true

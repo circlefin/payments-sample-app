@@ -20,6 +20,10 @@
           <v-text-field v-model="formData.pageSize" label="PageSize" />
           <v-text-field v-model="formData.pageBefore" label="PageBefore" />
           <v-text-field v-model="formData.pageAfter" label="PageAfter" />
+          <v-text-field
+            v-model="formData.clientEntityId"
+            label="Client Entity Id (optional)"
+          />
           <v-btn
             variant="flat"
             class="mb-7"
@@ -59,6 +63,7 @@ const formData = reactive({
   pageSize: '',
   pageBefore: '',
   pageAfter: '',
+  clientEntityId: '',
 })
 const error = ref<any>({})
 const loading = ref(false)
@@ -86,6 +91,7 @@ const makeApiCall = async () => {
       formData.pageBefore,
       formData.pageAfter,
       formData.pageSize,
+      formData.clientEntityId || undefined,
     )
   } catch (err) {
     error.value = err

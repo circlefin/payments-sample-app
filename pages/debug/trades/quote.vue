@@ -29,6 +29,26 @@
             :rules="[required]"
             label="To currency"
           />
+          <v-select
+            v-model="formData.source.type"
+            :items="locationTypes"
+            label="Source location type (optional)"
+            clearable
+          />
+          <v-text-field
+            v-model="formData.source.id"
+            label="Source location id (optional)"
+          />
+          <v-select
+            v-model="formData.destination.type"
+            :items="locationTypes"
+            label="Destination location type (optional)"
+            clearable
+          />
+          <v-text-field
+            v-model="formData.destination.id"
+            label="Destination location id (optional)"
+          />
           <v-btn
             variant="flat"
             class="mb-7"
@@ -74,11 +94,20 @@ const formData = reactive({
     amount: '',
     currency: '',
   },
+  source: {
+    type: '',
+    id: '',
+  },
+  destination: {
+    type: '',
+    id: '',
+  },
 })
 const error = ref<any>({})
 const loading = ref(false)
 const showError = ref(false)
 const currencies = ['USDC', 'EURC', 'MXN', 'BRL', 'HKD', 'CNH', 'SGD']
+const locationTypes = ['wallet', 'wire', 'pix']
 const toCurrencyMap = new Map([
   ['USDC', ['EURC', 'MXN', 'BRL', 'HKD', 'CNH', 'SGD']],
   ['EURC', ['USDC']],
@@ -117,6 +146,12 @@ const makeApiCall = async () => {
       amount: formData.to.amount ? parseFloat(formData.to.amount) : undefined,
       currency: formData.to.currency,
     },
+    source: formData.source.id
+      ? { type: formData.source.type, id: formData.source.id }
+      : undefined,
+    destination: formData.destination.id
+      ? { type: formData.destination.type, id: formData.destination.id }
+      : undefined,
   }
 
   try {

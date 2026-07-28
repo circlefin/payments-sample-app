@@ -8,6 +8,10 @@
             :items="currencies"
             label="Currency"
           />
+          <v-text-field
+            v-model="clientEntityId"
+            label="Client Entity Id (optional)"
+          />
           <v-btn
             variant="flat"
             class="mb-7"
@@ -46,6 +50,7 @@ const loading = ref(false)
 const showError = ref(false)
 const currencies = ['MXN', 'BRL', 'HKD', 'CNH', 'SGD']
 const selectedCurrency = ref('MXN')
+const clientEntityId = ref('')
 
 const payload = computed(() => store.getRequestPayload)
 const response = computed(() => store.getRequestResponse)
@@ -65,6 +70,7 @@ const makeApiCall = async () => {
 
     const response = await $tradesApi.getSettlementInstructions(
       selectedCurrency.value,
+      clientEntityId.value || undefined,
     )
     store.setResponse(response)
   } catch (err) {

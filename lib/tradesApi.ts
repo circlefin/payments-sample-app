@@ -3,6 +3,11 @@ import axios from 'axios'
 
 import { getAPIHostname } from './apiTarget'
 
+export interface Location {
+  type: string
+  id: string
+}
+
 export interface CreateQuotePayload {
   type: string
   from: {
@@ -13,6 +18,8 @@ export interface CreateQuotePayload {
     amount?: number
     currency: string
   }
+  source?: Location
+  destination?: Location
 }
 
 export interface CreateTradePayload {
@@ -67,6 +74,12 @@ function createQuote(payload: CreateQuotePayload) {
   if (!payload.to.amount) {
     delete payload.to.amount
   }
+  if (!payload.source?.id) {
+    delete payload.source
+  }
+  if (!payload.destination?.id) {
+    delete payload.destination
+  }
 
   return instance.post(QUOTES_PATH, payload)
 }
@@ -81,8 +94,11 @@ function createTrade(payload: CreateTradePayload) {
 /**
  * Get Trades
  */
-function getTrades() {
-  return instance.get(TRADES_PATH)
+function getTrades(clientEntityId?: string) {
+  const params = {
+    clientEntityId: clientEntityId || undefined,
+  }
+  return instance.get(TRADES_PATH, { params })
 }
 
 /**
@@ -90,7 +106,6 @@ function getTrades() {
  */
 function getTrade(tradeId: string) {
   const url = `${TRADES_PATH}/${tradeId}`
-
   return instance.get(url)
 }
 
@@ -106,6 +121,7 @@ function getSettlements(
   pageBefore: string,
   pageAfter: string,
   pageSize: string,
+  clientEntityId?: string,
 ) {
   const params = {
     type: nullIfEmpty(type),
@@ -116,6 +132,7 @@ function getSettlements(
     pageBefore: nullIfEmpty(pageBefore),
     pageAfter: nullIfEmpty(pageAfter),
     pageSize: nullIfEmpty(pageSize),
+    clientEntityId: clientEntityId || undefined,
   }
   return instance.get(SETTLEMENTS_PATH, { params })
 }
@@ -137,8 +154,11 @@ function getSettlementByReference(reference: string) {
 /**
  * Get Settlement Instructions
  */
-function getSettlementInstructions(currency: string) {
-  return instance.get(`${SETTLEMENTS_PATH}/instructions/${currency}`)
+function getSettlementInstructions(currency: string, clientEntityId?: string) {
+  const params = {
+    clientEntityId: clientEntityId || undefined,
+  }
+  return instance.get(`${SETTLEMENTS_PATH}/instructions/${currency}`, { params })
 }
 
 const nullIfEmpty = (prop: string | undefined) => {
