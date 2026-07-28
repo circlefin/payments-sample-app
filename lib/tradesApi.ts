@@ -158,7 +158,9 @@ function getSettlementInstructions(currency: string, clientEntityId?: string) {
   const params = {
     clientEntityId: clientEntityId || undefined,
   }
-  return instance.get(`${SETTLEMENTS_PATH}/instructions/${currency}`, { params })
+  return instance.get(`${SETTLEMENTS_PATH}/instructions/${currency}`, {
+    params,
+  })
 }
 
 const nullIfEmpty = (prop: string | undefined) => {
