@@ -158,9 +158,14 @@ const currencies = [
   'BRLA',
   'KRW1',
   'GBPA',
+  'EURAU',
+  'CHFAU',
 ]
 const toCurrencyMap = new Map([
-  ['USDC', ['EURC', 'QCAD', 'AUDF', 'MXNB', 'BRLA', 'KRW1', 'GBPA']],
+  [
+    'USDC',
+    ['EURC', 'QCAD', 'AUDF', 'MXNB', 'BRLA', 'KRW1', 'GBPA', 'EURAU', 'CHFAU'],
+  ],
   ['QCAD', ['USDC']],
   ['AUDF', ['USDC']],
   ['EURC', ['USDC']],
@@ -168,6 +173,8 @@ const toCurrencyMap = new Map([
   ['BRLA', ['USDC']],
   ['KRW1', ['USDC']],
   ['GBPA', ['USDC']],
+  ['EURAU', ['USDC']],
+  ['CHFAU', ['USDC']],
 ])
 
 const payload = computed(() => store.getRequestPayload)
