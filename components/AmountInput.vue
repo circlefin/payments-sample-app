@@ -9,6 +9,8 @@
 </template>
 
 <script setup lang="ts">
+import { amountRules } from './amountValidation'
+
 interface Props {
   prefix?: string
   label?: string
@@ -29,27 +31,11 @@ const emit = defineEmits<{
 
 const amountFormatted = ref('0.00')
 
-const ruleFunctions = {
-  positive: (v: string) => {
-    return parseFloat(v) > 0 || 'Please enter a positive amount'
-  },
-  isCurrency: (v: string) => {
-    const amount = v.trim()
-    return /^[0-9]+(.[0-9]{1,2})?$/.test(amount) || 'Please enter valid amount'
-  },
-  isNumber: (v: string) => {
-    return !isNaN(parseInt(v)) || 'Please enter valid amount'
-  },
-  isRequired: (v: string) => {
-    return v.trim() !== '' || 'Please enter an amount'
-  },
-}
-
 const rules = computed(() => [
-  ruleFunctions.isRequired,
-  ruleFunctions.isNumber,
-  ruleFunctions.isCurrency,
-  ruleFunctions.positive,
+  amountRules.isRequired,
+  amountRules.isNumber,
+  amountRules.isCurrency,
+  amountRules.positive,
 ])
 
 const format = (value: string) => {
