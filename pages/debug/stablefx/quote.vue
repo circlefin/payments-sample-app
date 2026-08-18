@@ -160,11 +160,23 @@ const currencies = [
   'GBPA',
   'EURAU',
   'CHFAU',
+  'SEKAU',
 ]
 const toCurrencyMap = new Map([
   [
     'USDC',
-    ['EURC', 'QCAD', 'AUDF', 'MXNB', 'BRLA', 'KRW1', 'GBPA', 'EURAU', 'CHFAU'],
+    [
+      'EURC',
+      'QCAD',
+      'AUDF',
+      'MXNB',
+      'BRLA',
+      'KRW1',
+      'GBPA',
+      'EURAU',
+      'CHFAU',
+      'SEKAU',
+    ],
   ],
   ['QCAD', ['USDC']],
   ['AUDF', ['USDC']],
@@ -175,6 +187,7 @@ const toCurrencyMap = new Map([
   ['GBPA', ['USDC']],
   ['EURAU', ['USDC']],
   ['CHFAU', ['USDC']],
+  ['SEKAU', ['USDC']],
 ])
 
 const payload = computed(() => store.getRequestPayload)
