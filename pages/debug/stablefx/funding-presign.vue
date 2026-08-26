@@ -16,8 +16,8 @@
             :rules="[required]"
             label="Funding Mode"
             :hint="
-              formData.type === 'taker'
-                ? 'Takers can only use gross funding mode'
+              formData.type === 'taker' && formData.fundingMode === 'gross'
+                ? 'Takers can only use gross or delegate funding mode'
                 : ''
             "
             persistent-hint
@@ -32,7 +32,26 @@
             persistent-hint
           />
 
-          <v-row class="mb-7">
+          <template v-if="formData.fundingMode === 'delegate'">
+            <v-text-field
+              v-model="formData.funderAddress"
+              :rules="[required]"
+              label="Funder Address"
+              placeholder="0x..."
+              hint="The LLC funder programmable wallet address"
+              persistent-hint
+            />
+            <v-text-field
+              v-model="formData.recipientAddress"
+              :rules="[required]"
+              label="Recipient Address"
+              placeholder="0x..."
+              hint="The LLC escrow programmable wallet address"
+              persistent-hint
+            />
+          </template>
+
+          <v-row class="mb-7 mt-2">
             <v-col cols="12" sm="6">
               <v-btn
                 variant="flat"
@@ -74,8 +93,72 @@
           </v-alert>
         </v-form>
 
-        <!-- Signature Result Section -->
-        <v-card v-if="signatureResult" class="mt-6">
+        <!-- Delegate signing progress -->
+        <v-card
+          v-if="signingLoading && formData.fundingMode === 'delegate'"
+          class="mt-6"
+        >
+          <v-card-title>Signing Progress</v-card-title>
+          <v-card-text>
+            <p class="mb-2">{{ signingProgressText }}</p>
+            <v-progress-linear
+              :model-value="signingProgress"
+              color="primary"
+              height="8"
+              rounded
+            />
+          </v-card-text>
+        </v-card>
+
+        <!-- Delegate batch results -->
+        <v-card
+          v-if="
+            formData.fundingMode === 'delegate' &&
+            delegateBatch.length > 0 &&
+            !signingLoading
+          "
+          class="mt-6"
+        >
+          <v-card-title>Batch Results</v-card-title>
+          <v-card-text>
+            <v-list density="compact">
+              <v-list-item
+                v-for="entry in delegateBatch"
+                :key="entry.contractTradeId"
+              >
+                <v-list-item-title>{{ entry.contractTradeId }}</v-list-item-title>
+                <template #append>
+                  <v-chip
+                    v-if="entry.traderSignature && entry.funderSignature"
+                    color="success"
+                    size="small"
+                  >
+                    Signed
+                  </v-chip>
+                  <v-chip v-else color="warning" size="small">
+                    Presign only
+                  </v-chip>
+                </template>
+              </v-list-item>
+            </v-list>
+            <v-btn
+              v-if="allDelegateSigned"
+              variant="flat"
+              color="secondary"
+              class="mt-4"
+              block
+              @click.prevent="goToFund"
+            >
+              Proceed to Fund Trades
+            </v-btn>
+          </v-card-text>
+        </v-card>
+
+        <!-- Non-delegate signature result -->
+        <v-card
+          v-if="signatureResult && formData.fundingMode !== 'delegate'"
+          class="mt-6"
+        >
           <v-card-title>Signature Result</v-card-title>
           <v-card-text>
             <v-alert
@@ -124,6 +207,7 @@
 
 <script setup lang="ts">
 import type { FundingPresignPayload } from '~/lib/stablefxTradesApi'
+import type { DelegateFundingEntry } from '~/stores/main'
 
 const store = useMainStore()
 const { $stablefxTradesApi, $circleWalletsApi } = useNuxtApp()
@@ -132,8 +216,10 @@ const router = useRouter()
 const validForm = ref(false)
 const formData = reactive({
   contractTradeIds: '',
-  fundingMode: '' as 'gross' | 'net' | '',
+  fundingMode: '' as 'gross' | 'net' | 'delegate' | '',
   type: '' as 'maker' | 'taker' | '',
+  funderAddress: '',
+  recipientAddress: '',
 })
 
 const typeOptions = [
@@ -142,14 +228,16 @@ const typeOptions = [
 ]
 
 const fundingModeOptions = computed(() => {
-  // Takers can only use gross funding mode
   if (formData.type === 'taker') {
-    return [{ title: 'Gross', value: 'gross' }]
+    return [
+      { title: 'Gross', value: 'gross' },
+      { title: 'Delegate', value: 'delegate' },
+    ]
   }
-  // Makers can use both gross and net
   return [
     { title: 'Gross', value: 'gross' },
     { title: 'Net', value: 'net' },
+    { title: 'Delegate', value: 'delegate' },
   ]
 })
 
@@ -158,16 +246,29 @@ const loading = ref(false)
 const showError = ref(false)
 const signingLoading = ref(false)
 const signatureResult = ref('')
+const signingProgressText = ref('')
+const signingProgress = ref(0)
+
+const delegateBatch = computed<DelegateFundingEntry[]>(
+  () => store.getDelegateFundingBatch,
+)
+
+const allDelegateSigned = computed(() =>
+  delegateBatch.value.length > 0 &&
+  delegateBatch.value.every(
+    (e) => !!e.traderSignature && !!e.funderSignature,
+  ),
+)
 
 const payload = computed(() => store.getRequestPayload)
 const response = computed(() => store.getRequestResponse)
 const requestUrl = computed(() => store.getRequestUrl)
 
-// Check if we have a presign response with typed data
 const hasPresignResponse = computed(() => {
+  if (formData.fundingMode === 'delegate') {
+    return delegateBatch.value.length > 0
+  }
   if (!response.value) return false
-
-  // Check different possible response structures
   return (
     (response.value.data && response.value.data.typedData) ||
     response.value.typedData ||
@@ -175,14 +276,12 @@ const hasPresignResponse = computed(() => {
   )
 })
 
-// Check if wallet configuration is complete
 const hasWalletConfig = computed(() => {
   return store.getWalletApiKey && store.getEntitySecret && store.getWalletId
 })
 
 const required = (v: string) => !!v || 'Field is required'
 
-// Watch for type changes and reset funding mode if taker is selected with net mode
 watch(
   () => formData.type,
   (newType) => {
@@ -197,24 +296,51 @@ const onErrorSheetClosed = () => {
   showError.value = false
 }
 
+const parseTradeIds = () =>
+  formData.contractTradeIds
+    .split(',')
+    .map((id) => id.trim())
+    .filter((id) => id !== '')
+
 const makeApiCall = async () => {
   loading.value = true
-  signatureResult.value = '' // Clear previous signature result
+  signatureResult.value = ''
+  store.clearDelegateFundingBatch()
 
   try {
-    // Parse comma-separated trade IDs and trim whitespace
-    const contractTradeIds = formData.contractTradeIds
-      .split(',')
-      .map((id) => id.trim())
-      .filter((id) => id !== '')
+    if (formData.fundingMode === 'delegate') {
+      const tradeIds = parseTradeIds()
+      const batch: DelegateFundingEntry[] = []
 
-    const payloadData: FundingPresignPayload = {
-      contractTradeIds,
-      fundingMode: formData.fundingMode as 'gross' | 'net',
-      type: formData.type as 'maker' | 'taker',
+      for (const tradeId of tradeIds) {
+        const presignPayload: FundingPresignPayload = {
+          contractTradeIds: [tradeId],
+          fundingMode: 'delegate',
+          type: formData.type as 'maker' | 'taker',
+          funderAddress: formData.funderAddress,
+          recipientAddress: formData.recipientAddress,
+        }
+        const resp = await $stablefxTradesApi.getFundingPresignData(presignPayload)
+        const data = (resp as any)?.data ?? resp
+        batch.push({
+          contractTradeId: tradeId,
+          traderTypedData: data?.traderPermitTypedData ?? null,
+          funderTypedData: data?.funderPermitTypedData ?? null,
+          traderSignature: '',
+          funderSignature: '',
+        })
+      }
+
+      store.setDelegateFundingBatch(batch)
+    } else {
+      const contractTradeIds = parseTradeIds()
+      const presignPayload: FundingPresignPayload = {
+        contractTradeIds,
+        fundingMode: formData.fundingMode as 'gross' | 'net',
+        type: formData.type as 'maker' | 'taker',
+      }
+      await $stablefxTradesApi.getFundingPresignData(presignPayload)
     }
-
-    await $stablefxTradesApi.getFundingPresignData(payloadData)
   } catch (err) {
     error.value = err
     showError.value = true
@@ -244,39 +370,73 @@ const signWithCircle = async () => {
   signingLoading.value = true
 
   try {
-    // Extract typed data from the presign response - handle different structures
-    let typedData = response.value.data?.typedData || response.value.typedData
+    if (formData.fundingMode === 'delegate') {
+      const batch = [...store.getDelegateFundingBatch]
+      const total = batch.length * 2
 
-    // If no typedData found, use the entire data object
-    if (!typedData && response.value.data) {
-      typedData = response.value.data
-    }
+      for (let i = 0; i < batch.length; i++) {
+        const entry = { ...batch[i] }
 
-    if (!typedData) {
-      error.value = {
-        message:
-          'No typed data found in the funding presign response. Please ensure the presign data contains valid typed data.',
+        signingProgressText.value = `Signing trader permit ${i + 1} of ${batch.length}...`
+        signingProgress.value = Math.round(((i * 2) / total) * 100)
+
+        const traderResult = await $circleWalletsApi.signTypedDataComplete(
+          store.getWalletId,
+          JSON.stringify(entry.traderTypedData),
+          store.getEntitySecret,
+          store.getWalletApiKey,
+        )
+        entry.traderSignature =
+          traderResult?.data?.signature ||
+          traderResult?.signature ||
+          ''
+
+        signingProgressText.value = `Signing funder permit ${i + 1} of ${batch.length}...`
+        signingProgress.value = Math.round(((i * 2 + 1) / total) * 100)
+
+        const funderWalletId = store.getFunderWalletId || store.getWalletId
+        const funderResult = await $circleWalletsApi.signTypedDataComplete(
+          funderWalletId,
+          JSON.stringify(entry.funderTypedData),
+          store.getEntitySecret,
+          store.getWalletApiKey,
+        )
+        entry.funderSignature =
+          funderResult?.data?.signature ||
+          funderResult?.signature ||
+          ''
+
+        batch[i] = entry
       }
-      showError.value = true
-      return
+
+      signingProgress.value = 100
+      signingProgressText.value = 'All signatures collected.'
+      store.setDelegateFundingBatch(batch)
+    } else {
+      let typedData = response.value.data?.typedData || response.value.typedData
+      if (!typedData && response.value.data) {
+        typedData = response.value.data
+      }
+      if (!typedData) {
+        error.value = {
+          message:
+            'No typed data found in the funding presign response. Please ensure the presign data contains valid typed data.',
+        }
+        showError.value = true
+        return
+      }
+
+      const signResult = await $circleWalletsApi.signTypedDataComplete(
+        store.getWalletId,
+        JSON.stringify(typedData),
+        store.getEntitySecret,
+        store.getWalletApiKey,
+      )
+      signatureResult.value =
+        signResult?.data?.signature ||
+        signResult?.signature ||
+        'No signature found'
     }
-
-    // Convert typed data to string format expected by Circle API
-    const typedDataString = JSON.stringify(typedData)
-
-    // Sign the typed data using Circle API
-    const signResult = await $circleWalletsApi.signTypedDataComplete(
-      store.getWalletId,
-      typedDataString,
-      store.getEntitySecret,
-      store.getWalletApiKey,
-    )
-    // Extract just the signature from the response
-    const signature =
-      signResult?.data?.signature ||
-      signResult?.signature ||
-      'No signature found'
-    signatureResult.value = signature
   } catch (err) {
     error.value = err
     showError.value = true
@@ -295,14 +455,22 @@ const copySignature = async () => {
 }
 
 const goToFund = () => {
-  // Extract typed data from the presign response
-  let typedData = response.value.data?.typedData || response.value.typedData
+  if (formData.fundingMode === 'delegate') {
+    router.push({
+      path: '/debug/stablefx/fund',
+      query: {
+        type: formData.type,
+        fundingMode: 'delegate',
+      },
+    })
+    return
+  }
 
+  let typedData = response.value.data?.typedData || response.value.typedData
   if (!typedData && response.value.data) {
     typedData = response.value.data
   }
 
-  // Extract permit2 data from the typed data message
   const permit2Data = typedData?.message
     ? JSON.stringify(typedData.message, null, 2)
     : ''

@@ -6,12 +6,22 @@ interface ApiRequest {
   response: any
 }
 
+export interface DelegateFundingEntry {
+  contractTradeId: string
+  traderTypedData: any
+  funderTypedData: any
+  traderSignature: string
+  funderSignature: string
+}
+
 interface MainState {
   bearerToken: string
   walletApiKey: string
   entitySecret: string
   walletId: string
+  funderWalletId: string
   apiRequest: ApiRequest
+  delegateFundingBatch: DelegateFundingEntry[]
 }
 
 export const useMainStore = defineStore('main', {
@@ -32,11 +42,16 @@ export const useMainStore = defineStore('main', {
       typeof window !== 'undefined'
         ? localStorage.getItem('walletId') || ''
         : '',
+    funderWalletId:
+      typeof window !== 'undefined'
+        ? localStorage.getItem('funderWalletId') || ''
+        : '',
     apiRequest: {
       url: '',
       payload: {},
       response: {},
     },
+    delegateFundingBatch: [],
   }),
 
   getters: {
@@ -44,9 +59,12 @@ export const useMainStore = defineStore('main', {
     getWalletApiKey: (state): string => state.walletApiKey,
     getEntitySecret: (state): string => state.entitySecret,
     getWalletId: (state): string => state.walletId,
+    getFunderWalletId: (state): string => state.funderWalletId,
     getRequestPayload: (state): any => state.apiRequest.payload,
     getRequestResponse: (state): any => state.apiRequest.response,
     getRequestUrl: (state): string => state.apiRequest.url,
+    getDelegateFundingBatch: (state): DelegateFundingEntry[] =>
+      state.delegateFundingBatch,
   },
 
   actions: {
@@ -78,6 +96,13 @@ export const useMainStore = defineStore('main', {
       }
     },
 
+    setFunderWalletId(funderWalletId: string) {
+      this.funderWalletId = funderWalletId
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('funderWalletId', funderWalletId)
+      }
+    },
+
     setRequestUrl(url: string) {
       this.apiRequest.url = url
     },
@@ -95,6 +120,14 @@ export const useMainStore = defineStore('main', {
 
     clearRequestData() {
       this.apiRequest = { url: '', payload: {}, response: {} }
+    },
+
+    setDelegateFundingBatch(batch: DelegateFundingEntry[]) {
+      this.delegateFundingBatch = batch
+    },
+
+    clearDelegateFundingBatch() {
+      this.delegateFundingBatch = []
     },
   },
 

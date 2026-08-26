@@ -221,13 +221,20 @@
                 />
                 <v-text-field
                   v-model="walletId"
-                  label="Wallet ID"
+                  label="Wallet ID (Trader)"
+                  variant="outlined"
+                  class="mb-4"
+                />
+                <v-text-field
+                  v-model="funderWalletId"
+                  label="Funder Wallet ID (Delegate funding only)"
                   variant="outlined"
                   class="mb-4"
                 />
                 <p class="subtitle-2 font-weight-light">
                   Configure your Circle Developer Controlled Wallets credentials
-                  for signing operations.
+                  for signing operations. Funder Wallet ID is used for the
+                  funder permit when signing in delegate funding mode.
                 </p>
               </v-form>
             </v-expansion-panel-text>
@@ -589,6 +596,11 @@ const entitySecret = computed({
 const walletId = computed({
   get: () => store.getWalletId,
   set: (value: string) => store.setWalletId(value),
+})
+
+const funderWalletId = computed({
+  get: () => store.getFunderWalletId,
+  set: (value: string) => store.setFunderWalletId(value),
 })
 </script>
 

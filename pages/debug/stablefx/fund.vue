@@ -10,13 +10,6 @@
             label="Type"
           />
 
-          <v-text-field
-            v-model="formData.signature"
-            :rules="[required]"
-            label="Signature"
-            placeholder="Enter signature string"
-          />
-
           <v-select
             v-model="formData.fundingMode"
             :items="fundingModeOptions"
@@ -24,33 +17,144 @@
             label="Funding Mode"
           />
 
-          <v-textarea
-            v-model="formData.permit2DataMessage"
-            :rules="[required, isValidJSON]"
-            label="Permit2 Typed Data Message (JSON)"
-            rows="15"
-            auto-grow
-            hint="Paste the permit2 message JSON object here"
-          />
-
-          <v-btn
-            variant="flat"
-            class="mb-7 mt-4"
-            color="primary"
-            :loading="loading"
-            :disabled="!validForm || loading"
-            block
-            @click.prevent="makeApiCall"
+          <!-- Delegate mode: batch from store -->
+          <template
+            v-if="formData.fundingMode === 'delegate' && hasDelegateBatch"
           >
-            Fund Trade
-          </v-btn>
+            <v-alert type="info" variant="tonal" density="compact" class="mb-4">
+              {{ delegateBatch.length }} trade(s) loaded from presign. Click
+              "Fund All Delegate Trades" to submit each one.
+            </v-alert>
+
+            <v-list density="compact" class="mb-4">
+              <v-list-item
+                v-for="entry in delegateBatch"
+                :key="entry.contractTradeId"
+              >
+                <v-list-item-title>{{ entry.contractTradeId }}</v-list-item-title>
+                <template #append>
+                  <v-chip
+                    v-if="batchFundResults[entry.contractTradeId] === 'success'"
+                    color="success"
+                    size="small"
+                  >
+                    Funded
+                  </v-chip>
+                  <v-chip
+                    v-else-if="
+                      batchFundResults[entry.contractTradeId] === 'error'
+                    "
+                    color="error"
+                    size="small"
+                  >
+                    Error
+                  </v-chip>
+                  <v-chip v-else color="default" size="small">Pending</v-chip>
+                </template>
+              </v-list-item>
+            </v-list>
+
+            <v-btn
+              variant="flat"
+              class="mb-7"
+              color="primary"
+              :loading="loading"
+              :disabled="loading || batchFundComplete"
+              block
+              @click.prevent="fundDelegateBatch"
+            >
+              Fund All Delegate Trades
+            </v-btn>
+          </template>
+
+          <!-- Delegate mode: manual entry -->
+          <template
+            v-else-if="
+              formData.fundingMode === 'delegate' && !hasDelegateBatch
+            "
+          >
+            <v-text-field
+              v-model="formData.signature"
+              :rules="[required]"
+              label="Trader Signature"
+              placeholder="Enter trader signature string"
+            />
+
+            <v-textarea
+              v-model="formData.permit2DataMessage"
+              :rules="[required, isValidJSON]"
+              label="Trader Permit2 Message (JSON)"
+              rows="8"
+              auto-grow
+              hint="Paste the trader's DelegateFundingAuthorization permit message JSON"
+            />
+
+            <v-text-field
+              v-model="formData.funderSignature"
+              :rules="[required]"
+              label="Funder Signature"
+              placeholder="Enter funder signature string"
+            />
+
+            <v-textarea
+              v-model="formData.funderPermit2DataMessage"
+              :rules="[required, isValidJSON]"
+              label="Funder Permit2 Message (JSON)"
+              rows="6"
+              auto-grow
+              hint="Paste the funder's DelegateFundingWitness permit message JSON"
+            />
+
+            <v-btn
+              variant="flat"
+              class="mb-7 mt-4"
+              color="primary"
+              :loading="loading"
+              :disabled="!validForm || loading"
+              block
+              @click.prevent="makeApiCall"
+            >
+              Fund Trade
+            </v-btn>
+          </template>
+
+          <!-- Gross / net mode -->
+          <template v-else>
+            <v-text-field
+              v-model="formData.signature"
+              :rules="[required]"
+              label="Signature"
+              placeholder="Enter signature string"
+            />
+
+            <v-textarea
+              v-model="formData.permit2DataMessage"
+              :rules="[required, isValidJSON]"
+              label="Permit2 Typed Data Message (JSON)"
+              rows="15"
+              auto-grow
+              hint="Paste the permit2 message JSON object here"
+            />
+
+            <v-btn
+              variant="flat"
+              class="mb-7 mt-4"
+              color="primary"
+              :loading="loading"
+              :disabled="!validForm || loading"
+              block
+              @click.prevent="makeApiCall"
+            >
+              Fund Trade
+            </v-btn>
+          </template>
         </v-form>
 
         <!-- Success Message -->
         <v-card v-if="fundingSuccess" class="mt-6">
           <v-card-text>
             <v-alert type="success" variant="tonal" class="mb-4">
-              Trade funded successfully!
+              Trade(s) funded successfully!
             </v-alert>
             <v-btn
               variant="flat"
@@ -81,6 +185,7 @@
 
 <script setup lang="ts">
 import type { StableFXFundPayload } from '~/lib/stablefxTradesApi'
+import type { DelegateFundingEntry } from '~/stores/main'
 
 const store = useMainStore()
 const { $stablefxTradesApi } = useNuxtApp()
@@ -94,10 +199,16 @@ const formData = reactive({
     (route.query.type as 'maker' | 'taker') || ('' as 'maker' | 'taker' | ''),
   signature: (route.query.signature as string) || '',
   fundingMode:
-    (route.query.fundingMode as 'gross' | 'net') ||
-    ('' as 'gross' | 'net' | ''),
+    (route.query.fundingMode as 'gross' | 'net' | 'delegate') ||
+    ('' as 'gross' | 'net' | 'delegate' | ''),
   permit2DataMessage: (route.query.permit2Data as string) || '',
+  funderSignature: '',
+  funderPermit2DataMessage: '',
 })
+
+const batchFundResults = ref<Record<string, 'success' | 'error' | 'pending'>>(
+  {},
+)
 
 const typeOptions = [
   { title: 'Maker', value: 'maker' },
@@ -107,6 +218,7 @@ const typeOptions = [
 const fundingModeOptions = [
   { title: 'Gross', value: 'gross' },
   { title: 'Net', value: 'net' },
+  { title: 'Delegate', value: 'delegate' },
 ]
 
 const error = ref<any>({})
@@ -117,13 +229,28 @@ const payload = computed(() => store.getRequestPayload)
 const response = computed(() => store.getRequestResponse)
 const requestUrl = computed(() => store.getRequestUrl)
 
+const delegateBatch = computed<DelegateFundingEntry[]>(
+  () => store.getDelegateFundingBatch,
+)
+
+const hasDelegateBatch = computed(() => delegateBatch.value.length > 0)
+
+const batchFundComplete = computed(() =>
+  delegateBatch.value.length > 0 &&
+  delegateBatch.value.every(
+    (e) =>
+      batchFundResults.value[e.contractTradeId] === 'success' ||
+      batchFundResults.value[e.contractTradeId] === 'error',
+  ),
+)
+
 const required = (v: string | number) => !!v || 'Field is required'
 const isValidJSON = (v: string) => {
   if (!v) return 'Field is required'
   try {
     JSON.parse(v)
     return true
-  } catch (e) {
+  } catch {
     return 'Please enter valid JSON'
   }
 }
@@ -145,17 +272,21 @@ const makeApiCall = async () => {
   fundingSuccess.value = false
 
   try {
-    // Parse the permit2 data message JSON
     const permit2 = JSON.parse(formData.permit2DataMessage)
 
-    const payloadData: StableFXFundPayload = {
+    const fundPayload: StableFXFundPayload = {
       type: formData.type as 'maker' | 'taker',
       signature: formData.signature,
-      fundingMode: formData.fundingMode as 'gross' | 'net',
+      fundingMode: formData.fundingMode as 'gross' | 'net' | 'delegate',
       permit2,
     }
 
-    await $stablefxTradesApi.fund(payloadData)
+    if (formData.fundingMode === 'delegate') {
+      fundPayload.funderPermit2 = JSON.parse(formData.funderPermit2DataMessage)
+      fundPayload.funderSignature = formData.funderSignature
+    }
+
+    await $stablefxTradesApi.fund(fundPayload)
     fundingSuccess.value = true
   } catch (err) {
     error.value = err
@@ -163,6 +294,52 @@ const makeApiCall = async () => {
   } finally {
     loading.value = false
   }
+}
+
+const fundDelegateBatch = async () => {
+  loading.value = true
+  fundingSuccess.value = false
+
+  const results: Record<string, 'success' | 'error' | 'pending'> = {}
+  for (const entry of delegateBatch.value) {
+    results[entry.contractTradeId] = 'pending'
+  }
+  batchFundResults.value = results
+
+  let anySuccess = false
+
+  for (const entry of delegateBatch.value) {
+    try {
+      const fundPayload: StableFXFundPayload = {
+        type: formData.type as 'maker' | 'taker',
+        signature: entry.traderSignature,
+        fundingMode: 'delegate',
+        permit2: entry.traderTypedData?.message,
+        funderPermit2: entry.funderTypedData?.message,
+        funderSignature: entry.funderSignature,
+      }
+      await $stablefxTradesApi.fund(fundPayload)
+      batchFundResults.value = {
+        ...batchFundResults.value,
+        [entry.contractTradeId]: 'success',
+      }
+      anySuccess = true
+    } catch (err) {
+      batchFundResults.value = {
+        ...batchFundResults.value,
+        [entry.contractTradeId]: 'error',
+      }
+      error.value = err
+      showError.value = true
+    }
+  }
+
+  if (anySuccess) {
+    fundingSuccess.value = true
+    store.clearDelegateFundingBatch()
+  }
+
+  loading.value = false
 }
 
 const goToGetTrades = () => {

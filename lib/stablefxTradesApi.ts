@@ -56,10 +56,34 @@ export interface CreatePiFXSignaturePayload {
   signature: string
 }
 
+export interface DelegateFundingAuthorizationPermit2 {
+  permitted: { token: string; amount: string | number }
+  spender: string
+  nonce: string | number
+  deadline: string | number
+  witness: {
+    id: string | number
+    funder: string
+    recipient: string
+    token: string
+    amount: string | number
+  }
+}
+
+export interface DelegateFundingWitnessPermit2 {
+  permitted: { token: string; amount: string | number }
+  spender: string
+  nonce: string | number
+  deadline: string | number
+  witness: { id: string | number; recipient: string }
+}
+
 export interface FundingPresignPayload {
   contractTradeIds: string[]
-  fundingMode: 'gross' | 'net'
+  fundingMode: 'gross' | 'net' | 'delegate'
   type: 'maker' | 'taker'
+  funderAddress?: string
+  recipientAddress?: string
 }
 
 export interface SingleTradeWitnessPermit2 {
@@ -91,8 +115,13 @@ export interface BatchTradeWitnessPermit2 {
 export interface StableFXFundPayload {
   type: 'maker' | 'taker'
   signature: string
-  fundingMode: 'gross' | 'net'
-  permit2: SingleTradeWitnessPermit2 | BatchTradeWitnessPermit2
+  fundingMode: 'gross' | 'net' | 'delegate'
+  permit2:
+    | SingleTradeWitnessPermit2
+    | BatchTradeWitnessPermit2
+    | DelegateFundingAuthorizationPermit2
+  funderPermit2?: DelegateFundingWitnessPermit2
+  funderSignature?: string
 }
 
 export interface SettlementAdvanceCurrencyAmount {
@@ -261,11 +290,9 @@ function getFundingPresignData(payload: FundingPresignPayload) {
  * Note: 'net' funding mode is only available for makers
  */
 function fund(payload: StableFXFundPayload) {
-  // Validate that net funding mode is only used with makers
   if (payload.fundingMode === 'net' && payload.type !== 'maker') {
     throw new Error('Net funding mode is only available for makers')
   }
-
   return instance.post(STABLEFX_FUND_PATH, payload)
 }
 
