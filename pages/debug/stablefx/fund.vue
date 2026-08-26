@@ -31,7 +31,9 @@
                 v-for="entry in delegateBatch"
                 :key="entry.contractTradeId"
               >
-                <v-list-item-title>{{ entry.contractTradeId }}</v-list-item-title>
+                <v-list-item-title>{{
+                  entry.contractTradeId
+                }}</v-list-item-title>
                 <template #append>
                   <v-chip
                     v-if="batchFundResults[entry.contractTradeId] === 'success'"
@@ -69,9 +71,7 @@
 
           <!-- Delegate mode: manual entry -->
           <template
-            v-else-if="
-              formData.fundingMode === 'delegate' && !hasDelegateBatch
-            "
+            v-else-if="formData.fundingMode === 'delegate' && !hasDelegateBatch"
           >
             <v-text-field
               v-model="formData.signature"
@@ -235,13 +235,14 @@ const delegateBatch = computed<DelegateFundingEntry[]>(
 
 const hasDelegateBatch = computed(() => delegateBatch.value.length > 0)
 
-const batchFundComplete = computed(() =>
-  delegateBatch.value.length > 0 &&
-  delegateBatch.value.every(
-    (e) =>
-      batchFundResults.value[e.contractTradeId] === 'success' ||
-      batchFundResults.value[e.contractTradeId] === 'error',
-  ),
+const batchFundComplete = computed(
+  () =>
+    delegateBatch.value.length > 0 &&
+    delegateBatch.value.every(
+      (e) =>
+        batchFundResults.value[e.contractTradeId] === 'success' ||
+        batchFundResults.value[e.contractTradeId] === 'error',
+    ),
 )
 
 const required = (v: string | number) => !!v || 'Field is required'

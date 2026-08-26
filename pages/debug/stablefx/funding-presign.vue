@@ -126,7 +126,9 @@
                 v-for="entry in delegateBatch"
                 :key="entry.contractTradeId"
               >
-                <v-list-item-title>{{ entry.contractTradeId }}</v-list-item-title>
+                <v-list-item-title>{{
+                  entry.contractTradeId
+                }}</v-list-item-title>
                 <template #append>
                   <v-chip
                     v-if="entry.traderSignature && entry.funderSignature"
@@ -253,11 +255,12 @@ const delegateBatch = computed<DelegateFundingEntry[]>(
   () => store.getDelegateFundingBatch,
 )
 
-const allDelegateSigned = computed(() =>
-  delegateBatch.value.length > 0 &&
-  delegateBatch.value.every(
-    (e) => !!e.traderSignature && !!e.funderSignature,
-  ),
+const allDelegateSigned = computed(
+  () =>
+    delegateBatch.value.length > 0 &&
+    delegateBatch.value.every(
+      (e) => !!e.traderSignature && !!e.funderSignature,
+    ),
 )
 
 const payload = computed(() => store.getRequestPayload)
@@ -320,7 +323,8 @@ const makeApiCall = async () => {
           funderAddress: formData.funderAddress,
           recipientAddress: formData.recipientAddress,
         }
-        const resp = await $stablefxTradesApi.getFundingPresignData(presignPayload)
+        const resp =
+          await $stablefxTradesApi.getFundingPresignData(presignPayload)
         const data = (resp as any)?.data ?? resp
         batch.push({
           contractTradeId: tradeId,
@@ -387,9 +391,7 @@ const signWithCircle = async () => {
           store.getWalletApiKey,
         )
         entry.traderSignature =
-          traderResult?.data?.signature ||
-          traderResult?.signature ||
-          ''
+          traderResult?.data?.signature || traderResult?.signature || ''
 
         signingProgressText.value = `Signing funder permit ${i + 1} of ${batch.length}...`
         signingProgress.value = Math.round(((i * 2 + 1) / total) * 100)
@@ -402,9 +404,7 @@ const signWithCircle = async () => {
           store.getWalletApiKey,
         )
         entry.funderSignature =
-          funderResult?.data?.signature ||
-          funderResult?.signature ||
-          ''
+          funderResult?.data?.signature || funderResult?.signature || ''
 
         batch[i] = entry
       }
