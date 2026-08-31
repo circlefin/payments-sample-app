@@ -239,7 +239,7 @@ const batchFundComplete = computed(
   () =>
     delegateBatch.value.length > 0 &&
     delegateBatch.value.every(
-      (e) =>
+      (e: DelegateFundingEntry) =>
         batchFundResults.value[e.contractTradeId] === 'success' ||
         batchFundResults.value[e.contractTradeId] === 'error',
     ),

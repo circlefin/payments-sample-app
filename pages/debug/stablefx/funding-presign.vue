@@ -259,7 +259,7 @@ const allDelegateSigned = computed(
   () =>
     delegateBatch.value.length > 0 &&
     delegateBatch.value.every(
-      (e) => !!e.traderSignature && !!e.funderSignature,
+      (e: DelegateFundingEntry) => !!e.traderSignature && !!e.funderSignature,
     ),
 )
 
@@ -287,7 +287,7 @@ const required = (v: string) => !!v || 'Field is required'
 
 watch(
   () => formData.type,
-  (newType) => {
+  (newType: string) => {
     if (newType === 'taker' && formData.fundingMode === 'net') {
       formData.fundingMode = ''
     }
@@ -302,8 +302,8 @@ const onErrorSheetClosed = () => {
 const parseTradeIds = () =>
   formData.contractTradeIds
     .split(',')
-    .map((id) => id.trim())
-    .filter((id) => id !== '')
+    .map((id: string) => id.trim())
+    .filter((id: string) => id !== '')
 
 const makeApiCall = async () => {
   loading.value = true
