@@ -232,7 +232,7 @@ const router = useRouter()
 const validForm = ref(false)
 const formData = reactive({
   contractTradeIds: '',
-  fundingMode: '' as 'gross' | 'net' | 'delegate' | '',
+  fundingMode: '' as 'gross' | 'net' | 'delegate' | 'net_delegate' | '',
   type: '' as 'maker' | 'taker' | '',
   funderAddress: '',
   recipientAddress: '',
@@ -302,7 +302,7 @@ const required = (v: string) => !!v || 'Field is required'
 
 watch(
   () => formData.type,
-  (newType) => {
+  (newType: string) => {
     if (
       newType === 'taker' &&
       (formData.fundingMode === 'net' ||
@@ -346,13 +346,15 @@ const makeApiCall = async () => {
         await $stablefxTradesApi.getFundingPresignData(presignPayload)
       const data = (resp as any)?.data ?? resp
       const results: any[] = Array.isArray(data) ? data : [data]
-      const batch: DelegateFundingEntry[] = tradeIds.map((tradeId, idx) => ({
-        contractTradeId: tradeId,
-        traderTypedData: results[idx]?.traderPermitTypedData ?? null,
-        funderTypedData: results[idx]?.funderPermitTypedData ?? null,
-        traderSignature: '',
-        funderSignature: '',
-      }))
+      const batch: DelegateFundingEntry[] = tradeIds.map(
+        (tradeId: string, idx: number) => ({
+          contractTradeId: tradeId,
+          traderTypedData: results[idx]?.traderPermitTypedData ?? null,
+          funderTypedData: results[idx]?.funderPermitTypedData ?? null,
+          traderSignature: '',
+          funderSignature: '',
+        }),
+      )
       store.setDelegateFundingBatch(batch)
     } else {
       const presignPayload: FundingPresignPayload = {
