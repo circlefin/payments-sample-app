@@ -32,7 +32,12 @@
             persistent-hint
           />
 
-          <template v-if="formData.fundingMode === 'delegate'">
+          <template
+            v-if="
+              formData.fundingMode === 'delegate' ||
+              formData.fundingMode === 'net_delegate'
+            "
+          >
             <v-text-field
               v-model="formData.funderAddress"
               :rules="[required]"
@@ -95,7 +100,11 @@
 
         <!-- Delegate signing progress -->
         <v-card
-          v-if="signingLoading && formData.fundingMode === 'delegate'"
+          v-if="
+            signingLoading &&
+            (formData.fundingMode === 'delegate' ||
+              formData.fundingMode === 'net_delegate')
+          "
           class="mt-6"
         >
           <v-card-title>Signing Progress</v-card-title>
@@ -113,7 +122,8 @@
         <!-- Delegate batch results -->
         <v-card
           v-if="
-            formData.fundingMode === 'delegate' &&
+            (formData.fundingMode === 'delegate' ||
+              formData.fundingMode === 'net_delegate') &&
             delegateBatch.length > 0 &&
             !signingLoading
           "
@@ -158,7 +168,11 @@
 
         <!-- Non-delegate signature result -->
         <v-card
-          v-if="signatureResult && formData.fundingMode !== 'delegate'"
+          v-if="
+            signatureResult &&
+            formData.fundingMode !== 'delegate' &&
+            formData.fundingMode !== 'net_delegate'
+          "
           class="mt-6"
         >
           <v-card-title>Signature Result</v-card-title>
@@ -240,6 +254,7 @@ const fundingModeOptions = computed(() => {
     { title: 'Gross', value: 'gross' },
     { title: 'Net', value: 'net' },
     { title: 'Delegate', value: 'delegate' },
+    { title: 'Net Delegate', value: 'net_delegate' },
   ]
 })
 
@@ -287,8 +302,12 @@ const required = (v: string) => !!v || 'Field is required'
 
 watch(
   () => formData.type,
-  (newType: string) => {
-    if (newType === 'taker' && formData.fundingMode === 'net') {
+  (newType) => {
+    if (
+      newType === 'taker' &&
+      (formData.fundingMode === 'net' ||
+        formData.fundingMode === 'net_delegate')
+    ) {
       formData.fundingMode = ''
     }
   },
@@ -311,35 +330,33 @@ const makeApiCall = async () => {
   store.clearDelegateFundingBatch()
 
   try {
-    if (formData.fundingMode === 'delegate') {
-      const tradeIds = parseTradeIds()
-      const batch: DelegateFundingEntry[] = []
-
-      for (const tradeId of tradeIds) {
-        const presignPayload: FundingPresignPayload = {
-          contractTradeIds: [tradeId],
-          fundingMode: 'delegate',
-          type: formData.type as 'maker' | 'taker',
-          funderAddress: formData.funderAddress,
-          recipientAddress: formData.recipientAddress,
-        }
-        const resp =
-          await $stablefxTradesApi.getFundingPresignData(presignPayload)
-        const data = (resp as any)?.data ?? resp
-        batch.push({
-          contractTradeId: tradeId,
-          traderTypedData: data?.traderPermitTypedData ?? null,
-          funderTypedData: data?.funderPermitTypedData ?? null,
-          traderSignature: '',
-          funderSignature: '',
-        })
+    const tradeIds = parseTradeIds()
+    if (
+      formData.fundingMode === 'delegate' ||
+      formData.fundingMode === 'net_delegate'
+    ) {
+      const presignPayload: FundingPresignPayload = {
+        contractTradeIds: tradeIds,
+        fundingMode: formData.fundingMode,
+        type: formData.type as 'maker' | 'taker',
+        funderAddress: formData.funderAddress,
+        recipientAddress: formData.recipientAddress,
       }
-
+      const resp =
+        await $stablefxTradesApi.getFundingPresignData(presignPayload)
+      const data = (resp as any)?.data ?? resp
+      const results: any[] = Array.isArray(data) ? data : [data]
+      const batch: DelegateFundingEntry[] = tradeIds.map((tradeId, idx) => ({
+        contractTradeId: tradeId,
+        traderTypedData: results[idx]?.traderPermitTypedData ?? null,
+        funderTypedData: results[idx]?.funderPermitTypedData ?? null,
+        traderSignature: '',
+        funderSignature: '',
+      }))
       store.setDelegateFundingBatch(batch)
     } else {
-      const contractTradeIds = parseTradeIds()
       const presignPayload: FundingPresignPayload = {
-        contractTradeIds,
+        contractTradeIds: tradeIds,
         fundingMode: formData.fundingMode as 'gross' | 'net',
         type: formData.type as 'maker' | 'taker',
       }
@@ -374,7 +391,10 @@ const signWithCircle = async () => {
   signingLoading.value = true
 
   try {
-    if (formData.fundingMode === 'delegate') {
+    if (
+      formData.fundingMode === 'delegate' ||
+      formData.fundingMode === 'net_delegate'
+    ) {
       const batch = [...store.getDelegateFundingBatch]
       const total = batch.length * 2
 
@@ -455,12 +475,15 @@ const copySignature = async () => {
 }
 
 const goToFund = () => {
-  if (formData.fundingMode === 'delegate') {
+  if (
+    formData.fundingMode === 'delegate' ||
+    formData.fundingMode === 'net_delegate'
+  ) {
     router.push({
       path: '/debug/stablefx/fund',
       query: {
         type: formData.type,
-        fundingMode: 'delegate',
+        fundingMode: formData.fundingMode,
       },
     })
     return

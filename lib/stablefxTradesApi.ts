@@ -80,7 +80,7 @@ export interface DelegateFundingWitnessPermit2 {
 
 export interface FundingPresignPayload {
   contractTradeIds: string[]
-  fundingMode: 'gross' | 'net' | 'delegate'
+  fundingMode: 'gross' | 'net' | 'delegate' | 'net_delegate'
   type: 'maker' | 'taker'
   funderAddress?: string
   recipientAddress?: string
@@ -115,7 +115,7 @@ export interface BatchTradeWitnessPermit2 {
 export interface StableFXFundPayload {
   type: 'maker' | 'taker'
   signature: string
-  fundingMode: 'gross' | 'net' | 'delegate'
+  fundingMode: 'gross' | 'net' | 'delegate' | 'net_delegate'
   permit2:
     | SingleTradeWitnessPermit2
     | BatchTradeWitnessPermit2
@@ -290,8 +290,13 @@ function getFundingPresignData(payload: FundingPresignPayload) {
  * Note: 'net' funding mode is only available for makers
  */
 function fund(payload: StableFXFundPayload) {
-  if (payload.fundingMode === 'net' && payload.type !== 'maker') {
-    throw new Error('Net funding mode is only available for makers')
+  if (
+    (payload.fundingMode === 'net' || payload.fundingMode === 'net_delegate') &&
+    payload.type !== 'maker'
+  ) {
+    throw new Error(
+      'Net and net_delegate funding modes are only available for makers',
+    )
   }
   return instance.post(STABLEFX_FUND_PATH, payload)
 }

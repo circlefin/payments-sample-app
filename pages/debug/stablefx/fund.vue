@@ -19,7 +19,11 @@
 
           <!-- Delegate mode: batch from store -->
           <template
-            v-if="formData.fundingMode === 'delegate' && hasDelegateBatch"
+            v-if="
+              (formData.fundingMode === 'delegate' ||
+                formData.fundingMode === 'net_delegate') &&
+              hasDelegateBatch
+            "
           >
             <v-alert type="info" variant="tonal" density="compact" class="mb-4">
               {{ delegateBatch.length }} trade(s) loaded from presign. Click
@@ -71,7 +75,11 @@
 
           <!-- Delegate mode: manual entry -->
           <template
-            v-else-if="formData.fundingMode === 'delegate' && !hasDelegateBatch"
+            v-else-if="
+              (formData.fundingMode === 'delegate' ||
+                formData.fundingMode === 'net_delegate') &&
+              !hasDelegateBatch
+            "
           >
             <v-text-field
               v-model="formData.signature"
@@ -199,8 +207,8 @@ const formData = reactive({
     (route.query.type as 'maker' | 'taker') || ('' as 'maker' | 'taker' | ''),
   signature: (route.query.signature as string) || '',
   fundingMode:
-    (route.query.fundingMode as 'gross' | 'net' | 'delegate') ||
-    ('' as 'gross' | 'net' | 'delegate' | ''),
+    (route.query.fundingMode as 'gross' | 'net' | 'delegate' | 'net_delegate') ||
+    ('' as 'gross' | 'net' | 'delegate' | 'net_delegate' | ''),
   permit2DataMessage: (route.query.permit2Data as string) || '',
   funderSignature: '',
   funderPermit2DataMessage: '',
@@ -219,6 +227,7 @@ const fundingModeOptions = [
   { title: 'Gross', value: 'gross' },
   { title: 'Net', value: 'net' },
   { title: 'Delegate', value: 'delegate' },
+  { title: 'Net Delegate', value: 'net_delegate' },
 ]
 
 const error = ref<any>({})
@@ -257,8 +266,8 @@ const isValidJSON = (v: string) => {
 }
 
 const validateNetMode = (v: string) => {
-  if (v === 'net' && formData.type !== 'maker') {
-    return 'Net funding mode is only available for makers'
+  if ((v === 'net' || v === 'net_delegate') && formData.type !== 'maker') {
+    return 'Net and net_delegate funding modes are only available for makers'
   }
   return true
 }
@@ -282,7 +291,10 @@ const makeApiCall = async () => {
       permit2,
     }
 
-    if (formData.fundingMode === 'delegate') {
+    if (
+      formData.fundingMode === 'delegate' ||
+      formData.fundingMode === 'net_delegate'
+    ) {
       fundPayload.funderPermit2 = JSON.parse(formData.funderPermit2DataMessage)
       fundPayload.funderSignature = formData.funderSignature
     }
