@@ -283,7 +283,10 @@ const response = computed(() => store.getRequestResponse)
 const requestUrl = computed(() => store.getRequestUrl)
 
 const hasPresignResponse = computed(() => {
-  if (formData.fundingMode === 'delegate') {
+  if (
+    formData.fundingMode === 'delegate' ||
+    formData.fundingMode === 'net_delegate'
+  ) {
     return delegateBatch.value.length > 0
   }
   if (!response.value) return false
