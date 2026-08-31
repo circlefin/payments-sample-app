@@ -207,7 +207,11 @@ const formData = reactive({
     (route.query.type as 'maker' | 'taker') || ('' as 'maker' | 'taker' | ''),
   signature: (route.query.signature as string) || '',
   fundingMode:
-    (route.query.fundingMode as 'gross' | 'net' | 'delegate' | 'net_delegate') ||
+    (route.query.fundingMode as
+      | 'gross'
+      | 'net'
+      | 'delegate'
+      | 'net_delegate') ||
     ('' as 'gross' | 'net' | 'delegate' | 'net_delegate' | ''),
   permit2DataMessage: (route.query.permit2Data as string) || '',
   funderSignature: '',
