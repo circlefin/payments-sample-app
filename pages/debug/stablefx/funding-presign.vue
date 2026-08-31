@@ -126,9 +126,9 @@
                 v-for="entry in delegateBatch"
                 :key="entry.contractTradeId"
               >
-                <v-list-item-title>{{
-                  entry.contractTradeId
-                }}</v-list-item-title>
+                <v-list-item-title>
+                  {{ entry.contractTradeId }}
+                </v-list-item-title>
                 <template #append>
                   <v-chip
                     v-if="entry.traderSignature && entry.funderSignature"
