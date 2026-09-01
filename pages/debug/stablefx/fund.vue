@@ -330,7 +330,7 @@ const fundDelegateBatch = async () => {
       const fundPayload: StableFXFundPayload = {
         type: formData.type as 'maker' | 'taker',
         signature: entry.traderSignature,
-        fundingMode: 'delegate',
+        fundingMode: formData.fundingMode as 'delegate' | 'net_delegate',
         permit2: entry.traderTypedData?.message,
         funderPermit2: entry.funderTypedData?.message,
         funderSignature: entry.funderSignature,
