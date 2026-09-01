@@ -102,7 +102,7 @@ class CircleWalletsApi {
       '/v1/w3s/developer/sign/typedData',
       {
         walletId,
-        data: typedData,
+        data: JSON.parse(typedData),
         entitySecretCiphertext,
       },
       {
