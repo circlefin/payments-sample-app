@@ -387,6 +387,12 @@ const makeApiCall = async () => {
   }
 }
 
+const stripEip712Domain = (typedData: any) => {
+  if (!typedData?.types) return typedData
+  const { EIP712Domain: _, ...types } = typedData.types
+  return { ...typedData, types }
+}
+
 const signWithCircle = async () => {
   if (!hasWalletConfig.value) {
     error.value = {
@@ -424,7 +430,7 @@ const signWithCircle = async () => {
         signingProgress.value = 0
         const traderResult = await $circleWalletsApi.signTypedDataComplete(
           store.getWalletId,
-          JSON.stringify(firstEntry.traderTypedData),
+          JSON.stringify(stripEip712Domain(firstEntry.traderTypedData)),
           store.getEntitySecret,
           store.getWalletApiKey,
         )
@@ -436,7 +442,7 @@ const signWithCircle = async () => {
       signingProgressText.value = 'Signing funder permit...'
       const funderResult = await $circleWalletsApi.signTypedDataComplete(
         funderWalletId,
-        JSON.stringify(firstEntry.funderTypedData),
+        JSON.stringify(stripEip712Domain(firstEntry.funderTypedData)),
         funderSecret,
         funderApiKey,
       )
