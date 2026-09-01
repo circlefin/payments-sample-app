@@ -349,11 +349,19 @@ const makeApiCall = async () => {
         await $stablefxTradesApi.getFundingPresignData(presignPayload)
       const data = (resp as any)?.data ?? resp
       const results: any[] = Array.isArray(data) ? data : [data]
+      // net_delegate has one shared funderPermitTypedData across all trades
+      const sharedFunderTypedData =
+        formData.fundingMode === 'net_delegate'
+          ? (results[0]?.funderPermitTypedData ?? null)
+          : null
       const batch: DelegateFundingEntry[] = tradeIds.map(
         (tradeId: string, idx: number) => ({
           contractTradeId: tradeId,
           traderTypedData: results[idx]?.traderPermitTypedData ?? null,
-          funderTypedData: results[idx]?.funderPermitTypedData ?? null,
+          funderTypedData:
+            formData.fundingMode === 'net_delegate'
+              ? sharedFunderTypedData
+              : (results[idx]?.funderPermitTypedData ?? null),
           traderSignature: '',
           funderSignature: '',
         }),
@@ -401,37 +409,77 @@ const signWithCircle = async () => {
       formData.fundingMode === 'net_delegate'
     ) {
       const batch = [...store.getDelegateFundingBatch]
-      const total = batch.length * 2
+      const funderWalletId = store.getFunderWalletId || store.getWalletId
 
-      for (let i = 0; i < batch.length; i++) {
-        const entry = { ...batch[i] }
+      if (formData.fundingMode === 'net_delegate') {
+        // Sign each trader permit individually, then sign the shared funder permit once
+        const total = batch.length + 1
 
-        signingProgressText.value = `Signing trader permit ${i + 1} of ${batch.length}...`
-        signingProgress.value = Math.round(((i * 2) / total) * 100)
+        for (let i = 0; i < batch.length; i++) {
+          signingProgressText.value = `Signing trader permit ${i + 1} of ${batch.length}...`
+          signingProgress.value = Math.round((i / total) * 100)
 
-        const traderResult = await $circleWalletsApi.signTypedDataComplete(
-          store.getWalletId,
-          JSON.stringify(entry.traderTypedData),
-          store.getEntitySecret,
-          store.getWalletApiKey,
-        )
-        entry.traderSignature =
-          traderResult?.data?.signature || traderResult?.signature || ''
+          const traderResult = await $circleWalletsApi.signTypedDataComplete(
+            store.getWalletId,
+            JSON.stringify(batch[i].traderTypedData),
+            store.getEntitySecret,
+            store.getWalletApiKey,
+          )
+          batch[i] = {
+            ...batch[i],
+            traderSignature:
+              traderResult?.data?.signature || traderResult?.signature || '',
+          }
+        }
 
-        signingProgressText.value = `Signing funder permit ${i + 1} of ${batch.length}...`
-        signingProgress.value = Math.round(((i * 2 + 1) / total) * 100)
+        signingProgressText.value = 'Signing shared funder permit...'
+        signingProgress.value = Math.round((batch.length / total) * 100)
 
-        const funderWalletId = store.getFunderWalletId || store.getWalletId
         const funderResult = await $circleWalletsApi.signTypedDataComplete(
           funderWalletId,
-          JSON.stringify(entry.funderTypedData),
+          JSON.stringify(batch[0].funderTypedData),
           store.getEntitySecret,
           store.getWalletApiKey,
         )
-        entry.funderSignature =
+        const funderSignature =
           funderResult?.data?.signature || funderResult?.signature || ''
 
-        batch[i] = entry
+        for (let i = 0; i < batch.length; i++) {
+          batch[i] = { ...batch[i], funderSignature }
+        }
+      } else {
+        // delegate: sign trader + funder permit per trade
+        const total = batch.length * 2
+
+        for (let i = 0; i < batch.length; i++) {
+          const entry = { ...batch[i] }
+
+          signingProgressText.value = `Signing trader permit ${i + 1} of ${batch.length}...`
+          signingProgress.value = Math.round(((i * 2) / total) * 100)
+
+          const traderResult = await $circleWalletsApi.signTypedDataComplete(
+            store.getWalletId,
+            JSON.stringify(entry.traderTypedData),
+            store.getEntitySecret,
+            store.getWalletApiKey,
+          )
+          entry.traderSignature =
+            traderResult?.data?.signature || traderResult?.signature || ''
+
+          signingProgressText.value = `Signing funder permit ${i + 1} of ${batch.length}...`
+          signingProgress.value = Math.round(((i * 2 + 1) / total) * 100)
+
+          const funderResult = await $circleWalletsApi.signTypedDataComplete(
+            funderWalletId,
+            JSON.stringify(entry.funderTypedData),
+            store.getEntitySecret,
+            store.getWalletApiKey,
+          )
+          entry.funderSignature =
+            funderResult?.data?.signature || funderResult?.signature || ''
+
+          batch[i] = entry
+        }
       }
 
       signingProgress.value = 100
