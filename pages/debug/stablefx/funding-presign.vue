@@ -414,6 +414,8 @@ const signWithCircle = async () => {
     ) {
       const batch = [...store.getDelegateFundingBatch]
       const funderWalletId = store.getFunderWalletId || store.getWalletId
+      const funderApiKey = store.getFunderWalletApiKey || store.getWalletApiKey
+      const funderSecret = store.getFunderEntitySecret || store.getEntitySecret
       const firstEntry = batch[0]
       let traderSignature = ''
 
@@ -435,8 +437,8 @@ const signWithCircle = async () => {
       const funderResult = await $circleWalletsApi.signTypedDataComplete(
         funderWalletId,
         JSON.stringify(firstEntry.funderTypedData),
-        store.getEntitySecret,
-        store.getWalletApiKey,
+        funderSecret,
+        funderApiKey,
       )
       const funderSignature =
         funderResult?.data?.signature || funderResult?.signature || ''

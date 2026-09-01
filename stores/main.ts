@@ -26,6 +26,8 @@ interface MainState {
   entitySecret: string
   walletId: string
   funderWalletId: string
+  funderWalletApiKey: string
+  funderEntitySecret: string
   riskSignals: RiskSignals
   apiRequest: ApiRequest
   delegateFundingBatch: DelegateFundingEntry[]
@@ -53,6 +55,14 @@ export const useMainStore = defineStore('main', {
       typeof window !== 'undefined'
         ? localStorage.getItem('funderWalletId') || ''
         : '',
+    funderWalletApiKey:
+      typeof window !== 'undefined'
+        ? localStorage.getItem('funderWalletApiKey') || ''
+        : '',
+    funderEntitySecret:
+      typeof window !== 'undefined'
+        ? localStorage.getItem('funderEntitySecret') || ''
+        : '',
     riskSignals: {
       ipAddress: '',
       sessionId: '',
@@ -72,6 +82,8 @@ export const useMainStore = defineStore('main', {
     getEntitySecret: (state): string => state.entitySecret,
     getWalletId: (state): string => state.walletId,
     getFunderWalletId: (state): string => state.funderWalletId,
+    getFunderWalletApiKey: (state): string => state.funderWalletApiKey,
+    getFunderEntitySecret: (state): string => state.funderEntitySecret,
     getRiskSignals: (state): RiskSignals => state.riskSignals,
     getRequestPayload: (state): any => state.apiRequest.payload,
     getRequestResponse: (state): any => state.apiRequest.response,
@@ -113,6 +125,20 @@ export const useMainStore = defineStore('main', {
       this.funderWalletId = funderWalletId
       if (typeof window !== 'undefined') {
         localStorage.setItem('funderWalletId', funderWalletId)
+      }
+    },
+
+    setFunderWalletApiKey(funderWalletApiKey: string) {
+      this.funderWalletApiKey = funderWalletApiKey
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('funderWalletApiKey', funderWalletApiKey)
+      }
+    },
+
+    setFunderEntitySecret(funderEntitySecret: string) {
+      this.funderEntitySecret = funderEntitySecret
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('funderEntitySecret', funderEntitySecret)
       }
     },
 

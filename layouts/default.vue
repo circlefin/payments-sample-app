@@ -254,10 +254,23 @@
                   variant="outlined"
                   class="mb-4"
                 />
+                <v-text-field
+                  v-model="funderWalletApiKey"
+                  label="Funder Wallet API Key (Delegate funding only)"
+                  variant="outlined"
+                  class="mb-4"
+                />
+                <v-text-field
+                  v-model="funderEntitySecret"
+                  label="Funder Entity Secret (Delegate funding only)"
+                  variant="outlined"
+                  class="mb-4"
+                />
                 <p class="subtitle-2 font-weight-light">
                   Configure your Circle Developer Controlled Wallets credentials
-                  for signing operations. Funder Wallet ID is used for the
-                  funder permit when signing in delegate funding mode.
+                  for signing operations. Funder credentials are used for the
+                  funder permit when signing in delegate funding mode (the LLC
+                  funder wallet is typically under a separate entity).
                 </p>
               </v-form>
             </v-expansion-panel-text>
@@ -738,6 +751,16 @@ const walletId = computed({
 const funderWalletId = computed({
   get: () => store.getFunderWalletId,
   set: (value: string) => store.setFunderWalletId(value),
+})
+
+const funderWalletApiKey = computed({
+  get: () => store.getFunderWalletApiKey,
+  set: (value: string) => store.setFunderWalletApiKey(value),
+})
+
+const funderEntitySecret = computed({
+  get: () => store.getFunderEntitySecret,
+  set: (value: string) => store.setFunderEntitySecret(value),
 })
 
 const riskSignalIpAddress = computed({
