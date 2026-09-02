@@ -258,12 +258,14 @@
                   v-model="funderWalletApiKey"
                   label="Funder Wallet API Key (Delegate funding only)"
                   variant="outlined"
+                  type="password"
                   class="mb-4"
                 />
                 <v-text-field
                   v-model="funderEntitySecret"
                   label="Funder Entity Secret (Delegate funding only)"
                   variant="outlined"
+                  type="password"
                   class="mb-4"
                 />
                 <p class="subtitle-2 font-weight-light">
