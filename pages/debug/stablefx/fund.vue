@@ -323,6 +323,41 @@ const fundDelegateBatch = async () => {
   }
   batchFundResults.value = results
 
+  // net_delegate: one batch authorization covers all trades — single API call
+  if (formData.fundingMode === 'net_delegate') {
+    const entry = delegateBatch.value[0]
+    try {
+      const fundPayload: StableFXFundPayload = {
+        type: formData.type as 'maker' | 'taker',
+        signature: entry.traderSignature,
+        fundingMode: 'net_delegate',
+        permit2: entry.traderTypedData?.message,
+        funderPermit2: entry.funderTypedData?.message,
+        funderSignature: entry.funderSignature,
+      }
+      await $stablefxTradesApi.fund(fundPayload)
+      const succeeded: Record<string, 'success' | 'error' | 'pending'> = {}
+      for (const e of delegateBatch.value) {
+        succeeded[e.contractTradeId] = 'success'
+      }
+      batchFundResults.value = succeeded
+      fundingSuccess.value = true
+      store.clearDelegateFundingBatch()
+    } catch (err) {
+      const failed: Record<string, 'success' | 'error' | 'pending'> = {}
+      for (const e of delegateBatch.value) {
+        failed[e.contractTradeId] = 'error'
+      }
+      batchFundResults.value = failed
+      error.value = err
+      showError.value = true
+    } finally {
+      loading.value = false
+    }
+    return
+  }
+
+  // delegate: each trade has its own independent permit — one call per trade
   let anySuccess = false
 
   for (const entry of delegateBatch.value) {
@@ -330,7 +365,7 @@ const fundDelegateBatch = async () => {
       const fundPayload: StableFXFundPayload = {
         type: formData.type as 'maker' | 'taker',
         signature: entry.traderSignature,
-        fundingMode: formData.fundingMode as 'delegate' | 'net_delegate',
+        fundingMode: 'delegate',
         permit2: entry.traderTypedData?.message,
         funderPermit2: entry.funderTypedData?.message,
         funderSignature: entry.funderSignature,
