@@ -353,23 +353,17 @@ const makeApiCall = async () => {
         await $stablefxTradesApi.getFundingPresignData(presignPayload)
       const data = (resp as any)?.data ?? resp
       const traderTypedData =
-        data?.traderPermitTypedData ??
-        data?.batchTraderPermitTypedData ??
-        null
+        data?.traderPermitTypedData ?? data?.batchTraderPermitTypedData ?? null
       const funderTypedData =
-        data?.funderPermitTypedData ??
-        data?.batchFunderPermitTypedData ??
-        null
+        data?.funderPermitTypedData ?? data?.batchFunderPermitTypedData ?? null
       // All entries share the same typed data — one batch signature covers all trades
-      const batch: DelegateFundingEntry[] = tradeIds.map(
-        (tradeId: string) => ({
-          contractTradeId: tradeId,
-          traderTypedData,
-          funderTypedData,
-          traderSignature: '',
-          funderSignature: '',
-        }),
-      )
+      const batch: DelegateFundingEntry[] = tradeIds.map((tradeId: string) => ({
+        contractTradeId: tradeId,
+        traderTypedData,
+        funderTypedData,
+        traderSignature: '',
+        funderSignature: '',
+      }))
       store.setDelegateFundingBatch(batch)
     } else {
       const presignPayload: FundingPresignPayload = {
