@@ -236,6 +236,8 @@ function getTrades(
   pageAfter?: string,
   pageBefore?: string,
   pageSize?: string,
+  startUpdateDateInclusive?: string,
+  endUpdateDateInclusive?: string,
 ) {
   const queryParams = {
     startCreateDateInclusive: nullIfEmpty(startCreateDateInclusive),
@@ -245,6 +247,8 @@ function getTrades(
     pageAfter: nullIfEmpty(pageAfter),
     pageBefore: nullIfEmpty(pageBefore),
     pageSize: nullIfEmpty(pageSize),
+    updatedFrom: nullIfEmpty(startUpdateDateInclusive),
+    updatedTo: nullIfEmpty(endUpdateDateInclusive),
   }
 
   return instance.get(STABLEFX_TRADES_PATH, { params: queryParams })

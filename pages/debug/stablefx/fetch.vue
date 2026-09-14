@@ -24,6 +24,14 @@
             v-model="formData.endCreateDateInclusive"
             label="End Create Date (Inclusive)"
           />
+          <v-text-field
+            v-model="formData.startUpdateDateInclusive"
+            label="Updated From (Inclusive)"
+          />
+          <v-text-field
+            v-model="formData.endUpdateDateInclusive"
+            label="Updated To (Inclusive)"
+          />
           <v-text-field v-model="formData.pageSize" label="PageSize" />
           <v-text-field v-model="formData.pageBefore" label="PageBefore" />
           <v-text-field v-model="formData.pageAfter" label="PageAfter" />
@@ -78,6 +86,8 @@ const typeOptions = ['taker', 'maker']
 const formData = reactive({
   startCreateDateInclusive: '',
   endCreateDateInclusive: '',
+  startUpdateDateInclusive: '',
+  endUpdateDateInclusive: '',
   statuses: '',
   type: (route.query.type as string) || '',
   pageSize: '',
@@ -109,6 +119,8 @@ const makeApiCall = async () => {
       formData.pageAfter,
       formData.pageBefore,
       formData.pageSize,
+      formData.startUpdateDateInclusive,
+      formData.endUpdateDateInclusive,
     )
   } catch (err) {
     error.value = err
