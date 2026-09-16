@@ -124,7 +124,7 @@ const requestUrl = computed(() => store.getRequestUrl)
 
 const required = (v: string) => !!v || 'Field is required'
 const isNumber = (v: string) =>
-  !v || v === '' || !isNaN(parseInt(v)) || 'Please enter valid number'
+  !v || v === '' || /^-?\d+(\.\d+)?$/.test(v) || 'Please enter valid number'
 
 const onErrorSheetClosed = () => {
   error.value = {}
