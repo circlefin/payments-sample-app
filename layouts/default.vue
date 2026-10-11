@@ -7,11 +7,18 @@
       temporary
     >
       <v-list nav>
-        <v-list-item to="/" exact>
+        <v-list-item to="/developers" exact>
           <template #prepend>
             <v-icon>mdi-home</v-icon>
           </template>
-          <v-list-item-title>Home</v-list-item-title>
+          <v-list-item-title>Developer home</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item to="/" exact>
+          <template #prepend>
+            <v-icon>mdi-arrow-left</v-icon>
+          </template>
+          <v-list-item-title>Back to the wallet app</v-list-item-title>
         </v-list-item>
 
         <v-list-group>

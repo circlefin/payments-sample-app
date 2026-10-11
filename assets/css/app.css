@@ -1,0 +1,526 @@
+/* Styles for the consumer wallet app (landing, sign-in, wallet pages).
+   Everything is scoped under .fm so the developer pages keep their look. */
+
+.fm {
+  --fm-paper: #f6f8f7;
+  --fm-ink: #0c2233;
+  --fm-muted: #52667a;
+  --fm-kelp: #0e8f63;
+  --fm-kelp-deep: #0a6e4c;
+  --fm-tide: #dcefe7;
+  --fm-marigold: #f2b632;
+  --fm-line: #d3dcd8;
+  --fm-error: #b3261e;
+}
+
+.fm.v-application {
+  font-family: 'Public Sans', Roboto, sans-serif !important;
+  color: var(--fm-ink);
+  background: var(--fm-paper) !important;
+}
+
+.fm h1,
+.fm h2,
+.fm h3,
+.fm .fm-display {
+  font-family: 'Bricolage Grotesque', 'Public Sans', sans-serif;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  font-weight: 700;
+  margin: 0;
+}
+
+.fm p {
+  margin: 0;
+}
+
+.fm .v-btn {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 600;
+}
+
+.fm a {
+  color: var(--fm-kelp-deep);
+}
+
+.fm :focus-visible {
+  outline: 3px solid var(--fm-marigold);
+  outline-offset: 2px;
+}
+
+/* Page frame */
+.fm-wrap {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.fm-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.fm-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+  color: var(--fm-ink) !important;
+  text-decoration: none;
+}
+
+.fm-logo-mark {
+  width: 14px;
+  height: 18px;
+  background: var(--fm-kelp);
+  border-top: 4px solid var(--fm-marigold);
+  border-radius: 2px;
+}
+
+.fm-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Hero */
+.fm-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 48px;
+  align-items: center;
+  padding-top: 56px;
+  padding-bottom: 72px;
+}
+
+.fm-hero h1 {
+  font-size: clamp(2.5rem, 6.2vw, 4.6rem);
+  max-width: 13ch;
+}
+
+.fm-lede {
+  margin-top: 22px;
+  font-size: 1.125rem;
+  line-height: 1.55;
+  color: var(--fm-muted);
+  max-width: 46ch;
+}
+
+.fm-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.fm-notice {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: var(--fm-muted);
+  max-width: 52ch;
+}
+
+/* The receipt slip: the one memorable element */
+.fm-slip-wrap {
+  filter: drop-shadow(0 12px 20px rgba(12, 34, 51, 0.14));
+  max-width: 380px;
+  width: 100%;
+  justify-self: center;
+}
+
+.fm-slip {
+  background: #ffffff;
+  border-top: 6px solid var(--fm-marigold);
+  padding: 26px 26px 44px;
+  -webkit-mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - 10px) no-repeat,
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg)
+      bottom / 20px 10px repeat-x;
+  mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - 10px) no-repeat,
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg)
+      bottom / 20px 10px repeat-x;
+}
+
+.fm-slip-title {
+  font-size: 0.95rem;
+  color: var(--fm-muted);
+}
+
+.fm-slip-amount {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 2.6rem;
+  letter-spacing: -0.03em;
+  margin-top: 6px;
+}
+
+.fm-slip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-top: 1px dashed var(--fm-line);
+  font-size: 0.95rem;
+}
+
+.fm-slip-row span:first-child {
+  color: var(--fm-muted);
+}
+
+.fm-slip-row span:last-child {
+  font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.fm-slip-sample {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: var(--fm-muted);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fm-slip-wrap.fm-print {
+    animation: fm-print 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+}
+
+@keyframes fm-print {
+  from {
+    transform: translateY(-14px);
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    transform: translateY(0);
+    clip-path: inset(0 0 -20px 0);
+  }
+}
+
+/* Action tiles on the landing page */
+.fm-actions {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 16px;
+  padding-bottom: 72px;
+}
+
+.fm-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
+  min-height: 170px;
+  padding: 22px;
+  border-radius: 20px;
+  text-decoration: none;
+  color: var(--fm-ink) !important;
+  background: #ffffff;
+  border: 1px solid var(--fm-line);
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.fm-tile:hover {
+  transform: translateY(-3px);
+  border-color: var(--fm-kelp);
+}
+
+.fm-tile h3 {
+  font-size: 1.5rem;
+}
+
+.fm-tile p {
+  margin-top: 6px;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: inherit;
+  opacity: 0.8;
+}
+
+.fm-tile-send {
+  grid-column: span 3;
+  background: var(--fm-ink);
+  border-color: var(--fm-ink);
+  color: #ffffff !important;
+}
+
+.fm-tile-send:hover {
+  border-color: var(--fm-marigold);
+}
+
+.fm-tile-wallet {
+  grid-column: span 3;
+  background: var(--fm-tide);
+  border-color: var(--fm-tide);
+}
+
+.fm-tile-receive,
+.fm-tile-activity {
+  grid-column: span 3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fm-tile {
+    transition: none;
+  }
+  .fm-tile:hover {
+    transform: none;
+  }
+}
+
+/* How it works: a real sequence, so it is numbered */
+.fm-band {
+  background: var(--fm-ink);
+  color: #ffffff;
+  padding: 64px 0;
+}
+
+.fm-band h2 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  max-width: 18ch;
+}
+
+.fm-steps {
+  list-style: none;
+  margin: 40px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.fm-steps li {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fm-step-number {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--fm-marigold);
+  line-height: 1;
+}
+
+.fm-steps h3 {
+  font-size: 1.3rem;
+}
+
+.fm-steps p {
+  color: #c4d2dc;
+  line-height: 1.5;
+  max-width: 34ch;
+}
+
+.fm-footer {
+  padding: 36px 0 48px;
+  color: var(--fm-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.fm-footer p + p {
+  margin-top: 6px;
+}
+
+/* Sign in and sign up */
+.fm-auth {
+  display: grid;
+  place-items: start center;
+  padding: 40px 20px 72px;
+}
+
+.fm-auth-card {
+  width: 100%;
+  max-width: 420px;
+}
+
+.fm-auth-card h1 {
+  font-size: 2.2rem;
+}
+
+.fm-auth-card .fm-lede {
+  margin-top: 10px;
+  margin-bottom: 24px;
+  font-size: 1rem;
+}
+
+.fm-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+  color: var(--fm-muted);
+  font-size: 0.9rem;
+}
+
+.fm-divider::before,
+.fm-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--fm-line);
+}
+
+/* Signed-in app */
+.fm-app-main {
+  padding-top: 28px;
+  padding-bottom: 96px;
+}
+
+.fm-balance-label {
+  color: var(--fm-muted);
+  font-size: 0.95rem;
+}
+
+.fm-balance {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.8rem, 9vw, 5rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-top: 6px;
+}
+
+.fm-balance small {
+  font-size: 0.4em;
+  font-weight: 600;
+  letter-spacing: 0;
+  margin-left: 8px;
+  color: var(--fm-muted);
+}
+
+.fm-address-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 10px 10px 10px 14px;
+  background: #ffffff;
+  border: 1px solid var(--fm-line);
+  border-radius: 12px;
+  max-width: 560px;
+}
+
+.fm-address-box code {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 0.85rem;
+  background: none;
+  color: var(--fm-ink);
+  box-shadow: none;
+  padding: 0;
+}
+
+.fm-section-title {
+  font-size: 1.4rem;
+  margin: 40px 0 12px;
+}
+
+.fm-list {
+  background: #ffffff;
+  border: 1px solid var(--fm-line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.fm-list-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+}
+
+.fm-list-item + .fm-list-item {
+  border-top: 1px dashed var(--fm-line);
+}
+
+.fm-list-item .fm-who {
+  flex: 1;
+  min-width: 0;
+}
+
+.fm-list-item .fm-who strong {
+  display: block;
+}
+
+.fm-list-item .fm-who span {
+  color: var(--fm-muted);
+  font-size: 0.85rem;
+}
+
+.fm-amount-in {
+  color: var(--fm-kelp-deep);
+  font-weight: 700;
+}
+
+.fm-empty {
+  padding: 28px 20px;
+  text-align: center;
+  color: var(--fm-muted);
+}
+
+.fm-empty h3 {
+  color: var(--fm-ink);
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+
+.fm-form {
+  max-width: 480px;
+}
+
+.fm-page-title {
+  font-size: clamp(1.9rem, 5vw, 2.6rem);
+  margin-bottom: 8px;
+}
+
+@media (max-width: 860px) {
+  .fm-hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+    padding-top: 32px;
+    padding-bottom: 48px;
+  }
+
+  .fm-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding-bottom: 48px;
+  }
+
+  .fm-tile,
+  .fm-tile-send,
+  .fm-tile-wallet,
+  .fm-tile-receive,
+  .fm-tile-activity {
+    grid-column: span 1;
+    min-height: 150px;
+    padding: 18px;
+  }
+
+  .fm-tile-send {
+    grid-column: span 2;
+  }
+
+  .fm-steps {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .fm-band {
+    padding: 44px 0;
+  }
+}
