@@ -6,11 +6,15 @@
     </div>
 
     <div v-for="item in items" :key="item.id" class="fm-list-item">
-      <v-icon aria-hidden="true">
-        {{
-          item.direction === 'sent' ? 'mdi-arrow-top-right' : 'mdi-arrow-bottom-left'
-        }}
-      </v-icon>
+      <span class="mo-tx-icon" :class="item.direction" aria-hidden="true">
+        <v-icon size="20">
+          {{
+            item.direction === 'sent'
+              ? 'mdi-arrow-top-right'
+              : 'mdi-arrow-bottom-left'
+          }}
+        </v-icon>
+      </span>
       <div class="fm-who">
         <strong>
           {{ item.direction === 'sent' ? 'Sent to' : 'Received from' }}

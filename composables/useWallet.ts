@@ -1,3 +1,5 @@
+import { statusKind } from '~/utils/activityStats'
+
 /** Shared wallet state, so every page shows the same balance and address. */
 
 export interface WalletInfo {
@@ -60,17 +62,12 @@ export function formatDate(value: string): string {
 }
 
 export function stateLabel(state: string): string {
-  switch (state) {
-    case 'COMPLETE':
-    case 'CONFIRMED':
-      return 'Complete'
-    case 'FAILED':
-    case 'DENIED':
-    case 'CANCELLED':
-      return 'Failed'
-    default:
-      return 'Pending'
-  }
+  const kind = statusKind(state)
+  return kind === 'complete'
+    ? 'Complete'
+    : kind === 'failed'
+      ? 'Failed'
+      : 'Pending'
 }
 
 export function useWallet() {

@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({ layout: 'app', middleware: 'auth' })
+definePageMeta({ layout: 'dash', middleware: 'auth' })
 useHead({ title: 'Receive USDC' })
 
 const { wallet, loadWallet } = useWallet()

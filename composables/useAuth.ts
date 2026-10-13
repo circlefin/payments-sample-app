@@ -4,7 +4,7 @@
  * through our own /api routes, which check the access token on the server.
  */
 
-export const APP_NAME = 'Faremit'
+export const APP_NAME = 'Mondo'
 
 export interface Session {
   accessToken: string

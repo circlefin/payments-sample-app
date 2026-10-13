@@ -114,7 +114,7 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({ layout: 'app', middleware: 'auth' })
+definePageMeta({ layout: 'dash', middleware: 'auth' })
 useHead({ title: 'Send USDC' })
 
 const { api } = useAuth()

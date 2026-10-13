@@ -196,7 +196,7 @@ async function walletSetId(): Promise<string> {
       body: {
         idempotencyKey: uuidFromSeed('app-wallet-set'),
         entitySecretCiphertext: await entitySecretCiphertext(),
-        name: 'App users',
+        name: 'Mondo users',
       },
     },
   )
@@ -335,7 +335,7 @@ export async function listTransactions(
   const result = await circleRequest<{
     data: { transactions?: CircleTransaction[] }
   }>('/v1/w3s/transactions', {
-    query: { walletIds: circleWalletId, pageSize: 25, order: 'DESC' },
+    query: { walletIds: circleWalletId, pageSize: 50, order: 'DESC' },
   })
   return result.data.transactions || []
 }

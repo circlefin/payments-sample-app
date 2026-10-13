@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({ layout: 'app', middleware: 'auth' })
+definePageMeta({ layout: 'dash', middleware: 'auth' })
 useHead({ title: 'Activity' })
 
 const { wallet, activity, loadWallet, loadActivity } = useWallet()

@@ -1,6 +1,6 @@
-# Wallet app setup
+# Mondo setup
 
-The home page is now a consumer wallet app: sign up, create a wallet, send and
+Mondo is a consumer wallet app: sign up, create a wallet, send and
 receive USDC, and see activity. The original Circle developer tools are still
 here under `/developers` and `/debug`.
 

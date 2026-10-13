@@ -18,7 +18,7 @@
           <template #prepend>
             <v-icon>mdi-arrow-left</v-icon>
           </template>
-          <v-list-item-title>Back to the wallet app</v-list-item-title>
+          <v-list-item-title>Back to Mondo</v-list-item-title>
         </v-list-item>
 
         <v-list-group>
