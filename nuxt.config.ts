@@ -79,7 +79,7 @@ export default defineNuxtConfig({
     circleBaseUrl: process.env.CIRCLE_W3S_BASE_URL || 'https://api.circle.com',
     circleBlockchain: process.env.CIRCLE_BLOCKCHAIN || 'MATIC-AMOY',
     circleAccountType: process.env.CIRCLE_ACCOUNT_TYPE || 'SCA',
-    maxSendUsdc: process.env.MAX_SEND_USDC || '100',
+    maxSendUsdc: process.env.MAX_SEND_USDC || '',
     allowLiveFunds: process.env.ALLOW_LIVE_FUNDS || '',
 
     // Supabase service role key (server only)

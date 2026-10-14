@@ -60,6 +60,49 @@ normal Nuxt app.
 - Wallets are smart-contract accounts (`SCA`). On test networks Circle's gas
   sponsorship can cover fees. If a send fails with a fee error, check the
   Circle Console gas settings for your network.
-- Per-transfer cap is 100 USDC (`MAX_SEND_USDC`).
+- Per-transfer cap is set by `MAX_SEND_USDC`. If it is not set, it is 100 USDC with a
+  test key and 20 USDC with a live key.
 - Going live with real money needs far more than this sample: compliance and
   KYC, a real rate limiter, monitoring, and a security review.
+
+## Going live (real money)
+
+Read this whole section before you change anything.
+
+**What is and is not confirmed.** Circle's docs say testnet and mainnet use
+separate keys, and that sponsored gas fees on mainnet are charged to the
+developer's credit card, not to end users. They also say that if your platform
+holds assets for end users, regulatory licensing may apply where you operate.
+The docs reviewed did not say how to get mainnet access, what a live key looks
+like, or whether live needs its own entity secret. Check Circle Console, or ask
+Circle, for those.
+
+**Before you flip the switch**
+
+1. Get live access in Circle Console and create a **live** API key. It will not
+   start with `TEST_API_KEY:`.
+2. Register an entity secret for the live environment, and save its recovery
+   file somewhere safe. Use a different secret from the test one.
+3. In Circle Console, set up gas sponsorship (Gas Station) and a payment method
+   for the network you choose, or sends will fail.
+4. In Supabase, switch **Confirm email back on** (Authentication, Providers,
+   Email), and set a real site URL.
+5. Decide on licensing and compliance (KYC, sanctions screening, terms). This
+   sample app has none of that, and no two-step login.
+
+**Switching**
+
+1. Upload the latest package so the screens show live-mode labels.
+2. In Supabase SQL Editor, run `supabase/go-live-reset.sql`. It removes saved
+   test wallets (they only hold test tokens).
+3. In Vercel, for the **Production** environment only, set:
+   `CIRCLE_API_KEY` (live key), `CIRCLE_ENTITY_SECRET` (live secret),
+   `CIRCLE_BLOCKCHAIN` (a mainnet code such as `BASE` or `MATIC`; confirm the
+   exact code in Circle's docs), `ALLOW_LIVE_FUNDS` = `true`, and
+   `MAX_SEND_USDC` = a small number such as `10`.
+4. Redeploy. The top bar should now say "Live mode".
+5. Test with a very small amount first. Raise `MAX_SEND_USDC` slowly.
+
+**Switching back**: put the test key and test secret back, remove
+`ALLOW_LIVE_FUNDS`, set `CIRCLE_BLOCKCHAIN` to a testnet, run
+`go-live-reset.sql` again, and redeploy.
