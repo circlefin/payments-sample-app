@@ -89,7 +89,12 @@
           </div>
         </div>
         <p class="fm-notice">
-          Transfers cannot be undone. Check the address carefully.
+          Transfers cannot be undone.
+          {{
+            mode.live
+              ? 'This sends real money, so check the address and network carefully.'
+              : 'Check the address carefully.'
+          }}
         </p>
         <v-alert
           v-if="confirmError"
@@ -118,6 +123,8 @@ definePageMeta({ layout: 'dash', middleware: 'auth' })
 useHead({ title: 'Send USDC' })
 
 const { api } = useAuth()
+const { mode, loadMode } = useAppMode()
+loadMode()
 const { wallet, usdc, loadWallet, loadBalance } = useWallet()
 
 const loading = ref(true)

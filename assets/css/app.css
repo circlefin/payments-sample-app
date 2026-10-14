@@ -1067,3 +1067,9 @@
     padding: 18px;
   }
 }
+
+.mo-live-pill {
+  background: var(--fm-ink);
+  border-color: var(--fm-ink);
+  color: #ffffff;
+}

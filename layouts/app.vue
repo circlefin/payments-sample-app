@@ -29,7 +29,11 @@
       <slot />
 
       <footer class="fm-wrap fm-footer">
-        <p>
+        <p v-if="mode.loaded && mode.live">
+          {{ appName }} moves real money. Check every wallet address and network
+          carefully before you send, because transfers cannot be undone.
+        </p>
+        <p v-else-if="mode.loaded">
           {{ appName }} runs in test mode on a test network. No real money is
           moved, and test USDC has no value.
         </p>
@@ -46,8 +50,10 @@ const appName = APP_NAME
 useHead({ titleTemplate: (title) => (title ? `${title} - ${appName}` : appName) })
 const { session, load, signOut } = useAuth()
 const { reset } = useWallet()
+const { mode, loadMode } = useAppMode()
 
 load()
+loadMode()
 
 async function logOut() {
   await signOut()

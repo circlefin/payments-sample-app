@@ -61,7 +61,8 @@ function circleSettings() {
 
   // Safety guard: only Circle test keys are accepted unless live mode is
   // switched on deliberately with ALLOW_LIVE_FUNDS=true.
-  if (!apiKey.startsWith('TEST_API_KEY:') && config.allowLiveFunds !== 'true') {
+  const live = !apiKey.startsWith('TEST_API_KEY:')
+  if (live && config.allowLiveFunds !== 'true') {
     throw createError({
       statusCode: 500,
       statusMessage:
@@ -79,10 +80,13 @@ function circleSettings() {
   return {
     apiKey,
     entitySecret,
+    live,
     baseUrl: String(config.circleBaseUrl || 'https://api.circle.com'),
     blockchain: String(config.circleBlockchain || 'MATIC-AMOY'),
     accountType: String(config.circleAccountType || 'SCA'),
-    maxSendUsdc: Number(config.maxSendUsdc) > 0 ? Number(config.maxSendUsdc) : 100,
+    // Unless MAX_SEND_USDC is set, live keys get a much lower cap than test keys.
+    maxSendUsdc:
+      Number(config.maxSendUsdc) > 0 ? Number(config.maxSendUsdc) : live ? 20 : 100,
   }
 }
 
@@ -300,7 +304,9 @@ export async function sendUsdc(
     throw createError({
       statusCode: 400,
       statusMessage:
-        'Your wallet has no USDC yet. Get test USDC from the Circle faucet first',
+        settings.live
+          ? 'Your wallet has no USDC yet. Send USDC to your wallet address first'
+          : 'Your wallet has no USDC yet. Get test USDC from the Circle faucet first',
     })
   }
   if (micro > available) {

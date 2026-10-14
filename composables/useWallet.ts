@@ -24,10 +24,16 @@ const NETWORK_NAMES: Record<string, string> = {
   'ARB-SEPOLIA': 'Arbitrum Sepolia (test network)',
   'AVAX-FUJI': 'Avalanche Fuji (test network)',
   'OP-SEPOLIA': 'Optimism Sepolia (test network)',
+  MATIC: 'Polygon',
+  ETH: 'Ethereum',
+  BASE: 'Base',
+  ARB: 'Arbitrum',
+  AVAX: 'Avalanche',
+  OP: 'Optimism',
 }
 
 export function networkName(blockchain: string): string {
-  return NETWORK_NAMES[blockchain] || `${blockchain} (test network)`
+  return NETWORK_NAMES[blockchain] || blockchain
 }
 
 export function shortAddress(address: string): string {

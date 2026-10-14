@@ -32,8 +32,12 @@
           </template>
         </div>
 
-        <p class="fm-notice">
-          Test mode: this app uses a test network, so no real money moves.
+        <p v-if="mode.loaded" class="fm-notice">
+          {{
+            mode.live
+              ? 'Live mode: transfers move real money and cannot be undone.'
+              : 'Test mode: this app uses a test network, so no real money moves.'
+          }}
         </p>
       </div>
 
@@ -47,7 +51,7 @@
           </div>
           <div class="fm-slip-row">
             <span>Network</span>
-            <span>Test network</span>
+            <span>Your wallet's network</span>
           </div>
           <div class="fm-slip-row">
             <span>Status</span>
@@ -122,7 +126,9 @@ definePageMeta({ layout: 'app' })
 useHead({ title: 'Send and receive USDC' })
 
 const { session, load } = useAuth()
+const { mode, loadMode } = useAppMode()
 load()
+loadMode()
 
 const walletLink = computed(() => (session.value ? '/wallet' : '/signup'))
 </script>

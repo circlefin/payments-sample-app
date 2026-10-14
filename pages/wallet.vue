@@ -133,11 +133,15 @@
         <WalletTxList :items="activity.slice(0, 6)" />
       </section>
 
-      <p class="fm-notice mo-g-head">
+      <p v-if="mode.loaded && !mode.live" class="fm-notice mo-g-head">
         Need test USDC? Get some free from the
         <a href="https://faucet.circle.com" target="_blank" rel="noopener">
           Circle faucet</a
         >. Choose the network shown above and paste your address.
+      </p>
+      <p v-else-if="mode.loaded" class="fm-notice mo-g-head">
+        To add money, send USDC to the address above. Use the network shown, or
+        the funds may be lost.
       </p>
     </div>
   </div>
@@ -157,6 +161,8 @@ definePageMeta({ layout: 'dash', middleware: 'auth' })
 useHead({ title: 'Home' })
 
 const { session } = useAuth()
+const { mode, loadMode } = useAppMode()
+loadMode()
 const {
   wallet,
   usdc,
