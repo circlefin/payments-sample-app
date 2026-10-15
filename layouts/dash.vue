@@ -61,6 +61,7 @@ useHead({
 
 const { session, load, signOut } = useAuth()
 const { reset } = useWallet()
+const { reset: resetBank } = useBank()
 const { mode, loadMode } = useAppMode()
 load()
 loadMode()
@@ -72,6 +73,12 @@ const items = [
     to: '/receive',
     label: 'Receive',
     icon: 'mdi-arrow-bottom-left',
+    className: '',
+  },
+  {
+    to: '/bank',
+    label: 'Bank',
+    icon: 'mdi-bank-outline',
     className: '',
   },
   {
@@ -91,6 +98,7 @@ const items = [
 async function logOut() {
   await signOut()
   reset()
+  resetBank()
   await navigateTo('/')
 }
 </script>

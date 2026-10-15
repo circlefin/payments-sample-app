@@ -13,6 +13,22 @@ export interface WalletRow {
   created_at?: string
 }
 
+export interface BankCustomerRow {
+  user_id: string
+  kyc_link_id: string
+  customer_id: string | null
+  customer_type: string
+  created_at?: string
+}
+
+export interface BankAccountRow {
+  user_id: string
+  currency: string
+  bridge_account_id: string
+  deposit_instructions: Record<string, unknown>
+  created_at?: string
+}
+
 interface DbOptions {
   method?: 'GET' | 'POST' | 'PATCH' | 'DELETE'
   body?: Record<string, unknown>
@@ -98,4 +114,79 @@ export async function saveSetting(key: string, value: string): Promise<void> {
     body: { key, value },
     prefer: 'resolution=ignore-duplicates,return=minimal',
   })
+}
+
+export async function getBankCustomer(
+  userId: string,
+): Promise<BankCustomerRow | null> {
+  const rows = await dbRequest<BankCustomerRow[]>(
+    `bank_customers?user_id=eq.${encodeURIComponent(userId)}&select=*&limit=1`,
+  )
+  return rows.length > 0 ? rows[0] : null
+}
+
+export async function saveBankCustomer(
+  row: BankCustomerRow,
+): Promise<BankCustomerRow> {
+  const rows = await dbRequest<BankCustomerRow[]>('bank_customers', {
+    method: 'POST',
+    body: { ...row },
+    prefer: 'resolution=ignore-duplicates,return=representation',
+  })
+  if (rows.length > 0) {
+    return rows[0]
+  }
+  const existing = await getBankCustomer(row.user_id)
+  if (!existing) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: 'Could not save the verification',
+    })
+  }
+  return existing
+}
+
+export async function setBankCustomerId(
+  userId: string,
+  customerId: string,
+): Promise<void> {
+  await dbRequest<unknown>(
+    `bank_customers?user_id=eq.${encodeURIComponent(userId)}`,
+    {
+      method: 'PATCH',
+      body: { customer_id: customerId },
+      prefer: 'return=minimal',
+    },
+  )
+}
+
+export async function listBankAccounts(
+  userId: string,
+): Promise<BankAccountRow[]> {
+  return await dbRequest<BankAccountRow[]>(
+    `bank_accounts?user_id=eq.${encodeURIComponent(userId)}&select=*&order=created_at.asc`,
+  )
+}
+
+export async function saveBankAccount(
+  row: BankAccountRow,
+): Promise<BankAccountRow> {
+  const rows = await dbRequest<BankAccountRow[]>('bank_accounts', {
+    method: 'POST',
+    body: { ...row },
+    prefer: 'resolution=ignore-duplicates,return=representation',
+  })
+  if (rows.length > 0) {
+    return rows[0]
+  }
+  const existing = (await listBankAccounts(row.user_id)).find(
+    (a) => a.currency === row.currency,
+  )
+  if (!existing) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: 'Could not save the bank account',
+    })
+  }
+  return existing
 }

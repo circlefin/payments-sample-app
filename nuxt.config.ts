@@ -82,6 +82,12 @@ export default defineNuxtConfig({
     maxSendUsdc: process.env.MAX_SEND_USDC || '',
     allowLiveFunds: process.env.ALLOW_LIVE_FUNDS || '',
 
+    // Bridge (virtual bank accounts). Server only.
+    bridgeApiKey: process.env.BRIDGE_API_KEY || '',
+    bridgeBaseUrl: process.env.BRIDGE_BASE_URL || '',
+    allowLiveBanking: process.env.ALLOW_LIVE_BANKING || '',
+    bridgeEndorsements: process.env.BRIDGE_ENDORSEMENTS || '',
+
     // Supabase service role key (server only)
     supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || '',
 

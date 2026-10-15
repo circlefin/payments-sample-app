@@ -106,3 +106,38 @@ Circle, for those.
 **Switching back**: put the test key and test secret back, remove
 `ALLOW_LIVE_FUNDS`, set `CIRCLE_BLOCKCHAIN` to a testnet, run
 `go-live-reset.sql` again, and redeploy.
+
+## Bank accounts (USD, EUR, GBP via Bridge)
+
+Users can open US, euro and pound bank details. Money paid in is converted to
+USDC and sent to the user's own Mondo wallet address. The identity check runs on
+Bridge's hosted page, so Mondo never sees ID documents.
+
+**Set up once**
+1. In the Supabase SQL Editor, run `supabase/add-bank-accounts.sql`. It adds two
+   tables and does not touch wallets.
+2. In Bridge, switch the dashboard to **Sandbox**, create an API key (it starts
+   with `sk-test`), and add it in Vercel as `BRIDGE_API_KEY` (Production).
+3. Redeploy with "Use existing Build Cache" unticked.
+4. Open **Bank** in Mondo. Test mode shows buttons to approve the test identity
+   check and to simulate a deposit, so you can try the whole flow without money.
+
+**Facts from Bridge's documentation**
+- USD uses ACH or wire, EUR uses SEPA (a virtual IBAN), GBP uses Faster Payments.
+- GBP needs a Faster Payments endorsement and EUR a SEPA endorsement on your
+  Bridge account. Ask Bridge to enable them. Then set `BRIDGE_ENDORSEMENTS`.
+- GBP deposits: Bridge accepts them from the account holder's own bank account,
+  and from other people only if they are businesses.
+- Virtual accounts are a separate Bridge product that may need to be switched on
+  for your account.
+
+**Not confirmed, check before going live**
+- Fees, limits, and which countries Bridge can verify. Ask Bridge.
+- Whether Bridge needs anything from you before taking real customers in the UK
+  or EU. Bank deposits for other people can bring licensing duties for you. Get
+  proper legal advice first.
+
+**Going live with banking**
+Live Bridge keys are blocked until `ALLOW_LIVE_BANKING=true` is set. Live
+accounts also need a wallet on a real network (not a test network), so the Circle
+live setup has to work first. Never share the Bridge key.

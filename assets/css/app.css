@@ -1073,3 +1073,71 @@
   border-color: var(--fm-ink);
   color: #ffffff;
 }
+
+/* Bank accounts */
+.mo-bank {
+  max-width: 1040px;
+}
+
+.mo-bank-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.mo-bank-grid .mo-card {
+  min-width: 0;
+}
+
+.mo-bank-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.mo-bank-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mo-bank-steps li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--fm-line);
+}
+
+.mo-bank-steps li > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.mo-dep {
+  margin: 0;
+}
+
+.mo-dep > div {
+  padding: 10px 0;
+  border-top: 1px solid var(--fm-line);
+}
+
+.mo-dep dt {
+  color: var(--fm-muted);
+  font-size: 0.8rem;
+}
+
+.mo-dep dd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 2px 0 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
