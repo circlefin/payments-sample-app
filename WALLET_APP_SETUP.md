@@ -141,3 +141,11 @@ Bridge's hosted page, so Mondo never sees ID documents.
 Live Bridge keys are blocked until `ALLOW_LIVE_BANKING=true` is set. Live
 accounts also need a wallet on a real network (not a test network), so the Circle
 live setup has to work first. Never share the Bridge key.
+
+**Testing bank accounts before a wallet exists (sandbox only)**
+With a Bridge sandbox key, a user can open test bank accounts before creating a
+wallet. They use a made-up placeholder address, and nothing real is sent. Once
+the wallet exists, press **Connect my wallet** on the Bank page and Bridge is
+told to deliver to the real address. With a live Bridge key this shortcut is
+off: a real wallet is always required. Run the latest
+`supabase/add-bank-accounts.sql` once so the database has the new column.

@@ -3,6 +3,8 @@
  * can be tested on their own.
  */
 
+import { createHash } from 'node:crypto'
+
 export type BankCurrency = 'usd' | 'eur' | 'gbp'
 export type CustomerType = 'individual' | 'business'
 
@@ -70,6 +72,16 @@ export function railForBlockchain(
     return TESTNET_RAILS[blockchain]
   }
   return null
+}
+
+/**
+ * A well-formed but meaningless wallet address, different for every user. It is
+ * used ONLY with a Bridge sandbox key, where no money moves, so test bank
+ * accounts can be opened before a real wallet exists. The account is switched
+ * to the user's real wallet address later.
+ */
+export function sandboxPlaceholderAddress(userId: string): string {
+  return '0x' + createHash('sha256').update(`mondo-sandbox:${userId}`).digest('hex').slice(0, 40)
 }
 
 /** Full legal name: 2 to 100 characters, trimmed, single spaces. */

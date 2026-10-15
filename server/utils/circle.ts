@@ -1,4 +1,5 @@
 import { constants, createHash, publicEncrypt, randomUUID } from 'node:crypto'
+import { cleanCredential, hasThreeKeyParts } from './clean'
 import {
   getSetting,
   getWalletRow,
@@ -49,13 +50,21 @@ let cachedPublicKey = ''
 
 function circleSettings() {
   const config = useRuntimeConfig()
-  const apiKey = String(config.circleApiKey || '')
-  const entitySecret = String(config.circleEntitySecret || '')
+  const apiKey = cleanCredential(config.circleApiKey)
+  const entitySecret = cleanCredential(config.circleEntitySecret)
 
   if (!apiKey || !entitySecret) {
     throw createError({
       statusCode: 500,
       statusMessage: 'Wallets are not configured on the server yet',
+    })
+  }
+
+  if (!hasThreeKeyParts(apiKey)) {
+    throw createError({
+      statusCode: 500,
+      statusMessage:
+        'The Circle API key on the server looks incomplete. It should have three parts separated by colons: prefix, id and secret',
     })
   }
 

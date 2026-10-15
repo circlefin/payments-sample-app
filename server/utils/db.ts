@@ -26,6 +26,8 @@ export interface BankAccountRow {
   currency: string
   bridge_account_id: string
   deposit_instructions: Record<string, unknown>
+  /** True for test accounts opened before the user had a wallet. */
+  placeholder?: boolean
   created_at?: string
 }
 
@@ -168,12 +170,27 @@ export async function listBankAccounts(
   )
 }
 
+export async function markBankAccountConnected(
+  userId: string,
+  currency: string,
+): Promise<void> {
+  await dbRequest<unknown>(
+    `bank_accounts?user_id=eq.${encodeURIComponent(userId)}&currency=eq.${encodeURIComponent(currency)}`,
+    {
+      method: 'PATCH',
+      body: { placeholder: false },
+      prefer: 'return=minimal',
+    },
+  )
+}
+
 export async function saveBankAccount(
   row: BankAccountRow,
 ): Promise<BankAccountRow> {
+  const { placeholder, ...rest } = row
   const rows = await dbRequest<BankAccountRow[]>('bank_accounts', {
     method: 'POST',
-    body: { ...row },
+    body: placeholder ? { ...rest, placeholder: true } : { ...rest },
     prefer: 'resolution=ignore-duplicates,return=representation',
   })
   if (rows.length > 0) {

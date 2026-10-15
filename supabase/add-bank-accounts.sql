@@ -27,3 +27,8 @@ create table if not exists public.bank_accounts (
 
 alter table public.bank_customers enable row level security;
 alter table public.bank_accounts enable row level security;
+
+-- Test accounts can be opened before a wallet exists (Bridge sandbox only).
+-- This flag marks them until they are connected to the user's real wallet.
+alter table public.bank_accounts
+  add column if not exists placeholder boolean not null default false;

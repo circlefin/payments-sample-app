@@ -1,6 +1,10 @@
 import { rateLimit, requireUser } from '../../utils/auth'
 import { requireApprovedCustomer } from '../../utils/bank'
-import { isBankCurrency, railForBlockchain } from '../../utils/bankRules'
+import {
+  isBankCurrency,
+  railForBlockchain,
+  sandboxPlaceholderAddress,
+} from '../../utils/bankRules'
 import { bridgeMode, bridgeRequest } from '../../utils/bridge'
 import { uuidFromSeed } from '../../utils/circle'
 import { getWalletRow, listBankAccounts, saveBankAccount } from '../../utils/db'
@@ -34,21 +38,37 @@ export default defineEventHandler(async (event) => {
   )
   if (existing) {
     return {
-      account: { currency, instructions: existing.deposit_instructions },
+      account: {
+        currency,
+        instructions: existing.deposit_instructions,
+        placeholder: Boolean(existing.placeholder),
+      },
     }
   }
 
   const { status } = await requireApprovedCustomer(user.id)
 
   const wallet = await getWalletRow(user.id)
-  if (!wallet) {
+  const live = bridgeMode().live
+
+  // Test accounts can be opened before a wallet exists, using a placeholder
+  // address that is switched to the real wallet later. Never with a live key:
+  // real money must only ever go to the user's own wallet.
+  let rail: string | null = 'polygon'
+  let address = ''
+  let placeholder = false
+  if (wallet) {
+    rail = railForBlockchain(wallet.blockchain, live)
+    address = wallet.address
+  } else if (!live) {
+    address = sandboxPlaceholderAddress(user.id)
+    placeholder = true
+  } else {
     throw createError({
       statusCode: 400,
       statusMessage: 'Create your wallet first, so there is somewhere to send the money',
     })
   }
-
-  const rail = railForBlockchain(wallet.blockchain, bridgeMode().live)
   if (!rail) {
     throw createError({
       statusCode: 400,
@@ -67,7 +87,7 @@ export default defineEventHandler(async (event) => {
         destination: {
           payment_rail: rail,
           currency: 'usdc',
-          address: wallet.address,
+          address,
         },
       },
     },
@@ -84,8 +104,13 @@ export default defineEventHandler(async (event) => {
     currency,
     bridge_account_id: account.id,
     deposit_instructions: account.source_deposit_instructions,
+    placeholder,
   })
   return {
-    account: { currency, instructions: saved.deposit_instructions },
+    account: {
+      currency,
+      instructions: saved.deposit_instructions,
+      placeholder: Boolean(saved.placeholder),
+    },
   }
 })

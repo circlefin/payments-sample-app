@@ -13,6 +13,8 @@ export interface BankStatus {
 export interface BankAccount {
   currency: BankCurrency
   instructions: Record<string, unknown>
+  /** A test account that is not yet pointed at the user's wallet. */
+  placeholder?: boolean
 }
 
 export interface BankDeposit {
@@ -77,6 +79,11 @@ export function useBank() {
     ]
   }
 
+  async function connectWallet(): Promise<void> {
+    await api('/api/bank/connect-wallet', { method: 'POST' })
+    await load()
+  }
+
   async function simulateApproval(): Promise<void> {
     const result = await api<{ status: BankStatus }>(
       '/api/bank/simulate-kyc',
@@ -111,6 +118,7 @@ export function useBank() {
     loadDeposits,
     startVerification,
     openAccount,
+    connectWallet,
     simulateApproval,
     simulateDeposit,
     reset,

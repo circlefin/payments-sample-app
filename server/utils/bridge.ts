@@ -1,5 +1,6 @@
 import { uuidFromSeed } from './circle'
 import { bridgeIsLive } from './bankRules'
+import { cleanCredential } from './clean'
 
 /**
  * Server-side client for Bridge (bridge.xyz): identity checks and virtual bank
@@ -9,7 +10,7 @@ import { bridgeIsLive } from './bankRules'
 
 function bridgeSettings() {
   const config = useRuntimeConfig()
-  const apiKey = String(config.bridgeApiKey || '').trim()
+  const apiKey = cleanCredential(config.bridgeApiKey)
 
   if (!apiKey) {
     throw createError({
@@ -40,7 +41,7 @@ function bridgeSettings() {
 
 export function bridgeMode(): { configured: boolean; live: boolean } {
   const config = useRuntimeConfig()
-  const apiKey = String(config.bridgeApiKey || '').trim()
+  const apiKey = cleanCredential(config.bridgeApiKey)
   return { configured: apiKey.length > 0, live: apiKey.length > 0 && bridgeIsLive(apiKey) }
 }
 
@@ -61,7 +62,7 @@ function bridgeErrorMessage(err: any): string {
 export async function bridgeRequest<T>(
   path: string,
   options: {
-    method?: 'GET' | 'POST'
+    method?: 'GET' | 'POST' | 'PUT'
     body?: Record<string, unknown>
     idempotencyKey?: string
   } = {},

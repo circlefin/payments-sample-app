@@ -25,7 +25,7 @@
       </p>
     </div>
 
-    <div v-else-if="!wallet" class="mo-card mo-empty-card mt-4">
+    <div v-else-if="!wallet && live" class="mo-card mo-empty-card mt-4">
       <h2>Create your wallet first</h2>
       <p class="mo-muted mt-2 mb-4">
         Bank deposits are delivered to your wallet, so you need one before you
@@ -42,6 +42,37 @@
         class="my-4"
       >
         Test mode: no real bank details or money are involved.
+      </v-alert>
+
+      <v-alert
+        v-if="!live && !wallet"
+        type="info"
+        variant="tonal"
+        class="mb-4"
+      >
+        You don't have a wallet yet, so test accounts use a placeholder
+        destination. Nothing real is sent. Create your wallet later and press
+        "Connect my wallet" to point them at it.
+      </v-alert>
+
+      <v-alert
+        v-if="wallet && hasPlaceholder"
+        type="warning"
+        variant="tonal"
+        class="mb-4"
+      >
+        <div class="mo-bank-row">
+          <span>Your test accounts are not connected to your wallet yet.</span>
+          <v-btn
+            size="small"
+            color="primary"
+            variant="flat"
+            :loading="busy"
+            @click="connect"
+          >
+            Connect my wallet
+          </v-btn>
+        </div>
       </v-alert>
 
       <!-- Step 1: start verification -->
@@ -176,8 +207,13 @@
                 </div>
               </dl>
               <p class="mo-muted mt-3">
-                {{ item.info.name }} sent here are converted to USDC and
-                delivered to your Mondo wallet.
+                <template v-if="item.account.placeholder">
+                  Test account. Not connected to a wallet yet.
+                </template>
+                <template v-else>
+                  {{ item.info.name }} sent here are converted to USDC and
+                  delivered to your Mondo wallet.
+                </template>
               </p>
               <p v-if="item.info.note" class="mo-muted mt-2">
                 {{ item.info.note }}
@@ -257,6 +293,7 @@ const {
   loadDeposits,
   startVerification,
   openAccount,
+  connectWallet,
   simulateApproval,
   simulateDeposit,
 } = useBank()
@@ -317,6 +354,10 @@ async function run(task: () => Promise<void>) {
 const start = () => run(() => startVerification(fullName.value.trim(), type.value))
 const check = () => run(load)
 const approveTest = () => run(simulateApproval)
+const connect = () => run(connectWallet)
+const hasPlaceholder = computed(() =>
+  accounts.value.some((a) => a.placeholder),
+)
 
 async function open(currency: BankCurrency) {
   error.value = ''

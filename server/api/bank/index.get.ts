@@ -22,6 +22,7 @@ export default defineEventHandler(async (event) => {
     accounts: accounts.map((a) => ({
       currency: a.currency,
       instructions: a.deposit_instructions,
+      placeholder: Boolean(a.placeholder),
     })),
   }
 })
