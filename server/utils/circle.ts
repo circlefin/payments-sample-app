@@ -207,7 +207,7 @@ async function walletSetId(): Promise<string> {
     {
       method: 'POST',
       body: {
-        idempotencyKey: uuidFromSeed('app-wallet-set'),
+        idempotencyKey: uuidFromSeed('app-wallet-set:Mondo users'),
         entitySecretCiphertext: await entitySecretCiphertext(),
         name: 'Mondo users',
       },
@@ -226,14 +226,22 @@ export async function createWalletForUser(userId: string): Promise<WalletRow> {
   }
 
   const settings = circleSettings()
+  const setId = await walletSetId()
+  // The retry key depends on everything that shapes the request. Circle refuses
+  // a key that is reused with a different request, so changing the network or
+  // wallet set (as happens when going live) must give a new key. A double click
+  // sends the same request, gets the same key, and still yields one wallet.
+  const retryKey = uuidFromSeed(
+    `wallet:${userId}:${setId}:${settings.blockchain}:${settings.accountType}`,
+  )
   const result = await circleRequest<{ data: { wallets: CircleWallet[] } }>(
     '/v1/w3s/developer/wallets',
     {
       method: 'POST',
       body: {
-        idempotencyKey: uuidFromSeed(`wallet:${userId}`),
+        idempotencyKey: retryKey,
         entitySecretCiphertext: await entitySecretCiphertext(),
-        walletSetId: await walletSetId(),
+        walletSetId: setId,
         blockchains: [settings.blockchain],
         accountType: settings.accountType,
         count: 1,
