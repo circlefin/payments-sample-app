@@ -2,10 +2,10 @@
   <div>
     <section class="fm-wrap fm-hero">
       <div>
-        <h1>Send digital dollars in minutes.</h1>
+        <h1>Send money in minutes.</h1>
         <p class="fm-lede">
-          Open a USDC wallet in one tap. Then send money to anyone with a
-          wallet address, and receive it the same way.
+          Open a USDC wallet or a bank account (USD, GBP, EUR) in one tap. Then send money to anyone with a
+          wallet address or bank details, and receive it the same way.
         </p>
 
         <div class="fm-cta-row">
@@ -13,8 +13,11 @@
             <v-btn size="x-large" to="/wallet" color="primary" variant="flat">
               Open my wallet
             </v-btn>
+            <v-btn size="x-large" to="/bank" color="primary" variant="flat">
+              Open a bank account
+            </v-btn>
             <v-btn size="x-large" to="/send" variant="outlined" color="secondary">
-              Send USDC
+              Send money
             </v-btn>
           </template>
           <template v-else>
@@ -44,14 +47,14 @@
       <div class="fm-slip-wrap fm-print" aria-hidden="true">
         <div class="fm-slip">
           <p class="fm-slip-title">You sent</p>
-          <p class="fm-slip-amount">25.00 USDC</p>
+          <p class="fm-slip-amount">25.00 USD</p>
           <div class="fm-slip-row">
             <span>To</span>
             <span>0x71C7…976F</span>
           </div>
           <div class="fm-slip-row">
             <span>Network</span>
-            <span>Your wallet's network</span>
+            <span>Wallet or bank</span>
           </div>
           <div class="fm-slip-row">
             <span>Status</span>
@@ -65,16 +68,16 @@
     <section class="fm-wrap fm-actions" aria-label="What you can do">
       <NuxtLink :to="walletLink" class="fm-tile fm-tile-wallet">
         <div>
-          <h3>Create wallet</h3>
-          <p>Get your own USDC wallet and address in one step.</p>
+          <h3>Create wallet or bank account</h3>
+          <p>Get your own USDC wallet or a USD/GBP/EUR bank account in one step.</p>
         </div>
         <v-icon size="28" aria-hidden="true">mdi-wallet-outline</v-icon>
       </NuxtLink>
 
       <NuxtLink to="/send" class="fm-tile fm-tile-send">
         <div>
-          <h3>Send USDC</h3>
-          <p>Pay anyone with a wallet address. Review before it goes.</p>
+          <h3>Send money</h3>
+          <p>Pay anyone with a wallet address or bank details. Review before it goes.</p>
         </div>
         <v-icon size="28" aria-hidden="true">mdi-arrow-top-right</v-icon>
       </NuxtLink>
@@ -82,7 +85,7 @@
       <NuxtLink to="/receive" class="fm-tile fm-tile-receive">
         <div>
           <h3>Receive</h3>
-          <p>Share your address and get paid in USDC.</p>
+          <p>Share your address or bank details and get paid.</p>
         </div>
         <v-icon size="28" aria-hidden="true">mdi-arrow-bottom-left</v-icon>
       </NuxtLink>
@@ -107,13 +110,13 @@
           </li>
           <li>
             <span class="fm-step-number" aria-hidden="true">2</span>
-            <h3>Create your wallet</h3>
-            <p>One tap gives you an address that is yours to share.</p>
+            <h3>Create your wallet or bank account</h3>
+            <p>One tap gives you an address or bank details that are yours to share.</p>
           </li>
           <li>
             <span class="fm-step-number" aria-hidden="true">3</span>
             <h3>Send and receive</h3>
-            <p>Move USDC to any wallet address and watch it arrive.</p>
+            <p>Move money (USDC or bank transfers) and watch it arrive.</p>
           </li>
         </ol>
       </div>
@@ -123,7 +126,7 @@
 
 <script setup lang="ts">
 definePageMeta({ layout: 'app' })
-useHead({ title: 'Send and receive USDC' })
+useHead({ title: 'Send and receive money' })
 
 const { session, load } = useAuth()
 const { mode, loadMode } = useAppMode()
