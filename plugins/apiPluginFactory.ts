@@ -49,3 +49,11 @@ export function createApiPlugin(instanceGetter: InstanceGetter, provideName: str
     }
   })
 }
+
+// Nuxt treats files in the `plugins/` directory as plugins and will ignore files
+// that don't export a default `defineNuxtPlugin`. During the refactor this file
+// ended up in `plugins/` but doesn't provide a default export, causing the
+// bundler to exclude it and named exports (like `createApiPlugin`) to be
+// unavailable. Add a no-op default plugin export so Nuxt includes this module
+// and preserves its named exports.
+export default defineNuxtPlugin(() => {})
