@@ -6,6 +6,7 @@ import transactionsApi from '@/lib/daa/transactionsApi'
 import depositsApi from '@/lib/daa/depositsApi'
 import withdrawalsApi from '@/lib/daa/withdrawalsApi'
 import addressesApi from '@/lib/daa/addressesApi'
+import earnApi from '@/lib/daa/earnApi'
 
 export default defineNuxtPlugin(() => {
   const { $pinia } = useNuxtApp()
@@ -46,6 +47,7 @@ export default defineNuxtPlugin(() => {
       daaDepositsApi: depositsApi,
       daaWithdrawalsApi: withdrawalsApi,
       daaAddressesApi: addressesApi,
+      daaEarnApi: earnApi,
     },
   }
 })

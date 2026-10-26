@@ -399,6 +399,62 @@ const daaLinks = [
     title: 'GET /accounts/deposits',
     to: '/debug/daa/deposits/fetch',
   },
+  {
+    title: 'GET /accounts/earn/vaults',
+    to: '/debug/daa/earn/vaults/fetch',
+  },
+  {
+    title: 'POST /accounts/earn/positions',
+    to: '/debug/daa/earn/positions/fetch',
+  },
+  {
+    title: 'POST /accounts/earn/deposits/quote',
+    to: '/debug/daa/earn/deposits/quote',
+  },
+  {
+    title: 'POST /accounts/earn/deposits',
+    to: '/debug/daa/earn/deposits/create',
+  },
+  {
+    title: 'GET /accounts/earn/deposits',
+    to: '/debug/daa/earn/deposits/fetch',
+  },
+  {
+    title: 'GET /accounts/earn/deposits/{id}',
+    to: '/debug/daa/earn/deposits/details',
+  },
+  {
+    title: 'POST /accounts/earn/withdrawals/quote',
+    to: '/debug/daa/earn/withdrawals/quote',
+  },
+  {
+    title: 'POST /accounts/earn/withdrawals',
+    to: '/debug/daa/earn/withdrawals/create',
+  },
+  {
+    title: 'GET /accounts/earn/withdrawals',
+    to: '/debug/daa/earn/withdrawals/fetch',
+  },
+  {
+    title: 'GET /accounts/earn/withdrawals/{id}',
+    to: '/debug/daa/earn/withdrawals/details',
+  },
+  {
+    title: 'POST /accounts/earn/rewards/claims/quote',
+    to: '/debug/daa/earn/claims/quote',
+  },
+  {
+    title: 'POST /accounts/earn/rewards/claims',
+    to: '/debug/daa/earn/claims/create',
+  },
+  {
+    title: 'GET /accounts/earn/rewards/claims',
+    to: '/debug/daa/earn/claims/fetch',
+  },
+  {
+    title: 'GET /accounts/earn/rewards/claims/{id}',
+    to: '/debug/daa/earn/claims/details',
+  },
 ]
 
 const coreLinks = [
