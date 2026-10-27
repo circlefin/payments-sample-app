@@ -60,6 +60,8 @@
   },
   "resolutions": {
     "tar": "^7.5.19",
-    "handlebars": ">=4.7.9"
+    "handlebars": ">=4.7.9",
+    "@simple-git/argv-parser": "^2.0.1",
+    "shell-quote": "^1.11.0"
   }
 }
