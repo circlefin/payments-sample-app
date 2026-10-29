@@ -326,7 +326,7 @@ const fundDelegateBatch = async () => {
   // Both delegate and net_delegate: the batch permit covers all trades in a single API call.
   // funding-presign stores the same shared typed data on every entry regardless of mode,
   // so one fund call using the first entry is correct for all cases.
-  const entry = delegateBatch.value[0]
+  const entry = delegateBatch.value[0]!
   try {
     const fundPayload: StableFXFundPayload = {
       type: formData.type as 'maker' | 'taker',

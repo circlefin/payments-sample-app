@@ -237,8 +237,8 @@ const onErrorSheetClosed = () => {
 }
 
 const prefillForm = (index: number) => {
-  Object.assign(formData, prefillItems[index].formData)
-  store.setRiskSignals({ ...prefillItems[index].riskSignals })
+  Object.assign(formData, prefillItems[index]!.formData)
+  store.setRiskSignals({ ...prefillItems[index]!.riskSignals })
 }
 
 const makeApiCall = async () => {

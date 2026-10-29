@@ -227,11 +227,14 @@ const onCurrencyChange = () => {
   const supportedToCurrencies = supportedCryptoPayoutCurrencyPairs.get(
     formData.currency,
   )
-  formData.toCurrency = supportedToCurrencies ? supportedToCurrencies[0] : ''
+  formData.toCurrency = supportedToCurrencies
+    ? (supportedToCurrencies[0] ?? '')
+    : ''
 }
 
 const onDestinationTypeChange = () => {
-  formData.currency = Array.from(supportedCryptoPayoutCurrencyPairs.keys())[0]
+  formData.currency =
+    Array.from(supportedCryptoPayoutCurrencyPairs.keys())[0] ?? ''
   onCurrencyChange()
   resetIdentities()
 }

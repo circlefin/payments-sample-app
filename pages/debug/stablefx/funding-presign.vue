@@ -410,7 +410,7 @@ const signWithCircle = async () => {
       const funderWalletId = store.getFunderWalletId || store.getWalletId
       const funderApiKey = store.getFunderWalletApiKey || store.getWalletApiKey
       const funderSecret = store.getFunderEntitySecret || store.getEntitySecret
-      const firstEntry = batch[0]
+      const firstEntry = batch[0]!
       let traderSignature = ''
 
       if (firstEntry.traderTypedData) {

@@ -3,6 +3,8 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-08-27',
   devtools: { enabled: true },
   ssr: false,
+  srcDir: '.',
+  serverDir: 'server',
 
   devServer: {
     host: '0.0.0.0',

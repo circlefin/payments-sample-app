@@ -240,7 +240,7 @@ const onErrorSheetClosed = () => {
 }
 
 const prefillForm = (index: number) => {
-  Object.assign(formData, prefillItems[index].formData)
+  Object.assign(formData, prefillItems[index]!.formData)
 }
 
 const makeApiCall = async () => {
