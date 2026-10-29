@@ -48,7 +48,7 @@ $ echo BASE_URL=https://[base-url.com] > .env
 
 ## Devtools
 
-Dev tools to confirm SNS subscription / receive notifications can be found (here)[https://github.com/circlefin/payments-sample-app/tree/master/devtools]
+Dev tools to confirm SNS subscription / receive notifications can be found [here](https://github.com/circlefin/payments-sample-app/tree/master/devtools).
 
 ## Nuxt
 
@@ -56,12 +56,12 @@ This sample app was written with Nuxt. For a more detailed explanation of how Nu
 
 ## Tests
 
-The sample app uses jest for testing. You can find the tests in the `test` folder.
+The sample app uses jest for testing. You can find tests next to the code under test.
 
 To run the tests:
 
 ```bash
-$ yarn test
+$ yarn testall
 ```
 
 To watch the tests:
