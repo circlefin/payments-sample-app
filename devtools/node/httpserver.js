@@ -46,11 +46,18 @@ const server = http.createServer((request, response) => {
       console.dir(request.headers)
       console.log(`Body: ${body}`)
 
+      if (!handleBody(body)) {
+        response.writeHead(400, {
+          'Content-Type': 'text/html',
+        })
+        response.end('Invalid JSON payload')
+        return
+      }
+
       response.writeHead(200, {
         'Content-Type': 'text/html',
       })
       response.end(`POST request for ${request.url}`)
-      handleBody(body)
     })
   } else {
     const msg = `${request.method} method not supported`
@@ -63,7 +70,13 @@ const server = http.createServer((request, response) => {
   }
 
   const handleBody = (body) => {
-    const envelope = JSON.parse(body)
+    let envelope
+    try {
+      envelope = JSON.parse(body)
+    } catch (err) {
+      console.error('Invalid JSON payload.', err)
+      return false
+    }
     validator.validate(envelope, (err) => {
       if (err) {
         console.error(err)
@@ -90,11 +103,12 @@ const server = http.createServer((request, response) => {
             break
           }
           default: {
-            console.error(`Message of type ${body.Type} not supported`)
+            console.error(`Message of type ${envelope.Type} not supported`)
           }
         }
       }
     })
+    return true
   }
 })
 
