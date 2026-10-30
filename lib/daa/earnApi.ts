@@ -42,6 +42,29 @@ function getInstance() {
   return daaInstance
 }
 
+/**
+ * Posts an Owner-authorized write. With a device key loaded the body is signed
+ * and sent as the exact string that was hashed; otherwise it is sent unsigned.
+ */
+async function postOwnerAuthorized(
+  route: string,
+  discriminator: string,
+  payload: { idempotencyKey: string },
+) {
+  const path = `${EARN_PATH}/${route}`
+  if (!hasDeviceKey()) {
+    return daaInstance.post(path, payload)
+  }
+  const signed = await signOwnerRequest('POST', path, discriminator, payload)
+  return daaInstance.post(path, signed.body, {
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Device-Authorization': signed.deviceAuthorization,
+    },
+    transformRequest: [(data) => data],
+  })
+}
+
 function listParams(
   accountId: string,
   status: string,
@@ -99,19 +122,8 @@ function getDepositQuote(payload: EarnQuotePayload) {
 /**
  * Create Deposit
  */
-async function createDeposit(payload: EarnDepositPayload) {
-  const path = `${EARN_PATH}/deposits`
-  if (!hasDeviceKey()) {
-    return daaInstance.post(path, payload)
-  }
-  const signed = await signOwnerRequest('POST', path, 'earn_deposit', payload)
-  return daaInstance.post(path, signed.body, {
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Device-Authorization': signed.deviceAuthorization,
-    },
-    transformRequest: [(data) => data],
-  })
+function createDeposit(payload: EarnDepositPayload) {
+  return postOwnerAuthorized('deposits', 'earn_deposit', payload)
 }
 
 /**
@@ -156,7 +168,7 @@ function getWithdrawalQuote(payload: EarnQuotePayload) {
  * Create Withdrawal
  */
 function createWithdrawal(payload: EarnWithdrawalPayload) {
-  return daaInstance.post(`${EARN_PATH}/withdrawals`, payload)
+  return postOwnerAuthorized('withdrawals', 'earn_withdrawal', payload)
 }
 
 /**
@@ -201,7 +213,7 @@ function getClaimQuote(payload: EarnSourceOnlyPayload) {
  * Create reward Claim
  */
 function createClaim(payload: EarnClaimPayload) {
-  return daaInstance.post(`${EARN_PATH}/rewards/claims`, payload)
+  return postOwnerAuthorized('rewards/claims', 'earn_claim', payload)
 }
 
 /**

@@ -4,6 +4,7 @@
       <v-col cols="12" md="4">
         <v-form>
           <v-text-field v-model="formData.sourceId" label="Source Account Id" />
+          <DeviceKeyField />
           <v-btn
             variant="flat"
             class="mb-7"

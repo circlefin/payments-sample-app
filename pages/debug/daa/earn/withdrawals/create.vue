@@ -6,6 +6,7 @@
           <v-text-field v-model="formData.sourceId" label="Source Account Id" />
           <v-text-field v-model="formData.vaultAddress" label="Vault Address" />
           <v-text-field v-model="formData.amount" label="Amount" />
+          <DeviceKeyField />
           <v-btn
             variant="flat"
             class="mb-7"
