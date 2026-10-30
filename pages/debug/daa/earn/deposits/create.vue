@@ -6,6 +6,21 @@
           <v-text-field v-model="formData.sourceId" label="Source Account Id" />
           <v-text-field v-model="formData.vaultAddress" label="Vault Address" />
           <v-text-field v-model="formData.amount" label="Amount" />
+          <v-textarea
+            v-model="deviceJson"
+            label="Device key (device.json, self-custody source)"
+            hint="Held in memory only; cleared on reload"
+            persistent-hint
+            rows="3"
+            class="mb-2"
+            @update:model-value="onDeviceJsonChange"
+          />
+          <p v-if="deviceKeyId" class="mb-4">
+            Signing with key {{ deviceKeyId }}
+          </p>
+          <p v-if="deviceKeyError" class="mb-4 text-error">
+            {{ deviceKeyError }}
+          </p>
           <v-btn
             variant="flat"
             class="mb-7"
@@ -35,6 +50,11 @@
 
 <script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
+import {
+  clearDeviceKey,
+  getDeviceKeyId,
+  loadDeviceKey,
+} from '@/lib/daa/deviceSigner'
 
 const store = useMainStore()
 const { $daaEarnApi } = useNuxtApp()
@@ -44,6 +64,26 @@ const formData = reactive({
   vaultAddress: '',
   amount: '',
 })
+
+const deviceJson = ref('')
+const deviceKeyId = ref<string | null>(getDeviceKeyId())
+const deviceKeyError = ref('')
+
+const onDeviceJsonChange = async (value: string) => {
+  deviceKeyError.value = ''
+  if (!value.trim()) {
+    clearDeviceKey()
+    deviceKeyId.value = null
+    return
+  }
+  try {
+    deviceKeyId.value = (await loadDeviceKey(value)).authKeyId
+  } catch (e: any) {
+    clearDeviceKey()
+    deviceKeyId.value = null
+    deviceKeyError.value = `Invalid device key: ${e.message}`
+  }
+}
 
 const error = ref<any>({})
 const loading = ref(false)

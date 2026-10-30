@@ -1,4 +1,5 @@
 import { daaInstance, nullIfEmpty } from './client'
+import { hasDeviceKey, signOwnerRequest } from './deviceSigner'
 
 export interface EarnSource {
   id: string
@@ -98,8 +99,19 @@ function getDepositQuote(payload: EarnQuotePayload) {
 /**
  * Create Deposit
  */
-function createDeposit(payload: EarnDepositPayload) {
-  return daaInstance.post(`${EARN_PATH}/deposits`, payload)
+async function createDeposit(payload: EarnDepositPayload) {
+  const path = `${EARN_PATH}/deposits`
+  if (!hasDeviceKey()) {
+    return daaInstance.post(path, payload)
+  }
+  const signed = await signOwnerRequest('POST', path, 'earn_deposit', payload)
+  return daaInstance.post(path, signed.body, {
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Device-Authorization': signed.deviceAuthorization,
+    },
+    transformRequest: [(data) => data],
+  })
 }
 
 /**
