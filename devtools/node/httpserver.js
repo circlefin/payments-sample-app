@@ -18,7 +18,7 @@
 /* jshint esversion: 6 */
 
 const http = require('http')
-const r = require('request')
+const https = require('https')
 const MessageValidator = require('sns-validator')
 
 const circleArn =
@@ -63,7 +63,14 @@ const server = http.createServer((request, response) => {
   }
 
   const handleBody = (body) => {
-    const envelope = JSON.parse(body)
+    let envelope
+    try {
+      envelope = JSON.parse(body)
+    } catch (e) {
+      console.error('Invalid JSON body', e)
+      return
+    }
+
     validator.validate(envelope, (err) => {
       if (err) {
         console.error(err)
@@ -76,13 +83,30 @@ const server = http.createServer((request, response) => {
               )
               break
             }
-            r(envelope.SubscribeURL, (err) => {
-              if (err) {
-                console.error('Subscription NOT confirmed.', err)
-              } else {
-                console.log('Subscription confirmed.')
-              }
-            })
+
+            // confirm subscription using native http/https
+            try {
+              const subscribeUrl = new URL(envelope.SubscribeURL)
+              const client = subscribeUrl.protocol === 'https:' ? https : http
+              client
+                .get(subscribeUrl, (res) => {
+                  const status = res.statusCode
+                  if (status && status >= 200 && status < 300) {
+                    console.log('Subscription confirmed.')
+                  } else {
+                    console.error(`Subscription NOT confirmed. Status: ${status}`)
+                  }
+                  // Drain response
+                  res.on('data', () => {})
+                  res.on('end', () => {})
+                })
+                .on('error', (e) => {
+                  console.error('Subscription NOT confirmed.', e)
+                })
+            } catch (e) {
+              console.error('Invalid SubscribeURL', e)
+            }
+
             break
           }
           case 'Notification': {
@@ -90,7 +114,7 @@ const server = http.createServer((request, response) => {
             break
           }
           default: {
-            console.error(`Message of type ${body.Type} not supported`)
+            console.error(`Message of type ${envelope.Type} not supported`)
           }
         }
       }

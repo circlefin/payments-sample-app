@@ -1,101 +1,137 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <v-card
-          class="text-body-1 px-6 py-8 mb-4"
-          max-width="800"
-          variant="outlined"
-        >
-          <h1 class="headline">Welcome to the sample payments application</h1>
+  <div>
+    <section class="fm-wrap fm-hero">
+      <div>
+        <h1>Send money in minutes.</h1>
+        <p class="fm-lede">
+          Open a USDC wallet or a bank account (USD, GBP, EUR) in one tap. Then send money to anyone with a
+          wallet address or bank details, and receive it the same way.
+        </p>
 
-          <p class="mt-6">
-            This sample web application demonstrates some of the features of the
-            <a href="https://www.circle.com/en/developers" target="_blank">
-              Circle APIs
-            </a>
-          </p>
-
-          <p class="font-weight-bold mt-8">This app provides:</p>
-
-          <ul>
-            <li>a sample UI implementation of common payments flows</li>
-            <li>an api explorer to preview payload and response data</li>
-          </ul>
-        </v-card>
-
-        <v-card
-          class="text-body-1 px-6 py-8 mb-4"
-          max-width="800"
-          variant="outlined"
-        >
-          <h2 class="title">API viewer</h2>
-
-          <p class="mt-2">
-            Make api calls using your private api key. Explore payload and
-            response data in the UI.
-          </p>
-
-          <v-btn to="/debug/" color="primary"> API endpoints </v-btn>
-        </v-card>
-
-        <v-card
-          class="text-body-1 px-6 py-8 mb-4"
-          max-width="800"
-          variant="outlined"
-        >
-          <h2 class="title">Circle API documentation portal</h2>
-          <p class="mt-2">
-            View API guides and reference documentation, including available
-            endpoints and parameters.
-          </p>
-
-          <p>
-            <v-btn
-              href="https://developers.circle.com"
-              target="_blank"
-              color="primary"
-              variant="outlined"
-            >
-              Circle API documentation portal
+        <div class="fm-cta-row">
+          <template v-if="session">
+            <v-btn size="x-large" to="/wallet" color="primary" variant="flat">
+              Open my wallet
             </v-btn>
-          </p>
-        </v-card>
-        <v-card
-          class="text-body-1 px-6 py-8 mb-4"
-          max-width="800"
-          variant="outlined"
-        >
-          <h2 class="title">Glossary</h2>
-          <p class="mt-2">
-            These words are commonly used across the app and documentation.
-          </p>
-          <p>
-            <span class="font-weight-bold">Customer:</span> the entity that
-            enters an agreement with Circle to gain access to the Payments API
-            (i.e. a business).
-          </p>
-          <p>
-            <span class="font-weight-bold">End user:</span> the entity that owns
-            a payment method used throughout the API (in other words, a
-            Customer's customer).
-          </p>
-          <p>
-            <span class="font-weight-bold">Payment Method:</span> an external
-            account that can originate or receive transfers (payments and
-            payouts), i.e. a debit or credit card, a bank account, etc. Payment:
-            a complex transaction involving fiat funds being transferred from an
-            end user's payment method, and depositing an associated amount of
-            stablecoin on a wallet.
-          </p>
-          <p>
-            <span class="font-weight-bold">Payout:</span> a complex transaction
-            a certain amount of stablecoin from a wallet and transferring the
-            associated fiat funds to a payment method Please use the menu on the
-            right to configure the api key.
-          </p>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+            <v-btn size="x-large" to="/bank" color="primary" variant="flat">
+              Open a bank account
+            </v-btn>
+            <v-btn size="x-large" to="/send" variant="outlined" color="secondary">
+              Send money
+            </v-btn>
+          </template>
+          <template v-else>
+            <v-btn size="x-large" to="/signup" color="primary" variant="flat">
+              Sign up free
+            </v-btn>
+            <v-btn
+              size="x-large"
+              to="/login"
+              variant="outlined"
+              color="secondary"
+            >
+              Log in
+            </v-btn>
+          </template>
+        </div>
+
+        <p v-if="mode.loaded" class="fm-notice">
+          {{
+            mode.live
+              ? 'Live mode: transfers move real money and cannot be undone.'
+              : 'Test mode: this app uses a test network, so no real money moves.'
+          }}
+        </p>
+      </div>
+
+      <div class="fm-slip-wrap fm-print" aria-hidden="true">
+        <div class="fm-slip">
+          <p class="fm-slip-title">You sent</p>
+          <p class="fm-slip-amount">25.00 USD</p>
+          <div class="fm-slip-row">
+            <span>To</span>
+            <span>0x71C7…976F</span>
+          </div>
+          <div class="fm-slip-row">
+            <span>Network</span>
+            <span>Wallet or bank</span>
+          </div>
+          <div class="fm-slip-row">
+            <span>Status</span>
+            <span>Complete</span>
+          </div>
+          <p class="fm-slip-sample">Sample receipt</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="fm-wrap fm-actions" aria-label="What you can do">
+      <NuxtLink :to="walletLink" class="fm-tile fm-tile-wallet">
+        <div>
+          <h3>Create wallet or bank account</h3>
+          <p>Get your own USDC wallet or a USD/GBP/EUR bank account in one step.</p>
+        </div>
+        <v-icon size="28" aria-hidden="true">mdi-wallet-outline</v-icon>
+      </NuxtLink>
+
+      <NuxtLink to="/send" class="fm-tile fm-tile-send">
+        <div>
+          <h3>Send money</h3>
+          <p>Pay anyone with a wallet address or bank details. Review before it goes.</p>
+        </div>
+        <v-icon size="28" aria-hidden="true">mdi-arrow-top-right</v-icon>
+      </NuxtLink>
+
+      <NuxtLink to="/receive" class="fm-tile fm-tile-receive">
+        <div>
+          <h3>Receive</h3>
+          <p>Share your address or bank details and get paid.</p>
+        </div>
+        <v-icon size="28" aria-hidden="true">mdi-arrow-bottom-left</v-icon>
+      </NuxtLink>
+
+      <NuxtLink to="/activity" class="fm-tile fm-tile-activity">
+        <div>
+          <h3>Activity</h3>
+          <p>See everything you sent and received, with its status.</p>
+        </div>
+        <v-icon size="28" aria-hidden="true">mdi-receipt-text-outline</v-icon>
+      </NuxtLink>
+    </section>
+
+    <section class="fm-band">
+      <div class="fm-wrap">
+        <h2>Three steps from sign up to sent.</h2>
+        <ol class="fm-steps">
+          <li>
+            <span class="fm-step-number" aria-hidden="true">1</span>
+            <h3>Sign up</h3>
+            <p>Use your email and a password. It takes under a minute.</p>
+          </li>
+          <li>
+            <span class="fm-step-number" aria-hidden="true">2</span>
+            <h3>Create your wallet or bank account</h3>
+            <p>One tap gives you an address or bank details that are yours to share.</p>
+          </li>
+          <li>
+            <span class="fm-step-number" aria-hidden="true">3</span>
+            <h3>Send and receive</h3>
+            <p>Move money (USDC or bank transfers) and watch it arrive.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+  </div>
 </template>
+
+<script setup lang="ts">
+definePageMeta({ layout: 'app' })
+useHead({ title: 'Send and receive money' })
+
+const { session, load } = useAuth()
+const { mode, loadMode } = useAppMode()
+load()
+loadMode()
+
+const walletLink = computed(() => (session.value ? '/wallet' : '/signup'))
+</script>

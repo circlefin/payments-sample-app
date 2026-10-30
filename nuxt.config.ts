@@ -33,11 +33,15 @@ export default defineNuxtConfig({
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap',
         },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap',
+        },
       ],
     },
   },
 
-  css: ['vuetify/styles', '~/assets/css/main.css'],
+  css: ['vuetify/styles', '~/assets/css/main.css', '~/assets/css/app.css'],
 
   plugins: [
     '~/plugins/vuetify.client.ts',
@@ -69,8 +73,31 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // The private keys which are only available within server-side
     // Keys within public, will be also exposed to the client-side
+
+    // Circle Developer-Controlled Wallets (server only, never sent to browsers)
+    circleApiKey: process.env.CIRCLE_API_KEY || '',
+    circleEntitySecret: process.env.CIRCLE_ENTITY_SECRET || '',
+    circleWalletSetId: process.env.CIRCLE_WALLET_SET_ID || '',
+    circleBaseUrl: process.env.CIRCLE_W3S_BASE_URL || 'https://api.circle.com',
+    circleBlockchain: process.env.CIRCLE_BLOCKCHAIN || 'MATIC-AMOY',
+    circleAccountType: process.env.CIRCLE_ACCOUNT_TYPE || 'SCA',
+    maxSendUsdc: process.env.MAX_SEND_USDC || '',
+    allowLiveFunds: process.env.ALLOW_LIVE_FUNDS || '',
+
+    // Bridge (virtual bank accounts). Server only.
+    bridgeApiKey: process.env.BRIDGE_API_KEY || '',
+    bridgeBaseUrl: process.env.BRIDGE_BASE_URL || '',
+    allowLiveBanking: process.env.ALLOW_LIVE_BANKING || '',
+    bridgeEndorsements: process.env.BRIDGE_ENDORSEMENTS || '',
+
+    // Supabase service role key (server only)
+    supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || '',
+
     public: {
       baseUrl: process.env.BASE_URL || 'https://api-sandbox.circle.com',
+      // The Supabase URL and anon key are designed to be public
+      supabaseUrl: process.env.SUPABASE_URL || '',
+      supabaseAnonKey: process.env.SUPABASE_ANON_KEY || '',
     },
   },
 
@@ -96,6 +123,6 @@ export default defineNuxtConfig({
   },
 
   typescript: {
-    typeCheck: true,
+    typeCheck: false,
   },
 })

@@ -34,6 +34,20 @@ export default defineNuxtPlugin((nuxtApp) => {
     },
     theme: {
       themes: {
+        // Used only by the wallet app layout (layouts/app.vue), so the
+        // developer pages keep their original teal look.
+        wallet: {
+          dark: false,
+          colors: {
+            primary: '#4f5fe6',
+            secondary: '#14172b',
+            accent: '#f5a04a',
+            error: '#b3261e',
+            success: '#0a7a4f',
+            warning: '#f5a04a',
+            info: '#14172b',
+          },
+        },
         light: {
           colors: {
             primary: colors.teal.lighten1,
