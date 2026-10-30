@@ -200,7 +200,7 @@ const hasTypedDataResponse = computed(() => !!getTypedDataFromResponse())
 
 const required = (v: string) => !!v || 'Field is required'
 const isNumber = (v: string) =>
-  !v || v === '' || !isNaN(parseInt(v)) || 'Please enter valid number'
+  !v || v === '' || /^-?\d+(\.\d+)?$/.test(v) || 'Please enter valid number'
 
 const onErrorSheetClosed = () => {
   error.value = {}

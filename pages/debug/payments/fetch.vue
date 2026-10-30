@@ -55,7 +55,7 @@ const formData = reactive({
 })
 
 const isNumber = (v: string) =>
-  v === '' || !isNaN(parseInt(v)) || 'Please enter valid number'
+  v === '' || /^-?\d+(\.\d+)?$/.test(v) || 'Please enter valid number'
 const required = (v: string) => !!v || 'Field is required'
 
 const error = ref<any>({})
