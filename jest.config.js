@@ -4,6 +4,7 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/$1',
     '^~/(.*)$': '<rootDir>/$1',
   },
+  transformIgnorePatterns: ['/node_modules/(?!uuid/)'],
   moduleFileExtensions: ['js', 'ts', 'vue', 'json'],
   transform: {
     '^.+\\.js$': 'babel-jest',
